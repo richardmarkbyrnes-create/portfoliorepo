@@ -7,7 +7,7 @@
   }
 
   function projectHref(slug) {
-    return `project.html?p=${slug}`;
+    return `/${slug}/`;
   }
 
   function openLightbox(src) {
@@ -84,7 +84,14 @@
     if (document.body.dataset.page !== 'project') return;
 
     const params = new URLSearchParams(window.location.search);
-    const slug = params.get('p') || document.body.dataset.project;
+    const querySlug = params.get('p');
+    if (querySlug && window.PROJECTS?.[querySlug]) {
+      window.location.replace(projectHref(querySlug));
+      return;
+    }
+
+    const pathSlug = window.location.pathname.replace(/^\/+|\/+$/g, '').split('/')[0];
+    const slug = document.body.dataset.project || pathSlug;
     const project = window.PROJECTS?.[slug];
 
     if (!project) {
