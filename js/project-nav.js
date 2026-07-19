@@ -88,7 +88,7 @@
     const project = window.PROJECTS?.[slug];
 
     if (!project) {
-      window.location.replace('index.html');
+      window.location.replace('/');
       return;
     }
 
@@ -278,7 +278,7 @@
       if (!el) return;
       el.addEventListener('click', (event) => {
         event.preventDefault();
-        navigateWithFade(el.getAttribute('href') || 'index.html', { leaveProject: true });
+        navigateWithFade(el.getAttribute('href') || '/', { leaveProject: true });
       });
     });
 
@@ -342,7 +342,7 @@
           window.setTimeout(() => window.history.back(), PROJECT_TRANSITION_MS);
         }
       } else {
-        navigateWithFade('index.html', { leaveProject: true });
+        navigateWithFade('/', { leaveProject: true });
       }
     };
     const goNext = () => {
@@ -434,7 +434,7 @@
     if (homeItem) {
       homeItem.addEventListener('click', (event) => {
         event.preventDefault();
-        navigateWithFade(homeItem.getAttribute('href') || 'index.html', { leaveProject: true });
+        navigateWithFade(homeItem.getAttribute('href') || '/', { leaveProject: true });
       });
     }
 

@@ -1036,92 +1036,6 @@ html[data-theme="dark"] .theme-toggle-moon {
   100% { opacity: 0; transform: rotate(var(--a)) translateY(-20px) scaleY(1); }
 }
 
-/* Ireland tooltip */
-.ireland-tip {
-  position: relative;
-  cursor: help;
-  transition: color 0.2s ease, text-decoration-color 0.2s ease;
-}
-
-.tip-irish:hover {
-  color: #2f9e44;
-  text-decoration-color: #2f9e44;
-}
-
-.tip-dutch:hover {
-  color: #e8770f;
-  text-decoration-color: #e8770f;
-}
-
-.ireland-tooltip {
-  position: absolute;
-  left: 50%;
-  bottom: calc(100% + 26px);
-  width: max-content;
-  max-width: 220px;
-  font-family: var(--hand);
-  font-size: 23px;
-  font-weight: 400;
-  line-height: 1.05;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--text);
-  text-align: center;
-  background: none;
-  border: 0;
-  box-shadow: none;
-  text-shadow:
-    0 0 4px var(--note-halo),
-    0 0 4px var(--note-halo),
-    0 0 4px var(--note-halo),
-    0 0 8px var(--note-halo),
-    0 0 8px var(--note-halo),
-    0 0 12px var(--note-halo);
-  padding: 0;
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: translateX(-50%) rotate(-4deg) translateY(6px);
-  transform-origin: center bottom;
-  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
-  z-index: 50;
-}
-
-.ireland-tooltip::after {
-  content: '';
-  position: absolute;
-  top: calc(100% + 1px);
-  left: 50%;
-  width: 26px;
-  height: 30px;
-  transform: translateX(-50%) rotate(4deg);
-  background-color: var(--text);
-  filter: drop-shadow(0 0 3px var(--note-halo)) drop-shadow(0 0 3px var(--note-halo)) drop-shadow(0 0 3px var(--note-halo));
-  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2040%2044'%20fill='none'%20stroke='%23000'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M28%204C31%2016%2030%2028%2022%2038'/%3E%3Cpath%20d='M13%2030l9%209%208-7'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2040%2044'%20fill='none'%20stroke='%23000'%20stroke-width='3'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpath%20d='M28%204C31%2016%2030%2028%2022%2038'/%3E%3Cpath%20d='M13%2030l9%209%208-7'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-
-.ireland-tip:hover .ireland-tooltip,
-.ireland-tip:focus-visible .ireland-tooltip {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(-50%) rotate(-4deg) translateY(0);
-}
-
-.tip-irish .ireland-tooltip {
-  max-width: 200px;
-}
-
-.tip-dutch .ireland-tooltip {
-  transform: translateX(-50%) rotate(4deg) translateY(6px);
-}
-
-.tip-dutch:hover .ireland-tooltip,
-.tip-dutch:focus-visible .ireland-tooltip {
-  transform: translateX(-50%) rotate(4deg) translateY(0);
-}
-
-
 @media (prefers-reduced-motion: reduce) {
   .nav-icon-stack.is-tapped,
   .theme-swatch.is-tapped,
@@ -1408,26 +1322,6 @@ body[data-page="about"] {
   text-decoration-thickness: 1px;
   text-underline-offset: 0.14em;
 }
-
-/* Dotted underline under the emphasized marks in the about title */
-.about-hero-title .hero-title-mark {
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: var(--text-light);
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.14em;
-}
-
-.about-hero-title .ireland-tooltip {
-  text-decoration: none;
-}
-
-/* Keep these lines from forming a backdrop root (see fadeUpNoBlur) so the
-   tooltip's background blur can reach the line-art behind it. */
-.about-hero-title .animate-in {
-  animation-name: fadeUpNoBlur;
-}
-
 
 .home-about-intro + .work-column--about {
   margin-top: var(--work-divider-space);
