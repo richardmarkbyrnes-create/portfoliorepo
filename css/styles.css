@@ -372,7 +372,7 @@ body {
 
 body::before {
   content: '';
-  display: none;
+  display: block;
   position: absolute;
   top: 0;
   left: 0;
@@ -2714,7 +2714,7 @@ body[data-page="project"] .nav-primary {
 .pc-lead-block {
   max-width: 100%;
   align-self: center;
-  margin: 0 0 40px;
+  margin: 0 0 72px;
   text-align: center;
 }
 
@@ -2752,7 +2752,7 @@ body[data-page="project"] .nav-primary {
 }
 
 .pc-lead-team {
-  margin: 20px 0 0;
+  margin: 0 0 16px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;

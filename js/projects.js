@@ -31,7 +31,7 @@ window.PROJECTS = {
     title: 'Custom Stickers',
     company: 'Miro',
     year: '2026',
-    headline: 'Unlocking Personal Expression with Generative AI',
+    headline: 'Unblocking Personal Expression with Generative AI',
     headlineAccent: 'Expression',
     team: 'Miro · Growth Adoption',
     images: [
