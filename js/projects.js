@@ -73,16 +73,15 @@ window.PROJECTS = {
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     images: [
       'images/automations-hero.png',
+      'images/automations-2.png',
     ],
-    heroAspect: '1024 / 818',
-    heroFit: 'contain',
     paragraphs: [
       'Instead of forcing users to manually dig for recurring customer feedback, we wanted the data to come to them. I designed Automations, a feature that lets teams set up routine, AI-driven insight reports and deliver them directly to where they already work — Slack, email, or in-product. This shifted our product from a manual, reactive search tool to a proactive, habit-forming engine for product teams.',
       'Our users were experiencing “query fatigue.” Product managers and researchers loved our AI insights, but they were tired of logging in every week to run the exact same searches, like tracking feature requests from sales calls. The challenge was to transition the platform from a destination users had to remember to visit into an automated utility that seamlessly integrated into their existing weekly workflows.',
       'I defined the automation framework, simplifying complex logic into a straightforward “Trigger, Action, Destination” flow that any user could configure in under a minute. Rather than keeping users locked in our app, I designed for the existing ecosystem — mapping a multi-channel delivery experience so insights could meet teams where they collaborate, specifically Slack and email. Throughout, I worked closely with engineering to balance technical feasibility with experience, keeping scheduling and delivery reliable without over-complicating the initial release.',
       'By automating the delivery of recurring insights, we integrated the product into the weekly routines of entire product squads. Bringing insights directly into Slack saved researchers hours of manual reporting every month, and it organically boosted visibility across the company — bringing team members who didn’t even have active accounts face-to-face with our value.',
     ],
-    quote: 'Half of our busywork just disappeared overnight.',
+    quote: 'Automations help keep our entire team updated on what our customers are saying straight in our Slack channels',
     quoteBy: 'Customer feedback',
   },
   'ask-ai': {
@@ -93,17 +92,6 @@ window.PROJECTS = {
     headlineAccent: 'Answers',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
-    photoOverlays: [
-      {
-        slot: 0,
-        plain: true,
-        static: true,
-        background: '#ffffff',
-        items: [
-          { src: 'images/ask-insights-demo.gif', x: 50, y: 50, w: 100, r: 0 },
-        ],
-      },
-    ],
     paragraphs: [
       'Sifting through thousands of customer feedback loops to find specific trends can take teams hours, if not days. I designed Ask Insights, an intuitive AI chat companion that lets users query their entire database of customer calls, feedback, and support tickets in plain English. Instead of manually digging through endless transcripts, product teams can simply ask a question and get a synthesized, cited answer in seconds.',
       'User research and product teams were sitting on a goldmine of customer insights, from weekly sales calls to support logs, but the sheer volume made it impossible to digest. When a product manager needed to know “What are users saying about our onboarding experience?” they had to spend hours searching, reading, and synthesizing. We needed a conversational interface that felt as easy as chatting with a colleague, while maintaining the rigor and trust required for serious UX and product decisions.',
@@ -121,6 +109,11 @@ window.PROJECTS = {
     headlineAccent: 'Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
+    images: [
+      'images/canvas-insights-hero.png',
+    ],
+    heroAspect: '2410 / 1342',
+    heroFit: 'contain',
     paragraphs: [
       'UX researchers and product teams often struggle to turn research findings into collaborative action because insights live in static PDFs or isolated databases. I designed Canvas Insights, an on-canvas Miro experience that lets users pull rich, interactive insight card components directly onto their collaborative boards. Engineered to adapt to different use cases and personas, these cards seamlessly integrate into tables, kanban boards, and mind maps, turning raw data into active, collaborative building blocks.',
       'Even when organisations have great customer insights, those insights often stay siloed. When teams ran brainstorming workshops on Miro, they had to manually copy-paste plain-text sticky notes from other tools to represent customer pain points, stripping away critical context, quotes, and metadata. We needed an experience that brought the source of truth directly to the infinite canvas, while keeping the components flexible enough to fit a wide variety of collaborative structures.',
@@ -138,18 +131,11 @@ window.PROJECTS = {
     headlineAccent: 'Scalable',
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
-    photoOverlays: [
-      {
-        slot: 0,
-        static: true,
-        plain: true,
-        background: '#FBF3C5',
-        items: [
-          { src: 'images/nav-components.webp', x: 27, y: 54, w: 52, r: 0 },
-          { src: 'images/nav-collections.webp', x: 76, y: 50, w: 72, r: 0 },
-        ],
-      },
+    images: [
+      'images/navigation-hero.png',
     ],
+    heroAspect: '1500 / 667',
+    heroFit: 'contain',
     paragraphs: [
       'As a product scales, its navigation must grow with it. I led the redesign of the core navigation interface for Cashbook, a financial management tool for accountants. The goal was twofold: drastically improve daily workflow efficiency so accountants could digest complex financial data faster, while simultaneously restructuring the information architecture to seamlessly accommodate future multi-product add-ons.',
       'The existing Cashbook interface was struggling under the weight of its own growth. The navigation was rigid, leaving little room for new features, let alone entirely new product modules. At the same time, our primary users — accountants — deal with massive volumes of data daily and were experiencing cognitive overload jumping between ledgers, reports, and settings. We needed a layout that felt lighter and faster to navigate today, without breaking when we introduced new tools tomorrow.',
@@ -168,6 +154,11 @@ window.PROJECTS = {
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
+    images: [
+      'images/visualisations-hero.png',
+    ],
+    heroAspect: '1519 / 711',
+    heroFit: 'contain',
     paragraphs: [
       'Accounting software is notoriously dense, often burying crucial business trends under endless rows of spreadsheet data. I designed visual data dashboards that translate raw financial ledgers into high-level, actionable insights for managers. By surfacing key performance indicators like cash flow, revenue trends, and upcoming expenses at a glance, we transformed how business leaders monitor and steer their financial health.',
       'Business managers often struggled to make quick, strategic decisions because their financial data was trapped in massive, overwhelming tables. They were experiencing cognitive fatigue, spending too much time manually calculating trends or waiting for end-of-month reports from their accountants. The challenge was to abstract a highly complex, data-heavy financial ledger into a clean, visual format that was immediately understandable — without losing the depth and accuracy required for business planning.',
