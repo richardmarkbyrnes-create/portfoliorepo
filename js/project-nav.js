@@ -271,8 +271,16 @@
 
     const quoteText = document.getElementById('pc-quote-text');
     const quoteBy = document.getElementById('pc-quote-by');
-    if (quoteText && project.quote) quoteText.textContent = `“${project.quote}”`;
-    if (quoteBy && project.quoteBy) quoteBy.textContent = `— ${project.quoteBy}`;
+    if (project.quote) {
+      if (quoteText) quoteText.textContent = `“${project.quote}”`;
+      if (quoteBy && project.quoteBy) quoteBy.textContent = `— ${project.quoteBy}`;
+    } else {
+      // No quote for this project — hide the divider and the quote block entirely.
+      const rule = document.querySelector('.pc-rule');
+      if (rule) rule.hidden = true;
+      const quoteReveal = document.querySelector('.pc-quote-reveal');
+      if (quoteReveal) quoteReveal.hidden = true;
+    }
 
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
     const topBlur = document.querySelector('.top-blur');
