@@ -98,7 +98,7 @@ window.PROJECTS = {
       'Trust is the biggest hurdle with AI, so I structured the chat interface to heavily prioritise inline citations and source links — users can click straight through to the exact snippet of the original customer call or transcript to verify a response. To make a blank chat box less intimidating, I designed a zero-state onboarding with suggested, high-value prompts based on the user’s role, guiding them to value on their very first interaction. I also refined the iterative search flow to support continuous follow-ups, letting users drill down from a broad query — “What are our top customer pain points?” — to a specific detail like “Tell me more about the payment errors they mentioned.”',
       'Ask Insights fundamentally changed how product decisions get made by democratising access to customer data. By shrinking the research loop from days to seconds, we empowered product managers, marketers, and developers to self-serve insights autonomously. Clear citations meant the team actually trusted the AI’s outputs, making the feature the go-to tool for pre-sprint planning and roadmap validation.',
     ],
-    quote: 'It’s like having a teammate who’s read the entire board.',
+    quote: 'It\'s crazy how quick we can surface data that before took such mental effort to gather',
     quoteBy: 'Customer feedback',
   },
   'customer-insights': {
@@ -142,8 +142,6 @@ window.PROJECTS = {
       'I restructured the information architecture, auditing and consolidating deeply nested menu items into intuitive, task-oriented categories so accountants could glance at the sidebar and instantly find what they needed. I designed for future modular add-ons with a flexible, nested navigation framework engineered to support “plug-and-play” modules — letting future products be toggled on or off without disrupting the core experience. And I optimised workspace density, maximising screen real estate for complex financial tables and dashboards while keeping navigation accessible and uncluttered.',
       'The redesign decoupled Cashbook’s UI from its legacy limitations. For accountants, the streamlined navigation was an immediate efficiency booster, significantly reducing the clicks and page loads needed to complete routine financial reconciliations. For the business, the modular framework cleared the runway for the product team, enabling them to ship new add-on services and features without costly, recurring design overhauls.',
     ],
-    quote: 'I never get lost anymore — everything is where I expect it.',
-    quoteBy: 'Customer feedback',
   },
   visualisations: {
     title: 'Visualisations',
@@ -165,8 +163,6 @@ window.PROJECTS = {
       'I ran user research to pinpoint the most critical “north star” metrics — cash runway, burn rate, outstanding invoices — that managers needed to see the second they logged in. I translated dry, tabular data into clear, interactive charts and trend indicators optimised for rapid scanning and high legibility. And I designed the dashboard as a gateway rather than a dead end, letting users hover for quick details or click a visual anomaly to drill down into the underlying raw transactions.',
       'The visual dashboards completely changed how managers interacted with their financial data, turning a weekly chore of reading spreadsheets into a quick, intuitive visual check-in. By bringing critical trends to the surface, we dramatically cut time-to-insight. Managers could spot cash flow bottlenecks or revenue dips in real time, empowering them to make faster, data-backed decisions with total confidence.',
     ],
-    quote: 'I can finally see my cash flow at a glance.',
-    quoteBy: 'Customer feedback',
   },
   'developer-tools': {
     title: 'Developer Tools',
@@ -182,8 +178,6 @@ window.PROJECTS = {
       'I strictly adhered to Microsoft’s design language — matching typography, iconography, and spatial density so the interface felt completely native. I built extensive compatibility with VS Code’s diverse ecosystem of colour themes, from default Dark/Light to community themes, ensuring every custom UI element dynamically adapted and stayed perfectly readable and accessible. And I simplified complex workflows, translating dense SAP application-generation steps into lightweight sidebars, interactive wizards, and command-palette flows that matched the keyboard-first habits of developers.',
       'By respecting the developer’s environment and styling preferences, we turned Fiori Tools into a natural, seamless part of their daily workflow. The native look and feel drastically reduced cognitive load — developers no longer had to mentally switch between differing design philosophies. This user-first approach to developer experience accelerated adoption, making Fiori Tools the preferred, standard way to build modern SAP applications.',
     ],
-    quote: 'It finally feels like part of VS Code, not something bolted on.',
-    quoteBy: 'Customer feedback',
   },
   'design-systems': {
     title: 'Design Systems',
@@ -199,7 +193,5 @@ window.PROJECTS = {
       'I architected multi-theme variables — a sophisticated colour token and variable structure in Figma that let designers toggle between 10+ themes instantly and watch components dynamically adapt their colours, borders, and contrast. I standardised 200+ components, auditing, rebuilding, and documenting a massive library from simple buttons to complex code-generator wizards, all strictly adhering to both VS Code guidelines and Fiori logic. And I aligned design and engineering tokens, working closely with front-end developers to map Figma properties and variables directly to production CSS and JSON with a unified naming convention that eliminated handoff guesswork.',
       'By standardising the design system, we turned a fragmented workflow into an efficient assembly line. Designers could design a feature once, toggle a theme to verify accessibility, and hand it off to engineering with total confidence. This modernisation drastically cut design handoff times and QA cycles, letting the team focus on solving complex user experience challenges rather than fixing styling inconsistencies.',
     ],
-    quote: 'Shipping consistent UI got dramatically faster for every team.',
-    quoteBy: 'Customer feedback',
   },
 };
