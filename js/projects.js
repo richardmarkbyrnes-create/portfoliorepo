@@ -74,6 +74,8 @@ window.PROJECTS = {
     images: [
       'images/automations-hero.png',
     ],
+    heroAspect: '1024 / 818',
+    heroFit: 'contain',
     paragraphs: [
       'Instead of forcing users to manually dig for recurring customer feedback, we wanted the data to come to them. I designed Automations, a feature that lets teams set up routine, AI-driven insight reports and deliver them directly to where they already work — Slack, email, or in-product. This shifted our product from a manual, reactive search tool to a proactive, habit-forming engine for product teams.',
       'Our users were experiencing “query fatigue.” Product managers and researchers loved our AI insights, but they were tired of logging in every week to run the exact same searches, like tracking feature requests from sales calls. The challenge was to transition the platform from a destination users had to remember to visit into an automated utility that seamlessly integrated into their existing weekly workflows.',

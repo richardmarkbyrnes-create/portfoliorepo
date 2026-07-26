@@ -2773,6 +2773,7 @@ body[data-page="project"] .nav-primary {
 
 .pc-image--main {
   width: 150%;
+  aspect-ratio: 3 / 2;
 }
 
 /* Two images side by side, together matching the hero width above */
@@ -2806,6 +2807,12 @@ body[data-page="project"] .nav-primary {
 
 .pc-image--main.has-image {
   border: none;
+}
+
+.pc-image--main.pc-image--fit.has-image {
+  background-size: contain;
+  background-position: center;
+  background-color: #ececee;
 }
 
 .pc-image.has-stickers {

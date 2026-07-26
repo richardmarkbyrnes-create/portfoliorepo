@@ -168,8 +168,13 @@
       if (src.toLowerCase().endsWith('.gif')) el.classList.add('pc-image--gif');
     });
 
-    // Stickers scattered around the centre of the hero image, popping in one by one.
     const mainImage = document.querySelector('.pc-image--main');
+    if (mainImage) {
+      if (project.heroAspect) mainImage.style.aspectRatio = project.heroAspect;
+      if (project.heroFit === 'contain') mainImage.classList.add('pc-image--fit');
+    }
+
+    // Stickers scattered around the centre of the hero image, popping in one by one.
     if (mainImage && Array.isArray(project.heroStickers) && project.heroStickers.length) {
       const POSITIONS = [
         { x: 50, y: 50, s: 26, r: -4 },
