@@ -330,6 +330,7 @@ html {
   scroll-padding-bottom: calc(var(--nav-offset) + var(--nav-height) + 12px);
   -webkit-font-smoothing: antialiased;
   background: var(--bg);
+  overflow-x: hidden;
 }
 
 @view-transition {
@@ -2636,6 +2637,14 @@ body[data-page="project"] .nav-primary {
     display: block;
     width: 22px;
     height: 22px;
+  }
+
+  /* Keep hero/section images within the viewport on mobile — the desktop
+     150%/175% widths overflow horizontally and push the fixed toolbar off-screen. */
+  .pc-image,
+  .pc-image--main,
+  .pc-image-row {
+    width: 100% !important;
   }
 }
 

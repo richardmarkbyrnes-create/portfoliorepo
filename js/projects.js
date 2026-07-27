@@ -113,7 +113,7 @@ window.PROJECTS = {
       'Ask Insights fundamentally changed how product decisions get made by democratising access to customer data. By shrinking the research loop from days to seconds, we empowered product managers, marketers, and developers to self-serve insights autonomously. Clear citations meant the team actually trusted the AI’s outputs, making the feature the go-to tool for pre-sprint planning and roadmap validation.',
     ],
     quote: 'It\'s amazing how quick we can surface customer feedback which before took such mental effort to gather',
-    quoteBy: 'Customer feedback',
+    quoteBy: 'Product manager at Miro',
   },
   'customer-insights': {
     title: 'Canvas Insights',
@@ -196,6 +196,11 @@ window.PROJECTS = {
     headlineAccent: 'Native',
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
+    images: [
+      'images/sap-fiori-hero.png',
+    ],
+    heroAspect: '1999 / 1033',
+    heroFit: 'contain',
     paragraphs: [
       'Building enterprise apps shouldn’t feel like fighting legacy software. I worked on Fiori Tools, a VS Code extension designed to help developers build SAP applications faster and with far less friction. By aligning the UI directly with Microsoft’s native design language and supporting a wide array of IDE colour themes, we brought the SAP development experience into the modern era — making it feel like a natural extension of the developer’s favourite workspace.',
       'Historically, SAP development workflows lived in siloed, heavy proprietary environments. When we brought Fiori Tools to VS Code, we faced a major adoption hurdle: developers are highly protective of their workspaces. If our tools looked or behaved like a clunky enterprise add-on, developers would resist using them. The challenge was to design a complex set of SAP configuration utilities that felt so native to VS Code that developers couldn’t tell where Microsoft’s code ended and SAP’s began.',
@@ -211,6 +216,11 @@ window.PROJECTS = {
     headlineAccent: 'Multi-Theme',
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
+    images: [
+      'images/sap-fiori-hero.png',
+    ],
+    heroAspect: '1999 / 1033',
+    heroFit: 'contain',
     paragraphs: [
       'Designing consistent developer tools at scale requires an ironclad, highly efficient foundation. I led the maintenance and optimisation of the Fiori Tools Figma libraries and design system, establishing a robust framework of over 200 components. By structuring the system to dynamically support more than 10 distinct developer colour themes — from high-contrast light modes to community-favourite dark modes — I bridged the gap between our design files and the production VS Code environment, making it seamless for both designers and engineers to build new features.',
       'As the Fiori Tools feature set expanded, our design files were becoming fragmented. Designers spent too much time manually re-colouring mockups to test how features looked in different VS Code themes like Light, Dark, or High Contrast, and engineers struggled to find the corresponding tokens in production. We needed a single source of truth in Figma that could handle complex, multi-theme logic automatically — without bloating file sizes or slowing down the design team’s daily workflow.',
