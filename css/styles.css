@@ -44,7 +44,7 @@
   --nav-pill-about: transparent;
   --nav-pill-resume: transparent;
   --hero-glow: rgba(255, 255, 255, 0.5);
-  --texture-opacity: 0.45;
+  --texture-opacity: 0.7;
   --switcher-bg: rgba(255, 255, 255, 0.72);
   --switcher-hover: rgba(0, 0, 0, 0.05);
   --white: #ffffff;
@@ -2721,7 +2721,7 @@ body[data-page="project"] .nav-primary {
 }
 
 .pc-lead-block {
-  max-width: 100%;
+  max-width: 470px;
   align-self: center;
   margin: 0 0 72px;
   text-align: center;
@@ -2753,10 +2753,10 @@ body[data-page="project"] .nav-primary {
 .pc-lead {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(40px, 5.4vw, 56px);
+  font-size: clamp(34px, 4.5vw, 46px);
   font-weight: 400;
   line-height: 1.1;
-  letter-spacing: -0.062em;
+  letter-spacing: -0.08em;
   color: var(--text-body);
 }
 
@@ -3174,7 +3174,7 @@ body[data-page="project"] .nav-primary {
   padding: 4px 14px 4px 4px;
   border-radius: 999px;
   background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text) 6%, transparent);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
