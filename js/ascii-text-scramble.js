@@ -8,7 +8,7 @@
   const TARGETS = [
     {
       selector: '.hero-title-miro-scramble',
-      finalText: 'miro',
+      finalText: 'Miro',
       delay: 1030,
       trigger: 'load',
       once: true,

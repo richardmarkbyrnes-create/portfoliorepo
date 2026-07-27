@@ -1262,6 +1262,7 @@ body[data-page="about"] {
 
 .home-about-intro .about-hero-title {
   margin: 0;
+  font-size: 45px;
 }
 
 .about-interest-icons {
@@ -1670,6 +1671,54 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 .hero-title-line {
   display: block;
   overflow: visible;
+}
+
+/* Homepage hero — left-aligned "digital home" layout */
+.hero-title--home {
+  text-align: left;
+  letter-spacing: -0.03em;
+}
+
+.hero-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.hero-name {
+  font-family: var(--serif);
+  font-size: clamp(30px, 3.6vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.04em;
+  color: var(--text);
+}
+
+.hero-ref {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--text-light);
+  white-space: nowrap;
+}
+
+.hero-bio {
+  display: block;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.55vw, 17px);
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+  margin-top: 28px;
+}
+
+.hero-bio + .hero-bio {
+  margin-top: 20px;
+}
+
+/* Miro link stays full-strength against the muted grey subtext */
+.hero-bio .hero-title-link {
+  color: var(--text-body);
 }
 
 .hero-second-line {
