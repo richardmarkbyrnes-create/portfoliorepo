@@ -282,6 +282,71 @@
       if (quoteReveal) quoteReveal.hidden = true;
     }
 
+    // Team credit pills under the quote block.
+    const quoteReveal = document.querySelector('.pc-quote-reveal');
+    if (quoteReveal && Array.isArray(project.teamMembers) && project.teamMembers.length) {
+      const initials = (name) => name
+        .split(/\s+/)
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((w) => w[0])
+        .join('')
+        .toUpperCase();
+
+      const team = document.createElement('div');
+      team.className = 'pc-team animate-in';
+
+      const label = document.createElement('span');
+      label.className = 'pc-team-label';
+      label.textContent = 'Shoutout to the team';
+      team.appendChild(label);
+
+      const pills = document.createElement('div');
+      pills.className = 'pc-team-pills';
+      project.teamMembers.forEach((member, i) => {
+        // A { break: true } entry forces the following pills onto a new line.
+        if (member && member.break) {
+          const br = document.createElement('span');
+          br.className = 'pc-team-break';
+          br.setAttribute('aria-hidden', 'true');
+          pills.appendChild(br);
+          return;
+        }
+        const name = typeof member === 'string' ? member : member.name;
+        const photo = typeof member === 'string' ? null : member.photo;
+        const pill = document.createElement('span');
+        pill.className = 'pc-team-pill';
+        const avatar = document.createElement('span');
+        avatar.className = 'pc-team-avatar';
+        if (photo) {
+          const img = document.createElement('img');
+          img.className = 'pc-team-avatar-img';
+          img.src = photo;
+          img.alt = '';
+          img.loading = 'lazy';
+          avatar.appendChild(img);
+        } else {
+          avatar.style.setProperty('--avatar-hue', `${(i * 67) % 360}`);
+          avatar.textContent = initials(name);
+        }
+        const nm = document.createElement('span');
+        nm.className = 'pc-team-name';
+        nm.textContent = name;
+        pill.appendChild(avatar);
+        pill.appendChild(nm);
+        pills.appendChild(pill);
+      });
+      team.appendChild(pills);
+
+      // Dashed divider between the quote and the team shoutout.
+      const teamDivider = document.createElement('hr');
+      teamDivider.className = 'pc-rule pc-team-divider';
+      teamDivider.setAttribute('aria-hidden', 'true');
+
+      quoteReveal.insertAdjacentElement('afterend', teamDivider);
+      teamDivider.insertAdjacentElement('afterend', team);
+    }
+
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
     const topBlur = document.querySelector('.top-blur');
     const centerTitleEl = document.getElementById('pc-title-center');
