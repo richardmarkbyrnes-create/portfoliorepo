@@ -3118,6 +3118,7 @@ body[data-page="project"] .nav-primary {
   font-family: var(--serif);
   font-size: clamp(20px, 2.7vw, 28px);
   font-weight: 400;
+  font-style: italic;
   line-height: 1.3;
   letter-spacing: -0.02em;
   color: var(--text-body);
