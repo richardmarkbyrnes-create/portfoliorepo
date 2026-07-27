@@ -2584,7 +2584,7 @@ body[data-page="project"] .nav-primary {
   }
 
   .pc-title-center {
-    display: block;
+    display: none;
     position: fixed;
     top: var(--nav-offset);
     left: 50%;
