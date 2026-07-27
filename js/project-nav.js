@@ -448,7 +448,7 @@
       }
     }
 
-    // Keyboard shortcuts: ← back, → next project
+    // Keyboard shortcuts: ← back, → next project, Esc home
     document.addEventListener('keydown', (event) => {
       const t = event.target;
       if (t && (t.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(t.tagName))) return;
@@ -467,6 +467,9 @@
       } else if (event.key === 'ArrowRight' && nextSlug) {
         event.preventDefault();
         goNext();
+      } else if (event.key === 'Escape') {
+        event.preventDefault();
+        navigateWithFade('/', { leaveProject: true });
       }
     });
   }
