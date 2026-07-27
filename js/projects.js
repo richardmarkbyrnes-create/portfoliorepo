@@ -83,6 +83,13 @@ window.PROJECTS = {
     ],
     quote: 'Automations help keep our entire team updated on what our customers are saying straight in our Slack channels',
     quoteBy: 'Customer feedback',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
+      { name: 'Roana Bilia', photo: 'images/team-roana.jpg' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
+      { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg' },
+    ],
   },
   'ask-ai': {
     title: 'Ask Insights',
@@ -92,6 +99,13 @@ window.PROJECTS = {
     headlineAccent: 'Answers',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
+    ],
     paragraphs: [
       'Sifting through thousands of customer feedback loops to find specific trends can take teams hours, if not days. I designed Ask Insights, an intuitive AI chat companion that lets users query their entire database of customer calls, feedback, and support tickets in plain English. Instead of manually digging through endless transcripts, product teams can simply ask a question and get a synthesized, cited answer in seconds.',
       'User research and product teams were sitting on a goldmine of customer insights, from weekly sales calls to support logs, but the sheer volume made it impossible to digest. When a product manager needed to know “What are users saying about our onboarding experience?” they had to spend hours searching, reading, and synthesizing. We needed a conversational interface that felt as easy as chatting with a colleague, while maintaining the rigor and trust required for serious UX and product decisions.',
@@ -109,6 +123,14 @@ window.PROJECTS = {
     headlineAccent: 'Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Wiz', photo: 'images/team-wiz.jpg' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
+      { break: true },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
+      { name: 'Mor Sela', photo: 'images/team-mor.jpg' },
+    ],
     images: [
       'images/canvas-insights-hero.png',
     ],
@@ -136,6 +158,7 @@ window.PROJECTS = {
     ],
     heroAspect: '1500 / 667',
     heroFit: 'contain',
+    teamMembers: [],
     paragraphs: [
       'As a product scales, its navigation must grow with it. I led the redesign of the core navigation interface for Cashbook, a financial management tool for accountants. The goal was twofold: drastically improve daily workflow efficiency so accountants could digest complex financial data faster, while simultaneously restructuring the information architecture to seamlessly accommodate future multi-product add-ons.',
       'The existing Cashbook interface was struggling under the weight of its own growth. The navigation was rigid, leaving little room for new features, let alone entirely new product modules. At the same time, our primary users — accountants — deal with massive volumes of data daily and were experiencing cognitive overload jumping between ledgers, reports, and settings. We needed a layout that felt lighter and faster to navigate today, without breaking when we introduced new tools tomorrow.',
@@ -157,6 +180,7 @@ window.PROJECTS = {
     ],
     heroAspect: '1519 / 711',
     heroFit: 'contain',
+    teamMembers: [],
     paragraphs: [
       'Accounting software is notoriously dense, often burying crucial business trends under endless rows of spreadsheet data. I designed visual data dashboards that translate raw financial ledgers into high-level, actionable insights for managers. By surfacing key performance indicators like cash flow, revenue trends, and upcoming expenses at a glance, we transformed how business leaders monitor and steer their financial health.',
       'Business managers often struggled to make quick, strategic decisions because their financial data was trapped in massive, overwhelming tables. They were experiencing cognitive fatigue, spending too much time manually calculating trends or waiting for end-of-month reports from their accountants. The challenge was to abstract a highly complex, data-heavy financial ledger into a clean, visual format that was immediately understandable — without losing the depth and accuracy required for business planning.',
@@ -195,3 +219,26 @@ window.PROJECTS = {
     ],
   },
 };
+
+// Core team credited on every project page (shown as pills under the quote).
+const CORE_TEAM = [
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+  { name: 'Mehdi Ghaeini', photo: 'images/team-mehdi.jpg' },
+  { name: 'Ben Shih', photo: 'images/team-ben.jpg' },
+  { name: 'Iuliia Dutchak', photo: 'images/team-iuliia.jpg' },
+  { name: 'Cyan Xiao', photo: 'images/team-cyan.jpg' },
+];
+// SAP (Fiori) team, shared across the two SAP projects.
+const SAP_TEAM = [
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+  { name: 'Goran Peuc', photo: 'images/team-goran.jpg' },
+  { name: 'Colin Doherty', photo: 'images/team-colin.jpg' },
+  { name: 'Christine McCarthy', photo: 'images/team-christine.png' },
+  { name: 'Aisling Noone', photo: 'images/team-aisling.jpg' },
+];
+window.PROJECTS['developer-tools'].teamMembers = SAP_TEAM;
+window.PROJECTS['design-systems'].teamMembers = SAP_TEAM;
+
+Object.values(window.PROJECTS).forEach((project) => {
+  if (!project.teamMembers) project.teamMembers = CORE_TEAM;
+});
