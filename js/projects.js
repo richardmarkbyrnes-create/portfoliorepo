@@ -98,7 +98,7 @@ window.PROJECTS = {
       'Trust is the biggest hurdle with AI, so I structured the chat interface to heavily prioritise inline citations and source links — users can click straight through to the exact snippet of the original customer call or transcript to verify a response. To make a blank chat box less intimidating, I designed a zero-state onboarding with suggested, high-value prompts based on the user’s role, guiding them to value on their very first interaction. I also refined the iterative search flow to support continuous follow-ups, letting users drill down from a broad query — “What are our top customer pain points?” — to a specific detail like “Tell me more about the payment errors they mentioned.”',
       'Ask Insights fundamentally changed how product decisions get made by democratising access to customer data. By shrinking the research loop from days to seconds, we empowered product managers, marketers, and developers to self-serve insights autonomously. Clear citations meant the team actually trusted the AI’s outputs, making the feature the go-to tool for pre-sprint planning and roadmap validation.',
     ],
-    quote: 'It\'s crazy how quick we can surface data that before took such mental effort to gather',
+    quote: 'It\'s amazing how quick we can surface customer feedback which before took such mental effort to gather',
     quoteBy: 'Customer feedback',
   },
   'customer-insights': {
