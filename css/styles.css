@@ -1718,7 +1718,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 .hero-bio {
   display: block;
   max-width: 28em;
-  font-family: var(--sans);
+  font-family: var(--serif);
   font-size: clamp(15px, 1.55vw, 17px);
   line-height: 1.5;
   letter-spacing: -0.02em;
