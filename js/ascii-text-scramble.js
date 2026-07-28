@@ -14,6 +14,13 @@
       once: true,
     },
     {
+      selector: '.hero-ref-scramble',
+      finalText: '[1]',
+      delay: 1030,
+      trigger: 'load',
+      once: true,
+    },
+    {
       selector: '.home-closing-reach-out',
       finalText: 'reach out',
       delay: 920,
