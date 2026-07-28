@@ -864,6 +864,11 @@ html[data-theme="dark"] .theme-swatch {
 
 /* Mobile: split toolbar — audio top-left, theme top-right */
 @media (max-width: 640px) {
+  /* Home collapses the nav buttons into the hamburger menu instead */
+  body[data-page="home"] .nav-primary {
+    display: none;
+  }
+
   .nav-primary {
     left: 16px;
     right: 16px;
