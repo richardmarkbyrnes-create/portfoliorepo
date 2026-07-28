@@ -1716,13 +1716,12 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   --hero-logo-w: 0.9em;
   display: inline-flex;
   align-items: center;
-  gap: 0.22em;
   width: 0;
   height: 0.9em;
   overflow: hidden;
   vertical-align: -0.14em;
   white-space: nowrap;
-  animation: heroSlotExpand 2.6s cubic-bezier(0.22, 1, 0.36, 1) 2s both;
+  animation: heroSlotExpand 2.8s cubic-bezier(0.65, 0, 0.35, 1) 2s both;
 }
 
 .hero-logo {
@@ -1733,6 +1732,13 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   opacity: 0;
   transform: scale(0.6) rotate(0deg);
   will-change: transform, opacity, filter;
+}
+
+/* Slightly overlap the cards so they read as a small stack. Later logos sit on
+   top (natural paint order). */
+.hero-logo--2,
+.hero-logo--3 {
+  margin-left: -0.24em;
 }
 
 .hero-logo--1 {
@@ -1775,12 +1781,12 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
     width: 0;
     margin-right: 0;
   }
-  12% {
-    width: 3.14em;
+  20% {
+    width: 2.22em;
     margin-right: 0.26em;
   }
-  90% {
-    width: 3.14em;
+  82% {
+    width: 2.22em;
     margin-right: 0.26em;
   }
   100% {
