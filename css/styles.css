@@ -2492,7 +2492,39 @@ body[data-page="project"] .nav-primary {
   transform: translateX(3px);
 }
 
+/* Dock the "Next project" pill to the bottom-centre of the screen, sliding in
+   with a magnetic ease once the reader reaches the last 20% of the page. */
+body[data-page="project"] .pc-next-pill {
+  position: fixed;
+  left: 50%;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  margin: 0;
+  transform: translate(-50%, 200%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 320;
+  animation: none;
+  will-change: transform;
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1),
+    opacity 0.4s ease;
+}
+
+body[data-page="project"] .pc-next-pill.is-docked {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* The in-flow keyboard-nav hint no longer applies now the pill is docked */
 .pc-next-hint {
+  display: none;
+}
+
+.pc-next-hint--legacy {
   align-self: center;
   margin: 10px auto 8px;
   font-family: var(--sans);
@@ -2752,34 +2784,21 @@ body[data-page="project"] .nav-primary {
     width: 100% !important;
   }
 
-  /* Dock the "Next project" pill to the bottom of the screen, sliding in with a
-     magnetic ease once the reader reaches the last 20% of the page. */
-  body[data-page="project"] .pc-next-pill {
-    position: fixed;
-    left: 50%;
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
-    margin: 0;
-    transform: translate(-50%, 200%);
-    opacity: 0;
-    pointer-events: none;
-    z-index: 320;
-    animation: none;
-    will-change: transform;
-    transition:
-      transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1),
-      opacity 0.4s ease;
+  /* Keep the project title within the viewport — the desktop 122% width
+     overflows on narrow screens and clips the title off the edge. Let the
+     words wrap/stack instead. (Scoped to body[data-page] so this wins over the
+     later-in-source base .pc-lead-block { width: 122% } rule.) */
+  body[data-page="project"] .pc-lead-block {
+    width: 100%;
+    max-width: 100%;
   }
 
-  body[data-page="project"] .pc-next-pill.is-docked {
-    transform: translate(-50%, 0);
-    opacity: 1;
-    pointer-events: auto;
+  body[data-page="project"] .pc-lead {
+    font-size: clamp(28px, 8vw, 38px);
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
-  /* The keyboard-nav hint is desktop-only; hide it on mobile so it doesn't sit under the docked pill */
-  .pc-next-hint {
-    display: none;
-  }
 }
 
 .top-blur {
