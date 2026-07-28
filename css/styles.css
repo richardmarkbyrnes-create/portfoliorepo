@@ -2919,6 +2919,9 @@ body[data-page="project"] .nav-primary {
   height: 100%;
   object-fit: cover;
   display: block;
+  /* Video is composited, so it ignores the parent's rounded overflow clip —
+     round the element itself so its corners match the frame. */
+  border-radius: 14px;
 }
 
 .pc-image--video::after {
