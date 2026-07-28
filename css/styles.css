@@ -5214,6 +5214,11 @@ body.page-is-leaving .top-blur {
     font-size: 42px;
   }
 
+  /* Keep the homepage hero title on two lines at mobile widths */
+  .hero-name {
+    font-size: 24px;
+  }
+
   .hero-subtitle {
     font-size: 14px;
   }
