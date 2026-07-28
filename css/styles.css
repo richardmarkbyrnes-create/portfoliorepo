@@ -2513,6 +2513,13 @@ body[data-page="project"] .pc-next-pill {
     opacity 0.4s ease;
 }
 
+/* Dark theme: a white 50% pill reads as an unreadable light blob against the
+   dark backdrop, so use a dark translucent fill with a hairline border. */
+[data-theme="dark"] body[data-page="project"] .pc-next-pill {
+  background: rgba(20, 20, 22, 0.5);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 body[data-page="project"] .pc-next-pill.is-docked {
   transform: translate(-50%, 0);
   opacity: 1;
