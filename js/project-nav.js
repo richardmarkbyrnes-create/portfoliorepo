@@ -121,18 +121,26 @@
         .filter((m) => m.idx !== -1)
         .sort((a, b) => a.idx - b.idx);
 
+      // Append plain text, converting "\n" in the headline into <br> line breaks.
+      const appendText = (str) => {
+        str.split('\n').forEach((part, i) => {
+          if (i > 0) lead.appendChild(document.createElement('br'));
+          if (part) lead.appendChild(document.createTextNode(part));
+        });
+      };
+
       lead.textContent = '';
       let pos = 0;
       matches.forEach((m) => {
         if (m.idx < pos) return;
-        if (m.idx > pos) lead.appendChild(document.createTextNode(text.slice(pos, m.idx)));
+        if (m.idx > pos) appendText(text.slice(pos, m.idx));
         const span = document.createElement('span');
         span.className = m.className;
         span.textContent = m.word;
         lead.appendChild(span);
         pos = m.idx + m.word.length;
       });
-      if (pos < text.length) lead.appendChild(document.createTextNode(text.slice(pos)));
+      if (pos < text.length) appendText(text.slice(pos));
 
       // Inline icon after the accent word, matching its colour/opacity.
       if (project.headlineIcon) {
@@ -156,6 +164,19 @@
         });
       }
     }
+
+    // Two-line summary under the title, styled like the home hero subtext.
+    if (lead && project.intro) {
+      let summary = document.getElementById('pc-lead-summary');
+      if (!summary) {
+        summary = document.createElement('p');
+        summary.id = 'pc-lead-summary';
+        summary.className = 'pc-lead-summary';
+        lead.insertAdjacentElement('afterend', summary);
+      }
+      summary.textContent = project.intro;
+    }
+
     const leadTeam = document.getElementById('pc-lead-team');
     if (leadTeam) leadTeam.textContent = project.team || project.company || '';
 

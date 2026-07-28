@@ -1759,6 +1759,11 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   opacity: 1;
 }
 
+/* Override the dark-theme custom arrow cursor for the subtext Miro link */
+[data-theme="dark"] .hero-bio .hero-title-link {
+  cursor: pointer;
+}
+
 .hero-second-line {
   white-space: nowrap;
 }
@@ -2808,7 +2813,8 @@ body[data-page="project"] .nav-primary {
 }
 
 .pc-lead-block {
-  max-width: 470px;
+  width: 122%;
+  max-width: 680px;
   align-self: center;
   margin: 0 0 72px;
   text-align: center;
@@ -2816,6 +2822,18 @@ body[data-page="project"] .nav-primary {
 
 .pc-lead-muted {
   opacity: 0.5;
+}
+
+/* Two-line summary under the project title — same font/size as the home hero subtext */
+.pc-lead-summary {
+  max-width: 24em;
+  margin: 18px auto 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.55vw, 17px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
 }
 
 .pc-lead-icon {
