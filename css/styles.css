@@ -1707,6 +1707,92 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   color: var(--text);
 }
 
+/* Intro flourish — three tool logos (Figma, Claude, GitHub) fade in inline just
+   before the word "designer" a few seconds after load. Each blurs + rotates in,
+   holds, then blurs + rotates back out; the slot expands/collapses so there's no
+   permanent gap in the sentence. Plays once. */
+.hero-logo-slot {
+  --hero-logo-w: 0.9em;
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0.9em;
+  vertical-align: -0.14em;
+  animation: heroSlotExpand 4.2s cubic-bezier(0.22, 1, 0.36, 1) 3s both;
+}
+
+.hero-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--hero-logo-w);
+  height: var(--hero-logo-w);
+  object-fit: contain;
+  opacity: 0;
+  transform: translate(-50%, -50%) rotate(-12deg) scale(0.6);
+  will-change: transform, opacity, filter;
+}
+
+.hero-logo--1 {
+  animation: heroLogoCycle 1.4s ease-in-out 3s both;
+}
+
+.hero-logo--2 {
+  animation: heroLogoCycle 1.4s ease-in-out 4.4s both;
+}
+
+.hero-logo--3 {
+  animation: heroLogoCycle 1.4s ease-in-out 5.8s both;
+}
+
+@keyframes heroLogoCycle {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate(-50%, -50%) rotate(-12deg) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  80% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translate(-50%, -50%) rotate(-12deg) scale(0.6);
+  }
+}
+
+@keyframes heroSlotExpand {
+  0% {
+    width: 0;
+    margin-right: 0;
+  }
+  12% {
+    width: var(--hero-logo-w);
+    margin-right: 0.26em;
+  }
+  88% {
+    width: var(--hero-logo-w);
+    margin-right: 0.26em;
+  }
+  100% {
+    width: 0;
+    margin-right: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-logo-slot {
+    display: none;
+  }
+}
+
 .hero-ref {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 14px;
