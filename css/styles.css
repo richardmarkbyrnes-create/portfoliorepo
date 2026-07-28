@@ -5216,7 +5216,12 @@ body.page-is-leaving .top-blur {
 
   /* Keep the homepage hero title on two lines at mobile widths */
   .hero-name {
-    font-size: 24px;
+    font-size: 27px;
+  }
+
+  /* Shrink the about ("he's irish and dutch…") title so it fits on mobile */
+  .home-about-intro .about-hero-title {
+    font-size: 28px;
   }
 
   .hero-subtitle {
