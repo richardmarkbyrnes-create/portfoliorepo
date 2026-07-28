@@ -1744,6 +1744,19 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   display: block;
 }
 
+.hero-bio-icon {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  vertical-align: -0.09em;
+}
+
+.hero-bio-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* Miro link matches the subtext colour with a dotted underline; turns dark on hover */
 .hero-bio .hero-title-link {
   color: var(--text-light);
