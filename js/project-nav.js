@@ -502,26 +502,16 @@
           goNext();
         });
 
-        // On mobile the pill is fixed; move it out to <body> so it isn't trapped
-        // in the `.page` stacking context (which sits below the bottom blur).
-        const mq = window.matchMedia('(max-width: 640px)');
-        const homeParent = nextPill.parentNode;
-        const homeAnchor = nextPill.nextSibling;
-        const placePill = () => {
-          if (mq.matches) {
-            if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
-          } else if (nextPill.parentNode === document.body) {
-            homeParent.insertBefore(nextPill, homeAnchor);
-          }
-        };
-        placePill();
-        mq.addEventListener('change', placePill);
+        // The pill is fixed and docks to the bottom of the screen. Move it out to
+        // <body> so it isn't trapped in the `.page` stacking context (which sits
+        // below the bottom blur).
+        if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
 
-        // On mobile, dock the pill to the bottom of the screen once the user
-        // scrolls into the last 20% of the page (CSS handles the magnetic slide-in).
+        // Dock the pill to the bottom of the screen once the user scrolls into the
+        // last 5% of the page (CSS handles the magnetic slide-in).
         const updatePillDock = () => {
           const reached = window.scrollY + window.innerHeight
-            >= document.documentElement.scrollHeight * 0.8;
+            >= document.documentElement.scrollHeight * 0.95;
           nextPill.classList.toggle('is-docked', reached);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });
