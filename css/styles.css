@@ -1760,9 +1760,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 /* Miro link matches the subtext colour with a dotted underline; turns dark on hover */
 .hero-bio .hero-title-link {
   color: var(--text-light);
-  text-decoration: underline dotted;
-  text-underline-offset: 3px;
-  text-decoration-thickness: 1px;
+  text-decoration: none;
   cursor: pointer;
   transition: color 0.2s ease;
 }
