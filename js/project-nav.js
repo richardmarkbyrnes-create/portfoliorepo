@@ -220,7 +220,44 @@
         sticker.style.setProperty('--s', `${p.s}%`);
         sticker.style.setProperty('--r', `${p.r}deg`);
         sticker.style.setProperty('--d', `${450 + i * 150}ms`);
+        sticker.draggable = false;
         mainImage.appendChild(sticker);
+
+        // Drag the sticker around; it springs back to its original spot on release.
+        const base = `translate(-50%, -50%) rotate(${p.r}deg)`;
+        let dragging = false;
+        let startX = 0;
+        let startY = 0;
+
+        sticker.addEventListener('pointerdown', (event) => {
+          event.preventDefault();
+          dragging = true;
+          startX = event.clientX;
+          startY = event.clientY;
+          // Cancel the pop-in animation so inline transforms take effect (keep it visible).
+          sticker.style.animation = 'none';
+          sticker.style.opacity = '1';
+          sticker.style.transition = 'none';
+          sticker.classList.add('is-dragging');
+          try { sticker.setPointerCapture(event.pointerId); } catch (e) { /* no-op */ }
+        });
+
+        sticker.addEventListener('pointermove', (event) => {
+          if (!dragging) return;
+          const dx = event.clientX - startX;
+          const dy = event.clientY - startY;
+          sticker.style.transform = `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) rotate(${p.r}deg)`;
+        });
+
+        const release = () => {
+          if (!dragging) return;
+          dragging = false;
+          sticker.classList.remove('is-dragging');
+          sticker.style.transition = 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          sticker.style.transform = base;
+        };
+        sticker.addEventListener('pointerup', release);
+        sticker.addEventListener('pointercancel', release);
       });
     }
 
@@ -464,6 +501,32 @@
           event.preventDefault();
           goNext();
         });
+
+        // On mobile the pill is fixed; move it out to <body> so it isn't trapped
+        // in the `.page` stacking context (which sits below the bottom blur).
+        const mq = window.matchMedia('(max-width: 640px)');
+        const homeParent = nextPill.parentNode;
+        const homeAnchor = nextPill.nextSibling;
+        const placePill = () => {
+          if (mq.matches) {
+            if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
+          } else if (nextPill.parentNode === document.body) {
+            homeParent.insertBefore(nextPill, homeAnchor);
+          }
+        };
+        placePill();
+        mq.addEventListener('change', placePill);
+
+        // On mobile, dock the pill to the bottom of the screen once the user
+        // scrolls into the last 20% of the page (CSS handles the magnetic slide-in).
+        const updatePillDock = () => {
+          const reached = window.scrollY + window.innerHeight
+            >= document.documentElement.scrollHeight * 0.8;
+          nextPill.classList.toggle('is-docked', reached);
+        };
+        window.addEventListener('scroll', updatePillDock, { passive: true });
+        window.addEventListener('resize', updatePillDock);
+        updatePillDock();
       } else {
         nextPill.style.display = 'none';
       }

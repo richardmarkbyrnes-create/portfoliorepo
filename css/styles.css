@@ -2751,6 +2751,35 @@ body[data-page="project"] .nav-primary {
   .pc-image-row {
     width: 100% !important;
   }
+
+  /* Dock the "Next project" pill to the bottom of the screen, sliding in with a
+     magnetic ease once the reader reaches the last 20% of the page. */
+  body[data-page="project"] .pc-next-pill {
+    position: fixed;
+    left: 50%;
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+    margin: 0;
+    transform: translate(-50%, 200%);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 320;
+    animation: none;
+    will-change: transform;
+    transition:
+      transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1),
+      opacity 0.4s ease;
+  }
+
+  body[data-page="project"] .pc-next-pill.is-docked {
+    transform: translate(-50%, 0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* The keyboard-nav hint is desktop-only; hide it on mobile so it doesn't sit under the docked pill */
+  .pc-next-hint {
+    display: none;
+  }
 }
 
 .top-blur {
@@ -3107,9 +3136,20 @@ body[data-page="project"] .nav-primary {
   transform: translate(-50%, -50%) rotate(var(--r, 0deg));
   transform-origin: center;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
   filter: drop-shadow(0 6px 14px rgba(0, 0, 0, 0.14));
   animation: stickerPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0ms) forwards;
+}
+
+.pc-sticker.is-dragging {
+  cursor: grabbing;
+  z-index: 10;
+  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.28));
 }
 
 @keyframes stickerPop {
