@@ -1707,97 +1707,67 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   color: var(--text);
 }
 
-/* Intro flourish — three tool logos (Figma, Claude, GitHub) appear together in a
-   staggered burst inline just before the word "designer" 2s after load. Each
-   blurs in with a slight 5° tilt, holds, then straightens back to normal as it
-   blurs out. The slot expands/collapses so there's no permanent gap in the
-   sentence. Plays once. */
-.hero-logo-slot {
-  --hero-logo-w: 0.9em;
+/* Intro flourish — a photo of Richard blurs in inline just after his name, 2s
+   after load, with the same slight 5° tilt as before. Unlike the old logos it
+   does NOT fade back out: it settles and stays, so the slot expands and holds. */
+.hero-photo-slot {
+  --hero-photo-w: 1.2em;
   display: inline-flex;
   align-items: center;
   width: 0;
-  height: 0.9em;
+  height: 1.2em;
   overflow: hidden;
-  vertical-align: -0.14em;
+  vertical-align: -0.28em;
   white-space: nowrap;
-  animation: heroSlotExpand 2.8s cubic-bezier(0.65, 0, 0.35, 1) 2s both;
+  animation: heroPhotoExpand 0.7s cubic-bezier(0.65, 0, 0.35, 1) 2s both;
 }
 
-.hero-logo {
+.hero-photo {
   flex: 0 0 auto;
-  width: var(--hero-logo-w);
-  height: var(--hero-logo-w);
+  width: var(--hero-photo-w);
+  height: var(--hero-photo-w);
   object-fit: contain;
   opacity: 0;
   transform: scale(0.6) rotate(0deg);
+  animation: heroPhotoIn 0.9s ease-in-out 2s both;
   will-change: transform, opacity, filter;
 }
 
-/* Slightly overlap the cards so they read as a small stack. Later logos sit on
-   top (natural paint order). */
-.hero-logo--2,
-.hero-logo--3 {
-  margin-left: -0.24em;
-}
-
-.hero-logo--1 {
-  animation: heroLogoBurst 2.1s ease-in-out 2s both;
-}
-
-.hero-logo--2 {
-  animation: heroLogoBurst 2.1s ease-in-out 2.12s both;
-}
-
-.hero-logo--3 {
-  animation: heroLogoBurst 2.1s ease-in-out 2.24s both;
-}
-
-@keyframes heroLogoBurst {
+@keyframes heroPhotoIn {
   0% {
     opacity: 0;
     filter: blur(10px);
     transform: scale(0.6) rotate(0deg);
   }
-  24% {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) rotate(5deg);
-  }
-  70% {
-    opacity: 1;
-    filter: blur(0);
-    transform: scale(1) rotate(5deg);
-  }
   100% {
-    opacity: 0;
-    filter: blur(8px);
-    transform: scale(0.92) rotate(0deg);
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1) rotate(5deg);
   }
 }
 
-@keyframes heroSlotExpand {
+@keyframes heroPhotoExpand {
   0% {
     width: 0;
     margin-right: 0;
   }
-  20% {
-    width: 2.22em;
-    margin-right: 0.26em;
-  }
-  82% {
-    width: 2.22em;
-    margin-right: 0.26em;
-  }
   100% {
-    width: 0;
-    margin-right: 0;
+    width: var(--hero-photo-w);
+    margin-right: 0.3em;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-logo-slot {
-    display: none;
+  .hero-photo-slot {
+    width: var(--hero-photo-w);
+    margin-right: 0.3em;
+    animation: none;
+  }
+  .hero-photo {
+    opacity: 1;
+    filter: none;
+    transform: rotate(5deg);
+    animation: none;
   }
 }
 
