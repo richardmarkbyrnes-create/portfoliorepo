@@ -410,31 +410,49 @@
 
     window.addEventListener('resize', handleResize);
 
-    // Parallax — as the reader scrolls down, ease the top hero's ASCII pattern
-    // upward a little faster than the page so it drifts up smoothly. Lerped in a
-    // rAF loop for a buttery feel; skipped when reduced motion is requested.
+    // Parallax — as the reader scrolls, the top hero's ASCII pattern drifts
+    // upward a little faster than the page. A persistent rAF loop reads scrollY
+    // every frame and eases toward it, so the motion stays buttery regardless of
+    // how bursty the scroll events are (event-driven updates jump on fast
+    // flicks). The loop only runs while the hero is on screen. Skipped under
+    // reduced motion.
     if (isHomeHero && !prefersReducedMotion()) {
-      const PARALLAX_FACTOR = 0.38;
-      let targetY = 0;
+      const PARALLAX_FACTOR = 0.28;
+      const EASE = 0.09;
       let currentY = 0;
-      let parallaxId = null;
+      let rafId = null;
 
       canvas.style.willChange = 'transform';
 
-      const stepParallax = () => {
-        currentY += (targetY - currentY) * 0.06;
-        if (Math.abs(targetY - currentY) < 0.15) currentY = targetY;
+      const loop = () => {
+        const targetY = -window.scrollY * PARALLAX_FACTOR;
+        currentY += (targetY - currentY) * EASE;
+        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
         canvas.style.transform = `translate3d(0, ${currentY.toFixed(2)}px, 0)`;
-        parallaxId = currentY === targetY ? null : requestAnimationFrame(stepParallax);
+        rafId = requestAnimationFrame(loop);
       };
 
-      const onParallaxScroll = () => {
-        targetY = -window.scrollY * PARALLAX_FACTOR;
-        if (parallaxId === null) parallaxId = requestAnimationFrame(stepParallax);
+      const startParallax = () => {
+        if (rafId === null) rafId = requestAnimationFrame(loop);
+      };
+      const stopParallax = () => {
+        if (rafId !== null) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
       };
 
-      window.addEventListener('scroll', onParallaxScroll, { passive: true });
-      onParallaxScroll();
+      if ('IntersectionObserver' in window) {
+        const parallaxObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) startParallax();
+            else stopParallax();
+          });
+        });
+        parallaxObserver.observe(section);
+      } else {
+        startParallax();
+      }
     }
 
     const themeObserver = new MutationObserver(() => {
