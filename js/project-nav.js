@@ -396,9 +396,13 @@
       });
       team.appendChild(pills);
 
-      // Dashed divider between the quote and the team shoutout.
+      // Dashed divider between the quote and the team shoutout. Without a quote the
+      // divider sits straight under the last paragraph, so it drops its top margin to
+      // avoid doubling up on the paragraph's own bottom spacing.
       const teamDivider = document.createElement('hr');
-      teamDivider.className = 'pc-rule pc-team-divider';
+      teamDivider.className = project.quote
+        ? 'pc-rule pc-team-divider'
+        : 'pc-rule pc-team-divider pc-team-divider--no-quote';
       teamDivider.setAttribute('aria-hidden', 'true');
 
       quoteReveal.insertAdjacentElement('afterend', teamDivider);
