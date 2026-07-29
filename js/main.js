@@ -347,6 +347,146 @@ function initDogPhotoPopovers() {
   initDogPhotoPopover('.about-line-art-dog--berner', 'berner-photo-popover');
 }
 
+function initProjectPreview() {
+  const preview = document.getElementById('project-preview');
+  if (!preview) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const frame = preview.querySelector('.project-preview-frame');
+  const rows = document.querySelectorAll('.work-column--interactive .work-row-main[data-project]');
+  if (!frame || !rows.length) return;
+
+  const projects = window.PROJECTS || {};
+  const heroFor = (slug) => {
+    const project = projects[slug];
+    if (!project) return null;
+    // previewImage wins — some heroes are built up on the page (empty board plus
+    // animated stickers) and don't read as a still.
+    if (project.previewImage) return project.previewImage;
+    const images = project.images || (project.heroImage ? [project.heroImage] : []);
+    return images[0] || null;
+  };
+
+  // Offset from the title's left edge — this is also the resting point the cursor
+  // drift leans out from. Plus how far the frame dips over the row.
+  const SHIFT_X = 176;
+  const OVERLAP = 10;
+
+  let shown = null;
+  let activeRow = null;
+
+  // Park the frame above the hovered title, overlapping it slightly, and flip below
+  // when the top of the viewport is too close to fit.
+  function position(row) {
+    const title = row.querySelector('.work-col--project') || row;
+    const rect = title.getBoundingClientRect();
+    // offsetWidth/Height, not the rect — the rect is inflated by the rotation.
+    const width = preview.offsetWidth || preview.getBoundingClientRect().width;
+    const height = preview.offsetHeight || preview.getBoundingClientRect().height;
+    const fitsAbove = rect.top + OVERLAP - height >= 8;
+
+    const left = Math.min(rect.left + SHIFT_X, window.innerWidth - width - 16);
+    preview.style.left = `${Math.max(16, left)}px`;
+
+    if (fitsAbove) {
+      preview.classList.remove('is-below');
+      preview.style.top = 'auto';
+      preview.style.bottom = `${window.innerHeight - rect.top - OVERLAP}px`;
+    } else {
+      preview.classList.add('is-below');
+      preview.style.bottom = 'auto';
+      preview.style.top = `${rect.bottom - OVERLAP}px`;
+    }
+  }
+
+  function show(row, src) {
+    if (src !== shown) {
+      shown = src;
+      frame.style.backgroundImage = `url("${src}")`;
+    }
+    activeRow = row;
+    position(row);
+    preview.classList.add('is-visible');
+    preview.setAttribute('aria-hidden', 'false');
+  }
+
+  function hide() {
+    shown = null;
+    activeRow = null;
+    drift(0, 0);
+    preview.classList.remove('is-visible');
+    preview.setAttribute('aria-hidden', 'true');
+  }
+
+  function drift(x, y) {
+    preview.style.setProperty('--px', `${x}px`);
+    preview.style.setProperty('--py', `${y}px`);
+  }
+
+  // The frame keeps its parked spot and just leans towards the cursor — horizontally
+  // it tracks hard, since that's the axis the pointer actually travels along a row.
+  const FOLLOW_X = 0.32;
+  const FOLLOW_Y = 0.4;
+  const MAX_X = 56;
+  const MAX_Y = 12;
+  const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
+
+  let queuedMove = false;
+  function follow(event, row) {
+    if (prefersReducedMotion() || queuedMove) return;
+    queuedMove = true;
+    const { clientX, clientY } = event;
+    requestAnimationFrame(() => {
+      queuedMove = false;
+      if (activeRow !== row) return;
+      const rect = row.getBoundingClientRect();
+      drift(
+        clamp((clientX - (rect.left + rect.width / 2)) * FOLLOW_X, MAX_X),
+        clamp((clientY - (rect.top + rect.height / 2)) * FOLLOW_Y, MAX_Y)
+      );
+    });
+  }
+
+  // The page scrolls under a fixed preview, so keep it pinned to its title.
+  let queued = false;
+  function trackRow() {
+    if (!activeRow || queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      if (activeRow) position(activeRow);
+    });
+  }
+
+  window.addEventListener('scroll', trackRow, { passive: true });
+  window.addEventListener('resize', trackRow);
+
+  const withHero = [];
+  rows.forEach((row) => {
+    // Projects without a hero image simply show nothing on hover.
+    const src = heroFor(row.dataset.project);
+    if (!src) return;
+    withHero.push(src);
+    row.addEventListener('mouseenter', () => show(row, src));
+    row.addEventListener('mousemove', (event) => follow(event, row));
+    row.addEventListener('mouseleave', hide);
+    row.addEventListener('focus', () => show(row, src));
+    row.addEventListener('blur', hide);
+  });
+
+  // Warm every hero the first time the pointer reaches the list, so switching
+  // between rows never flashes an empty frame.
+  const list = document.querySelector('.work-column--interactive');
+  if (!list || !withHero.length) return;
+  list.addEventListener('mouseenter', function preloadHeroes() {
+    list.removeEventListener('mouseenter', preloadHeroes);
+    withHero.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  });
+}
+
 function initScrollAnimations() {
   const roots = document.querySelectorAll('.animate-on-scroll-root');
   if (!roots.length) return;
@@ -587,6 +727,7 @@ initScrollAnimations();
 initBottomBlurVisibility();
 initClosingHeart();
 initDogPhotoPopovers();
+initProjectPreview();
 initFooter();
 initContactCopy();
 initClickSpark();
