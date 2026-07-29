@@ -1359,6 +1359,7 @@ body[data-page="about"] {
 .work-column--about .work-row--about .work-col--company {
   align-self: start;
   line-height: 1.55;
+  color: var(--text-light);
 }
 
 .work-column--about .work-col--about-copy {
@@ -1380,7 +1381,7 @@ body[data-page="about"] {
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.55;
-  color: var(--text-light);
+  color: var(--text);
   text-align: justify;
   text-justify: inter-word;
 }
@@ -1426,6 +1427,10 @@ body[data-page="about"] {
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;
   transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.work-column--about .contact-link {
+  color: var(--text);
 }
 
 .contact-link:hover {
@@ -3336,6 +3341,11 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 .pc-team-divider {
   margin: 80px 0 56px;
+}
+
+/* No quote above it — the last paragraph already supplies the top gap. */
+.pc-team-divider--no-quote {
+  margin-top: 0;
 }
 
 .pc-team-label {
