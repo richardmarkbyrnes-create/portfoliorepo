@@ -39,6 +39,8 @@ window.PROJECTS = {
       'images/custom-stickers-panel-1.png',
       'images/custom-stickers-panel-2.png',
     ],
+    // Hover preview only — the hero above is an empty board the stickers animate onto.
+    previewImage: 'images/custom-stickers-preview.png',
     polaroids: [
       { src: 'images/sticker-photo-1.jpg', r: -5 },
       { src: 'images/sticker-photo-2.jpg', r: 4 },
@@ -99,6 +101,8 @@ window.PROJECTS = {
     headlineAccent: 'Answers',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
+    // Hover preview only — this project's hero is a video, so it needs a still.
+    previewImage: 'images/ask-insights-preview.png',
     teamMembers: [
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
       { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },

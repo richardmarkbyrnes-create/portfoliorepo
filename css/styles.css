@@ -4339,6 +4339,92 @@ body.page-is-leaving .top-blur {
   mask-image: url('../images/setter-line-art.png');
 }
 
+/* Project hero preview — floats directly above the hovered project title. JS sets
+   left/bottom (or top, when it has to flip below) from the title's own rect, and
+   --px/--py drift the frame a little with the cursor without unparking it. */
+/* The wrapper only carries the cursor drift, on a short transition so it keeps up
+   with the pointer. The reveal (scale/slide/rotate) lives on the frame inside, so
+   the two can be timed independently. */
+.project-preview {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: min(340px, 42vw);
+  z-index: 300;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  /* Blurs out as it goes, so it dissolves rather than just dimming */
+  filter: blur(9px);
+  transform: translate(var(--px, 0px), var(--py, 0px));
+  transition:
+    opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.24s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.08s linear;
+}
+
+.project-preview.is-visible {
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  transition:
+    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.08s linear;
+}
+
+/* Matches the framing of .pc-image--main on the project pages */
+.project-preview-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  transform: translateY(6px) scale(0.97) rotate(3deg);
+  transform-origin: bottom left;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
+  background-size: cover;
+  /* Top-anchored: taller previews are UI screenshots that read from the top down */
+  background-position: top center;
+  background-repeat: no-repeat;
+  border: 2px solid #fff;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+}
+
+.project-preview.is-below .project-preview-frame {
+  transform-origin: top left;
+  transform: translateY(-6px) scale(0.97) rotate(3deg);
+}
+
+.project-preview.is-visible .project-preview-frame,
+.project-preview.is-below.is-visible .project-preview-frame {
+  transform: translateY(0) scale(1) rotate(3deg);
+}
+
+/* No real hover, or too little room to float a preview — drop it entirely */
+@media (max-width: 700px), (hover: none) {
+  .project-preview {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview,
+  .project-preview.is-visible {
+    transition: opacity 0.2s linear, visibility 0.2s linear, filter 0.2s linear;
+    transform: none;
+  }
+
+  .project-preview-frame,
+  .project-preview.is-below .project-preview-frame,
+  .project-preview.is-visible .project-preview-frame {
+    transition: none;
+    transform: rotate(3deg);
+  }
+}
+
 .dog-photo-popover {
   position: fixed;
   top: 0;
