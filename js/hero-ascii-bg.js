@@ -410,6 +410,33 @@
 
     window.addEventListener('resize', handleResize);
 
+    // Parallax — as the reader scrolls down, ease the top hero's ASCII pattern
+    // upward a little faster than the page so it drifts up smoothly. Lerped in a
+    // rAF loop for a buttery feel; skipped when reduced motion is requested.
+    if (isHomeHero && !prefersReducedMotion()) {
+      const PARALLAX_FACTOR = 0.38;
+      let targetY = 0;
+      let currentY = 0;
+      let parallaxId = null;
+
+      canvas.style.willChange = 'transform';
+
+      const stepParallax = () => {
+        currentY += (targetY - currentY) * 0.06;
+        if (Math.abs(targetY - currentY) < 0.15) currentY = targetY;
+        canvas.style.transform = `translate3d(0, ${currentY.toFixed(2)}px, 0)`;
+        parallaxId = currentY === targetY ? null : requestAnimationFrame(stepParallax);
+      };
+
+      const onParallaxScroll = () => {
+        targetY = -window.scrollY * PARALLAX_FACTOR;
+        if (parallaxId === null) parallaxId = requestAnimationFrame(stepParallax);
+      };
+
+      window.addEventListener('scroll', onParallaxScroll, { passive: true });
+      onParallaxScroll();
+    }
+
     const themeObserver = new MutationObserver(() => {
       readTextColor();
       activePalette = paletteForTheme();
