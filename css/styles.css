@@ -5320,12 +5320,16 @@ body.page-is-leaving .top-blur {
     padding-top: 8px;
   }
 
+  /* nav-offset + 8 + 8 is exactly the space above the hero, which lands the canvas
+     edge on the viewport edge — but glyphs are drawn at cell centres, so the first
+     row sits half a cell (13px) down and reads as a gap. Bleeding one half-cell
+     further up puts that first row right on the top edge. */
   body[data-page="home"] {
-    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px);
+    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 13px);
   }
 
   body[data-page="about"] {
-    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px);
+    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 13px);
   }
 
   .home-hero {
