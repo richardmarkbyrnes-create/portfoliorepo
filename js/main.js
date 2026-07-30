@@ -313,12 +313,16 @@ function restartGif(img) {
   img.src = src;
 }
 
-function initDogPhotoPopover(triggerSelector, popoverId, { restartGifOnShow = false } = {}) {
+function initDogPhotoPopover(triggerSelector, popoverId) {
   const trigger = document.querySelector(triggerSelector);
   const popover = document.getElementById(popoverId);
   if (!trigger || !popover) return;
 
   const image = popover.querySelector('img');
+  // The dog photos are looping webm clips (they were gifs, ~30x the bytes). They
+  // carry `loop`, so playback repeats on its own; JS only starts them from the top
+  // on hover and pauses them again on the way out, so nothing runs unseen.
+  const video = popover.querySelector('video');
 
   function movePopover(clientX, clientY) {
     popover.style.left = `${clientX}px`;
@@ -329,22 +333,44 @@ function initDogPhotoPopover(triggerSelector, popoverId, { restartGifOnShow = fa
     movePopover(event.clientX, event.clientY);
     popover.classList.add('is-visible');
     popover.setAttribute('aria-hidden', 'false');
-    if (restartGifOnShow) restartGif(image);
+    restartGif(image);
+    if (video) {
+      video.currentTime = 0;
+      video.play().catch(() => {});
+    }
   }
 
   function hidePopover() {
     popover.classList.remove('is-visible');
     popover.setAttribute('aria-hidden', 'true');
+    if (video) video.pause();
   }
 
   trigger.addEventListener('mouseenter', showPopover);
   trigger.addEventListener('mousemove', (event) => movePopover(event.clientX, event.clientY));
   trigger.addEventListener('mouseleave', hidePopover);
+
+  return video;
 }
 
 function initDogPhotoPopovers() {
-  initDogPhotoPopover('.about-line-art-dog--setter', 'eddie-photo-popover', { restartGifOnShow: true });
-  initDogPhotoPopover('.about-line-art-dog--berner', 'berner-photo-popover');
+  const videos = [
+    initDogPhotoPopover('.about-line-art-dog--setter', 'eddie-photo-popover'),
+    initDogPhotoPopover('.about-line-art-dog--berner', 'berner-photo-popover'),
+  ].filter(Boolean);
+  if (!videos.length) return;
+
+  // preload="metadata" keeps the clips off the initial page load. Fetch them in full
+  // the first time the pointer reaches the line art, so the hover itself is instant.
+  const lineArt = document.querySelector('.about-line-art');
+  if (!lineArt) return;
+  lineArt.addEventListener('mouseenter', function warmVideos() {
+    lineArt.removeEventListener('mouseenter', warmVideos);
+    videos.forEach((video) => {
+      video.preload = 'auto';
+      video.load();
+    });
+  });
 }
 
 function initProjectPreview() {

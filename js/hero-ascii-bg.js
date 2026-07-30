@@ -59,8 +59,8 @@
   // Each column drifts at its own scroll speed, BASE ± AMP. Two out-of-phase sine
   // waves across the column index keep neighbours close (so it reads as a rippling
   // curtain, not noise) without the pattern repeating on screen.
-  const PARALLAX_BASE = 0.3;
-  const PARALLAX_AMP = 0.24;
+  const PARALLAX_BASE = 0.2;
+  const PARALLAX_AMP = 0.16;
 
   function columnParallax(col) {
     const wave = 0.62 * Math.sin(col * 0.37) + 0.38 * Math.sin(col * 0.13 + 1.7);
