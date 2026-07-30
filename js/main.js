@@ -352,9 +352,9 @@ function initProjectPreview() {
   if (!preview) return;
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-  const frame = preview.querySelector('.project-preview-frame');
+  const image = preview.querySelector('.project-preview-img');
   const rows = document.querySelectorAll('.work-column--interactive .work-row-main[data-project]');
-  if (!frame || !rows.length) return;
+  if (!image || !rows.length) return;
 
   const projects = window.PROJECTS || {};
   const heroFor = (slug) => {
@@ -402,7 +402,10 @@ function initProjectPreview() {
   function show(row, src) {
     if (src !== shown) {
       shown = src;
-      frame.style.backgroundImage = `url("${src}")`;
+      image.src = src;
+    } else {
+      // Same preview as last time — replay it from the first frame if it's a gif.
+      restartGif(image);
     }
     activeRow = row;
     position(row);
