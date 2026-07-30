@@ -56,6 +56,16 @@
     ],
   };
   const PASTEL_CYCLE_MS = 380;
+  // Each column drifts at its own scroll speed, BASE ± AMP. Two out-of-phase sine
+  // waves across the column index keep neighbours close (so it reads as a rippling
+  // curtain, not noise) without the pattern repeating on screen.
+  const PARALLAX_BASE = 0.3;
+  const PARALLAX_AMP = 0.24;
+
+  function columnParallax(col) {
+    const wave = 0.62 * Math.sin(col * 0.37) + 0.38 * Math.sin(col * 0.13 + 1.7);
+    return PARALLAX_BASE + PARALLAX_AMP * wave;
+  }
 
   function paletteForTheme() {
     const theme = document.documentElement.getAttribute('data-theme');
@@ -87,6 +97,9 @@
     const titleMaskInnerDist = isHomeHero ? 0.62 : 0.5;
     const titleMaskOuterDist = isHomeHero ? 1.55 : 1.4;
     let cells = [];
+    let gridHeight = 0;
+    let parallaxEnabled = false;
+    let parallaxOffset = 0;
     let pointer = { x: -9999, y: -9999, active: false };
     let hoverAnimId = null;
     let textColor = '#3b3b3b';
@@ -152,17 +165,30 @@
       const cols = Math.ceil(width / CELL);
       const rows = Math.ceil(height / CELL);
       cells = [];
+      gridHeight = rows * CELL;
+
+      const speeds = [];
+      for (let col = 0; col < cols; col += 1) speeds.push(columnParallax(col));
 
       for (let row = 0; row < rows; row += 1) {
         for (let col = 0; col < cols; col += 1) {
           cells.push({
             x: col * CELL + CELL / 2,
             y: row * CELL + CELL / 2,
+            speed: speeds[col],
             char: pickChar(),
             baseChar: pickChar(),
           });
         }
       }
+    }
+
+    // Columns travel at different speeds, so they'd run out of glyphs at different
+    // times — wrapping recycles each one back around its own grid height.
+    function parallaxY(cell) {
+      if (!parallaxEnabled || !gridHeight) return cell.y;
+      const shifted = cell.y + parallaxOffset * cell.speed;
+      return ((shifted % gridHeight) + gridHeight) % gridHeight;
     }
 
     function hexToRgb(hex) {
@@ -262,10 +288,13 @@
         let opacity = BASE_OPACITY;
         let char = cell.baseChar;
         let cellRgb = baseRgb;
+        // Where this glyph actually lands this frame — hover, ripples and the title
+        // mask all have to read the drawn position, not the grid slot.
+        const y = parallaxY(cell);
 
         if (interact && pointer.active) {
           const dx = cell.x - pointer.x;
-          const dy = cell.y - pointer.y;
+          const dy = y - pointer.y;
           const distance = Math.hypot(dx, dy);
 
           if (distance < HOVER_RADIUS) {
@@ -292,17 +321,17 @@
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * burstAmt);
         }
 
-        const rippleAmt = rippleFactor(cell.x, cell.y, now);
+        const rippleAmt = rippleFactor(cell.x, y, now);
         if (rippleAmt > 0) {
           const pastelRgb = getPastelRgb(cell, now);
           cellRgb = blendRgb(cellRgb, pastelRgb, rippleAmt);
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * rippleAmt);
         }
 
-        opacity *= titleVisibilityFactor(cell.x, cell.y, titleMask);
+        opacity *= titleVisibilityFactor(cell.x, y, titleMask);
 
         ctx.fillStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
-        ctx.fillText(char, cell.x, cell.y);
+        ctx.fillText(char, cell.x, y);
       });
 
       if (flipY) {
@@ -410,25 +439,33 @@
 
     window.addEventListener('resize', handleResize);
 
-    // Parallax — as the reader scrolls, the top hero's ASCII pattern drifts
-    // upward a little faster than the page. A persistent rAF loop reads scrollY
-    // every frame and eases toward it, so the motion stays buttery regardless of
-    // how bursty the scroll events are (event-driven updates jump on fast
-    // flicks). The loop only runs while the hero is on screen. Skipped under
+    // Parallax — as the reader scrolls, the top hero's ASCII pattern drifts upward
+    // a little faster than the page, and every column drifts at its own rate so the
+    // grid shears into bands. That rules out transforming the canvas as one layer:
+    // the offsets are applied per glyph, so each frame is a redraw. A persistent
+    // rAF loop reads scrollY and eases toward it, so the motion stays buttery
+    // regardless of how bursty the scroll events are (event-driven updates jump on
+    // fast flicks). The loop only runs while the hero is on screen. Skipped under
     // reduced motion.
     if (isHomeHero && !prefersReducedMotion()) {
-      const PARALLAX_FACTOR = 0.28;
       const EASE = 0.09;
-      let currentY = 0;
       let rafId = null;
+      let drawnAt = null;
 
-      canvas.style.willChange = 'transform';
+      parallaxEnabled = true;
 
       const loop = () => {
-        const targetY = -window.scrollY * PARALLAX_FACTOR;
-        currentY += (targetY - currentY) * EASE;
-        if (Math.abs(targetY - currentY) < 0.05) currentY = targetY;
-        canvas.style.transform = `translate3d(0, ${currentY.toFixed(2)}px, 0)`;
+        const target = -window.scrollY;
+        parallaxOffset += (target - parallaxOffset) * EASE;
+        if (Math.abs(target - parallaxOffset) < 0.05) parallaxOffset = target;
+
+        // Skip the redraw when nothing moved, and leave it to the hover loop when
+        // that one is already painting every frame.
+        if (drawnAt === null || Math.abs(parallaxOffset - drawnAt) >= 0.05) {
+          drawnAt = parallaxOffset;
+          if (hoverAnimId === null) draw();
+        }
+
         rafId = requestAnimationFrame(loop);
       };
 
