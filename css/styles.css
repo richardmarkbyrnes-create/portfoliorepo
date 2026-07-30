@@ -2986,8 +2986,10 @@ body[data-page="project"] .pc-next-pill.is-docked {
   height: 18px;
 }
 
+/* The company · title label carries the back affordance on its own. Mobile turns
+   .pc-back into an icon-only button, so the media query below re-shows it there. */
 .pc-back-chevron {
-  display: block;
+  display: none;
 }
 
 .pc-page {
