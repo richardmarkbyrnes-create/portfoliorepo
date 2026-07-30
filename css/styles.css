@@ -3482,7 +3482,9 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 8px;
+  align-items: center;
+  /* Roomier row gap than column gap — the rows read as separate lines of names */
+  gap: 14px 12px;
 }
 
 .pc-team-break {
@@ -3490,14 +3492,15 @@ body[data-page="project"] .pc-next-pill.is-docked {
   height: 0;
 }
 
+/* No longer a pill — each member is separated from the last by a hairline. The
+   12px column gap plus 12px of left padding puts the rule midway between them,
+   matching the spacing the pills used to occupy. */
 .pc-team-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 14px 4px 4px;
-  border-radius: 999px;
-  background: var(--surface);
-  border: 1px solid color-mix(in srgb, var(--text) 6%, transparent);
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -3506,15 +3509,24 @@ body[data-page="project"] .pc-next-pill.is-docked {
   white-space: nowrap;
 }
 
+/* Nothing to divide from at the start of a row. The first two cases are static;
+   is-row-start is set by JS for rows created by a natural flex wrap. */
+.pc-team-pill:first-child,
+.pc-team-break + .pc-team-pill,
+.pc-team-pill.is-row-start {
+  padding-left: 0;
+  border-left: 0;
+}
+
 .pc-team-avatar {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: 0;
   color: #fff;
