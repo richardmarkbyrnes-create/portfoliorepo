@@ -526,6 +526,8 @@
       }
     }
 
+    initShortcutsHint(Boolean(nextSlug));
+
     // Keyboard shortcuts: ← back, → next project, Esc home
     document.addEventListener('keydown', (event) => {
       const t = event.target;
@@ -550,6 +552,59 @@
         navigateWithFade('/', { leaveProject: true });
       }
     });
+  }
+
+  // Faded keyboard glyph in the bottom-right corner; hovering (or focusing) it lists
+  // every shortcut the site listens for. Project pages only.
+  const SHORTCUTS = [
+    { keys: ['←'], label: 'Previous project' },
+    { keys: ['→'], label: 'Next project' },
+    { keys: ['Esc'], label: 'Back home' },
+    { keys: ['T'], label: 'Switch theme' },
+  ];
+
+  const KEYBOARD_ICON = '<svg xmlns="http://www.w3.org/2000/svg" height="22" width="22" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true"><path d="M260-120q-58 0-99-41t-41-99q0-58 41-99t99-41h60v-160h-60q-58 0-99-41t-41-99q0-58 41-99t99-41q58 0 99 41t41 99v60h160v-60q0-58 41-99t99-41q58 0 99 41t41 99q0 58-41 99t-99 41h-60v160h60q58 0 99 41t41 99q0 58-41 99t-99 41q-58 0-99-41t-41-99v-60H400v60q0 58-41 99t-99 41Zm0-80q25 0 42.5-17.5T320-260v-60h-60q-25 0-42.5 17.5T200-260q0 25 17.5 42.5T260-200Zm440 0q25 0 42.5-17.5T760-260q0-25-17.5-42.5T700-320h-60v60q0 25 17.5 42.5T700-200ZM400-400h160v-160H400v160ZM260-640h60v-60q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Zm380 0h60q25 0 42.5-17.5T760-700q0-25-17.5-42.5T700-760q-25 0-42.5 17.5T640-700v60Z"/></svg>';
+
+  function initShortcutsHint(hasNext) {
+    if (document.getElementById('pc-shortcuts')) return;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'pc-shortcuts';
+    wrap.id = 'pc-shortcuts';
+
+    const panel = document.createElement('div');
+    panel.className = 'pc-shortcuts-panel';
+    panel.setAttribute('role', 'tooltip');
+    panel.id = 'pc-shortcuts-panel';
+
+    SHORTCUTS.forEach((shortcut) => {
+      // The last project has nowhere to go next, so don't advertise it.
+      if (shortcut.label === 'Next project' && !hasNext) return;
+      const row = document.createElement('span');
+      row.className = 'pc-shortcuts-row';
+      shortcut.keys.forEach((key) => {
+        const kbd = document.createElement('kbd');
+        kbd.className = 'pc-shortcuts-key';
+        kbd.textContent = key;
+        row.appendChild(kbd);
+      });
+      const label = document.createElement('span');
+      label.className = 'pc-shortcuts-label';
+      label.textContent = shortcut.label;
+      row.appendChild(label);
+      panel.appendChild(row);
+    });
+
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'pc-shortcuts-btn';
+    button.setAttribute('aria-label', 'Keyboard shortcuts');
+    button.setAttribute('aria-describedby', panel.id);
+    button.innerHTML = KEYBOARD_ICON;
+
+    wrap.appendChild(panel);
+    wrap.appendChild(button);
+    document.body.appendChild(wrap);
   }
 
   function initProjectMobileMenu() {
