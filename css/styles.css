@@ -2503,7 +2503,7 @@ body[data-page="project"] .nav-primary {
 body[data-page="project"] .pc-next-pill {
   position: fixed;
   left: 50%;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 48px);
   margin: 0;
   transform: translate(-50%, 200%);
   opacity: 0;
