@@ -791,8 +791,15 @@ html[data-theme="dark"] .theme-swatch {
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Sound + theme sit bare in the corner — no glass pill behind them. The hover fill
+   on each button stays, so they still respond to the pointer. */
 .nav-primary .nav-inner {
   gap: 4px;
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .pc-back,
@@ -2530,6 +2537,116 @@ body[data-page="project"] .pc-next-pill.is-docked {
   transform: translate(-50%, 0);
   opacity: 1;
   pointer-events: auto;
+}
+
+/* Faded keyboard glyph, bottom-right of project pages. Hover or focus it to list
+   the shortcuts; it sits clear of the bottom-centre "Next project" pill. */
+.pc-shortcuts {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 320;
+}
+
+.pc-shortcuts-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  opacity: 0.22;
+  cursor: help;
+  transition: opacity 0.25s ease;
+}
+
+.pc-shortcuts:hover .pc-shortcuts-btn,
+.pc-shortcuts:focus-within .pc-shortcuts-btn {
+  opacity: 0.65;
+}
+
+.pc-shortcuts-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  width: max-content;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  border-radius: 12px;
+  box-shadow: var(--nav-shadow);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition:
+    opacity 0.22s ease,
+    visibility 0.22s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-shortcuts:hover .pc-shortcuts-panel,
+.pc-shortcuts:focus-within .pc-shortcuts-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.pc-shortcuts-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pc-shortcuts-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 20px;
+  padding: 0 5px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1;
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 7%, transparent);
+  border: 1px solid var(--nav-glass-border);
+  border-radius: 5px;
+}
+
+.pc-shortcuts-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: -0.01em;
+  color: var(--text-subtle);
+}
+
+[data-theme="dark"] .pc-shortcuts-panel {
+  background: rgba(20, 20, 22, 0.72);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* No hover to reveal it, and no hardware keyboard to use it */
+@media (hover: none), (max-width: 768px) {
+  .pc-shortcuts {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-shortcuts-btn,
+  .pc-shortcuts-panel {
+    transition: opacity 0.15s linear, visibility 0.15s linear;
+    transform: none;
+  }
 }
 
 /* The in-flow keyboard-nav hint no longer applies now the pill is docked */
