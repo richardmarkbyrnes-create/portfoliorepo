@@ -158,7 +158,7 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     images: [
-      'images/navigation-hero.png',
+      'images/navigation-hero.png?v=2',
     ],
     heroAspect: '2476 / 1302',
     heroFit: 'contain',
@@ -180,7 +180,7 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     images: [
-      'images/visualisations-hero.png',
+      'images/visualisations-hero.png?v=2',
     ],
     heroAspect: '2408 / 1248',
     heroFit: 'contain',
