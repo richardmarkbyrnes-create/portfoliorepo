@@ -160,7 +160,7 @@ window.PROJECTS = {
     images: [
       'images/navigation-hero.png',
     ],
-    heroAspect: '1500 / 667',
+    heroAspect: '2476 / 1302',
     heroFit: 'contain',
     teamMembers: [],
     paragraphs: [
@@ -182,7 +182,7 @@ window.PROJECTS = {
     images: [
       'images/visualisations-hero.png',
     ],
-    heroAspect: '1519 / 711',
+    heroAspect: '2408 / 1248',
     heroFit: 'contain',
     teamMembers: [],
     paragraphs: [
