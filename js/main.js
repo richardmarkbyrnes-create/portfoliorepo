@@ -60,6 +60,35 @@ function playThemeTransitionSound() {
   themeTransitionAudio.play().catch(() => {});
 }
 
+// Root-relative: project pages live one directory down, so a bare 'sounds/...'
+// would resolve against /<slug>/ and 404.
+const PAGE_TURN_SOUND = '/sounds/book-page.mp3';
+let pageTurnAudio = null;
+
+function loadPageTurnSound() {
+  if (pageTurnAudio) return pageTurnAudio;
+  pageTurnAudio = new Audio(PAGE_TURN_SOUND);
+  pageTurnAudio.preload = 'auto';
+  pageTurnAudio.volume = 0.55;
+  return pageTurnAudio;
+}
+
+function playPageTurnSound() {
+  if (isSoundMuted()) return;
+  const audio = loadPageTurnSound();
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
+}
+
+// Page-turn on "Next project". The clip is buffered up front rather than on the
+// click itself, since the page starts fading out immediately after.
+function initPageTurnSound() {
+  const pill = document.getElementById('pc-next-pill');
+  if (!pill) return;
+  loadPageTurnSound();
+  pill.addEventListener('click', playPageTurnSound);
+}
+
 const CLICK_SPARK_SOUNDS = ['sounds/tap_01.wav', 'sounds/tap_02.wav', 'sounds/tap_03.wav', 'sounds/tap_04.wav'];
 let clickSparkAudios = null;
 let clickSparkSoundIndex = 0;
@@ -108,11 +137,21 @@ function spawnClickSpark(x, y) {
   window.setTimeout(() => spark.remove(), 700);
 }
 
+// Controls have their own press feedback, so the spark only fires on plain page
+// clicks. The sound still plays on them — except where the control brings its own,
+// which would otherwise stack two sounds on one click.
+const SPARK_EXEMPT = 'button, a, [role="button"], input, select, textarea, label, summary';
+const CLICK_SOUND_EXEMPT = '#pc-next-pill';
+
 function initClickSpark() {
   document.addEventListener('click', (event) => {
     if (isSoundMuted()) return;
+    const target = event.target;
+    if (target.closest?.(CLICK_SOUND_EXEMPT)) return;
     playClickSparkSound();
-    if (!prefersReducedMotion()) spawnClickSpark(event.clientX, event.clientY);
+    if (prefersReducedMotion()) return;
+    if (target.closest?.(SPARK_EXEMPT)) return;
+    spawnClickSpark(event.clientX, event.clientY);
   });
 }
 
@@ -766,6 +805,7 @@ initProjectPreview();
 initFooter();
 initContactCopy();
 initClickSpark();
+initPageTurnSound();
 initInProgressStatus();
 updateClock();
 setInterval(updateClock, 1000);
