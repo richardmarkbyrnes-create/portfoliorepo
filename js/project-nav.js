@@ -361,15 +361,33 @@
 
       const pills = document.createElement('div');
       pills.className = 'pc-team-pills';
+
+      const addBreak = () => {
+        const br = document.createElement('span');
+        br.className = 'pc-team-break';
+        br.setAttribute('aria-hidden', 'true');
+        pills.appendChild(br);
+      };
+
+      // Three to a row. An explicit { break: true } can end a row early, and resets
+      // the count so the next row gets a full three.
+      const PER_ROW = 3;
+      let inRow = 0;
+
       project.teamMembers.forEach((member, i) => {
         // A { break: true } entry forces the following pills onto a new line.
         if (member && member.break) {
-          const br = document.createElement('span');
-          br.className = 'pc-team-break';
-          br.setAttribute('aria-hidden', 'true');
-          pills.appendChild(br);
+          if (inRow > 0) {
+            addBreak();
+            inRow = 0;
+          }
           return;
         }
+        if (inRow === PER_ROW) {
+          addBreak();
+          inRow = 0;
+        }
+        inRow += 1;
         const name = typeof member === 'string' ? member : member.name;
         const photo = typeof member === 'string' ? null : member.photo;
         const pill = document.createElement('span');
@@ -407,6 +425,24 @@
 
       quoteReveal.insertAdjacentElement('afterend', teamDivider);
       teamDivider.insertAdjacentElement('afterend', team);
+
+      // The hairline before each member is a border-left, so whoever begins a row
+      // has to drop it. CSS covers the first member and the ones after an explicit
+      // { break: true }, but not a natural flex wrap — that needs measuring.
+      const markRowStarts = () => {
+        let rowTop = null;
+        pills.querySelectorAll('.pc-team-pill').forEach((pill) => {
+          const top = pill.offsetTop;
+          const startsRow = rowTop === null || top > rowTop + 2;
+          pill.classList.toggle('is-row-start', startsRow);
+          if (startsRow) rowTop = top;
+        });
+      };
+
+      markRowStarts();
+      window.addEventListener('resize', markRowStarts);
+      // Names shift when the webfont swaps in, which can change where rows break.
+      if (document.fonts?.ready) document.fonts.ready.then(markRowStarts);
     }
 
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls

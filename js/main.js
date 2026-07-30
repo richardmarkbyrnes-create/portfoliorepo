@@ -501,6 +501,12 @@ function initProjectPreview() {
     row.addEventListener('mouseleave', hide);
     row.addEventListener('focus', () => show(row, src));
     row.addEventListener('blur', hide);
+    // Opening a project fades the page out, but the preview is fixed and the pointer
+    // never leaves the row — so it would hang around over the transition.
+    row.addEventListener('click', hide);
+    row.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') hide();
+    });
   });
 
   // Warm every hero the first time the pointer reaches the list, so switching
