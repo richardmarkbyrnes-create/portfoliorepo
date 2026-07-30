@@ -4382,14 +4382,20 @@ body.page-is-leaving .top-blur {
   transform-origin: bottom left;
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
-  background-size: cover;
-  /* Top-anchored: taller previews are UI screenshots that read from the top down */
-  background-position: top center;
-  background-repeat: no-repeat;
   border: 2px solid #fff;
   border-radius: 14px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
   overflow: hidden;
+}
+
+/* An img rather than a background so gif previews can be restarted on hover */
+.project-preview-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Top-anchored: taller previews are UI screenshots that read from the top down */
+  object-position: top center;
 }
 
 .project-preview.is-below .project-preview-frame {

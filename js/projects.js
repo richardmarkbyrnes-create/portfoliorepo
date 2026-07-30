@@ -40,7 +40,7 @@ window.PROJECTS = {
       'images/custom-stickers-panel-2.png',
     ],
     // Hover preview only — the hero above is an empty board the stickers animate onto.
-    previewImage: 'images/custom-stickers-preview.png',
+    previewImage: 'images/custom-stickers-preview.gif',
     polaroids: [
       { src: 'images/sticker-photo-1.jpg', r: -5 },
       { src: 'images/sticker-photo-2.jpg', r: 4 },
