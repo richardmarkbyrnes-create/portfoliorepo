@@ -689,9 +689,10 @@ function updateFooterTheme() {
 }
 
 function initFooter() {
+  updateFooterTheme();
+  if (!document.getElementById('footer-local-time')) return;
   updateFooterTime();
   setInterval(updateFooterTime, 1000);
-  updateFooterTheme();
 }
 
 async function copyText(text) {
