@@ -1803,6 +1803,20 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   opacity: 0.5;
 }
 
+/* On the first homepage view of a session the hero lands as one solid line, then
+   the connecting words ("is a", "and") settle back to muted a beat later — so the
+   name reads first. The .hero-intro flag is set once, in theme-init.js. */
+.hero-intro .hero-title--home .hero-title-muted {
+  opacity: 1;
+  animation: heroMutedSettle 0.7s ease-in 1s forwards;
+}
+
+@keyframes heroMutedSettle {
+  to {
+    opacity: 0.5;
+  }
+}
+
 /* "sunny" gets crossed out on hover with a handwritten correction */
 .hero-sunny {
   position: relative;
