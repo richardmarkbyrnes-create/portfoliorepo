@@ -44,20 +44,28 @@ function isSoundMuted() {
   return localStorage.getItem(VOLUME_STORAGE_KEY) === 'true';
 }
 
-const THEME_TRANSITION_SOUND = 'sounds/button.wav';
-let themeTransitionAudio;
+// Pitch follows the theme: descending into dark, ascending back into light.
+const THEME_TRANSITION_SOUNDS = {
+  dark: '/sounds/transition_down.wav',
+  light: '/sounds/transition_up.wav',
+};
+const themeTransitionAudios = {};
 
+// Call after the theme has been applied — the direction is read from the new theme.
 function playThemeTransitionSound() {
   if (isSoundMuted()) return;
 
-  if (!themeTransitionAudio) {
-    themeTransitionAudio = new Audio(THEME_TRANSITION_SOUND);
-    themeTransitionAudio.preload = 'auto';
-    themeTransitionAudio.volume = 0.4;
+  const direction = getStoredTheme() === 'dark' ? 'dark' : 'light';
+  let audio = themeTransitionAudios[direction];
+  if (!audio) {
+    audio = new Audio(THEME_TRANSITION_SOUNDS[direction]);
+    audio.preload = 'auto';
+    audio.volume = 0.4;
+    themeTransitionAudios[direction] = audio;
   }
 
-  themeTransitionAudio.currentTime = 0;
-  themeTransitionAudio.play().catch(() => {});
+  audio.currentTime = 0;
+  audio.play().catch(() => {});
 }
 
 // Root-relative: project pages live one directory down, so a bare 'sounds/...'
@@ -141,7 +149,8 @@ function spawnClickSpark(x, y) {
 // clicks. The sound still plays on them — except where the control brings its own,
 // which would otherwise stack two sounds on one click.
 const SPARK_EXEMPT = 'button, a, [role="button"], input, select, textarea, label, summary';
-const CLICK_SOUND_EXEMPT = '#pc-next-pill';
+// The theme buttons have their own transition sound — no tap on top of it.
+const CLICK_SOUND_EXEMPT = '#pc-next-pill, #theme-toggle, #nav-menu-theme';
 
 function initClickSpark() {
   document.addEventListener('click', (event) => {
