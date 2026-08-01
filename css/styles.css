@@ -3072,15 +3072,6 @@ body[data-page="project"] .pc-next-pill.is-docked {
   color: var(--text-body);
 }
 
-.pc-lead-team {
-  margin: 0 0 16px;
-  font-family: var(--sans);
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-light);
-}
-
 .pc-image {
   width: 115%;
   align-self: center;
@@ -3421,6 +3412,36 @@ body[data-page="project"] .pc-next-pill.is-docked {
   margin-bottom: 80px;
 }
 
+/* Inline illustration between copy blocks — runs wider than the 70% text
+   column so the drawing has room to read, but stops short of the 115% bleed
+   the hero images take. */
+.pc-diagram {
+  width: 100%;
+  align-self: center;
+  margin: 32px auto 56px;
+  line-height: 0;
+}
+
+.pc-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* One drawing per canvas — each file is inked for the theme it's named after.
+   Scoped under .pc-diagram so these outrank the `.pc-diagram img` rule above. */
+.pc-diagram .pc-diagram-img--dark {
+  display: none;
+}
+
+[data-theme="dark"] .pc-diagram .pc-diagram-img--light {
+  display: none;
+}
+
+[data-theme="dark"] .pc-diagram .pc-diagram-img--dark {
+  display: block;
+}
+
 .pc-rule {
   width: 100%;
   max-width: 70%;
@@ -3448,7 +3469,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-quote-text {
   margin: 0 0 14px;
   font-family: var(--serif);
-  font-size: clamp(20px, 2.7vw, 28px);
+  font-size: clamp(18px, 2.3vw, 24px);
   font-weight: 400;
   font-style: italic;
   line-height: 1.3;
@@ -5510,9 +5531,11 @@ body.page-is-leaving .top-blur {
     grid-template-columns: 88px 1fr;
   }
 
+  /* Stack the label over its copy — an 88px gutter leaves too little room for
+     the paragraphs at this width. */
   .work-column--about .work-row--about {
-    grid-template-columns: 88px minmax(0, 1fr);
-    column-gap: 28px;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 10px;
   }
 
   .work-row-main {

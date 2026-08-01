@@ -177,9 +177,6 @@
       summary.textContent = project.intro;
     }
 
-    const leadTeam = document.getElementById('pc-lead-team');
-    if (leadTeam) leadTeam.textContent = project.team || project.company || '';
-
     const imageSrcs = project.images || (project.heroImage ? [project.heroImage] : []);
     document.querySelectorAll('.pc-image').forEach((el, i) => {
       const src = imageSrcs[i];
