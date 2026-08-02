@@ -3151,6 +3151,9 @@ body[data-page="project"] .pc-next-pill.is-docked {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Top-anchored like the still heroes — UI footage reads from the top down, so
+     the crop should come off the bottom rather than off both edges. */
+  object-position: top center;
   display: block;
   /* Video is composited, so it ignores the parent's rounded overflow clip —
      round the element itself so its corners match the frame. */
@@ -3425,7 +3428,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-diagram {
   width: 100%;
   align-self: center;
-  margin: 32px auto 24px;
+  margin: 56px auto 48px;
   line-height: 0;
 }
 
