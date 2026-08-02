@@ -75,7 +75,6 @@ window.PROJECTS = {
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     images: [
       'images/automations-hero.png',
-      'images/automations-2.png',
     ],
     paragraphs: [
       'Instead of forcing users to manually dig for recurring customer feedback, we wanted the data to come to them. I designed Automations, a feature that lets teams set up routine, AI-driven insight reports and deliver them directly to where they already work — Slack, email, or in-product. This shifted our product from a manual, reactive search tool to a proactive, habit-forming engine for product teams.',
