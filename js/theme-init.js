@@ -1,8 +1,8 @@
 (function () {
   var THEME_KEY = 'portfolio-theme';
   var BG = {
-    normal: '#f0efeb',
-    dark: '#141414',
+    normal: '#fdfbf4',
+    dark: '#151516',
     'pastel-blue': '#e8f4fc',
     'pastel-pink': '#fce8f0',
     'pastel-yellow': '#fcf6e8',
@@ -49,6 +49,16 @@
   }
 
   markHeroIntro();
+
+  // Sound always starts off. Forced on every page load rather than just
+  // defaulted, so an unmute never carries over into a later visit — nobody
+  // should land here and get audio they didn't ask for. Set in the head, ahead
+  // of the scripts that read this key to draw the volume icon.
+  try {
+    localStorage.setItem('portfolio-volume-muted', 'true');
+  } catch (err) {
+    // storage blocked — the readers below default to unmuted, nothing to undo
+  }
 
   // When a page is restored from the back/forward cache (e.g. navigating with
   // the arrow keys / browser back), scripts don't re-run, so a theme changed on

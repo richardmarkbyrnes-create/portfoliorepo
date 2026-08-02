@@ -18,36 +18,39 @@
 
 :root,
 [data-theme="normal"] {
-  --bg: #ffffff;
-  --note-halo: rgba(255, 255, 255, 0.95);
-  --text: #3b3b3b;
-  --text-body: #121212;
-  --text-muted: #6e6e6e;
-  --text-subtle: #545454;
-  --text-light: #969696;
-  --text-nav: #545454;
-  --text-detail: #050505;
-  --text-resume-header: #595959;
-  --surface: #ffffff;
-  --surface-muted: #ffffff;
-  --border-color: #ffffff;
-  --nav-bg: rgba(255, 255, 255, 0.62);
-  --theme-popover-bg: rgba(255, 255, 255, 0.48);
-  --nav-glass-border: rgba(255, 255, 255, 0.55);
+  /* Neutrals carry a warm yellow cast (~45° hue, low saturation) rather than
+     sitting on pure white — the greys are tinted to match so nothing reads
+     cold against the paper. */
+  --bg: #fdfbf4;
+  --note-halo: rgba(253, 251, 244, 0.95);
+  --text: #3d3a32;
+  --text-body: #141209;
+  --text-muted: #706b5d;
+  --text-subtle: #565143;
+  --text-light: #98927f;
+  --text-nav: #565143;
+  --text-detail: #070603;
+  --text-resume-header: #5b5648;
+  --surface: #fdfbf4;
+  --surface-muted: #fdfbf4;
+  --border-color: #fdfbf4;
+  --nav-bg: rgba(253, 251, 244, 0.62);
+  --theme-popover-bg: rgba(253, 251, 244, 0.48);
+  --nav-glass-border: rgba(255, 253, 245, 0.55);
   --nav-shadow: 0 2px 12px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --nav-active-bg: rgba(255, 255, 255, 0.5);
+  --nav-active-bg: rgba(253, 251, 244, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.076), 0 1px 6px rgba(0, 0, 0, 0.048);
   --nav-hover-bg: rgba(0, 0, 0, 0.03);
-  --nav-text-active: #000000;
-  --nav-text-inactive: #8a8a8a;
+  --nav-text-active: #14120a;
+  --nav-text-inactive: #8c8778;
   --nav-pill-home: transparent;
   --nav-pill-about: transparent;
   --nav-pill-resume: transparent;
-  --hero-glow: rgba(255, 255, 255, 0.5);
+  --hero-glow: rgba(253, 251, 244, 0.5);
   --texture-opacity: 1;
-  --switcher-bg: rgba(255, 255, 255, 0.72);
+  --switcher-bg: rgba(253, 251, 244, 0.72);
   --switcher-hover: rgba(0, 0, 0, 0.05);
-  --white: #ffffff;
+  --white: #fdfbf4;
   --border-white: 3px solid var(--border-color);
   --serif: 'Bespoke Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -58,9 +61,9 @@
   --content-wide: 924px;
   --content-text: 435px;
   --about-content: 390px;
-  --line-art-stroke: #3b3b3b;
+  --line-art-stroke: #3d3a32;
   --content-resume: 480px;
-  --resume-paper: #ffffff;
+  --resume-paper: #fdfbf4;
   --resume-paper-border: rgba(0, 0, 0, 0.06);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
@@ -79,11 +82,11 @@
   --work-divider-space: 55px;
   --home-content-width: calc(var(--content-mid) * 0.85);
   --home-content-padding-x: 24px;
-  --selection-bg: #000000;
-  --selection-color: #ffffff;
-  --location-polaroid-bg: #ffffff;
+  --selection-bg: #14120a;
+  --selection-color: #fdfbf4;
+  --location-polaroid-bg: #fdfbf4;
   --location-polaroid-border: rgba(0, 0, 0, 0.06);
-  --location-polaroid-photo-bg: #eceae6;
+  --location-polaroid-photo-bg: #efeadb;
   --location-polaroid-shadow:
     0 10px 28px rgba(0, 0, 0, 0.12),
     0 2px 6px rgba(0, 0, 0, 0.06);
@@ -92,66 +95,68 @@
 }
 
 [data-theme="dark"] {
-  --bg: #141414;
+  /* Mirror of the light palette: neutrals nudged toward blue so the dark canvas
+     reads cool rather than flat black — a hint of hue, not a blue-grey. */
+  --bg: #151516;
   --note-halo: rgba(0, 0, 0, 0.95);
   --nav-border-width: 1px;
-  --text: #e8e8e8;
-  --text-body: #f5f5f5;
-  --text-muted: #a0a0a0;
-  --text-subtle: #8a8a8a;
-  --text-light: #707070;
-  --text-nav: #b0b0b0;
-  --text-detail: #e0e0e0;
-  --text-resume-header: #c8c8c8;
-  --surface: #1e1e1e;
-  --surface-muted: #242424;
-  --border-color: #333333;
-  --nav-bg: rgba(30, 30, 30, 0.62);
-  --theme-popover-bg: rgba(30, 30, 30, 0.48);
+  --text: #e8e8ea;
+  --text-body: #f5f5f6;
+  --text-muted: #a2a3a5;
+  --text-subtle: #8d8e90;
+  --text-light: #727375;
+  --text-nav: #b0b1b3;
+  --text-detail: #e1e1e3;
+  --text-resume-header: #c8c9cb;
+  --surface: #1f2021;
+  --surface-muted: #252628;
+  --border-color: #343537;
+  --nav-bg: rgba(31, 32, 33, 0.62);
+  --theme-popover-bg: rgba(31, 32, 33, 0.48);
   --nav-glass-border: rgba(255, 255, 255, 0.14);
   --nav-shadow: 0 2px 12px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.18);
-  --nav-active-bg: rgba(42, 42, 42, 0.5);
+  --nav-active-bg: rgba(43, 44, 46, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.332), 0 1px 6px rgba(0, 0, 0, 0.19);
   --nav-hover-bg: rgba(255, 255, 255, 0.05);
-  --nav-text-active: #ffffff;
-  --nav-text-inactive: #8a8a8a;
+  --nav-text-active: #f7f7f8;
+  --nav-text-inactive: #8d8e90;
   --nav-pill-home: transparent;
   --nav-pill-about: transparent;
   --nav-pill-resume: transparent;
   --hero-glow: rgba(255, 255, 255, 0.08);
   --texture-opacity: 0.05;
-  --switcher-bg: rgba(30, 30, 30, 0.9);
+  --switcher-bg: rgba(31, 32, 33, 0.9);
   --switcher-hover: rgba(255, 255, 255, 0.08);
-  --white: #1e1e1e;
-  --resume-paper: #222222;
+  --white: #1f2021;
+  --resume-paper: #232426;
   --resume-paper-border: rgba(255, 255, 255, 0.08);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.2),
     0 8px 24px rgba(0, 0, 0, 0.28),
     0 32px 64px rgba(0, 0, 0, 0.35);
-  --line-art-stroke: #f2f2f2;
-  --preview-frame-border: #3a3a3a;
+  --line-art-stroke: #f1f1f2;
+  --preview-frame-border: #3c3d3f;
   --preview-frame-shadow:
     0 8px 22px rgba(255, 255, 255, 0.07),
     0 1px 4px rgba(255, 255, 255, 0.05);
-  --dog-polaroid-bg: #2c2c2c;
-  --dog-polaroid-photo-bg: #1a1a1a;
-  --dog-polaroid-caption: #e8e8e8;
+  --dog-polaroid-bg: #2d2e30;
+  --dog-polaroid-photo-bg: #1b1b1d;
+  --dog-polaroid-caption: #e8e8ea;
   --dog-polaroid-shadow:
     0 14px 36px rgba(0, 0, 0, 0.55),
     0 4px 12px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.04);
-  --location-polaroid-bg: #2c2c2c;
+  --location-polaroid-bg: #2d2e30;
   --location-polaroid-border: rgba(255, 255, 255, 0.1);
-  --location-polaroid-photo-bg: #1a1a1a;
+  --location-polaroid-photo-bg: #1b1b1d;
   --location-polaroid-shadow:
     0 14px 36px rgba(0, 0, 0, 0.55),
     0 4px 12px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.04);
-  --location-polaroid-caption-amsterdam: #c4bdd4;
-  --location-polaroid-caption-limerick: #a8bdd4;
-  --selection-bg: #ffffff;
-  --selection-color: #000000;
+  --location-polaroid-caption-amsterdam: #c7c5cb;
+  --location-polaroid-caption-limerick: #b8bdc3;
+  --selection-bg: #f1f1f2;
+  --selection-color: #151516;
 }
 
 [data-theme="pastel-blue"] {
@@ -500,8 +505,8 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  min-width: 44px;
+  width: var(--nav-toolbar-item-height);
+  min-width: var(--nav-toolbar-item-height);
   height: var(--nav-toolbar-item-height);
   padding: 0;
   background: transparent;
@@ -756,8 +761,8 @@ html[data-theme="dark"] .theme-swatch {
   box-shadow: 0 0 0 2px var(--text-nav);
 }
 
-.theme-swatch[data-theme="normal"] { background: #f0efeb; }
-.theme-swatch[data-theme="dark"] { background: #141414; }
+.theme-swatch[data-theme="normal"] { background: #fdfbf4; }
+.theme-swatch[data-theme="dark"] { background: #151516; }
 .theme-swatch[data-theme="pastel-blue"] { background: #e8f4fc; }
 .theme-swatch[data-theme="pastel-pink"] { background: #fce8f0; }
 .theme-swatch[data-theme="pastel-yellow"] { background: #fcf6e8; }
@@ -938,8 +943,10 @@ html[data-theme="dark"] .theme-swatch {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  min-width: 44px;
+  /* Square, so the hover fill sits the same distance off every edge of the icon.
+     At 44 wide against a 34 height the highlight read letterboxed. */
+  width: var(--nav-toolbar-item-height);
+  min-width: var(--nav-toolbar-item-height);
   height: var(--nav-toolbar-item-height);
   padding: 0;
   color: var(--nav-text-inactive);
@@ -3410,36 +3417,6 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 .pc-desc:last-of-type {
   margin-bottom: 80px;
-}
-
-/* Inline illustration between copy blocks — runs wider than the 70% text
-   column so the drawing has room to read, but stops short of the 115% bleed
-   the hero images take. */
-.pc-diagram {
-  width: 100%;
-  align-self: center;
-  margin: 32px auto 56px;
-  line-height: 0;
-}
-
-.pc-diagram img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-/* One drawing per canvas — each file is inked for the theme it's named after.
-   Scoped under .pc-diagram so these outrank the `.pc-diagram img` rule above. */
-.pc-diagram .pc-diagram-img--dark {
-  display: none;
-}
-
-[data-theme="dark"] .pc-diagram .pc-diagram-img--light {
-  display: none;
-}
-
-[data-theme="dark"] .pc-diagram .pc-diagram-img--dark {
-  display: block;
 }
 
 .pc-rule {
