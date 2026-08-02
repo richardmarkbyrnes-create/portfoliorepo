@@ -3419,6 +3419,36 @@ body[data-page="project"] .pc-next-pill.is-docked {
   margin-bottom: 80px;
 }
 
+/* Inline illustration between copy blocks — runs wider than the 70% text column
+   so the drawing has room to read, but stops short of the 115% bleed the hero
+   images take. */
+.pc-diagram {
+  width: 100%;
+  align-self: center;
+  margin: 32px auto 24px;
+  line-height: 0;
+}
+
+.pc-diagram img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* One drawing per canvas — each file is inked for the theme it's named after.
+   Scoped under .pc-diagram so these outrank the `.pc-diagram img` rule above. */
+.pc-diagram .pc-diagram-img--dark {
+  display: none;
+}
+
+[data-theme="dark"] .pc-diagram .pc-diagram-img--light {
+  display: none;
+}
+
+[data-theme="dark"] .pc-diagram .pc-diagram-img--dark {
+  display: block;
+}
+
 .pc-rule {
   width: 100%;
   max-width: 70%;
