@@ -2581,12 +2581,24 @@ body[data-page="project"] .pc-next-pill.is-docked {
   color: var(--text);
   opacity: 0.22;
   cursor: help;
-  transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pc-shortcuts:hover .pc-shortcuts-btn,
 .pc-shortcuts:focus-within .pc-shortcuts-btn {
   opacity: 0.65;
+  transform: rotate(-15deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-shortcuts-btn {
+    transition: opacity 0.25s ease;
+  }
+
+  .pc-shortcuts:hover .pc-shortcuts-btn,
+  .pc-shortcuts:focus-within .pc-shortcuts-btn {
+    transform: none;
+  }
 }
 
 .pc-shortcuts-panel {
@@ -3444,6 +3456,11 @@ body[data-project="ask-ai"] .pc-subhead {
 
 body[data-project="customer-insights"] .pc-subhead {
   width: 58%;
+  margin-top: 26px;
+}
+
+body[data-project="navigation"] .pc-subhead {
+  margin-top: 26px;
 }
 
 .pc-desc:first-of-type {
