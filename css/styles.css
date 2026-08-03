@@ -2341,7 +2341,7 @@ body[data-page="project"] .nav-primary {
   justify-content: center;
   width: var(--nav-toolbar-height);
   height: var(--nav-toolbar-height);
-  border-radius: 50%;
+  border-radius: var(--nav-radius);
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
   box-shadow: var(--nav-shadow);
@@ -2505,7 +2505,7 @@ body[data-page="project"] .nav-primary {
   color: var(--nav-text-inactive);
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
-  border-radius: 999px;
+  border-radius: var(--nav-radius);
   box-shadow: var(--nav-shadow);
   text-decoration: none;
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out, transform 0.35s ease-in-out;
