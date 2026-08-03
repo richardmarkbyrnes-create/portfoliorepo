@@ -3416,9 +3416,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   letter-spacing: -0.02em;
   line-height: 1.55;
   color: color-mix(in srgb, var(--text-body) 75%, transparent);
-  text-align: justify;
-  hyphens: auto;
-  -webkit-hyphens: auto;
+  text-align: left;
 }
 
 /* Caption under an illustration — body size and italic, so it reads as a note on
@@ -3444,6 +3442,10 @@ body[data-project="ask-ai"] .pc-subhead {
   margin-top: 34px;
 }
 
+body[data-project="customer-insights"] .pc-subhead {
+  width: 58%;
+}
+
 .pc-desc:first-of-type {
   margin-top: 32px;
   margin-bottom: 16px;
@@ -3460,10 +3462,13 @@ body[data-project="ask-ai"] .pc-subhead {
 /* Inline illustration between copy blocks — runs wider than the 70% text column
    so the drawing has room to read, but stops short of the 115% bleed the hero
    images take. */
+/* Matches the hero images' bleed past the content column. No auto side margins:
+   once the width exceeds the column they resolve to 0 and align-self can't
+   centre, so the whole overhang lands on one side. */
 .pc-diagram {
-  width: 100%;
+  width: 115%;
   align-self: center;
-  margin: 56px auto 48px;
+  margin: 56px 0 48px;
   line-height: 0;
 }
 
