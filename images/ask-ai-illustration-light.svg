@@ -168,30 +168,30 @@
 <circle cx="403.5" cy="172.5" r="4.25" stroke="#C2C2C2" stroke-opacity="0.75" stroke-width="0.5"/>
 <circle cx="424.5" cy="172.5" r="4.25" stroke="#BFBFBF" stroke-opacity="0.5" stroke-width="0.5"/>
 <g clip-path="url(#clip0_8_720)">
-<line x1="166.177" y1="52.1768" x2="102.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="174.177" y1="52.1768" x2="110.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="182.177" y1="52.1768" x2="118.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="190.177" y1="52.1768" x2="126.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="198.177" y1="52.1768" x2="134.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="206.177" y1="52.1768" x2="142.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="214.177" y1="52.1768" x2="150.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="222.177" y1="52.1768" x2="158.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="230.177" y1="52.1768" x2="166.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="238.177" y1="52.1768" x2="174.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="246.177" y1="52.1768" x2="182.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="254.177" y1="52.1768" x2="190.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="262.177" y1="52.1768" x2="198.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="270.177" y1="52.1768" x2="206.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="278.177" y1="52.1768" x2="214.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="286.177" y1="52.1768" x2="222.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="294.177" y1="52.1768" x2="230.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="302.177" y1="52.1768" x2="238.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="310.177" y1="52.1768" x2="246.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="318.177" y1="52.1768" x2="254.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="326.177" y1="52.1768" x2="262.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
-<line x1="334.177" y1="52.1768" x2="270.177" y2="116.177" stroke="#E2E2E2" stroke-width="0.5"/>
+<line x1="166.177" y1="52.1768" x2="102.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="174.177" y1="52.1768" x2="110.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="182.177" y1="52.1768" x2="118.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="190.177" y1="52.1768" x2="126.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="198.177" y1="52.1768" x2="134.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="206.177" y1="52.1768" x2="142.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="214.177" y1="52.1768" x2="150.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="222.177" y1="52.1768" x2="158.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="230.177" y1="52.1768" x2="166.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="238.177" y1="52.1768" x2="174.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="246.177" y1="52.1768" x2="182.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="254.177" y1="52.1768" x2="190.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="262.177" y1="52.1768" x2="198.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="270.177" y1="52.1768" x2="206.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="278.177" y1="52.1768" x2="214.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="286.177" y1="52.1768" x2="222.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="294.177" y1="52.1768" x2="230.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="302.177" y1="52.1768" x2="238.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="310.177" y1="52.1768" x2="246.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="318.177" y1="52.1768" x2="254.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="326.177" y1="52.1768" x2="262.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
+<line x1="334.177" y1="52.1768" x2="270.177" y2="116.177" stroke="#A2A2A2" stroke-width="0.5"/>
 </g>
-<rect x="147.25" y="63.25" width="134.5" height="50.5" rx="2.75" stroke="#CCCCCC" stroke-width="0.5"/>
+<rect x="147.25" y="63.25" width="134.5" height="50.5" rx="2.75" stroke="#5D5D5D" stroke-width="0.5"/>
 <defs>
 <clipPath id="clip0_8_720">
 <rect x="147" y="63" width="135" height="51" rx="3" fill="white"/>
