@@ -21,36 +21,36 @@
   /* Neutrals carry a warm yellow cast (~45° hue, low saturation) rather than
      sitting on pure white — the greys are tinted to match so nothing reads
      cold against the paper. */
-  --bg: #fdfbf4;
-  --note-halo: rgba(253, 251, 244, 0.95);
-  --text: #3d3a32;
-  --text-body: #141209;
-  --text-muted: #706b5d;
-  --text-subtle: #565143;
-  --text-light: #98927f;
-  --text-nav: #565143;
-  --text-detail: #070603;
-  --text-resume-header: #5b5648;
-  --surface: #fdfbf4;
-  --surface-muted: #fdfbf4;
-  --border-color: #fdfbf4;
-  --nav-bg: rgba(253, 251, 244, 0.62);
-  --theme-popover-bg: rgba(253, 251, 244, 0.48);
-  --nav-glass-border: rgba(255, 253, 245, 0.55);
+  --bg: #fbfaf7;
+  --note-halo: rgba(251, 250, 247, 0.95);
+  --text: #3b3935;
+  --text-body: #12110c;
+  --text-muted: #6c6a62;
+  --text-subtle: #525048;
+  --text-light: #939086;
+  --text-nav: #525048;
+  --text-detail: #060604;
+  --text-resume-header: #57544e;
+  --surface: #fbfaf7;
+  --surface-muted: #fbfaf7;
+  --border-color: #fbfaf7;
+  --nav-bg: rgba(251, 250, 247, 0.62);
+  --theme-popover-bg: rgba(251, 250, 247, 0.48);
+  --nav-glass-border: rgba(253, 252, 248, 0.55);
   --nav-shadow: 0 2px 12px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --nav-active-bg: rgba(253, 251, 244, 0.5);
+  --nav-active-bg: rgba(251, 250, 247, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.076), 0 1px 6px rgba(0, 0, 0, 0.048);
   --nav-hover-bg: rgba(0, 0, 0, 0.03);
-  --nav-text-active: #14120a;
-  --nav-text-inactive: #8c8778;
+  --nav-text-active: #12110d;
+  --nav-text-inactive: #88857e;
   --nav-pill-home: transparent;
   --nav-pill-about: transparent;
   --nav-pill-resume: transparent;
-  --hero-glow: rgba(253, 251, 244, 0.5);
+  --hero-glow: rgba(251, 250, 247, 0.5);
   --texture-opacity: 1;
-  --switcher-bg: rgba(253, 251, 244, 0.72);
+  --switcher-bg: rgba(251, 250, 247, 0.72);
   --switcher-hover: rgba(0, 0, 0, 0.05);
-  --white: #fdfbf4;
+  --white: #fbfaf7;
   --border-white: 3px solid var(--border-color);
   --serif: 'Bespoke Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -61,9 +61,9 @@
   --content-wide: 924px;
   --content-text: 435px;
   --about-content: 390px;
-  --line-art-stroke: #3d3a32;
+  --line-art-stroke: #3b3935;
   --content-resume: 480px;
-  --resume-paper: #fdfbf4;
+  --resume-paper: #fbfaf7;
   --resume-paper-border: rgba(0, 0, 0, 0.06);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
@@ -82,16 +82,16 @@
   --work-divider-space: 55px;
   --home-content-width: calc(var(--content-mid) * 0.85);
   --home-content-padding-x: 24px;
-  --selection-bg: #14120a;
-  --selection-color: #fdfbf4;
-  --location-polaroid-bg: #fdfbf4;
+  --selection-bg: #12110d;
+  --selection-color: #fbfaf7;
+  --location-polaroid-bg: #fbfaf7;
   --location-polaroid-border: rgba(0, 0, 0, 0.06);
-  --location-polaroid-photo-bg: #efeadb;
+  --location-polaroid-photo-bg: #ebe8e1;
   --location-polaroid-shadow:
     0 10px 28px rgba(0, 0, 0, 0.12),
     0 2px 6px rgba(0, 0, 0, 0.06);
-  --location-polaroid-caption-amsterdam: #6b6578;
-  --location-polaroid-caption-limerick: #5a6d85;
+  --location-polaroid-caption-amsterdam: #6c6973;
+  --location-polaroid-caption-limerick: #646e7a;
 }
 
 [data-theme="dark"] {
@@ -761,7 +761,7 @@ html[data-theme="dark"] .theme-swatch {
   box-shadow: 0 0 0 2px var(--text-nav);
 }
 
-.theme-swatch[data-theme="normal"] { background: #fdfbf4; }
+.theme-swatch[data-theme="normal"] { background: #fbfaf7; }
 .theme-swatch[data-theme="dark"] { background: #151516; }
 .theme-swatch[data-theme="pastel-blue"] { background: #e8f4fc; }
 .theme-swatch[data-theme="pastel-pink"] { background: #fce8f0; }
@@ -3407,7 +3407,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 .pc-desc {
-  max-width: 70%;
+  max-width: 84%;
   margin: 24px auto 72px;
   align-self: center;
   font-family: var(--sans);
@@ -3494,7 +3494,8 @@ body[data-project="customer-insights"] .pc-subhead {
 
 .pc-rule {
   width: 100%;
-  max-width: 70%;
+  /* Same measure as .pc-desc, so the rules line up with the copy. */
+  max-width: 84%;
   align-self: center;
   height: 0;
   margin: 0 0 80px;
@@ -3510,7 +3511,7 @@ body[data-project="customer-insights"] .pc-subhead {
 }
 
 .pc-quote {
-  max-width: 92%;
+  max-width: 84%;
   align-self: center;
   margin: 0;
   text-align: center;

@@ -1,7 +1,7 @@
 (function () {
   var THEME_KEY = 'portfolio-theme';
   var BG = {
-    normal: '#fdfbf4',
+    normal: '#fbfaf7',
     dark: '#151516',
     'pastel-blue': '#e8f4fc',
     'pastel-pink': '#fce8f0',
