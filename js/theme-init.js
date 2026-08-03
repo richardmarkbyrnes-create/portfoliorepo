@@ -50,15 +50,37 @@
 
   markHeroIntro();
 
-  // Sound always starts off. Forced on every page load rather than just
-  // defaulted, so an unmute never carries over into a later visit — nobody
-  // should land here and get audio they didn't ask for. Set in the head, ahead
-  // of the scripts that read this key to draw the volume icon.
-  try {
-    localStorage.setItem('portfolio-volume-muted', 'true');
-  } catch (err) {
-    // storage blocked — the readers below default to unmuted, nothing to undo
+  // Sound starts off when someone arrives and whenever they reload, so nobody
+  // gets audio they didn't ask for. Moving between projects leaves the choice
+  // alone — an unmute should survive the click through to the next page.
+  //
+  // Arriving and clicking a link are both navigation type "navigate", so the
+  // session flag is what separates them: no flag means this is the first page of
+  // the tab. Set in the head, ahead of the scripts that read the key to draw the
+  // volume icon.
+  var VOLUME_KEY = 'portfolio-volume-muted';
+  var VISITED_KEY = 'portfolio-visited';
+
+  function resetSoundIfArriving() {
+    try {
+      var entry = (window.performance && performance.getEntriesByType)
+        ? performance.getEntriesByType('navigation')[0]
+        : null;
+      var reloaded = entry
+        ? entry.type === 'reload'
+        // Deprecated, but the only signal in older browsers. 1 === TYPE_RELOAD.
+        : !!(window.performance && performance.navigation && performance.navigation.type === 1);
+
+      var firstOfSession = !sessionStorage.getItem(VISITED_KEY);
+      sessionStorage.setItem(VISITED_KEY, '1');
+
+      if (reloaded || firstOfSession) localStorage.setItem(VOLUME_KEY, 'true');
+    } catch (err) {
+      // storage blocked — the readers default to unmuted, nothing to undo
+    }
   }
+
+  resetSoundIfArriving();
 
   // When a page is restored from the back/forward cache (e.g. navigating with
   // the arrow keys / browser back), scripts don't re-run, so a theme changed on
