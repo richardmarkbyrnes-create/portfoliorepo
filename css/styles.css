@@ -3335,6 +3335,18 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: none;
 }
 
+/* Caption sits close to the photos, so the block's own bottom gap moves onto the
+   caption instead of opening up between the two. */
+.pc-polaroids:has(+ .pc-polaroids-caption) {
+  margin-bottom: 16px;
+}
+
+/* Compound selector on purpose: .pc-subhead is defined further down the file with
+   a `margin` shorthand, so a single-class rule here would lose the bottom gap. */
+.pc-subhead.pc-polaroids-caption {
+  margin: 16px auto 88px;
+}
+
 .pc-polaroid {
   position: relative;
   width: 250px;
