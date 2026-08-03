@@ -3409,6 +3409,29 @@ body[data-page="project"] .pc-next-pill.is-docked {
   -webkit-hyphens: auto;
 }
 
+/* Caption under an illustration — body size and italic, so it reads as a note on
+   the drawing rather than a heading. line-height is set explicitly because
+   .pc-diagram zeroes it to keep the images flush. */
+.pc-subhead {
+  width: 70%;
+  margin: 16px auto 0;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+  color: var(--text-body);
+  opacity: 0.5;
+  text-align: center;
+}
+
+/* This drawing sits tight to its bottom edge, so its caption needs more air
+   than the others to read as separate from the artwork. */
+body[data-project="ask-ai"] .pc-subhead {
+  margin-top: 34px;
+}
+
 .pc-desc:first-of-type {
   margin-top: 32px;
   margin-bottom: 16px;
