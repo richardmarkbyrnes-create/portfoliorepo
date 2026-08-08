@@ -332,7 +332,7 @@
 }
 
 html {
-  font-size: 14px;
+  font-size: 15px;
   scroll-behavior: auto;
   scroll-padding-top: 12px;
   scroll-padding-bottom: calc(var(--nav-offset) + var(--nav-height) + 12px);
@@ -649,7 +649,7 @@ html[data-theme="dark"] .theme-option:hover {
 
 .theme-option-name {
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -707,7 +707,7 @@ html[data-theme="dark"] .theme-option-name {
 
 .theme-shortcut-text {
   font-family: var(--sans);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-light);
@@ -731,7 +731,7 @@ html[data-theme="dark"] .theme-option-name {
   height: 20px;
   padding: 0 7px;
   font-family: var(--sans);
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1;
@@ -1112,7 +1112,7 @@ html[data-theme="dark"] .theme-toggle-moon {
   justify-content: center;
   gap: 7px;
   height: var(--nav-toolbar-item-height);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -1158,7 +1158,7 @@ html[data-theme="dark"] .theme-toggle-moon {
 
 .footer-name,
 .footer-time {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.15px;
   line-height: 1.5;
@@ -1203,7 +1203,7 @@ html[data-theme="dark"] .theme-toggle-moon {
 .site-footer-row {
   display: flex;
   align-items: baseline;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.01em;
   line-height: 1.4;
@@ -1233,7 +1233,7 @@ html[data-theme="dark"] .theme-toggle-moon {
 
 .site-footer-copy {
   margin: 52px 0 0;
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: -0.01em;
   color: var(--text-light);
 }
@@ -1292,7 +1292,7 @@ body[data-page="about"] {
 
 .home-about-intro .about-hero-title {
   margin: 0;
-  font-size: 43px;
+  font-size: 44px;
 }
 
 .about-interest-icons {
@@ -1394,7 +1394,7 @@ body[data-page="about"] {
   width: 100%;
   max-width: none;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.55;
@@ -1427,7 +1427,7 @@ body[data-page="about"] {
 
 .contact-link {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.55;
@@ -1634,18 +1634,18 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   -webkit-mask-image: radial-gradient(
     140% 72% at 50% 0%,
     #000 0%,
-    #000 34%,
-    rgba(0, 0, 0, 0.55) 56%,
-    rgba(0, 0, 0, 0.2) 74%,
-    transparent 92%
+    #000 12%,
+    rgba(0, 0, 0, 0.3) 36%,
+    rgba(0, 0, 0, 0.07) 54%,
+    transparent 70%
   );
   mask-image: radial-gradient(
     140% 72% at 50% 0%,
     #000 0%,
-    #000 34%,
-    rgba(0, 0, 0, 0.55) 56%,
-    rgba(0, 0, 0, 0.2) 74%,
-    transparent 92%
+    #000 12%,
+    rgba(0, 0, 0, 0.3) 36%,
+    rgba(0, 0, 0, 0.07) 54%,
+    transparent 70%
   );
 }
 
@@ -1690,7 +1690,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .hero-title {
   font-family: var(--serif);
-  font-size: 47px;
+  font-size: 48px;
   font-weight: 400;
   line-height: 1.12;
   letter-spacing: -0.06em;
@@ -1723,7 +1723,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .hero-name {
   font-family: var(--serif);
-  font-size: clamp(28px, 3.6vw, 38px);
+  font-size: clamp(29px, 3.6vw, 39px);
   line-height: 1.1;
   letter-spacing: -0.04em;
   color: var(--text);
@@ -1731,7 +1731,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .hero-ref {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: 0;
   color: var(--text-light);
   white-space: nowrap;
@@ -1739,9 +1739,9 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .hero-bio {
   display: block;
-  max-width: 28em;
+  max-width: 30em;
   font-family: var(--serif);
-  font-size: clamp(13px, 1.55vw, 15px);
+  font-size: clamp(14px, 1.55vw, 16px);
   line-height: 1.5;
   letter-spacing: -0.02em;
   color: var(--text-light);
@@ -2046,7 +2046,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   width: 100%;
   max-width: 382px;
   margin: 0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.35;
@@ -2161,7 +2161,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .work-col--company {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -2182,7 +2182,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .work-col--project {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -2196,7 +2196,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 
 .work-col--year {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -2245,7 +2245,7 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   gap: 6px;
   white-space: nowrap;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: -0.02em;
   color: var(--text-muted);
   opacity: 0;
@@ -2393,7 +2393,7 @@ body[data-page="project"] .nav-primary {
   gap: 6px;
   height: var(--nav-toolbar-height);
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-muted);
@@ -2449,7 +2449,7 @@ body[data-page="project"] .nav-primary {
   gap: 6px;
   padding: 8px 12px;
   font-family: var(--sans);
-  font-size: 10.5px;
+  font-size: 11.5px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-body);
@@ -2480,7 +2480,7 @@ body[data-page="project"] .nav-primary {
   height: 20px;
   padding: 0 5px;
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1;
   color: var(--text-body);
   background: color-mix(in srgb, var(--text) 8%, transparent);
@@ -2503,13 +2503,13 @@ body[data-page="project"] .nav-primary {
   margin: 104px auto 8px;
   padding: 12px 22px;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--nav-text-inactive);
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
-  border-radius: var(--nav-radius);
+  border-radius: 999px;
   box-shadow: var(--nav-shadow);
   text-decoration: none;
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out, transform 0.35s ease-in-out;
@@ -2651,7 +2651,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   height: 20px;
   padding: 0 5px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 9px;
+  font-size: 10px;
   line-height: 1;
   color: var(--text);
   background: color-mix(in srgb, var(--text) 7%, transparent);
@@ -2659,9 +2659,13 @@ body[data-page="project"] .pc-next-pill.is-docked {
   border-radius: 5px;
 }
 
+/* Keys stay in a column on the left; the label is pushed over so the wording
+   finishes flush with the panel's right edge. */
 .pc-shortcuts-label {
+  margin-left: auto;
   font-family: var(--sans);
-  font-size: 10px;
+  text-align: right;
+  font-size: 11px;
   letter-spacing: -0.01em;
   color: var(--text-subtle);
 }
@@ -2695,7 +2699,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   align-self: center;
   margin: 10px auto 8px;
   font-family: var(--sans);
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: -0.01em;
   color: var(--text-muted);
   opacity: 0;
@@ -2807,7 +2811,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   border-radius: 8px;
   background: none;
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-body);
@@ -2898,7 +2902,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
     line-height: var(--nav-toolbar-height);
     max-width: 52vw;
     font-family: var(--sans);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 500;
     letter-spacing: -0.02em;
     color: var(--text);
@@ -2961,7 +2965,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   }
 
   body[data-page="project"] .pc-lead {
-    font-size: clamp(26px, 8vw, 36px);
+    font-size: clamp(27px, 8vw, 37px);
     overflow-wrap: break-word;
     word-break: break-word;
   }
@@ -2998,14 +3002,17 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-back {
   position: fixed;
   top: var(--nav-offset);
-  left: 32px;
+  /* The label is centred inside a 48px-tall hit area, so its visible top edge
+     sits well below --nav-offset. Push it in by the same amount so the gap to the
+     left of the text matches the gap above it. */
+  left: calc(var(--nav-offset) + (var(--nav-toolbar-height) - 1em) / 2);
   z-index: 300;
   display: inline-flex;
   align-items: center;
   gap: 6px;
   height: var(--nav-toolbar-height);
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -3058,8 +3065,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-lead-summary {
   max-width: 24em;
   margin: 18px auto 0;
-  font-family: var(--serif);
-  font-size: clamp(13px, 1.55vw, 15px);
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.55vw, 16px);
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.02em;
@@ -3088,7 +3095,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-lead {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(32px, 4.5vw, 44px);
+  font-size: clamp(33px, 4.5vw, 45px);
   font-weight: 400;
   line-height: 1.1;
   letter-spacing: -0.055em;
@@ -3354,7 +3361,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Caption sits close to the photos, so the block's own bottom gap moves onto the
    caption instead of opening up between the two. */
 .pc-polaroids:has(+ .pc-polaroids-caption) {
-  margin-bottom: 16px;
+  margin-bottom: 28px;
 }
 
 /* Compound selector on purpose: .pc-subhead is defined further down the file with
@@ -3390,7 +3397,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   width: 100%;
   height: auto;
   border: 8px solid #fff;
-  border-radius: 4px;
+  border-radius: 12px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
 }
@@ -3427,11 +3434,11 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 .pc-desc {
-  max-width: 78%;
+  max-width: 72%;
   margin: 24px auto 72px;
   align-self: center;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.55;
@@ -3446,7 +3453,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   width: 70%;
   margin: 16px auto 0;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.02em;
@@ -3520,7 +3527,7 @@ body[data-project="navigation"] .pc-subhead {
 .pc-rule {
   width: 100%;
   /* Same measure as .pc-desc, so the rules line up with the copy. */
-  max-width: 78%;
+  max-width: 72%;
   align-self: center;
   margin: 0 0 80px;
   border: 0;
@@ -3540,7 +3547,7 @@ body[data-project="navigation"] .pc-subhead {
 }
 
 .pc-quote {
-  max-width: 78%;
+  max-width: 72%;
   align-self: center;
   margin: 0;
   text-align: center;
@@ -3549,7 +3556,7 @@ body[data-project="navigation"] .pc-subhead {
 .pc-quote-text {
   margin: 0 0 14px;
   font-family: var(--serif);
-  font-size: clamp(16px, 2.3vw, 22px);
+  font-size: clamp(17px, 2.3vw, 23px);
   font-weight: 400;
   font-style: italic;
   line-height: 1.3;
@@ -3559,7 +3566,7 @@ body[data-project="navigation"] .pc-subhead {
 
 .pc-quote-by {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   font-style: normal;
   letter-spacing: -0.01em;
@@ -3587,7 +3594,7 @@ body[data-project="navigation"] .pc-subhead {
 
 .pc-team-label {
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-light);
@@ -3617,7 +3624,7 @@ body[data-project="navigation"] .pc-subhead {
   padding-left: 12px;
   border-left: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-body);
@@ -3641,7 +3648,7 @@ body[data-project="navigation"] .pc-subhead {
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  font-size: 7px;
+  font-size: 8px;
   font-weight: 600;
   letter-spacing: 0;
   color: #fff;
@@ -3694,7 +3701,7 @@ body[data-project="navigation"] .pc-subhead {
 
 .project-about-label {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.55;
@@ -3804,7 +3811,7 @@ body.overlay-open {
   margin: 0 0 26px;
   text-align: center;
   font-family: var(--sans);
-  font-size: 22px;
+  font-size: 23px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -3821,7 +3828,7 @@ body.overlay-open {
 .project-ov-text p {
   margin: 0;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.7;
   letter-spacing: -0.01em;
@@ -3879,7 +3886,7 @@ body.project-is-entering .project-top-bar {
 
 .project-top-bar-title {
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--text-muted);
@@ -3923,7 +3930,7 @@ body.project-is-entering .page--project {
 .project-detail-intro {
   margin: 0 0 28px;
   font-family: var(--serif);
-  font-size: clamp(20px, 3vw, 26px);
+  font-size: clamp(21px, 3vw, 27px);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.03em;
@@ -3939,7 +3946,7 @@ body.project-is-entering .page--project {
 .project-detail-paragraph {
   margin: 0;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   line-height: 1.6;
   letter-spacing: -0.01em;
@@ -3965,7 +3972,7 @@ body.project-is-entering .page--project {
   border-radius: var(--nav-radius);
   box-shadow: var(--nav-shadow);
   font-family: var(--sans);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--nav-text-inactive);
@@ -4250,7 +4257,7 @@ body.page-is-leaving .project-nav-pill {
   height: 18px;
   padding: 0 4px;
   font-family: var(--sans);
-  font-size: 8px;
+  font-size: 9px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: white;
@@ -4269,7 +4276,7 @@ body.page-is-leaving .project-nav-pill {
 .work-slideshow-pagination {
   margin: 0;
   font-family: var(--sans);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--text-muted);
@@ -4473,7 +4480,7 @@ body.page-is-leaving .top-blur {
 
 .project-item h3 {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.04em;
   line-height: 1.3;
@@ -4628,7 +4635,7 @@ body.page-is-leaving .top-blur {
 .project-preview-frame {
   width: 100%;
   aspect-ratio: 16 / 9;
-  transform: translateY(6px) scale(0.97) rotate(3deg);
+  transform: translateY(6px) scale(0.9) rotate(3deg);
   transform-origin: bottom left;
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
   background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
@@ -4650,7 +4657,7 @@ body.page-is-leaving .top-blur {
 
 .project-preview.is-below .project-preview-frame {
   transform-origin: top left;
-  transform: translateY(-6px) scale(0.97) rotate(3deg);
+  transform: translateY(-6px) scale(0.9) rotate(3deg);
 }
 
 .project-preview.is-visible .project-preview-frame,
@@ -4745,7 +4752,7 @@ body.page-is-leaving .top-blur {
 .dog-photo-polaroid-caption {
   margin-top: 6px;
   font-family: 'Caveat', cursive;
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1;
   text-align: center;
   color: var(--dog-polaroid-caption, #3b3b3b);
@@ -4772,6 +4779,13 @@ body.page-is-leaving .top-blur {
 [data-theme="dark"] .about-line-art-image {
   -webkit-mask-image: url('../images/richard-line-art-dark.png?v=2');
   mask-image: url('../images/richard-line-art-dark.png?v=2');
+  /* The two drawings are the same height to the pixel; the dark one is just inked
+     ~3% narrower, which is what makes it read smaller. So the correction is
+     horizontal only — scaling both axes would make him taller than his light
+     counterpart and look like he'd risen. Scale rather than width keeps the box's
+     layout size, so the dogs either side stay put, and `scale` is its own property
+     so the fade-up animation (`forwards`, owns `transform`) can't clobber it. */
+  scale: 1.03 1;
 }
 
 [data-theme="dark"] .about-line-art-dog--berner {
@@ -4793,7 +4807,7 @@ body.page-is-leaving .top-blur {
 .about-greeting-title {
   margin: 0 0 16px;
   font-family: var(--serif);
-  font-size: clamp(32px, calc(7vw - 6px), 50px);
+  font-size: clamp(33px, calc(7vw - 6px), 51px);
   font-weight: 400;
   line-height: 0.96;
   letter-spacing: -0.06em;
@@ -4808,7 +4822,7 @@ body.page-is-leaving .top-blur {
 
 .pronunciation-line {
   font-family: var(--adamina);
-  font-size: 12px;
+  font-size: 13px;
   letter-spacing: -0.04em;
   line-height: 1.3;
   color: var(--text-light);
@@ -4835,7 +4849,7 @@ body.page-is-leaving .top-blur {
 
 .about-section h2 {
   font-family: var(--serif);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.3;
@@ -4854,7 +4868,7 @@ body.page-is-leaving .top-blur {
 .passion-block,
 .location-line {
   font-family: var(--sans);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
   letter-spacing: -0.02em;
   line-height: 1.5;
@@ -4922,7 +4936,7 @@ body.page-is-leaving .top-blur {
 .location-polaroid-caption {
   margin-top: 10px;
   font-family: 'Caveat', cursive;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 1.1;
   text-align: center;
 }
@@ -5100,7 +5114,7 @@ body.page-is-leaving .top-blur {
 
 .album-artist {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.3;
@@ -5109,7 +5123,7 @@ body.page-is-leaving .top-blur {
 
 .album-title {
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.03em;
   line-height: 1.3;
@@ -5183,7 +5197,7 @@ body.page-is-leaving .top-blur {
 
 .resume-header h1 {
   font-family: var(--serif);
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 400;
   letter-spacing: -0.15px;
   line-height: 1.4;
@@ -5192,7 +5206,7 @@ body.page-is-leaving .top-blur {
 }
 
 .resume-header p {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.04em;
   color: var(--text-subtle);
@@ -5203,7 +5217,7 @@ body.page-is-leaving .top-blur {
 }
 
 .resume-section > h2 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.3;
@@ -5228,7 +5242,7 @@ body.page-is-leaving .top-blur {
 }
 
 .experience-meta h3 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.3;
@@ -5238,7 +5252,7 @@ body.page-is-leaving .top-blur {
 }
 
 .experience-date {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.04em;
   color: var(--text-subtle);
@@ -5247,7 +5261,7 @@ body.page-is-leaving .top-blur {
 }
 
 .experience-role {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.04em;
   color: var(--text-subtle);
@@ -5255,7 +5269,7 @@ body.page-is-leaving .top-blur {
 }
 
 .experience-desc {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.5;
@@ -5267,11 +5281,11 @@ body.page-is-leaving .top-blur {
 }
 
 .education-item .experience-meta h3 {
-  font-size: 18px;
+  font-size: 19px;
 }
 
 .education-school {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.04em;
   color: var(--text-subtle);
@@ -5284,7 +5298,7 @@ body.page-is-leaving .top-blur {
 }
 
 .skill-group h3 {
-  font-size: 18px;
+  font-size: 19px;
   font-weight: 500;
   letter-spacing: -0.03em;
   color: var(--text);
@@ -5292,7 +5306,7 @@ body.page-is-leaving .top-blur {
 }
 
 .skill-group p {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1.5;
@@ -5306,7 +5320,7 @@ body.page-is-leaving .top-blur {
 }
 
 .language-item {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--text-detail);
   display: flex;
@@ -5499,6 +5513,14 @@ body.page-is-leaving .top-blur {
     padding-right: 16px;
   }
 
+  /* Narrow screens have little room for the 78% column, so the copy, rules and
+     quote open up — just shy of the full width inside the page's 16px gutters. */
+  .pc-desc,
+  .pc-rule,
+  .pc-quote {
+    max-width: 90%;
+  }
+
   body[data-page="home"] .page {
     padding-bottom: 0;
   }
@@ -5626,13 +5648,13 @@ body.page-is-leaving .top-blur {
   }
 
   .about-section h2 {
-    font-size: 14px;
+    font-size: 15px;
   }
 
   .about-section p,
   .passion-block,
   .location-line {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .location-polaroid {
@@ -5649,7 +5671,7 @@ body.page-is-leaving .top-blur {
   }
 
   .location-polaroid-caption {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .work-group + .work-group {
@@ -5659,25 +5681,25 @@ body.page-is-leaving .top-blur {
   .work-col--company,
   .work-col--project,
   .work-col--year {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .hero-title {
-    font-size: 40px;
+    font-size: 41px;
   }
 
   /* Keep the homepage hero title on two lines at mobile widths */
   .hero-name {
-    font-size: 25px;
+    font-size: 26px;
   }
 
   /* Shrink the about ("he's irish and dutch…") title so it fits on mobile */
   .home-about-intro .about-hero-title {
-    font-size: 26px;
+    font-size: 27px;
   }
 
   .hero-subtitle {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .projects-list {
@@ -5698,7 +5720,7 @@ body.page-is-leaving .top-blur {
   }
 
   .nav-link {
-    font-size: 10px;
+    font-size: 11px;
     height: var(--nav-toolbar-item-height);
     padding: 0 12px;
   }
@@ -5725,7 +5747,7 @@ body.page-is-leaving .top-blur {
 
 @media (max-width: 520px) {
   .hero-title {
-    font-size: 32px;
+    font-size: 33px;
   }
 
   .about-line-art-image {
