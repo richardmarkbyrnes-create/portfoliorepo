@@ -420,7 +420,10 @@
         : 'pc-rule pc-team-divider pc-team-divider--no-quote';
       teamDivider.setAttribute('aria-hidden', 'true');
 
-      quoteReveal.insertAdjacentElement('afterend', teamDivider);
+      // A headline stat sits between the quote and the shoutout, so hang the team
+      // off whichever of the two actually ends the section.
+      const teamAnchor = document.querySelector('.pc-stat') || quoteReveal;
+      teamAnchor.insertAdjacentElement('afterend', teamDivider);
       teamDivider.insertAdjacentElement('afterend', team);
 
       // The hairline before each member is a border-left, so whoever begins a row

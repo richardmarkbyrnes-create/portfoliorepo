@@ -90,7 +90,7 @@
         </button>
         <div class="pc-menu" id="nav-menu">
           <button class="pc-menu-item" id="nav-menu-sound" type="button">
-            ${VOLUME_ON_ICON}
+            ${VOLUME_ON_ICON}${VOLUME_OFF_ICON}
             <span id="nav-menu-sound-label">Sound on</span>
           </button>
           <button class="pc-menu-item" id="nav-menu-theme" type="button">
@@ -129,9 +129,11 @@
       if (!menuWrap.contains(event.target)) setOpen(false);
     });
 
+    const soundBtn = document.getElementById('nav-menu-sound');
     const updateSoundLabel = () => {
       const muted = localStorage.getItem('portfolio-volume-muted') === 'true';
       if (soundLabel) soundLabel.textContent = muted ? 'Sound off' : 'Sound on';
+      if (soundBtn) soundBtn.classList.toggle('is-muted', muted);
     };
     const updateThemeLabel = () => {
       if (themeLabel) themeLabel.textContent = getStoredTheme() === 'dark' ? 'Dark' : 'Light';
