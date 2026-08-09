@@ -61,6 +61,13 @@ function playThemeTransitionSound() {
     audio = new Audio(THEME_TRANSITION_SOUNDS[direction]);
     audio.preload = 'auto';
     audio.volume = 0.4;
+    // Play the clip slow to drop its pitch. Browsers preserve pitch by default when
+    // you change rate, which would only make it slower — turning that off gives the
+    // tape-speed effect we want. Prefixes cover Safari and older Firefox.
+    audio.preservesPitch = false;
+    audio.webkitPreservesPitch = false;
+    audio.mozPreservesPitch = false;
+    audio.playbackRate = 0.82;
     themeTransitionAudios[direction] = audio;
   }
 
@@ -688,6 +695,51 @@ function updateFooterTheme() {
   el.textContent = match ? match.label : 'Normal';
 }
 
+// Count-up stats. Held at zero until the number scrolls into view, then eased to
+// its target once — re-running it on every pass would be noise, not delight.
+function initCountUp() {
+  const values = document.querySelectorAll('[data-count-to]');
+  if (!values.length) return;
+
+  const COUNT_MS = 1100;
+  const format = (n) => n.toLocaleString('en-US');
+  // Gentler than an ease-out: it doesn't sprint away from the start value, so the
+  // tick reads steadier even though the whole thing is over sooner.
+  const easeInOutQuad = (p) => (p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2);
+
+  values.forEach((el) => {
+    const target = Number(el.dataset.countTo);
+    if (!Number.isFinite(target)) return;
+
+    // Only the last three digits roll — the leading figures hold, so the eye reads
+    // the magnitude straight away and just watches the tail settle.
+    const from = Math.max(0, target - (target % 1000));
+
+    // No observer under reduced motion — the figure is the point, not the tally.
+    if (prefersReducedMotion() || typeof IntersectionObserver !== 'function') {
+      el.textContent = format(target);
+      return;
+    }
+
+    el.textContent = format(from);
+
+    const observer = new IntersectionObserver((entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      observer.disconnect();
+
+      const start = performance.now();
+      const step = (now) => {
+        const progress = Math.min(1, (now - start) / COUNT_MS);
+        el.textContent = format(Math.round(from + (target - from) * easeInOutQuad(progress)));
+        if (progress < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    }, { threshold: 0.45 });
+
+    observer.observe(el);
+  });
+}
+
 function initFooter() {
   updateFooterTheme();
   if (!document.getElementById('footer-local-time')) return;
@@ -812,6 +864,7 @@ initBottomBlurVisibility();
 initClosingHeart();
 initDogPhotoPopovers();
 initProjectPreview();
+initCountUp();
 initFooter();
 initContactCopy();
 initClickSpark();

@@ -51,6 +51,8 @@
   --switcher-bg: rgba(251, 250, 247, 0.72);
   --switcher-hover: rgba(0, 0, 0, 0.05);
   --white: #fbfaf7;
+  /* White mount around framed photos; goes dark-grey on the dark canvas. */
+  --frame-border: #ffffff;
   --border-white: 3px solid var(--border-color);
   --serif: 'Bespoke Serif', Georgia, serif;
   --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -128,6 +130,7 @@
   --switcher-bg: rgba(31, 32, 33, 0.9);
   --switcher-hover: rgba(255, 255, 255, 0.08);
   --white: #1f2021;
+  --frame-border: #2f3033;
   --resume-paper: #232426;
   --resume-paper-border: rgba(255, 255, 255, 0.08);
   --resume-paper-shadow:
@@ -2345,7 +2348,8 @@ body[data-page="project"] .nav-primary {
   justify-content: center;
   width: var(--nav-toolbar-height);
   height: var(--nav-toolbar-height);
-  border-radius: var(--nav-radius);
+  /* Softer than the shared nav radius, without going fully round. */
+  border-radius: 16px;
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
   box-shadow: var(--nav-shadow);
@@ -2725,7 +2729,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   justify-content: center;
   width: var(--nav-toolbar-height);
   height: var(--nav-toolbar-height);
-  border-radius: var(--nav-radius);
+  /* Matches the close button's softer corner. */
+  border-radius: 16px;
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
   box-shadow: var(--nav-shadow);
@@ -2822,6 +2827,17 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 .pc-menu-item:hover {
   background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+
+/* Menu rows lay their icons out inline, so the muted state swaps them with display
+   rather than the stacked opacity fade the toolbar button uses. */
+.pc-menu-item .nav-icon--volume-off,
+.pc-menu-item.is-muted .nav-icon--volume-on {
+  display: none;
+}
+
+.pc-menu-item.is-muted .nav-icon--volume-off {
+  display: block;
 }
 
 .pc-menu-item svg {
@@ -2932,7 +2948,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
     justify-content: center;
     gap: 0;
     padding: 0;
-    border-radius: var(--nav-radius);
+    /* Matches the close button's softer corner. */
+    border-radius: 16px;
     background: var(--nav-bg);
     border: var(--nav-border-width) solid var(--nav-glass-border);
     box-shadow: var(--nav-shadow);
@@ -3002,10 +3019,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-back {
   position: fixed;
   top: var(--nav-offset);
-  /* The label is centred inside a 48px-tall hit area, so its visible top edge
-     sits well below --nav-offset. Push it in by the same amount so the gap to the
-     left of the text matches the gap above it. */
-  left: calc(var(--nav-offset) + (var(--nav-toolbar-height) - 1em) / 2);
+  /* Mirrors the inset of the control opposite it in the top right. */
+  left: 24px;
   z-index: 300;
   display: inline-flex;
   align-items: center;
@@ -3066,7 +3081,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   max-width: 24em;
   margin: 18px auto 0;
   font-family: var(--sans);
-  font-size: clamp(14px, 1.55vw, 16px);
+  font-size: clamp(12px, 1.55vw, 14px);
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.02em;
@@ -3108,7 +3123,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   aspect-ratio: 16 / 10;
   margin: 0 0 22px;
   background: color-mix(in srgb, var(--text) 4%, var(--bg));
-  border: 2px solid #fff;
+  border: 2px solid var(--frame-border);
   border-radius: 16px;
   box-shadow: none;
   overflow: hidden;
@@ -3149,7 +3164,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 .pc-image--main.has-image {
-  border: 2px solid #fff;
+  border: 2px solid var(--frame-border);
 }
 
 .pc-image--main.pc-image--fit.has-image {
@@ -3183,6 +3198,10 @@ body[data-page="project"] .pc-next-pill.is-docked {
   border-radius: 14px;
 }
 
+/* Fades the screenshot itself out to white — it blends the UI in the image, not the
+   page behind it, so it stays white on the dark canvas too. The start colour is a
+   transparent *white* rather than `transparent`, which is rgba(0,0,0,0) and would
+   grey the midpoint. Bottom corners match the frame's inner radius. */
 .pc-image--video::after {
   content: "";
   position: absolute;
@@ -3191,6 +3210,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   bottom: 0;
   height: 22%;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
   pointer-events: none;
 }
 
@@ -3211,6 +3232,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   bottom: 0;
   height: 20%;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
   pointer-events: none;
 }
 
@@ -3297,7 +3320,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-lightbox-img {
   max-width: min(90vw, 820px);
   max-height: 90vh;
-  border: 10px solid #fff;
+  border: 10px solid var(--frame-border);
   border-radius: 6px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
   transform: scale(0.92);
@@ -3313,6 +3336,10 @@ body[data-page="project"] .pc-next-pill.is-docked {
   .pc-lightbox,
   .pc-lightbox-img {
     transition: none;
+  }
+
+  .pc-polaroid:active img {
+    transform: none;
   }
 }
 
@@ -3367,7 +3394,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Compound selector on purpose: .pc-subhead is defined further down the file with
    a `margin` shorthand, so a single-class rule here would lose the bottom gap. */
 .pc-subhead.pc-polaroids-caption {
-  margin: 16px auto 88px;
+  margin: 16px auto 80px;
 }
 
 .pc-polaroid {
@@ -3396,7 +3423,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: block;
   width: 100%;
   height: auto;
-  border: 8px solid #fff;
+  border: 8px solid var(--frame-border);
   border-radius: 12px;
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
   transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
@@ -3406,6 +3433,13 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-polaroid:focus-visible img {
   transform: scale(1.03);
   box-shadow: 0 20px 42px rgba(0, 0, 0, 0.24);
+}
+
+/* Press feedback: dips in quickly under the finger, then eases back out on release
+   via the slower transition on the image itself. */
+.pc-polaroid:active img {
+  transform: scale(0.95);
+  transition-duration: 0.1s;
 }
 
 @keyframes polaroidPop {
@@ -3434,7 +3468,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 .pc-desc {
-  max-width: 72%;
+  max-width: 66%;
   margin: 24px auto 72px;
   align-self: center;
   font-family: var(--sans);
@@ -3443,7 +3477,11 @@ body[data-page="project"] .pc-next-pill.is-docked {
   letter-spacing: -0.02em;
   line-height: 1.55;
   color: color-mix(in srgb, var(--text-body) 75%, transparent);
-  text-align: left;
+  text-align: justify;
+  /* Justified text needs word-breaking or the narrow column opens rivers of
+     whitespace between words. */
+  hyphens: auto;
+  -webkit-hyphens: auto;
 }
 
 /* Caption under an illustration — body size and italic, so it reads as a note on
@@ -3463,21 +3501,6 @@ body[data-page="project"] .pc-next-pill.is-docked {
   text-align: center;
 }
 
-/* This drawing sits tight to its bottom edge, so its caption needs more air
-   than the others to read as separate from the artwork. */
-body[data-project="ask-ai"] .pc-subhead {
-  margin-top: 34px;
-}
-
-body[data-project="customer-insights"] .pc-subhead {
-  width: 58%;
-  margin-top: 26px;
-}
-
-body[data-project="navigation"] .pc-subhead {
-  margin-top: 26px;
-}
-
 .pc-desc:first-of-type {
   margin-top: 32px;
   margin-bottom: 16px;
@@ -3494,6 +3517,104 @@ body[data-project="navigation"] .pc-subhead {
 /* Inline illustration between copy blocks — runs wider than the 70% text column
    so the drawing has room to read, but stops short of the 115% bleed the hero
    images take. */
+/* Line drawing with its paper cut out to alpha, so the page shows through. The ink
+   is pure black in the file, so dark mode just inverts it to white. */
+.pc-sketch {
+  /* Sized to the quote block, so the caption below shares that measure. */
+  width: 86%;
+  align-self: center;
+  margin: 8px 0 16px;
+  line-height: 0;
+}
+
+.pc-sketch img {
+  display: block;
+  /* 62% of the content column, expressed against the wider figure. */
+  width: 72%;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* Same size and face as the pull quote. line-height is explicit because .pc-sketch
+   zeroes it to keep the image flush. */
+/* Second line drops below the first with a gap of its own — a block with margin
+   rather than a doubled <br>, so the spacing doesn't ride on line-height. */
+.pc-sketch-caption .pc-lead-muted {
+  display: block;
+  margin-top: 0.55em;
+}
+
+.pc-sketch-caption {
+  margin: 22px auto 0;
+  font-family: var(--serif);
+  font-size: clamp(17px, 2.3vw, 23px);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--text-body);
+  text-align: center;
+}
+
+/* Both captions share one measure — a touch wider than the 72% copy column below —
+   expressed against each figure's own width so the two stay identical on the page. */
+.pc-sketch .pc-sketch-caption {
+  width: calc(100% * 82 / 86);
+  margin-inline: auto;
+}
+
+.pc-diagram .pc-sketch-caption {
+  width: calc(100% * 82 / 115);
+  margin-inline: auto;
+}
+
+/* Wide landscape drawing, so it runs to the full content column rather than the
+   86% the square sketches use. Its caption is re-derived from that width to stay
+   on the same 82% measure as the others. */
+body[data-project="customer-insights"] .pc-sketch {
+  width: 100%;
+  /* Extra air between the hero image and the drawing below it. */
+  margin-top: 48px;
+}
+
+body[data-project="customer-insights"] .pc-sketch .pc-sketch-caption {
+  width: 82%;
+}
+
+/* More air above the sticker faces, and the caption pulled in closer beneath them.
+   Narrower than the 86% default too: cropping the drawing's empty margins left the
+   artwork filling the figure, which scaled the faces up. */
+body[data-project="custom-stickers"] .pc-sketch {
+  width: 78%;
+  margin-top: 56px;
+}
+
+body[data-project="custom-stickers"] .pc-sketch .pc-sketch-caption {
+  width: calc(100% * 82 / 78);
+  margin-inline: calc((100% - 100% * 82 / 78) / 2);
+}
+
+/* Near-square drawing, so it runs narrower than the landscape ones. */
+body[data-project="automations"] .pc-sketch {
+  width: 52%;
+  margin-top: 48px;
+}
+
+body[data-project="automations"] .pc-sketch .pc-sketch-caption {
+  width: calc(100% * 82 / 52);
+  margin-inline: calc((100% - 100% * 82 / 52) / 2);
+}
+
+body[data-project="custom-stickers"] .pc-sketch-caption {
+  margin-top: 34px;
+}
+
+[data-theme="dark"] .pc-sketch img {
+  /* Inverting puts the linework at full white, which shouts against the dark
+     canvas — pull it back so it sits at a similar weight to the light theme. */
+  filter: invert(1);
+  opacity: 0.7;
+}
+
 /* Matches the hero images' bleed past the content column. No auto side margins:
    once the width exceeds the column they resolve to 0 and align-self can't
    centre, so the whole overhang lands on one side. */
@@ -3524,10 +3645,40 @@ body[data-project="navigation"] .pc-subhead {
   display: block;
 }
 
+/* Headline stat under the quote. The value counts up when it scrolls into view. */
+.pc-stat {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  text-align: center;
+}
+
+.pc-stat-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-light);
+}
+
+.pc-stat-value {
+  font-family: var(--serif);
+  font-size: clamp(42px, 6vw, 66px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  color: var(--text-body);
+  /* Fixed-width digits, so the number doesn't jitter as it counts. */
+  font-variant-numeric: tabular-nums;
+}
+
 .pc-rule {
   width: 100%;
   /* Same measure as .pc-desc, so the rules line up with the copy. */
-  max-width: 72%;
+  max-width: 66%;
   align-self: center;
   margin: 0 0 80px;
   border: 0;
@@ -3537,6 +3688,23 @@ body[data-project="navigation"] .pc-subhead {
   background-image: repeating-linear-gradient(to right,
     var(--resume-paper-border) 0 3px,
     transparent 3px 9px);
+}
+
+/* Stronger rules on the light canvas — the shared border tone is too faint against
+   paper. Overriding the property locally keeps the resume sheet and the homepage
+   rules on the original value. */
+html:not([data-theme]) .pc-rule,
+[data-theme="normal"] .pc-rule,
+html:not([data-theme]) .pc-divider,
+[data-theme="normal"] .pc-divider {
+  --resume-paper-border: rgba(0, 0, 0, 0.12);
+}
+
+/* One rhythm down the closing section: 80px between the caption, each rule, the
+   quote and the stat. A plain rule carries its gap below it only, so the one that
+   follows the quote has to supply its own gap above. */
+.pc-quote-reveal + .pc-rule {
+  margin-top: 80px;
 }
 
 .pc-quote-reveal {
