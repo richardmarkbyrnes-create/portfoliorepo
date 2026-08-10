@@ -601,17 +601,14 @@ function initScrollAnimations() {
 }
 
 function initBottomBlurVisibility() {
-  if (document.body.dataset.page !== 'home') return;
-
-  const closingTitle = document.querySelector('.home-closing-title');
-  if (!closingTitle) return;
-
   let ticking = false;
 
   function updateBottomBlur() {
-    const atPageBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
-    const pastTitle = closingTitle.getBoundingClientRect().bottom < window.innerHeight;
-    document.body.classList.toggle('bottom-blur-hidden', atPageBottom && pastTitle);
+    const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    // Fade the bottom blur out over the last 10% of the scroll. Pages too short
+    // to scroll keep it.
+    const inLastTenth = maxScroll > 0 && window.scrollY / maxScroll >= 0.9;
+    document.body.classList.toggle('bottom-blur-hidden', inLastTenth);
     ticking = false;
   }
 

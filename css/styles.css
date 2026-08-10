@@ -417,29 +417,181 @@ html:not([data-theme]) body::before,
   mix-blend-mode: soft-light;
 }
 
-body::after {
-  content: '';
+/* Progressive blur along the bottom edge. Eight stacked backdrop-filter layers,
+   each masked to a different band and doubling the previous blur radius, so the
+   page fades gradually into the edge instead of hitting one flat blur. Theme
+   neutral — the layers only sample whatever is behind them.
+   z-index 100 matches the old bottom fade; the nav/toolbar sit at 300. */
+.progressive-blur {
   position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 64px;
   z-index: 100;
+  right: 0;
+  left: 0;
+  height: 200px;
+  overflow: hidden;
   pointer-events: none;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  background: linear-gradient(
-    to top,
-    color-mix(in srgb, var(--bg) 70%, transparent) 0%,
-    color-mix(in srgb, var(--bg) 28%, transparent) 50%,
-    transparent 100%
-  );
-  -webkit-mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
-  mask-image: linear-gradient(to top, #000 0%, #000 30%, transparent 100%);
-  transition: opacity 0.3s ease, visibility 0.3s ease, background 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-body.bottom-blur-hidden::after {
+.progressive-blur.bottom-blur {
+  --blur-direction: to top;
+  bottom: -32px;
+}
+
+.progressive-blur .layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.progressive-blur .blur-1 {
+  z-index: 1;
+  -webkit-backdrop-filter: blur(0.078125px);
+  backdrop-filter: blur(0.078125px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 87.5%,
+    #000 100%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 87.5%,
+    #000 100%
+  );
+}
+
+.progressive-blur .blur-2 {
+  z-index: 2;
+  -webkit-backdrop-filter: blur(0.15625px);
+  backdrop-filter: blur(0.15625px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 75%,
+    #000 87.5% 100%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 75%,
+    #000 87.5% 100%
+  );
+}
+
+.progressive-blur .blur-3 {
+  z-index: 3;
+  -webkit-backdrop-filter: blur(0.3125px);
+  backdrop-filter: blur(0.3125px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 62.5%,
+    #000 75% 87.5%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 62.5%,
+    #000 75% 87.5%,
+    transparent 100%
+  );
+}
+
+.progressive-blur .blur-4 {
+  z-index: 4;
+  -webkit-backdrop-filter: blur(0.625px);
+  backdrop-filter: blur(0.625px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 50%,
+    #000 62.5% 75%,
+    transparent 87.5%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 50%,
+    #000 62.5% 75%,
+    transparent 87.5%
+  );
+}
+
+.progressive-blur .blur-5 {
+  z-index: 5;
+  -webkit-backdrop-filter: blur(1.25px);
+  backdrop-filter: blur(1.25px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 37.5%,
+    #000 50% 62.5%,
+    transparent 75%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 37.5%,
+    #000 50% 62.5%,
+    transparent 75%
+  );
+}
+
+.progressive-blur .blur-6 {
+  z-index: 6;
+  -webkit-backdrop-filter: blur(2.5px);
+  backdrop-filter: blur(2.5px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 25%,
+    #000 37.5% 50%,
+    transparent 62.5%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 25%,
+    #000 37.5% 50%,
+    transparent 62.5%
+  );
+}
+
+.progressive-blur .blur-7 {
+  z-index: 7;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 12.5%,
+    #000 25% 37.5%,
+    transparent 50%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 12.5%,
+    #000 25% 37.5%,
+    transparent 50%
+  );
+}
+
+.progressive-blur .blur-8 {
+  z-index: 8;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 0%,
+    #000 12.5% 25%,
+    transparent 37.5%
+  );
+  mask-image: linear-gradient(
+    var(--blur-direction),
+    transparent 0%,
+    #000 12.5% 25%,
+    transparent 37.5%
+  );
+}
+
+@media (max-width: 680px) {
+  .progressive-blur {
+    height: 160px;
+  }
+}
+
+/* Reuses the existing scroll flag set by initBottomBlurVisibility(). */
+body.bottom-blur-hidden .progressive-blur.bottom-blur {
   opacity: 0;
   visibility: hidden;
 }
