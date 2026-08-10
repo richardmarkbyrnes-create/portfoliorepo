@@ -2131,14 +2131,31 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   box-sizing: border-box;
   transition:
     border-color 0.2s ease,
-    background-color 0.2s ease;
+    background-color 0.2s ease,
+    opacity 0.2s ease;
 }
 
 .work-column--interactive .work-row-main {
   cursor: pointer;
 }
 
-.work-column--interactive .work-row-main:hover {
+/* Dims only while a row is actually under the pointer — keyed on :has() rather than
+   the column's own :hover, which would also fire in the gaps and margins around the
+   list. The hovered row then overrides back to full strength. */
+.work-column--interactive:has(.work-row-main:hover) .work-row-main,
+.work-column--interactive:has(.work-row-main:focus-visible) .work-row-main {
+  opacity: 0.5;
+}
+
+/* Matches the dim rule's specificity — :has() counts its argument, so a plain
+   `.work-row-main:hover` would lose to it and the hovered row would dim too. */
+.work-column--interactive:has(.work-row-main:hover) .work-row-main:hover,
+.work-column--interactive:has(.work-row-main:focus-visible) .work-row-main:focus-visible {
+  opacity: 1;
+}
+
+.work-column--interactive .work-row-main:hover,
+.work-column--interactive .work-row-main:focus-visible {
   border-color: transparent;
   background: color-mix(in srgb, var(--text) 4%, transparent);
 }
@@ -3538,10 +3555,12 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Same size and face as the pull quote. line-height is explicit because .pc-sketch
    zeroes it to keep the image flush. */
 /* Second line drops below the first with a gap of its own — a block with margin
-   rather than a doubled <br>, so the spacing doesn't ride on line-height. */
+   rather than a doubled <br>, so the spacing doesn't ride on line-height. Italic
+   here only; the same class stays upright in the project headlines. */
 .pc-sketch-caption .pc-lead-muted {
   display: block;
   margin-top: 0.55em;
+  font-style: italic;
 }
 
 .pc-sketch-caption {
