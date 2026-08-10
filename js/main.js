@@ -605,10 +605,11 @@ function initBottomBlurVisibility() {
 
   function updateBottomBlur() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    // Fade the bottom blur out over the last 10% of the scroll. Pages too short
-    // to scroll keep it.
-    const inLastTenth = maxScroll > 0 && window.scrollY / maxScroll >= 0.9;
-    document.body.classList.toggle('bottom-blur-hidden', inLastTenth);
+    // Hidden at rest, fades in once the page starts moving, then fades out over
+    // the last 10% of the scroll. Pages too short to scroll never show it.
+    const atTop = window.scrollY < 24;
+    const inLastTenth = maxScroll <= 0 || window.scrollY / maxScroll >= 0.9;
+    document.body.classList.toggle('bottom-blur-visible', !atTop && !inLastTenth);
     ticking = false;
   }
 
