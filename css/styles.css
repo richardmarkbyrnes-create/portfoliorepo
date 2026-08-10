@@ -3756,6 +3756,16 @@ body[data-project="customer-insights"] .pc-sketch .pc-sketch-caption {
   width: 82%;
 }
 
+/* Busier and wider than its pair below, so it runs a touch narrower to keep the
+   linework at a similar weight. */
+body[data-project="customer-insights"] .pc-sketch--inputs img {
+  width: 56%;
+}
+
+body[data-project="customer-insights"] .pc-sketch--inputs .pc-sketch-caption {
+  margin-top: 40px;
+}
+
 /* More air above the sticker faces, and the caption pulled in closer beneath them.
    Narrower than the 86% default too: cropping the drawing's empty margins left the
    artwork filling the figure, which scaled the faces up. */
