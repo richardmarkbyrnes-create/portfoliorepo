@@ -590,10 +590,17 @@ html:not([data-theme]) body::before,
   }
 }
 
-/* Reuses the existing scroll flag set by initBottomBlurVisibility(). */
-body.bottom-blur-hidden .progressive-blur.bottom-blur {
+/* Hidden until the page scrolls. initBottomBlurVisibility() adds the flag once
+   past the top and drops it again over the last 10% — defaulting to hidden
+   avoids a flash before main.js runs. */
+.progressive-blur.bottom-blur {
   opacity: 0;
   visibility: hidden;
+}
+
+body.bottom-blur-visible .progressive-blur.bottom-blur {
+  opacity: 1;
+  visibility: visible;
 }
 
 a {
