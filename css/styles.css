@@ -3606,6 +3606,19 @@ body[data-project="automations"] .pc-sketch .pc-sketch-caption {
   margin-inline: calc((100% - 100% * 82 / 52) / 2);
 }
 
+/* Pulled in from the shared 115% bleed. The captions are re-derived from the new
+   figure width so they stay on the same 82% measure as every other caption. */
+body[data-project="automations"] .pc-diagram,
+body[data-project="visualisations"] .pc-diagram {
+  width: 100%;
+}
+
+body[data-project="automations"] .pc-diagram .pc-sketch-caption,
+body[data-project="visualisations"] .pc-diagram .pc-sketch-caption {
+  width: 82%;
+  margin-inline: auto;
+}
+
 body[data-project="custom-stickers"] .pc-sketch-caption {
   margin-top: 34px;
 }
