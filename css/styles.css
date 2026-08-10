@@ -430,7 +430,6 @@ html:not([data-theme]) body::before,
   height: 200px;
   overflow: hidden;
   pointer-events: none;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
 .progressive-blur.bottom-blur {
@@ -593,14 +592,30 @@ html:not([data-theme]) body::before,
 /* Hidden until the page scrolls. initBottomBlurVisibility() adds the flag once
    past the top and drops it again over the last 10% — defaulting to hidden
    avoids a flash before main.js runs. */
+/* The fade lives on the layers, never on this container: any opacity below 1 (or
+   a will-change hinting at one) turns an ancestor into a backdrop root, and the
+   layers then sample an empty backdrop instead of the page — the blur vanishes.
+   visibility is safe, and steps only after the fade so it can't snap mid-ramp. */
 .progressive-blur.bottom-blur {
-  opacity: 0;
   visibility: hidden;
+  transition: visibility 0s linear 0.9s;
 }
 
 body.bottom-blur-visible .progressive-blur.bottom-blur {
-  opacity: 1;
   visibility: visible;
+  transition: visibility 0s linear 0s;
+}
+
+/* Eased in gently at both ends. The decelerating curve used elsewhere on the
+   site reaches most of its opacity in the first quarter of the ramp, which on a
+   stack of backdrop filters reads as a pop rather than a fade. */
+.progressive-blur.bottom-blur .layer {
+  opacity: 0;
+  transition: opacity 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.bottom-blur-visible .progressive-blur.bottom-blur .layer {
+  opacity: 1;
 }
 
 a {
@@ -3754,15 +3769,23 @@ body[data-project="custom-stickers"] .pc-sketch .pc-sketch-caption {
   margin-inline: calc((100% - 100% * 82 / 78) / 2);
 }
 
-/* Near-square drawing, so it runs narrower than the landscape ones. */
+/* Wide landscape drawing, so it runs to the full content column like the
+   Canvas Insights one rather than the 86% the square sketches use. */
 body[data-project="automations"] .pc-sketch {
-  width: 52%;
+  width: 100%;
   margin-top: 48px;
 }
 
+/* Runs a little narrower than the shared 72% — the plug is a long, thin subject
+   and fills its width more than the other drawings do. */
+body[data-project="automations"] .pc-sketch img {
+  width: 62%;
+}
+
 body[data-project="automations"] .pc-sketch .pc-sketch-caption {
-  width: calc(100% * 82 / 52);
-  margin-inline: calc((100% - 100% * 82 / 52) / 2);
+  width: 82%;
+  margin-top: 40px;
+  margin-inline: auto;
 }
 
 /* Pulled in from the shared 115% bleed. The captions are re-derived from the new
