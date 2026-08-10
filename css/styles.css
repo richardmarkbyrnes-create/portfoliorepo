@@ -2543,11 +2543,6 @@ body[data-page="project"] .nav-primary {
 .pc-close svg {
   width: 20px;
   height: 20px;
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.pc-close:hover svg {
-  transform: rotate(90deg);
 }
 
 .pc-back-company,
@@ -3084,7 +3079,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   .pc-title-center {
     display: none;
     position: fixed;
-    top: var(--nav-offset);
+    top: 16px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 300;
@@ -3111,13 +3106,15 @@ body[data-page="project"] .pc-next-pill.is-docked {
   .pc-menu-wrap {
     display: block;
     position: fixed;
-    top: var(--nav-offset);
+    top: 16px;
     right: 16px;
     z-index: 310;
   }
 
   .pc-back {
     left: 16px;
+    /* Matches the 16px inset on the menu button opposite, top and side. */
+    top: 16px;
     width: var(--nav-toolbar-height);
     justify-content: center;
     gap: 0;
@@ -3297,7 +3294,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   margin: 0 0 22px;
   background: color-mix(in srgb, var(--text) 4%, var(--bg));
   border: 2px solid var(--frame-border);
-  border-radius: 16px;
+  border-radius: 10px;
   box-shadow: none;
   overflow: hidden;
 }
@@ -3368,7 +3365,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: block;
   /* Video is composited, so it ignores the parent's rounded overflow clip —
      round the element itself so its corners match the frame. */
-  border-radius: 14px;
+  border-radius: 8px;
 }
 
 /* Fades the screenshot itself out to white — it blends the UI in the image, not the
@@ -3383,8 +3380,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   bottom: 0;
   height: 22%;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   pointer-events: none;
 }
 
@@ -3405,8 +3402,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   bottom: 0;
   height: 20%;
   background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
-  border-bottom-left-radius: 14px;
-  border-bottom-right-radius: 14px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
   pointer-events: none;
 }
 
@@ -3825,14 +3822,49 @@ body[data-project="automations"] .pc-sketch .pc-sketch-caption {
 /* Pulled in from the shared 115% bleed. The captions are re-derived from the new
    figure width so they stay on the same 82% measure as every other caption. */
 body[data-project="automations"] .pc-diagram,
-body[data-project="visualisations"] .pc-diagram {
+body[data-project="custom-stickers"] .pc-diagram {
   width: 100%;
 }
 
 body[data-project="automations"] .pc-diagram .pc-sketch-caption,
-body[data-project="visualisations"] .pc-diagram .pc-sketch-caption {
+body[data-project="custom-stickers"] .pc-diagram .pc-sketch-caption {
   width: 82%;
   margin-inline: auto;
+}
+
+/* The hero above it runs to 175%, so it needs real air to separate from it. */
+body[data-project="visualisations"] .pc-sketch--ledger {
+  margin-top: 56px;
+}
+
+body[data-project="visualisations"] .pc-sketch--ledger .pc-sketch-caption {
+  margin-top: 40px;
+}
+
+body[data-project="developer-tools"] .pc-sketch--ide {
+  margin-top: 56px;
+}
+
+body[data-project="developer-tools"] .pc-sketch--ide img {
+  width: 84%;
+}
+
+body[data-project="developer-tools"] .pc-sketch--ide .pc-sketch-caption {
+  margin-top: 40px;
+}
+
+/* Sits between two blocks of copy, so it takes the same air as the other
+   mid-page drawings. */
+body[data-project="visualisations"] .pc-sketch--graph {
+  margin-top: 56px;
+}
+
+body[data-project="visualisations"] .pc-sketch--graph img {
+  width: 86%;
+}
+
+body[data-project="visualisations"] .pc-sketch--graph .pc-sketch-caption {
+  margin-top: 40px;
 }
 
 body[data-project="custom-stickers"] .pc-sketch-caption {

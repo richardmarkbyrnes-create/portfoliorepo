@@ -498,7 +498,7 @@
         let hintTimer = null;
         const revealNext = () => {
           const nearBottom = window.innerHeight + window.scrollY
-            >= document.documentElement.scrollHeight - 420;
+            >= document.documentElement.scrollHeight - 760;
           nextBtn.classList.toggle('is-visible', nearBottom);
 
           if (hint && nearBottom && !localStorage.getItem(HINT_KEY)) {
