@@ -3752,6 +3752,15 @@ body[data-project="ask-ai"] .pc-sketch--network .pc-sketch-caption {
   margin-top: 40px;
 }
 
+/* The hero above it runs to 175%, so it needs real air to separate from it. */
+body[data-project="navigation"] .pc-sketch--problem {
+  margin-top: 56px;
+}
+
+body[data-project="navigation"] .pc-sketch--problem .pc-sketch-caption {
+  margin-top: 40px;
+}
+
 /* Wide landscape drawing, so it runs to the full content column rather than the
    86% the square sketches use. Its caption is re-derived from that width to stay
    on the same 82% measure as the others. */
