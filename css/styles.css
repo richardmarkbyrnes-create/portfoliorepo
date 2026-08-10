@@ -2131,31 +2131,14 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   box-sizing: border-box;
   transition:
     border-color 0.2s ease,
-    background-color 0.2s ease,
-    opacity 0.2s ease;
+    background-color 0.2s ease;
 }
 
 .work-column--interactive .work-row-main {
   cursor: pointer;
 }
 
-/* Dims only while a row is actually under the pointer — keyed on :has() rather than
-   the column's own :hover, which would also fire in the gaps and margins around the
-   list. The hovered row then overrides back to full strength. */
-.work-column--interactive:has(.work-row-main:hover) .work-row-main,
-.work-column--interactive:has(.work-row-main:focus-visible) .work-row-main {
-  opacity: 0.5;
-}
-
-/* Matches the dim rule's specificity — :has() counts its argument, so a plain
-   `.work-row-main:hover` would lose to it and the hovered row would dim too. */
-.work-column--interactive:has(.work-row-main:hover) .work-row-main:hover,
-.work-column--interactive:has(.work-row-main:focus-visible) .work-row-main:focus-visible {
-  opacity: 1;
-}
-
-.work-column--interactive .work-row-main:hover,
-.work-column--interactive .work-row-main:focus-visible {
+.work-column--interactive .work-row-main:hover {
   border-color: transparent;
   background: color-mix(in srgb, var(--text) 4%, transparent);
 }
