@@ -3710,12 +3710,11 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 /* Same size and face as the pull quote. line-height is explicit because .pc-sketch
    zeroes it to keep the image flush. */
-/* Second line drops below the first with a gap of its own — a block with margin
-   rather than a doubled <br>, so the spacing doesn't ride on line-height. Italic
-   here only; the same class stays upright in the project headlines. */
+/* Starts its own line with no gap of its own — the break comes from the block,
+   the spacing from line-height alone. Italic here only; the same class stays
+   upright in the project headlines. */
 .pc-sketch-caption .pc-lead-muted {
   display: block;
-  margin-top: 0.55em;
   font-style: italic;
 }
 
@@ -3730,8 +3729,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   text-align: center;
 }
 
-/* Both captions share one measure — a touch wider than the 72% copy column below —
-   expressed against each figure's own width so the two stay identical on the page. */
+/* Every caption shares one measure — a touch wider than the copy column below —
+   expressed against each figure's own width so they stay identical on the page. */
 .pc-sketch .pc-sketch-caption {
   width: calc(100% * 82 / 86);
   margin-inline: auto;
@@ -3740,6 +3739,17 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-diagram .pc-sketch-caption {
   width: calc(100% * 82 / 115);
   margin-inline: auto;
+}
+
+/* Sits between two blocks of copy rather than under the hero image, so it takes
+   more air above than the shared 8px — and more between the drawing and its own
+   caption. */
+body[data-project="ask-ai"] .pc-sketch--network {
+  margin-top: 56px;
+}
+
+body[data-project="ask-ai"] .pc-sketch--network .pc-sketch-caption {
+  margin-top: 40px;
 }
 
 /* Wide landscape drawing, so it runs to the full content column rather than the
@@ -3765,12 +3775,18 @@ body[data-project="customer-insights"] .pc-sketch--inputs .pc-sketch-caption {
   margin-top: 40px;
 }
 
-/* More air above the sticker faces, and the caption pulled in closer beneath them.
-   Narrower than the 86% default too: cropping the drawing's empty margins left the
-   artwork filling the figure, which scaled the faces up. */
+/* More air above the plant, and the caption pulled in closer beneath it.
+   Narrower than the 86% default too: cropping the drawing's empty margins left
+   the artwork filling the figure. */
 body[data-project="custom-stickers"] .pc-sketch {
   width: 78%;
   margin-top: 56px;
+}
+
+/* A tall portrait subject, so it runs far narrower than the shared 72% — that
+   width would make it about as tall as the content column is wide. */
+body[data-project="custom-stickers"] .pc-sketch img {
+  width: 40%;
 }
 
 body[data-project="custom-stickers"] .pc-sketch .pc-sketch-caption {
