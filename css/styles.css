@@ -3193,8 +3193,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-back {
   position: fixed;
   top: var(--nav-offset);
-  /* Mirrors the inset of the control opposite it in the top right. */
-  left: 24px;
+  left: 34px;
   z-index: 300;
   display: inline-flex;
   align-items: center;
