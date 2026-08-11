@@ -851,6 +851,102 @@ function initInProgressStatus() {
   });
 }
 
+// "in sunny Amsterdam" — swapped for the real weather there. Open-Meteo needs no
+// key and sends CORS headers, so this is a plain fetch with no proxy.
+const WEATHER_URL =
+  'https://api.open-meteo.com/v1/forecast?latitude=52.3676&longitude=4.9041&current=weather_code,temperature_2m';
+const WEATHER_CACHE_KEY = 'portfolio-amsterdam-weather';
+const WEATHER_CACHE_MS = 15 * 60 * 1000;
+
+// WMO codes, collapsed to the three daytime words. Snow and thunder land under
+// "rainy" — it's the closest of the options, and both are rare enough here.
+function weatherWordFromCode(code) {
+  if (code <= 1) return 'sunny';
+  if (code <= 48) return 'cloudy';
+  return 'rainy';
+}
+
+// Amsterdam's clock, not the visitor's — the sentence is about where Richard is.
+function amsterdamTime() {
+  return new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Amsterdam',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date());
+}
+
+// CEST in summer, CET in winter — read off the date rather than hardcoded.
+function amsterdamZone() {
+  const parts = new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'Europe/Amsterdam',
+    timeZoneName: 'short',
+  }).formatToParts(new Date());
+  return parts.find((part) => part.type === 'timeZoneName')?.value || 'CET';
+}
+
+function isAmsterdamNight() {
+  return Number(amsterdamTime().slice(0, 2)) >= 22 || Number(amsterdamTime().slice(0, 2)) < 6;
+}
+
+function initHeroWeather() {
+  const el = document.getElementById('hero-weather');
+  if (!el) return;
+
+  const word = el.querySelector('.hero-weather-word') || el;
+  const tip = document.createElement('span');
+  tip.className = 'hero-weather-tip';
+  tip.setAttribute('aria-hidden', 'true');
+  el.appendChild(tip);
+
+  // Time is stamped on hover rather than on load, so it's right whenever it's read.
+  let temperature = null;
+  const refreshTip = () => {
+    const stamp = `${amsterdamTime()} ${amsterdamZone()}`;
+    tip.textContent = temperature === null
+      ? stamp
+      : `${Math.round(temperature)}°C · ${stamp}`;
+  };
+  el.addEventListener('mouseenter', refreshTip);
+  el.addEventListener('focus', refreshTip);
+  refreshTip();
+
+  const apply = (reading) => {
+    temperature = reading.temp;
+    word.textContent = isAmsterdamNight() ? 'sleepy' : reading.word;
+    refreshTip();
+  };
+
+  // Show a recent reading immediately, so the word doesn't change under the
+  // reader's eye on every navigation.
+  let cached = null;
+  try {
+    cached = JSON.parse(sessionStorage.getItem(WEATHER_CACHE_KEY) || 'null');
+  } catch (error) {
+    cached = null;
+  }
+  if (cached && Date.now() - cached.at < WEATHER_CACHE_MS) {
+    apply(cached);
+    return;
+  }
+
+  fetch(WEATHER_URL)
+    .then((response) => (response.ok ? response.json() : Promise.reject(response.status)))
+    .then((data) => {
+      const code = data?.current?.weather_code;
+      if (typeof code !== 'number') return;
+      const reading = { word: weatherWordFromCode(code), temp: data.current.temperature_2m ?? null };
+      apply(reading);
+      try {
+        sessionStorage.setItem(WEATHER_CACHE_KEY, JSON.stringify({ ...reading, at: Date.now() }));
+      } catch (error) {
+        /* private mode — the word still updated, it just won't be remembered */
+      }
+    })
+    // Offline or rate-limited: the markup's "sunny" stands, and the tip shows the time alone.
+    .catch(() => {});
+}
+
 initThemeSwitcher();
 initVolumeToggle();
 initExperienceHoverSound();
@@ -868,5 +964,6 @@ initContactCopy();
 initClickSpark();
 initPageTurnSound();
 initInProgressStatus();
+initHeroWeather();
 updateClock();
 setInterval(updateClock, 1000);

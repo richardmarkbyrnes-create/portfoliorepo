@@ -6198,3 +6198,42 @@ body.page-is-leaving .top-blur {
     flex-basis: 148px;
   }
 }
+
+/* "in sunny Amsterdam" — the word reflects the real weather there, with the
+   reading behind a hover. The dotted rule is the only hint that it's live. */
+.hero-weather {
+  position: relative;
+  border-bottom: 1px dotted color-mix(in srgb, var(--text-light) 55%, transparent);
+  cursor: help;
+}
+
+.hero-weather-tip {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  translate: -50% 4px;
+  z-index: 20;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: var(--nav-bg);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-style: normal;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--text-nav);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.22s ease, translate 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-weather:hover .hero-weather-tip,
+.hero-weather:focus-visible .hero-weather-tip {
+  opacity: 1;
+  translate: -50% 0;
+}
