@@ -1656,7 +1656,8 @@ body[data-page="about"] {
   pointer-events: none;
 }
 
-.contact-item--link:hover .contact-external {
+.contact-item--link:hover .contact-external,
+.contact-item--email:hover .contact-external {
   opacity: 0.55;
   transform: translate(0, 0);
 }
@@ -1664,59 +1665,6 @@ body[data-page="about"] {
 .contact-external svg {
   width: 14px;
   height: 14px;
-}
-
-.contact-copy {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 18px;
-  height: 18px;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--text-light);
-  cursor: pointer;
-  opacity: 0;
-  transform: translate(-3px, 3px);
-  transition: opacity 0.25s ease, transform 0.25s ease, color 0.2s ease;
-}
-
-.contact-item:hover .contact-copy {
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.contact-copy:hover {
-  color: var(--text);
-}
-
-.contact-copy.is-copied {
-  color: #34d399;
-  opacity: 1;
-  transform: translate(0, 0);
-}
-
-.contact-item:hover .contact-copy.is-fading,
-.contact-copy.is-fading {
-  opacity: 0;
-}
-
-.contact-copy-icon {
-  width: 16px;
-  height: 16px;
-}
-
-.contact-copy .contact-copy-icon--check {
-  display: none;
-}
-
-.contact-copy.is-copied .contact-copy-icon--mail {
-  display: none;
-}
-
-.contact-copy.is-copied .contact-copy-icon--check {
-  display: inline;
 }
 
 .work-column--about .work-column-inner {
