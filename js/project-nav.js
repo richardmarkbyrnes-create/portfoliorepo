@@ -60,14 +60,13 @@
         return;
       }
 
-      function go() {
-        navigateWithFade(projectHref(slug));
-      }
-      row.addEventListener('click', go);
-      row.addEventListener('keydown', (event) => {
-        if (event.key !== 'Enter' && event.key !== ' ') return;
+      // The row is a real link, so it works with JS off, opens in a new tab on
+      // cmd-click, and needs no key handling — Enter activates it natively. The
+      // handler only exists to swap the jump for the fade.
+      row.addEventListener('click', (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
         event.preventDefault();
-        go();
+        navigateWithFade(projectHref(slug));
       });
     });
   }
