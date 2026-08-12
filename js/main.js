@@ -745,55 +745,6 @@ function initFooter() {
   setInterval(updateFooterTime, 1000);
 }
 
-async function copyText(text) {
-  try {
-    await navigator.clipboard.writeText(text);
-  } catch (err) {
-    const ta = document.createElement('textarea');
-    ta.value = text;
-    ta.setAttribute('readonly', '');
-    ta.style.position = 'absolute';
-    ta.style.left = '-9999px';
-    document.body.appendChild(ta);
-    ta.select();
-    try { document.execCommand('copy'); } catch (e) { /* ignore */ }
-    document.body.removeChild(ta);
-  }
-}
-
-function initContactCopy() {
-  document.querySelectorAll('.contact-copy').forEach((btn) => {
-    const item = btn.closest('.contact-item');
-    const link = item ? item.querySelector('.contact-link') : null;
-    let fadeTimer = null;
-
-    function reset() {
-      if (fadeTimer) {
-        clearTimeout(fadeTimer);
-        fadeTimer = null;
-      }
-      btn.classList.remove('is-copied', 'is-fading');
-    }
-
-    async function handleCopy(event) {
-      event.preventDefault();
-      await copyText(btn.dataset.copy || '');
-
-      if (fadeTimer) clearTimeout(fadeTimer);
-      btn.classList.remove('is-fading');
-      btn.classList.add('is-copied');
-      fadeTimer = setTimeout(() => {
-        btn.classList.add('is-fading');
-      }, 900);
-    }
-
-    btn.addEventListener('click', handleCopy);
-    if (link) link.addEventListener('click', handleCopy);
-    if (item) item.addEventListener('mouseleave', reset);
-  });
-}
-
-
 function initInProgressStatus() {
   if (document.body.dataset.page !== 'home') return;
   const row = document.querySelector('.work-row-main--wip');
@@ -971,7 +922,6 @@ initDogPhotoPopovers();
 initProjectPreview();
 initCountUp();
 initFooter();
-initContactCopy();
 initClickSpark();
 initPageTurnSound();
 initInProgressStatus();
