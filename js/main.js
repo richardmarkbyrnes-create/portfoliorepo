@@ -387,9 +387,9 @@ function initDogPhotoPopover(triggerSelector, popoverId) {
   function showPopover(event) {
     movePopover(event.clientX, event.clientY);
     popover.classList.add('is-visible');
-    popover.setAttribute('aria-hidden', 'false');
     restartGif(image);
-    if (video) {
+    // Looping footage is continuous motion — hold the first frame instead.
+    if (video && !prefersReducedMotion()) {
       video.currentTime = 0;
       video.play().catch(() => {});
     }
@@ -889,6 +889,17 @@ function isAmsterdamNight() {
   return Number(amsterdamTime().slice(0, 2)) >= 22 || Number(amsterdamTime().slice(0, 2)) < 6;
 }
 
+// Hero footage carries the autoplay attribute, which CSS can't reach — pause it
+// and drop the attribute so nothing restarts it.
+function initReducedMotionVideo() {
+  if (!prefersReducedMotion()) return;
+  document.querySelectorAll('video[autoplay]').forEach((video) => {
+    video.removeAttribute('autoplay');
+    video.removeAttribute('loop');
+    video.pause();
+  });
+}
+
 function initHeroWeather() {
   const el = document.getElementById('hero-weather');
   if (!el) return;
@@ -965,5 +976,6 @@ initClickSpark();
 initPageTurnSound();
 initInProgressStatus();
 initHeroWeather();
+initReducedMotionVideo();
 updateClock();
 setInterval(updateClock, 1000);
