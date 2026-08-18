@@ -172,9 +172,9 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     images: [
-      'images/visualisations-hero.png?v=2',
+      'images/visualisations-hero.png?v=3',
     ],
-    heroAspect: '2408 / 1248',
+    heroAspect: '2842 / 1856',
     heroFit: 'contain',
     teamMembers: [],
     paragraphs: [
@@ -193,9 +193,9 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
-      'images/developer-tools-hero.png',
+      'images/developer-tools-hero.png?v=2',
     ],
-    heroAspect: '1342 / 690',
+    heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
       'SAP development had always happened inside heavy proprietary tooling, so bringing Fiori Tools to VS Code came with an adoption problem. Developers are protective of their workspace, and anything that reads as an enterprise bolt-on gets uninstalled — however good the underlying utilities are.',
@@ -213,9 +213,9 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
     images: [
-      'images/sap-fiori-hero.png',
+      'images/sap-fiori-hero.png?v=2',
     ],
-    heroAspect: '1999 / 1033',
+    heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
       'As Fiori Tools grew, the design files came apart. Designers were re-colouring mockups by hand to check how a feature held up in light, dark and high-contrast themes, and engineers couldn’t find the token that matched what they’d been sent.',

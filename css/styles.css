@@ -3871,6 +3871,26 @@ body[data-project="custom-stickers"] .pc-sketch-caption {
 }
 
 /* Headline stat under the quote. The value counts up when it scrolls into view. */
+/* Full-width detail shot between the copy and the quote. Framed like the hero
+   images so it reads as part of the same set. */
+.pc-detail {
+  width: 196%;
+  height: auto;
+  align-self: center;
+  /* Extra air below: the divider that used to separate this from the quote is
+     gone, so the gap has to do that work on its own. */
+  margin: 8px 0 72px;
+  border: 2px solid var(--frame-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .pc-detail {
+    width: 100%;
+  }
+}
+
 .pc-stat {
   align-self: center;
   display: flex;
