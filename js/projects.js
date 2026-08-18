@@ -36,13 +36,9 @@ window.PROJECTS = {
     team: 'Miro · Growth Adoption',
     images: [
       'images/custom-stickers-hero.png',
-      'images/custom-stickers-panel-1.png',
-      'images/custom-stickers-panel-2.png',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
-    // Hover preview only — the hero is a still, so the stickers animate over it.
-    previewImage: 'images/custom-stickers-preview.gif',
     polaroids: [
       { src: 'images/sticker-photo-1.jpg', r: -5 },
       { src: 'images/sticker-photo-2.jpg', r: 4 },
@@ -99,8 +95,6 @@ window.PROJECTS = {
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
-    // Hover preview only — this project's hero is a video, so it needs a still.
-    previewImage: 'images/ask-insights-preview.png',
     teamMembers: [
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
       { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
@@ -156,9 +150,9 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     images: [
-      'images/navigation-hero.png?v=2',
+      'images/navigation-hero.png?v=3',
     ],
-    heroAspect: '2476 / 1302',
+    heroAspect: '2842 / 1856',
     heroFit: 'contain',
     teamMembers: [],
     paragraphs: [
