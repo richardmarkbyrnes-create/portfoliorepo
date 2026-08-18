@@ -68,6 +68,8 @@ window.PROJECTS = {
     images: [
       'images/automations-hero.png',
     ],
+    heroAspect: '2842 / 1856',
+    heroFit: 'contain',
     paragraphs: [
       'Product managers and researchers liked the insights but were tired of logging in every week to re-run the same handful of searches — feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it.',
       'Automations turns those repeat searches into scheduled reports, delivered wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent the time with engineering on making the scheduling and delivery dull and reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too.',
@@ -92,6 +94,11 @@ window.PROJECTS = {
     headlineAccent: 'Answers',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
+    images: [
+      'images/ask-ai-hero.png',
+    ],
+    heroAspect: '2842 / 1856',
+    heroFit: 'contain',
     // Hover preview only — this project's hero is a video, so it needs a still.
     previewImage: 'images/ask-insights-preview.png',
     teamMembers: [
@@ -129,7 +136,7 @@ window.PROJECTS = {
     images: [
       'images/canvas-insights-hero.png',
     ],
-    heroAspect: '2410 / 1342',
+    heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
       'Good customer insight tends to stay wherever it was collected. Teams running workshops in Miro were copy-pasting findings across as plain sticky notes, which stripped out the quotes, metadata and context that made them worth citing in the first place — leaving a workshop full of claims nobody could trace.',
