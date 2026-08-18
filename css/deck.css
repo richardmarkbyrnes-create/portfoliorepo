@@ -1,0 +1,732 @@
+/* Slide deck — unlisted page, reuses the site's tokens and faces from styles.css
+   but lays out one full-viewport slide at a time instead of a scrolling page. */
+
+body[data-page="deck"] {
+  height: 100%;
+  overflow: hidden;
+}
+
+html:has(body[data-page="deck"]) {
+  height: 100%;
+}
+
+.deck {
+  /* Beat before a slide starts moving — one number drives the whole sequence. */
+  --deck-delay: 0.5s;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.slide {
+  /* styles.css sets body to 500, which the descriptive copy was inheriting.
+     Reset here so only the deliberate 500s (kicker, table, links) stand out. */
+  font-weight: 400;
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 22px;
+  width: 100%;
+  max-width: 940px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 96px 40px 120px;
+  box-sizing: border-box;
+  opacity: 0;
+  visibility: hidden;
+  /* Defocus on the way out and in — the blur carries the movement, so the
+     travel can stay small. */
+  filter: blur(14px);
+  transform: scale(0.99);
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    filter 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    /* Held visible through the delay and the fade, so the outgoing slide
+       doesn't blank out while the next one waits its turn. */
+    visibility 0s linear calc(var(--deck-delay) + 0.5s);
+}
+
+.slide.is-current {
+  opacity: 1;
+  visibility: visible;
+  filter: blur(0);
+  transform: scale(1);
+  transition:
+    opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    filter 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) var(--deck-delay),
+    visibility 0s linear 0s;
+}
+
+/* Lines arrive in sequence behind the slide's own fade. Kept to opacity and
+   translate — a second blur on top of the parent's reads as mud. */
+.slide > * {
+  opacity: 0;
+  translate: 0 12px;
+  transition:
+    opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide.is-current > * {
+  opacity: 1;
+  translate: 0 0;
+}
+
+.slide.is-current > *:nth-child(1) { transition-delay: calc(var(--deck-delay) + 0.1s); }
+.slide.is-current > *:nth-child(2) { transition-delay: calc(var(--deck-delay) + 0.16s); }
+.slide.is-current > *:nth-child(3) { transition-delay: calc(var(--deck-delay) + 0.22s); }
+.slide.is-current > *:nth-child(4) { transition-delay: calc(var(--deck-delay) + 0.28s); }
+.slide.is-current > *:nth-child(5) { transition-delay: calc(var(--deck-delay) + 0.34s); }
+
+/* Eyebrow above each slide title. */
+.slide-kicker {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+.slide-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(30px, 4.6vw, 52px);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.045em;
+  color: var(--text-body);
+}
+
+.slide-title .muted {
+  /* Colour rather than opacity: opacity would group the whole run and .solid
+     inside it could never come back to full strength. */
+  color: color-mix(in srgb, var(--text-body) 45%, transparent);
+}
+
+/* Pulls a word back to full strength inside a muted run — the company names are
+   the part worth scanning. */
+.slide-title .solid {
+  font-weight: inherit;
+  color: var(--text-body);
+}
+
+/* Built up one keypress at a time. Held in place with visibility rather than
+   display, so the block's height never changes as lines arrive. */
+.step {
+  opacity: 0;
+  translate: 0 6px;
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* A step inside a heading has to be a block for the rise to apply — inline
+   elements aren't transformable. It also replaces the <br> that preceded it. */
+.slide-title .step {
+  display: block;
+}
+
+.step.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step {
+    transition: opacity 0.15s linear;
+    translate: 0 0;
+  }
+}
+
+/* The lines sit left of centre, wider than the slide so they never wrap. */
+.slide-split-main {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  width: 112%;
+  margin-left: -6%;
+}
+
+/* Career, one line per step. Set like the titles so it reads as a sentence
+   broken over lines rather than a list. */
+.career-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.career-line {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.9vw, 34px);
+  font-weight: 400;
+  line-height: 1.24;
+  letter-spacing: -0.035em;
+  color: var(--text-body);
+  /* Hangs the marker in the gutter so the text edges stay flush. */
+  padding-left: 1.15em;
+  text-indent: -1.15em;
+}
+
+/* Bespoke Serif ships no italic file, so the browser would slant it
+   synthetically — this keeps the real letterforms and marks the phrase with the
+   serif's own italic where available. */
+
+/* Lighter, not heavier — the company names are the landmarks, and the eye finds
+   them from the markers anyway. */
+.career-line b {
+  font-weight: 400;
+  color: color-mix(in srgb, var(--text-body) 42%, transparent);
+}
+
+/* Company markers. Sized in em so they track the headline, and a squircle
+   rather than a circle — border-radius at ~30% of the box reads as one. */
+.chip {
+  display: inline-block;
+  width: 0.28em;
+  height: 0.28em;
+  margin-right: 0.55em;
+  border-radius: 0.09em;
+  vertical-align: 0.14em;
+}
+
+/* The line that just arrived is marked at full strength; the ones above it sit
+   back, so the eye lands on where you are rather than on the whole list. */
+.career-line .chip {
+  background: color-mix(in srgb, var(--text) 16%, transparent);
+  transition: background-color 0.45s ease;
+}
+
+.career-line.is-active .chip {
+  background: var(--text);
+}
+
+/* For titles that are a full sentence rather than a phrase — smaller, so four
+   lines still fit the slide. */
+.slide-title--long {
+  font-size: clamp(26px, 3.9vw, 44px);
+  line-height: 1.14;
+  letter-spacing: -0.035em;
+}
+
+.slide-lede {
+  max-width: 26em;
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.9vw, 20px);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--text-muted);
+}
+
+.slide-list {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.slide-list li {
+  display: flex;
+  gap: 14px;
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.6vw, 16px);
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-body);
+}
+
+/* Hanging index, so the copy lines up under itself. */
+.slide-list li::before {
+  content: counter(list-item, decimal-leading-zero);
+  flex: 0 0 auto;
+  width: 2em;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-light);
+}
+
+/* The lead-in reads as a label through colour and position, so it doesn't need
+   weight as well. */
+.slide-list li b {
+  font-weight: 400;
+}
+
+.slide-list li span {
+  color: var(--text-muted);
+}
+
+/* Work table — company, project, year, echoing the home page list. */
+.slide-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 8px;
+}
+
+.slide-row {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) 52px;
+  column-gap: 20px;
+  align-items: baseline;
+  padding: 7px 0;
+  border-top: 1px solid var(--resume-paper-border, rgba(0, 0, 0, 0.12));
+  font-family: var(--sans);
+  font-size: clamp(13px, 1.5vw, 15px);
+  letter-spacing: -0.02em;
+}
+
+.slide-row:last-child {
+  border-bottom: 1px solid var(--resume-paper-border, rgba(0, 0, 0, 0.12));
+}
+
+.slide-row-company {
+  color: var(--text-light);
+}
+
+.slide-row-project {
+  color: var(--text-body);
+  font-weight: 500;
+}
+
+.slide-row-year {
+  color: var(--text-light);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.slide-figure {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-top: 4px;
+}
+
+.slide-note {
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+}
+
+.slide-contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 6px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.slide-contact a {
+  color: var(--text-body);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.slide-contact a:hover {
+  color: var(--text);
+}
+
+/* Title slide sits centred rather than ranged left. */
+.slide--title {
+  align-items: center;
+  text-align: center;
+}
+
+.slide--title .slide-lede {
+  margin-inline: auto;
+  /* Sans on the opening slide: it's an agenda line, not part of the headline. */
+  font-family: var(--sans);
+  font-size: clamp(14px, 1.6vw, 17px);
+  line-height: 1.5;
+}
+
+.cradle-mark {
+  width: clamp(150px, 22vw, 220px);
+  height: auto;
+}
+
+/* Sits inline in a headline, so it's sized in em to track the type and nudged
+   down to sit on the baseline rather than the cap line. */
+.inline-gif {
+  display: inline-block;
+  height: 0.85em;
+  width: auto;
+  margin: 0 0.08em;
+  vertical-align: -0.1em;
+  border-radius: 0.22em;
+  object-fit: cover;
+}
+
+/* Title-slide pairing: the photo and the Cradle mark, supplied as one asset. */
+.intro-mark {
+  width: clamp(130px, 17vw, 190px);
+  height: auto;
+}
+
+/* Two soft radials rising from the bottom centre, in Cradle's blue and green,
+   drifting slowly against each other. Faint by design — it should read as a
+   tint on the paper, not a gradient. */
+.intro-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  height: 52vh;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.9s ease;
+  /* Static mesh: five overlapping radials in Cradle's blues and greens, centres
+     mostly above the top edge so only their falloff lands on the page. Their
+     overlaps do the blending — no animation, no noise. */
+  background-image:
+    radial-gradient(42% 78% at 30% -14%, rgba(56, 160, 248, 0.36), rgba(56, 160, 248, 0) 70%),
+    radial-gradient(38% 70% at 52% -22%, rgba(52, 190, 130, 0.32), rgba(52, 190, 130, 0) 72%),
+    radial-gradient(34% 62% at 68% -8%, rgba(38, 132, 240, 0.26), rgba(38, 132, 240, 0) 68%),
+    radial-gradient(30% 54% at 44% 4%, rgba(96, 208, 168, 0.22), rgba(96, 208, 168, 0) 66%),
+    radial-gradient(46% 66% at 82% -18%, rgba(120, 196, 250, 0.24), rgba(120, 196, 250, 0) 74%);
+  /* Two masks intersected: a fine dot screen that dithers the mesh into pixels,
+     and a vertical ramp that fades the whole thing out before the copy. */
+  -webkit-mask-image:
+    radial-gradient(circle at 50% 50%, #000 0 0.85px, transparent 1.15px),
+    linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  mask-image:
+    radial-gradient(circle at 50% 50%, #000 0 0.85px, transparent 1.15px),
+    linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+  -webkit-mask-size: 3px 3px, 100% 100%;
+  mask-size: 3px 3px, 100% 100%;
+  -webkit-mask-repeat: repeat, no-repeat;
+  mask-repeat: repeat, no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+/* Only on the title slide. */
+body[data-deck-slide="1"] .intro-glow {
+  opacity: 1;
+}
+
+/* The dark canvas needs less of it — the same wash reads much stronger against
+   near-black than it does on the paper. */
+html[data-theme="dark"] body[data-deck-slide="1"] .intro-glow {
+  opacity: 0.75;
+}
+
+
+
+.cradle-mark--corner {
+  position: fixed;
+  top: 28px;
+  right: 32px;
+  z-index: 20;
+  width: 96px;
+  opacity: 0.75;
+  transition: opacity 0.35s ease;
+}
+
+/* The title slide carries the logo at full size, so the corner one steps aside. */
+body[data-deck-slide="1"] .cradle-mark--corner {
+  opacity: 0;
+}
+
+/* Theme switch, top left — mirrors the arrows' glass treatment. */
+.deck-theme {
+  position: fixed;
+  top: 26px;
+  left: 28px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--nav-bg);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  color: var(--nav-text-inactive);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.deck-theme:hover {
+  color: var(--nav-text-active);
+  transform: translateY(-1px);
+}
+
+.deck-theme:active {
+  transform: translateY(0) scale(0.9);
+  transition-duration: 0.08s;
+}
+
+.deck-theme:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
+  outline-offset: 3px;
+}
+
+.deck-theme svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Show the icon for the theme you'd switch *to*. */
+.deck-theme-moon {
+  display: none;
+}
+
+html[data-theme="dark"] .deck-theme-sun {
+  display: none;
+}
+
+html[data-theme="dark"] .deck-theme-moon {
+  display: block;
+}
+
+/* Two corner marks, one per theme: the colour lockup on light, and the mono one
+   inverted to white on dark. Inverting the colour version would have turned the
+   blue and green C orange and magenta. */
+.cradle-mark--mono {
+  display: none;
+  filter: invert(1);
+}
+
+html[data-theme="dark"] .cradle-mark--corner:not(.cradle-mark--mono) {
+  display: none;
+}
+
+html[data-theme="dark"] .cradle-mark--mono {
+  display: block;
+}
+
+/* Chrome: counter, progress rail, arrows. */
+.deck-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 32px 24px;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+.deck-count {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  /* Lighter than --text-light — it's a position marker, not something to read. */
+  color: color-mix(in srgb, var(--text-light) 55%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.deck-dots {
+  /* Centred on the screen rather than in the space left between the counter and
+     the arrows, which are different widths. */
+  position: absolute;
+  left: 50%;
+  translate: -50% 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  pointer-events: auto;
+}
+
+.deck-dot {
+  width: 7px;
+  height: 7px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
+  cursor: pointer;
+  transition: background-color 0.25s ease, transform 0.25s ease;
+}
+
+.deck-dot:hover {
+  background: color-mix(in srgb, var(--text) 28%, transparent);
+}
+
+.deck-dot.is-current {
+  background: color-mix(in srgb, var(--text) 55%, transparent);
+  transform: scale(1.25);
+}
+
+.deck-dot:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
+  outline-offset: 3px;
+}
+
+.deck-arrows {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.deck-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 999px;
+  background: var(--nav-bg);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  box-shadow: var(--nav-shadow);
+  backdrop-filter: blur(18px) saturate(1.25);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  color: var(--nav-text-inactive);
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+}
+
+.deck-arrow:hover:not(:disabled) {
+  color: var(--nav-text-active);
+  transform: translateY(-1px);
+}
+
+/* Press: the button gives, and the chevron nudges the way it's about to travel.
+   :active covers mouse-down, touch and the keyboard's Enter/Space. */
+.deck-arrow:not(:disabled):active,
+.deck-arrow:not(:disabled).is-pressed {
+  transform: translateY(0) scale(0.9);
+  background: color-mix(in srgb, var(--text) 8%, var(--nav-bg));
+  transition-duration: 0.08s;
+}
+
+.deck-arrow svg {
+  transition: translate 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#deck-prev:not(:disabled):active svg,
+#deck-prev:not(:disabled).is-pressed svg {
+  translate: -2px 0;
+}
+
+#deck-next:not(:disabled):active svg,
+#deck-next:not(:disabled).is-pressed svg {
+  translate: 2px 0;
+}
+
+.deck-arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.deck-arrow svg {
+  width: 17px;
+  height: 17px;
+}
+
+@media (max-width: 700px) {
+  .slide {
+    padding: 76px 24px 116px;
+    gap: 18px;
+  }
+
+  .slide-row {
+    grid-template-columns: 78px minmax(0, 1fr) 46px;
+    column-gap: 12px;
+  }
+
+  .cradle-mark--corner {
+    top: 20px;
+    right: 20px;
+    width: 76px;
+  }
+
+  .deck-bar {
+    padding: 16px 20px 20px;
+  }
+
+  .deck-count {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck {
+    --deck-delay: 0s;
+  }
+
+  .slide {
+    transition: opacity 0.2s linear, visibility 0s linear 0.2s;
+    filter: none;
+    transform: none;
+  }
+
+  .slide.is-current {
+    transition: opacity 0.2s linear, visibility 0s linear 0s;
+    filter: none;
+    transform: none;
+  }
+
+  .slide > *,
+  .slide.is-current > * {
+    opacity: 1;
+    translate: 0 0;
+    transition: none;
+    transition-delay: 0s;
+  }
+}
+
+/* Placeholder for a real artifact — a Figma frame, a doc page, a screenshot.
+   Deliberately unfinished-looking so an empty slot can't reach the panel. */
+.artifact-slot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 4px;
+  padding: 26px 28px;
+  border: 1px dashed color-mix(in srgb, var(--text) 28%, transparent);
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--text) 2.5%, transparent);
+}
+
+.artifact-slot p {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: clamp(13px, 1.5vw, 15px);
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-body);
+}
+
+.artifact-slot b {
+  font-weight: 400;
+}
+
+.artifact-slot .artifact-hint {
+  color: var(--text-light);
+}
+
+.artifact-slot img,
+.artifact-slot video {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
