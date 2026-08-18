@@ -35,25 +35,17 @@ window.PROJECTS = {
     headlineAccent: 'Expression',
     team: 'Miro · Growth Adoption',
     images: [
-      'images/custom-stickers-board.png',
+      'images/custom-stickers-hero.png',
       'images/custom-stickers-panel-1.png',
       'images/custom-stickers-panel-2.png',
     ],
-    // Hover preview only — the hero above is an empty board the stickers animate onto.
+    heroAspect: '2842 / 1856',
+    heroFit: 'contain',
+    // Hover preview only — the hero is a still, so the stickers animate over it.
     previewImage: 'images/custom-stickers-preview.gif',
     polaroids: [
       { src: 'images/sticker-photo-1.jpg', r: -5 },
       { src: 'images/sticker-photo-2.jpg', r: 4 },
-    ],
-    heroStickers: [
-      'images/sticker-1.png',
-      'images/sticker-2.png',
-      'images/sticker-3.png',
-      'images/sticker-4.png',
-      'images/sticker-5.png',
-      'images/sticker-6.png',
-      'images/sticker-7.png',
-      'images/sticker-8.png',
     ],
     intro: 'A text-to-sticker generative AI tool built into Miro’s stickers panel.',
     paragraphs: [

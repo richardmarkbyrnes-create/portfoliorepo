@@ -18,11 +18,10 @@
 
 :root,
 [data-theme="normal"] {
-  /* Neutrals carry a warm yellow cast (~45° hue, low saturation) rather than
-     sitting on pure white — the greys are tinted to match so nothing reads
-     cold against the paper. */
-  --bg: #fefefd;
-  --note-halo: rgba(254, 254, 253, 0.95);
+  /* The paper is pure white; the greys keep a faint warm cast (~45° hue, low
+     saturation) so the text doesn't read cold against it. */
+  --bg: #ffffff;
+  --note-halo: rgba(255, 255, 255, 0.95);
   --text: #3b3935;
   --text-body: #12110c;
   --text-muted: #6c6a62;
@@ -31,9 +30,9 @@
   --text-nav: #525048;
   --text-detail: #060604;
   --text-resume-header: #57544e;
-  --surface: #fefefd;
-  --surface-muted: #fefefd;
-  --border-color: #fefefd;
+  --surface: #ffffff;
+  --surface-muted: #ffffff;
+  --border-color: #ffffff;
   --nav-bg: rgba(251, 250, 247, 0.62);
   --theme-popover-bg: rgba(251, 250, 247, 0.48);
   --nav-glass-border: rgba(253, 252, 248, 0.55);
@@ -50,7 +49,7 @@
   --texture-opacity: 1;
   --switcher-bg: rgba(251, 250, 247, 0.72);
   --switcher-hover: rgba(0, 0, 0, 0.05);
-  --white: #fefefd;
+  --white: #ffffff;
   /* White mount around framed photos; goes dark-grey on the dark canvas. */
   --frame-border: #ffffff;
   --border-white: 3px solid var(--border-color);
@@ -65,7 +64,7 @@
   --about-content: 390px;
   --line-art-stroke: #3b3935;
   --content-resume: 480px;
-  --resume-paper: #fefefd;
+  --resume-paper: #ffffff;
   --resume-paper-border: rgba(0, 0, 0, 0.06);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
@@ -85,8 +84,8 @@
   --home-content-width: calc(var(--content-mid) * 0.85);
   --home-content-padding-x: 24px;
   --selection-bg: #12110d;
-  --selection-color: #fefefd;
-  --location-polaroid-bg: #fefefd;
+  --selection-color: #ffffff;
+  --location-polaroid-bg: #ffffff;
   --location-polaroid-border: rgba(0, 0, 0, 0.06);
   --location-polaroid-photo-bg: #ebe8e1;
   --location-polaroid-shadow:
@@ -398,7 +397,10 @@ body::before {
   mix-blend-mode: color-dodge;
   opacity: var(--texture-opacity);
   pointer-events: none;
-  z-index: 0;
+  /* Above .page (z-index 1) so the grain sits over the content rather than only
+     the canvas — the project heroes read as being behind the texture. The fixed
+     chrome is at 300 and stays clear of it. */
+  z-index: 2;
   transition: opacity 0.3s ease;
 }
 
@@ -942,7 +944,7 @@ html[data-theme="dark"] .theme-swatch {
   box-shadow: 0 0 0 2px var(--text-nav);
 }
 
-.theme-swatch[data-theme="normal"] { background: #fefefd; }
+.theme-swatch[data-theme="normal"] { background: #ffffff; }
 .theme-swatch[data-theme="dark"] { background: #151516; }
 .theme-swatch[data-theme="pastel-blue"] { background: #e8f4fc; }
 .theme-swatch[data-theme="pastel-pink"] { background: #fce8f0; }
@@ -3894,8 +3896,11 @@ body[data-project="custom-stickers"] .pc-sketch-caption {
   line-height: 1;
   letter-spacing: 0.01em;
   color: var(--text-body);
-  /* Fixed-width digits, so the number doesn't jitter as it counts. */
-  font-variant-numeric: tabular-nums;
+  /* Fixed-width digits, so the number doesn't jitter as it counts. Lining too:
+     the serif defaults to old-style figures, where 3 and 4 sit taller and drop
+     below the baseline while 1 and 0 stay at x-height — which made "343" look
+     bigger than "110". */
+  font-variant-numeric: lining-nums tabular-nums;
 }
 
 .pc-rule {
