@@ -2062,22 +2062,6 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   object-fit: contain;
 }
 
-.hero-avatar {
-  display: inline-flex;
-  width: 0.72em;
-  height: 0.72em;
-  border-radius: 0.16em;
-  overflow: hidden;
-  vertical-align: -0.1em;
-  flex-shrink: 0;
-}
-
-.hero-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
 
 .home-closing-heart {
   cursor: pointer;
@@ -2272,9 +2256,61 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   cursor: pointer;
 }
 
+/* Each row hovers in its own project's colour, sampled from that project's hero
+   wash — so the row and the preview that appears beside it agree. Two custom
+   properties per project drive it: the wash and the ink that sits on it. */
+.work-column--interactive .work-row-main[data-project] {
+  --row-wash: color-mix(in srgb, var(--text) 4%, transparent);
+  --row-ink: var(--text);
+}
+
+.work-column--interactive .work-row-main[data-project="custom-stickers"],
+.work-column--interactive .work-row-main[data-project="navigation"] {
+  --row-wash: #fef8e0;
+  --row-ink: #967a12;
+}
+
+.work-column--interactive .work-row-main[data-project="automations"],
+.work-column--interactive .work-row-main[data-project="visualisations"] {
+  --row-wash: #effafc;
+  --row-ink: #267d90;
+}
+
+.work-column--interactive .work-row-main[data-project="developer-tools"] {
+  --row-wash: #f3fafd;
+  --row-ink: #307187;
+}
+
+.work-column--interactive .work-row-main[data-project="ask-ai"] {
+  --row-wash: #faf6fd;
+  --row-ink: #864bb1;
+}
+
+.work-column--interactive .work-row-main[data-project="customer-insights"],
+.work-column--interactive .work-row-main[data-project="design-systems"] {
+  --row-wash: #eff7f4;
+  --row-ink: #3b7c68;
+}
+
 .work-column--interactive .work-row-main:hover {
   border-color: transparent;
-  background: color-mix(in srgb, var(--text) 4%, transparent);
+  background: var(--row-wash);
+}
+
+.work-column--interactive .work-row-main:hover .work-col--project,
+.work-column--interactive .work-row-main:hover .work-col--year {
+  color: var(--row-ink);
+}
+
+/* On the dark canvas the pale wash would glare, so the same ink drives both: a
+   low tint of it behind, a light tint of it in front. */
+html[data-theme="dark"] .work-column--interactive .work-row-main:hover {
+  background: color-mix(in srgb, var(--row-ink) 20%, transparent);
+}
+
+html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col--project,
+html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col--year {
+  color: color-mix(in srgb, var(--row-ink) 35%, #ffffff);
 }
 
 .work-column--interactive .work-row-main:hover .work-col--project {
