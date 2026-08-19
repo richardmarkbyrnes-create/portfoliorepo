@@ -65,7 +65,7 @@
   --line-art-stroke: #3b3935;
   --content-resume: 480px;
   --resume-paper: #ffffff;
-  --resume-paper-border: rgba(0, 0, 0, 0.06);
+  --resume-paper-border: rgba(0, 0, 0, 0.1);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
     0 6px 16px rgba(0, 0, 0, 0.05),
@@ -131,7 +131,7 @@
   --white: #1f2021;
   --frame-border: #2f3033;
   --resume-paper: #232426;
-  --resume-paper-border: rgba(255, 255, 255, 0.08);
+  --resume-paper-border: rgba(255, 255, 255, 0.12);
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.2),
     0 8px 24px rgba(0, 0, 0, 0.28),
@@ -3945,7 +3945,7 @@ html:not([data-theme]) .pc-rule,
 [data-theme="normal"] .pc-rule,
 html:not([data-theme]) .pc-divider,
 [data-theme="normal"] .pc-divider {
-  --resume-paper-border: rgba(0, 0, 0, 0.12);
+  --resume-paper-border: rgba(0, 0, 0, 0.16);
 }
 
 /* One rhythm down the closing section: 80px between the caption, each rule, the
@@ -6007,15 +6007,16 @@ body.page-is-leaving .top-blur {
   }
 
   /* nav-offset + 8 + 8 is exactly the space above the hero, which lands the canvas
-     edge on the viewport edge — but glyphs are drawn at cell centres, so the first
-     row sits half a cell (13px) down and reads as a gap. Bleeding one half-cell
-     further up puts that first row right on the top edge. */
+     edge on the viewport edge. Glyphs are drawn at cell centres, though, so a row
+     centre sitting exactly on the edge clips the small characters in half and they
+     vanish — reading as a whole empty cell. Bleeding most of a half-cell keeps the
+     top row whole and just below the edge. */
   body[data-page="home"] {
-    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 13px);
+    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 7px);
   }
 
   body[data-page="about"] {
-    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 13px);
+    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 7px);
   }
 
   .home-hero {
@@ -6038,7 +6039,10 @@ body.page-is-leaving .top-blur {
 
   .home-content-shell {
     max-width: 100%;
-    padding: 0 20px;
+    /* The hero section is full-bleed (100vw), so it escapes .page's 16px gutter
+       while the work column below sits inside it. Adding the gutter here lines
+       the title and bio up with the project rows. */
+    padding: 0 calc(16px + 20px);
   }
 
   .work-row {
