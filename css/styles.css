@@ -2313,6 +2313,52 @@ body[data-page="home"] .page {
   background: var(--row-wash);
 }
 
+/* A project still in flight: no page to open yet, so it takes the neutral grey wash
+   rather than a project colour, drops the dashed underline that marks the others as
+   links, and shakes off a click instead of going anywhere. */
+.work-row-main--locked {
+  cursor: default;
+  /* No project colour to borrow, so it hovers in a light grey instead. Both tokens
+     are set: the dark-theme hover mixes its background from the ink, not the wash,
+     so leaving that one out left it with nothing to paint. */
+  --row-wash: color-mix(in srgb, var(--text) 6%, transparent);
+  --row-ink: var(--text);
+}
+
+/* "In progress" is wider than the 48px track the years sit in, so the cell is sized
+   to its own text and pinned to the track's end — that puts its right edge exactly
+   where the years' right edges are. */
+.work-row-main--locked .work-col--year {
+  justify-self: end;
+}
+
+.work-row-main--locked .work-col--project {
+  text-decoration: none;
+}
+
+.work-column--interactive .work-row-main--locked:hover .work-col--project,
+.work-column--interactive .work-row-main--locked:hover .work-col--year {
+  color: var(--text-light);
+}
+
+.work-row-main--locked.is-refusing {
+  animation: workRowRefuse 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* A nudge that settles rather than a rattle: each swing smaller than the last. */
+@keyframes workRowRefuse {
+  25% { translate: -3px 0; }
+  55% { translate: 2px 0; }
+  80% { translate: -1px 0; }
+  100% { translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-row-main--locked.is-refusing {
+    animation: none;
+  }
+}
+
 .work-column--interactive .work-row-main:hover .work-col--project,
 .work-column--interactive .work-row-main:hover .work-col--year {
   color: var(--row-ink);
@@ -2322,6 +2368,12 @@ body[data-page="home"] .page {
    low tint of it behind, a light tint of it in front. */
 html[data-theme="dark"] .work-column--interactive .work-row-main:hover {
   background: color-mix(in srgb, var(--row-ink) 20%, transparent);
+}
+
+/* The locked row's ink is the near-white text colour rather than a project hue, so
+   the shared 20% lands far brighter here than it does on the coloured rows. */
+html[data-theme="dark"] .work-column--interactive .work-row-main--locked:hover {
+  background: color-mix(in srgb, var(--row-ink) 9%, transparent);
 }
 
 html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col--project,
@@ -2568,7 +2620,9 @@ body[data-project="design-systems"] {
   /* Softer than the shared nav radius, without going fully round. */
   border-radius: 16px;
   background: var(--nav-bg);
-  border: var(--nav-border-width) solid var(--nav-glass-border);
+  /* A hairline rather than the nav's shared 2px, which reads heavy on a button
+     this small. Dark theme is already at 1px, so only light changes. */
+  border: 1px solid var(--nav-glass-border);
   box-shadow: var(--nav-shadow);
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
@@ -2844,13 +2898,9 @@ body[data-page="project"] .pc-next-pill.is-docked {
   flex-direction: column;
   gap: 7px;
   width: max-content;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  border: var(--nav-border-width) solid var(--nav-glass-border);
-  border-radius: 12px;
-  box-shadow: var(--nav-shadow);
+  /* No panel around it — the rows read straight off the page, so the padding is
+     only there to hold them clear of the button below. */
+  padding: 12px 2px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(4px);
@@ -2899,11 +2949,6 @@ body[data-page="project"] .pc-next-pill.is-docked {
   font-size: 11px;
   letter-spacing: -0.01em;
   color: var(--text-subtle);
-}
-
-[data-theme="dark"] .pc-shortcuts-panel {
-  background: rgba(20, 20, 22, 0.72);
-  border-color: rgba(255, 255, 255, 0.12);
 }
 
 /* No hover to reveal it, and no hardware keyboard to use it */
@@ -4046,6 +4091,52 @@ body[data-project="navigation"] .pc-diagram img {
 
 body.next-glow-visible .pc-next-glow {
   opacity: 1;
+}
+
+/* The matching wash in the top-right corner, tied to the close button's hover. It's
+   a sibling rather than a pseudo-element because the button's backdrop-filter makes
+   it a containing block — a fixed child would anchor to the button, not the viewport. */
+.pc-close-glow {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 240px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background-image: radial-gradient(
+    ellipse 100% 100% at 100% 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 17%, transparent) 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 6%, transparent) 45%,
+    transparent 76%);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-close:hover ~ .pc-close-glow,
+.pc-close:focus-visible ~ .pc-close-glow {
+  opacity: 1;
+}
+
+[data-theme="dark"] .pc-close-glow {
+  background-image: radial-gradient(
+    ellipse 100% 100% at 100% 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 22%, transparent) 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 8%, transparent) 45%,
+    transparent 76%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-close-glow {
+    transition: none;
+  }
+}
+
+/* The close button is hidden on mobile, so the wash it drives goes with it. */
+@media (max-width: 768px) {
+  .pc-close-glow {
+    display: none;
+  }
 }
 
 /* The same wash reads weaker against the dark canvas, so it carries a little more
