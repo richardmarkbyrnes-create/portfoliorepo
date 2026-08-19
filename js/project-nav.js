@@ -318,119 +318,16 @@
       if (quoteText) quoteText.textContent = `“${project.quote}”`;
       if (quoteBy && project.quoteBy) quoteBy.textContent = `— ${project.quoteBy}`;
     } else {
-      // No quote for this project — hide the divider and the quote block entirely.
-      const rule = document.querySelector('.pc-rule');
-      if (rule) rule.hidden = true;
+      // No quote for this project — hide the quote block and the rules that bracket
+      // it, or they'd stack up as two dividers with nothing in between.
       const quoteReveal = document.querySelector('.pc-quote-reveal');
-      if (quoteReveal) quoteReveal.hidden = true;
-    }
-
-    // Team credit pills under the quote block.
-    const quoteReveal = document.querySelector('.pc-quote-reveal');
-    if (quoteReveal && Array.isArray(project.teamMembers) && project.teamMembers.length) {
-      const initials = (name) => name
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((w) => w[0])
-        .join('')
-        .toUpperCase();
-
-      const team = document.createElement('div');
-      team.className = 'pc-team animate-in';
-
-      const label = document.createElement('span');
-      label.className = 'pc-team-label';
-      label.textContent = 'Shoutout to the team';
-      team.appendChild(label);
-
-      const pills = document.createElement('div');
-      pills.className = 'pc-team-pills';
-
-      const addBreak = () => {
-        const br = document.createElement('span');
-        br.className = 'pc-team-break';
-        br.setAttribute('aria-hidden', 'true');
-        pills.appendChild(br);
-      };
-
-      // Three to a row. An explicit { break: true } can end a row early, and resets
-      // the count so the next row gets a full three.
-      const PER_ROW = 3;
-      let inRow = 0;
-
-      project.teamMembers.forEach((member, i) => {
-        // A { break: true } entry forces the following pills onto a new line.
-        if (member && member.break) {
-          if (inRow > 0) {
-            addBreak();
-            inRow = 0;
-          }
-          return;
-        }
-        if (inRow === PER_ROW) {
-          addBreak();
-          inRow = 0;
-        }
-        inRow += 1;
-        const name = typeof member === 'string' ? member : member.name;
-        const photo = typeof member === 'string' ? null : member.photo;
-        const pill = document.createElement('span');
-        pill.className = 'pc-team-pill';
-        const avatar = document.createElement('span');
-        avatar.className = 'pc-team-avatar';
-        if (photo) {
-          const img = document.createElement('img');
-          img.className = 'pc-team-avatar-img';
-          img.src = photo;
-          img.alt = '';
-          img.loading = 'lazy';
-          avatar.appendChild(img);
-        } else {
-          avatar.style.setProperty('--avatar-hue', `${(i * 67) % 360}`);
-          avatar.textContent = initials(name);
-        }
-        const nm = document.createElement('span');
-        nm.className = 'pc-team-name';
-        nm.textContent = name;
-        pill.appendChild(avatar);
-        pill.appendChild(nm);
-        pills.appendChild(pill);
-      });
-      team.appendChild(pills);
-
-      // Dashed divider between the quote and the team shoutout. Without a quote the
-      // divider sits straight under the last paragraph, so it drops its top margin to
-      // avoid doubling up on the paragraph's own bottom spacing.
-      const teamDivider = document.createElement('hr');
-      teamDivider.className = project.quote
-        ? 'pc-rule pc-team-divider'
-        : 'pc-rule pc-team-divider pc-team-divider--no-quote';
-      teamDivider.setAttribute('aria-hidden', 'true');
-
-      // A headline stat sits between the quote and the shoutout, so hang the team
-      // off whichever of the two actually ends the section.
-      const teamAnchor = document.querySelector('.pc-stat') || quoteReveal;
-      teamAnchor.insertAdjacentElement('afterend', teamDivider);
-      teamDivider.insertAdjacentElement('afterend', team);
-
-      // The hairline before each member is a border-left, so whoever begins a row
-      // has to drop it. CSS covers the first member and the ones after an explicit
-      // { break: true }, but not a natural flex wrap — that needs measuring.
-      const markRowStarts = () => {
-        let rowTop = null;
-        pills.querySelectorAll('.pc-team-pill').forEach((pill) => {
-          const top = pill.offsetTop;
-          const startsRow = rowTop === null || top > rowTop + 2;
-          pill.classList.toggle('is-row-start', startsRow);
-          if (startsRow) rowTop = top;
-        });
-      };
-
-      markRowStarts();
-      window.addEventListener('resize', markRowStarts);
-      // Names shift when the webfont swaps in, which can change where rows break.
-      if (document.fonts?.ready) document.fonts.ready.then(markRowStarts);
+      if (quoteReveal) {
+        quoteReveal.hidden = true;
+        [quoteReveal.previousElementSibling, quoteReveal.nextElementSibling]
+          .forEach((el) => {
+            if (el && el.classList.contains('pc-rule')) el.hidden = true;
+          });
+      }
     }
 
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls

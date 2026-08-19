@@ -624,6 +624,27 @@ function initBottomBlurVisibility() {
   updateBottomBlur();
 }
 
+// The bottom wash tracks the next-project pill: once the pill is on screen the
+// page is at its close, and the project's colour fades up behind it.
+function initNextProjectGlow() {
+  const glow = document.querySelector('.pc-next-glow');
+  const pill = document.getElementById('pc-next-pill');
+  if (!glow || !pill) return;
+
+  if (!('IntersectionObserver' in window)) {
+    document.body.classList.add('next-glow-visible');
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      document.body.classList.toggle('next-glow-visible', entry.isIntersecting);
+    });
+  }, { rootMargin: '0px 0px -10% 0px' });
+
+  observer.observe(pill);
+}
+
 function initClosingHeart() {
   const heart = document.querySelector('.home-closing-heart');
   if (!heart) return;
@@ -917,6 +938,7 @@ initSmoothWheel();
 initKeyboardNav();
 initScrollAnimations();
 initBottomBlurVisibility();
+initNextProjectGlow();
 initClosingHeart();
 initDogPhotoPopovers();
 initProjectPreview();
