@@ -16,7 +16,6 @@ window.PROJECTS = {
     company: 'Miro',
     year: '2026',
     headline: 'The first five minutes decide everything.',
-    headlineAccent: 'everything',
     team: 'Miro · Growth Adoption',
     intro: 'First-run experiences that orient new users and set them up for success.',
     paragraphs: [
@@ -32,7 +31,6 @@ window.PROJECTS = {
     company: 'Miro',
     year: '2026',
     headline: 'Unblocking Personal\nExpression with Gen AI',
-    headlineAccent: 'Expression',
     team: 'Miro · Growth Adoption',
     images: [
       'images/custom-stickers-hero.png',
@@ -58,7 +56,6 @@ window.PROJECTS = {
     company: 'Miro',
     year: '2025',
     headline: 'Designing Proactive Customer Insights Automations',
-    headlineAccent: 'Proactive',
     team: 'Miro · Insights',
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     images: [
@@ -87,7 +84,6 @@ window.PROJECTS = {
     company: 'Miro',
     year: '2025',
     headline: 'Instant Answers to Complex Customer Questions',
-    headlineAccent: 'Answers',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     images: [
@@ -116,7 +112,6 @@ window.PROJECTS = {
     company: 'Miro',
     year: '2024',
     headline: 'Bringing Rich Customer\nData to the Canvas',
-    headlineAccent: 'Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
     teamMembers: [
@@ -146,7 +141,6 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     headline: 'Designing a Scalable Foundation for Multi-Product Growth',
-    headlineAccent: 'Scalable',
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     images: [
@@ -167,7 +161,6 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     headline: 'Surfacing What Matters\nin a Sea of Numbers',
-    headlineAccent: 'Matters',
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
@@ -189,7 +182,6 @@ window.PROJECTS = {
     company: 'SAP',
     year: '2023',
     headline: 'Designing Native\nDeveloper Experiences',
-    headlineAccent: 'Native',
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
@@ -209,7 +201,6 @@ window.PROJECTS = {
     company: 'SAP',
     year: '2022',
     headline: 'Scaling a Multi-Theme\nComponent Library',
-    headlineAccent: 'Multi-Theme',
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
     images: [
