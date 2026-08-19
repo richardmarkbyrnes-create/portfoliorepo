@@ -55,6 +55,11 @@
       [22, 101, 52],
     ],
   };
+  // The bottom pattern meets the section above it on a hard edge. Ramping the top
+  // few rows down to near-nothing lets the grid look like it emerges out of the
+  // page instead of starting abruptly. Row centres sit at CELL/2 + n*CELL, so a
+  // linear ramp over TOP_FADE_ROWS cells resolves to one value per row.
+  const TOP_FADE_ROWS = 5;
   const PASTEL_CYCLE_MS = 380;
   // Each column drifts at its own scroll speed, BASE ± AMP. Two out-of-phase sine
   // waves across the column index keep neighbours close (so it reads as a rippling
@@ -251,6 +256,15 @@
       };
     }
 
+    // `y` is the pre-flip grid coordinate; for the flipped section the drawn
+    // distance from the visual top of the block is height - y.
+    function topFadeFactor(y, height) {
+      const span = TOP_FADE_ROWS * CELL;
+      const fromTop = flipY ? height - y : y;
+      if (fromTop >= span) return 1;
+      return Math.max(0, fromTop / span);
+    }
+
     function titleVisibilityFactor(x, y, mask) {
       if (!mask) return 1;
 
@@ -329,6 +343,7 @@
         }
 
         opacity *= titleVisibilityFactor(cell.x, y, titleMask);
+        if (flipY) opacity *= topFadeFactor(y, height);
 
         ctx.fillStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
         ctx.fillText(char, cell.x, y);

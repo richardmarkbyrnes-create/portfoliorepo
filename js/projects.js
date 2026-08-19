@@ -20,7 +20,7 @@ window.PROJECTS = {
     intro: 'First-run experiences that orient new users and set them up for success.',
     paragraphs: [
       'We mapped key activation moments — creating a first board, inviting a teammate, and discovering core tools — then designed lightweight prompts and progressive disclosure around them.',
-      'Onboarding work centred on helping people understand what Miro is for and how to get value from it in their first session. The challenge was guiding without overwhelming.',
+      'We centred the work on helping people understand what Miro is for and how to get value from it in their first session, guiding them without overwhelming them.',
       'The approach prioritised momentum: fewer steps to a meaningful outcome, with clear off-ramps for users who wanted to explore on their own.',
     ],
     quote: 'I understood exactly what to do within the first minute.',
@@ -65,19 +65,12 @@ window.PROJECTS = {
     heroFit: 'contain',
     paragraphs: [
       'Product managers and researchers liked the insights but were tired of logging in every week to re-run the same handful of searches — feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it.',
-      'Automations turns those repeat searches into scheduled reports and delivers them wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent the time with engineering on making the scheduling and delivery dull and reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too.',
+      'Automations turns those repeat searches into scheduled reports and delivers them wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent our time with engineering on making the scheduling and delivery dull and reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too.',
       'We defined the automation framework, simplifying complex logic into a straightforward “Trigger, Action, Destination” flow that any user could configure in under a minute. Rather than keeping users locked in our app, we designed for the existing ecosystem — mapping a multi-channel delivery experience so insights could meet teams where they collaborate, specifically Slack and email. Throughout, we worked closely with engineering to balance technical feasibility with experience, keeping scheduling and delivery reliable without over-complicating the initial release.',
       'By automating the delivery of recurring insights, we integrated the product into the weekly routines of entire product squads. Bringing insights directly into Slack saved researchers hours of manual reporting every month, and it organically boosted visibility across the company — bringing team members who didn’t even have active accounts face-to-face with our value.',
     ],
     quote: 'Automations help keep our entire team updated on what our customers are saying, straight in our Slack channels.',
     quoteBy: 'Customer feedback',
-    teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
-      { name: 'Roana Bilia', photo: 'images/team-roana.jpg' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
-      { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg' },
-    ],
   },
   'ask-ai': {
     title: 'Ask Insights',
@@ -91,13 +84,6 @@ window.PROJECTS = {
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
-    teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
-      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
-      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
-    ],
     paragraphs: [
       'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
       'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call — you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
@@ -114,14 +100,6 @@ window.PROJECTS = {
     headline: 'Bringing Rich Customer\nData to the Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
-    teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Wiz', photo: 'images/team-wiz.jpg' },
-      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
-      { break: true },
-      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
-      { name: 'Mor Sela', photo: 'images/team-mor.jpg' },
-    ],
     images: [
       'images/canvas-insights-hero.png',
     ],
@@ -148,7 +126,6 @@ window.PROJECTS = {
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
-    teamMembers: [],
     paragraphs: [
       'Cashbook’s interface was straining under its own growth. The navigation had no room left for new features, let alone whole new modules, and accountants were paying for it daily — moving between ledgers, reports and settings took more clicks than the work warranted.',
       'We rebuilt the information architecture around tasks rather than the org chart that had shaped it, consolidating deeply nested menus into categories you can scan in one pass. The new framework treats modules as plug-and-play, so the team can switch a product on without disturbing the core, and it hands more of the screen back to dense financial tables. Routine reconciliations got shorter, and the team could ship add-ons without redesigning the shell each time.',
@@ -165,11 +142,10 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     images: [
-      'images/visualisations-hero.png?v=3',
+      'images/visualisations-hero.png?v=4',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
-    teamMembers: [],
     paragraphs: [
       'Managers were making decisions from tables they couldn’t read quickly. Spotting a trend meant working it out by hand or waiting for month-end from their accountant, by which point the moment to act on it had usually passed.',
       'We designed dashboards that pull the few numbers that matter — cash runway, burn rate, outstanding invoices — to the top, as charts built for scanning rather than study. Research decided that list; nothing earned a place for being easy to plot. Each visual is a way in rather than a dead end: hover for detail, or click an odd-looking dip to land in the transactions behind it. A weekly chore became a check-in, and cash flow problems started surfacing while there was still time to do something about them.',
@@ -191,7 +167,7 @@ window.PROJECTS = {
     heroFit: 'contain',
     paragraphs: [
       'SAP development had always happened inside heavy proprietary tooling, so bringing Fiori Tools to VS Code came with an adoption problem. Developers are protective of their workspace, and anything that reads as an enterprise bolt-on gets uninstalled — however good the underlying utilities are.',
-      'So the bar we set was that you shouldn’t be able to tell where Microsoft’s code ends and ours begins. We matched VS Code’s typography, iconography and density, and made every custom element respond to its theming — default light and dark through to community favourites — so nothing came out unreadable when someone switched. Dense app-generation steps turned into sidebars, wizards and command-palette flows that suited keyboard-first habits. With nothing to fight, adoption followed.',
+      'So the bar we set was that you shouldn’t be able to tell where Microsoft’s code ends and ours begins. We matched VS Code’s typography, iconography and density, and made every custom element respond to its theming — from default light and dark through to community favourites — so nothing came out unreadable when someone switched. Dense app-generation steps turned into sidebars, wizards and command-palette flows that suited keyboard-first habits. With nothing to fight, adoption followed.',
       'We strictly adhered to Microsoft’s design language — matching typography, iconography, and spatial density so the interface felt completely native. We built extensive compatibility with VS Code’s diverse ecosystem of colour themes, from default Dark/Light to community themes, ensuring every custom UI element dynamically adapted and stayed perfectly readable and accessible. And we simplified complex workflows, translating dense SAP application-generation steps into lightweight sidebars, interactive wizards, and command-palette flows that matched the keyboard-first habits of developers.',
       'By respecting the developer’s environment and styling preferences, we turned Fiori Tools into a natural, seamless part of their daily workflow. The native look and feel drastically reduced cognitive load — developers no longer had to mentally switch between differing design philosophies. This user-first approach to developer experience accelerated adoption, making Fiori Tools the preferred, standard way to build modern SAP applications.',
     ],
@@ -217,25 +193,3 @@ window.PROJECTS = {
   },
 };
 
-// Core team credited on every project page (shown as pills under the quote).
-const CORE_TEAM = [
-  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-  { name: 'Mehdi Ghaeini', photo: 'images/team-mehdi.jpg' },
-  { name: 'Ben Shih', photo: 'images/team-ben.jpg' },
-  { name: 'Iuliia Dutchak', photo: 'images/team-iuliia.jpg' },
-  { name: 'Cyan Xiao', photo: 'images/team-cyan.jpg' },
-];
-// SAP (Fiori) team, shared across the two SAP projects.
-const SAP_TEAM = [
-  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-  { name: 'Goran Peuc', photo: 'images/team-goran.jpg' },
-  { name: 'Colin Doherty', photo: 'images/team-colin.jpg' },
-  { name: 'Christine McCarthy', photo: 'images/team-christine.png' },
-  { name: 'Aisling Noone', photo: 'images/team-aisling.jpg' },
-];
-window.PROJECTS['developer-tools'].teamMembers = SAP_TEAM;
-window.PROJECTS['design-systems'].teamMembers = SAP_TEAM;
-
-Object.values(window.PROJECTS).forEach((project) => {
-  if (!project.teamMembers) project.teamMembers = CORE_TEAM;
-});

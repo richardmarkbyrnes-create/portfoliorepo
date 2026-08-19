@@ -36,6 +36,13 @@
   --nav-bg: rgba(251, 250, 247, 0.62);
   --theme-popover-bg: rgba(251, 250, 247, 0.48);
   --nav-glass-border: rgba(253, 252, 248, 0.55);
+  /* One ink per project, sampled from that project's hero wash. Shared by the work
+     rows on the home page and the chrome on the project pages, so the two agree. */
+  --ink-amber: #967a12;
+  --ink-teal: #267d90;
+  --ink-blue: #307187;
+  --ink-violet: #864bb1;
+  --ink-green: #3b7c68;
   --nav-shadow: 0 2px 12px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
   --nav-active-bg: rgba(251, 250, 247, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.076), 0 1px 6px rgba(0, 0, 0, 0.048);
@@ -1424,6 +1431,7 @@ html[data-theme="dark"] .theme-toggle-moon {
 @media (max-width: 640px) {
   .site-footer {
     margin-top: 64px;
+    margin-bottom: 64px;
   }
 
   .site-footer-grid {
@@ -1746,6 +1754,14 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   padding-bottom: var(--home-bottom-ascii-height);
   position: relative;
   overflow: visible;
+}
+
+/* The footer's own top/bottom margin is the gap between the ASCII pattern and the
+   footer text. .page adds bottom padding to clear the fixed bottom-pinned nav of
+   the project pages — nothing is pinned there on home, and it would stack under
+   the footer and make the space below the text nearly double the space above. */
+body[data-page="home"] .page {
+  padding-bottom: 0;
 }
 
 .home-bottom-ascii-content {
@@ -2267,29 +2283,29 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
 .work-column--interactive .work-row-main[data-project="custom-stickers"],
 .work-column--interactive .work-row-main[data-project="navigation"] {
   --row-wash: #fef8e0;
-  --row-ink: #967a12;
+  --row-ink: var(--ink-amber);
 }
 
 .work-column--interactive .work-row-main[data-project="automations"],
 .work-column--interactive .work-row-main[data-project="visualisations"] {
   --row-wash: #effafc;
-  --row-ink: #267d90;
+  --row-ink: var(--ink-teal);
 }
 
 .work-column--interactive .work-row-main[data-project="developer-tools"] {
   --row-wash: #f3fafd;
-  --row-ink: #307187;
+  --row-ink: var(--ink-blue);
 }
 
 .work-column--interactive .work-row-main[data-project="ask-ai"] {
   --row-wash: #faf6fd;
-  --row-ink: #864bb1;
+  --row-ink: var(--ink-violet);
 }
 
 .work-column--interactive .work-row-main[data-project="customer-insights"],
 .work-column--interactive .work-row-main[data-project="design-systems"] {
   --row-wash: #eff7f4;
-  --row-ink: #3b7c68;
+  --row-ink: var(--ink-green);
 }
 
 .work-column--interactive .work-row-main:hover {
@@ -2510,6 +2526,35 @@ body[data-page="project"] .nav-primary {
 }
 
 /* Project detail page — 4× image / divider / description */
+/* Each project page carries its own ink, so page chrome can tint to the project
+   the same way its row on the home page does. */
+body[data-project] {
+  --project-ink: var(--text);
+}
+
+body[data-project="custom-stickers"],
+body[data-project="navigation"] {
+  --project-ink: var(--ink-amber);
+}
+
+body[data-project="automations"],
+body[data-project="visualisations"] {
+  --project-ink: var(--ink-teal);
+}
+
+body[data-project="developer-tools"] {
+  --project-ink: var(--ink-blue);
+}
+
+body[data-project="ask-ai"] {
+  --project-ink: var(--ink-violet);
+}
+
+body[data-project="customer-insights"],
+body[data-project="design-systems"] {
+  --project-ink: var(--ink-green);
+}
+
 .pc-close {
   position: fixed;
   top: var(--nav-offset);
@@ -2530,12 +2575,27 @@ body[data-page="project"] .nav-primary {
   color: var(--nav-text-inactive);
   cursor: pointer;
   text-decoration: none;
-  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  /* Scale is its own property here so the hover press composes with, rather than
+     overwrites, the drop-in entrance and the leaving transition — both own transform. */
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+    transform 0.2s ease, scale 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .pc-close:hover {
-  color: var(--nav-text-active);
+  /* The project's own ink mixed into the glass border, so the edge firms up on
+     hover in the same colour the project's row hovers in on the home page. */
+  border-color: color-mix(in srgb, var(--project-ink, #000) 45%, var(--nav-glass-border));
+  color: var(--project-ink, var(--nav-text-active));
   transform: translateY(-1px);
+  scale: 0.95;
+}
+
+/* On the dark canvas the ink is too deep to read against the background, so it's
+   lifted toward white before it's mixed into the border and the icon. */
+[data-theme="dark"] .pc-close:hover {
+  --project-ink-lifted: color-mix(in srgb, var(--project-ink, #fff) 45%, #ffffff);
+  border-color: color-mix(in srgb, var(--project-ink-lifted) 40%, var(--nav-glass-border));
+  color: var(--project-ink-lifted);
 }
 
 .pc-close svg {
@@ -3738,6 +3798,18 @@ body[data-page="project"] .pc-next-pill.is-docked {
   text-align: center;
 }
 
+/* These figures lost their drawing but kept the caption. Both rules carry an extra
+   class purely to outrank the per-project margins below, which were each written for
+   a figure with art in it: the caption drops the gap that sat it clear of an image,
+   and every problem statement takes the same air above it regardless of project. */
+body[data-project] .pc-sketch--textonly.pc-sketch .pc-sketch-caption {
+  margin-top: 0;
+}
+
+body[data-project] .pc-sketch--textonly.pc-sketch {
+  margin-top: 56px;
+}
+
 /* Every caption shares one measure — a touch wider than the copy column below —
    expressed against each figure's own width so they stay identical on the page. */
 .pc-sketch .pc-sketch-caption {
@@ -3748,6 +3820,19 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-diagram .pc-sketch-caption {
   width: calc(100% * 82 / 115);
   margin-inline: auto;
+}
+
+/* Near enough to square that the shared 72% would stand it much taller than the
+   other drawings on the page, so it runs narrower. Scoped to the archive drawing —
+   the network one below is wide and keeps the shared width. */
+body[data-project="ask-ai"] .pc-sketch:not(.pc-sketch--network) img {
+  width: 54%;
+}
+
+/* Extra air between the hero and the archive drawing — the shared 8px reads as
+   crowded now the drawing is narrow enough to sit clear of the hero's edges. */
+body[data-project="ask-ai"] .pc-sketch:not(.pc-sketch--network) {
+  margin-top: 56px;
 }
 
 /* Sits between two blocks of copy rather than under the hero image, so it takes
@@ -3914,6 +3999,14 @@ body[data-project="custom-stickers"] .pc-sketch-caption {
   height: auto;
 }
 
+/* The frame diagram is a wide, sparse subject, so it reads fine well inside the
+   shared 115% — the caption keeps that full measure so it still lines up with the
+   captions on the other pages. */
+body[data-project="navigation"] .pc-diagram img {
+  width: 78%;
+  margin-inline: auto;
+}
+
 /* One drawing per canvas — each file is inked for the theme it's named after.
    Scoped under .pc-diagram so these outrank the `.pc-diagram img` rule above. */
 .pc-diagram .pc-diagram-img--dark {
@@ -3929,10 +4022,55 @@ body[data-project="custom-stickers"] .pc-sketch-caption {
 }
 
 /* Headline stat under the quote. The value counts up when it scrolls into view. */
+/* A wash of the project's own colour along the bottom edge, fading up once the
+   next-project pill comes into view. Fixed, so it stays put while the last of the
+   page scrolls over it. It sits above the grain (z-index 2) rather than under it —
+   the texture's blend mode washed a tint this faint straight out — but below the
+   fixed chrome at 300. */
+.pc-next-glow {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 300px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background-image: radial-gradient(
+    ellipse 70% 100% at 50% 100%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 34%, transparent) 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 12%, transparent) 45%,
+    transparent 78%);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.next-glow-visible .pc-next-glow {
+  opacity: 1;
+}
+
+/* The same wash reads weaker against the dark canvas, so it carries a little more
+   of the ink to land at the same strength. */
+[data-theme="dark"] .pc-next-glow {
+  background-image: radial-gradient(
+    ellipse 70% 100% at 50% 100%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 40%, transparent) 0%,
+    color-mix(in srgb, var(--project-ink, var(--text)) 14%, transparent) 45%,
+    transparent 78%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-next-glow {
+    transition: none;
+  }
+}
+
 /* Full-width detail shot between the copy and the quote. Framed like the hero
    images so it reads as part of the same set. */
 .pc-detail {
-  width: 196%;
+  width: 115.5%;
+  /* Kept in case a narrow window would otherwise let it force a horizontal
+     scrollbar. */
+  max-width: calc(100vw - 64px);
   height: auto;
   align-self: center;
   /* Extra air below: the divider that used to separate this from the quote is
@@ -4045,95 +4183,6 @@ html:not([data-theme]) .pc-divider,
   font-style: normal;
   letter-spacing: -0.01em;
   color: var(--text-light);
-}
-
-/* Team credit pills shown under the quote block */
-.pc-team {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 24px;
-  margin: 0 auto;
-  max-width: 92%;
-}
-
-.pc-team-divider {
-  margin: 80px 0 56px;
-}
-
-/* No quote above it — the last paragraph already supplies the top gap. */
-.pc-team-divider--no-quote {
-  margin-top: 0;
-}
-
-.pc-team-label {
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-light);
-}
-
-.pc-team-pills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  /* Roomier row gap than column gap — the rows read as separate lines of names */
-  gap: 14px 12px;
-}
-
-.pc-team-break {
-  flex-basis: 100%;
-  height: 0;
-}
-
-/* No longer a pill — each member is separated from the last by a hairline. The
-   12px column gap plus 12px of left padding puts the rule midway between them,
-   matching the spacing the pills used to occupy. */
-.pc-team-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-left: 12px;
-  border-left: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-body);
-  white-space: nowrap;
-}
-
-/* Nothing to divide from at the start of a row. The first two cases are static;
-   is-row-start is set by JS for rows created by a natural flex wrap. */
-.pc-team-pill:first-child,
-.pc-team-break + .pc-team-pill,
-.pc-team-pill.is-row-start {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.pc-team-avatar {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0;
-  color: #fff;
-  background: hsl(var(--avatar-hue, 220), 55%, 58%);
-}
-
-.pc-team-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
 }
 
 /* Project detail page — alternating image + description sections */
@@ -5929,6 +5978,10 @@ body.page-is-leaving .top-blur {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+
+  .pc-close:hover {
+    scale: 1;
   }
 
   body.project-is-entering .page--project {
