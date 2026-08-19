@@ -3708,6 +3708,20 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Starts its own line with no gap of its own — the break comes from the block,
    the spacing from line-height alone. Italic here only; the same class stays
    upright in the project headlines. */
+/* Small caps label above each illustration caption — Problem on the first
+   figure, Solution on the second. Sans, so it reads as a marker rather than part
+   of the serif sentence beneath it. */
+.pc-eyebrow {
+  display: block;
+  margin-bottom: 14px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
 .pc-sketch-caption .pc-lead-muted {
   display: block;
   font-style: italic;
@@ -3867,6 +3881,14 @@ body[data-project="visualisations"] .pc-sketch--graph .pc-sketch-caption {
 
 body[data-project="custom-stickers"] .pc-sketch-caption {
   margin-top: 34px;
+}
+
+/* Coloured artwork: a straight invert would swing the yellow wash to blue, so the
+   hue is rotated back afterwards — that keeps the ink readable on the dark canvas
+   and the leaves roughly their own colour. */
+[data-theme="dark"] .pc-sketch .pc-sketch-img--colour {
+  filter: invert(1) hue-rotate(180deg);
+  opacity: 0.82;
 }
 
 [data-theme="dark"] .pc-sketch img {
@@ -4995,11 +5017,14 @@ body.page-is-leaving .top-blur {
 .about-line-art-image {
   display: block;
   width: min(180px, 42vw);
-  aspect-ratio: 517 / 658;
+  /* Matches the padded artwork. Both drawings carry a 12px transparent margin so
+     the ink never sits on the box edge — with mask-size: contain, the fractional
+     height that min(180px, 42vw) produces used to shave the last row off. */
+  aspect-ratio: 541 / 682;
   flex-shrink: 0;
   background-color: var(--line-art-stroke);
-  -webkit-mask-image: url('../images/richard-line-art.png');
-  mask-image: url('../images/richard-line-art.png');
+  -webkit-mask-image: url('../images/richard-line-art.png?v=2');
+  mask-image: url('../images/richard-line-art.png?v=2');
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -5231,8 +5256,8 @@ body.page-is-leaving .top-blur {
 }
 
 [data-theme="dark"] .about-line-art-image {
-  -webkit-mask-image: url('../images/richard-line-art-dark.png?v=2');
-  mask-image: url('../images/richard-line-art-dark.png?v=2');
+  -webkit-mask-image: url('../images/richard-line-art-dark.png?v=3');
+  mask-image: url('../images/richard-line-art-dark.png?v=3');
   /* The two drawings are the same height to the pixel; the dark one is just inked
      ~3% narrower, which is what makes it read smaller. So the correction is
      horizontal only — scaling both axes would make him taller than his light
