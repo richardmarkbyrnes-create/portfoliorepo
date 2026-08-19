@@ -645,6 +645,30 @@ function initNextProjectGlow() {
   observer.observe(pill);
 }
 
+// Rows for work that has no page yet. A click can't go anywhere, so the row shakes
+// to say so rather than doing nothing at all.
+function initLockedWorkRows() {
+  const rows = document.querySelectorAll('.work-row-main--locked');
+  if (!rows.length) return;
+
+  rows.forEach((row) => {
+    const refuse = () => {
+      // Restart the animation if it's already running, so a second click still reads.
+      row.classList.remove('is-refusing');
+      void row.offsetWidth;
+      row.classList.add('is-refusing');
+    };
+    row.addEventListener('click', refuse);
+    row.addEventListener('animationend', () => row.classList.remove('is-refusing'));
+    row.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        refuse();
+      }
+    });
+  });
+}
+
 function initClosingHeart() {
   const heart = document.querySelector('.home-closing-heart');
   if (!heart) return;
@@ -939,6 +963,7 @@ initKeyboardNav();
 initScrollAnimations();
 initBottomBlurVisibility();
 initNextProjectGlow();
+initLockedWorkRows();
 initClosingHeart();
 initDogPhotoPopovers();
 initProjectPreview();

@@ -433,10 +433,10 @@
         if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
 
         // Dock the pill to the bottom of the screen once the user scrolls into the
-        // last 5% of the page (CSS handles the magnetic slide-in).
+        // last 10% of the page (CSS handles the magnetic slide-in).
         const updatePillDock = () => {
           const reached = window.scrollY + window.innerHeight
-            >= document.documentElement.scrollHeight * 0.95;
+            >= document.documentElement.scrollHeight * 0.9;
           nextPill.classList.toggle('is-docked', reached);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });
