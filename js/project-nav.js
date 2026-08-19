@@ -111,8 +111,8 @@
     const lead = document.getElementById('pc-lead');
     if (lead) {
       const text = project.headline || project.intro || project.title;
+      // Titles read in a single weight now — no muted accent word.
       const specials = [];
-      if (project.headlineAccent) specials.push({ word: project.headlineAccent, className: 'pc-lead-muted' });
       if (project.headlineScramble) specials.push({ word: project.headlineScramble, className: 'pc-lead-scramble' });
 
       const matches = specials
@@ -140,17 +140,6 @@
         pos = m.idx + m.word.length;
       });
       if (pos < text.length) appendText(text.slice(pos));
-
-      // Inline icon after the accent word, matching its colour/opacity.
-      if (project.headlineIcon) {
-        const iconSpan = document.createElement('span');
-        iconSpan.className = 'pc-lead-icon' + (project.headlineIconBefore ? ' pc-lead-icon--before' : '');
-        iconSpan.setAttribute('aria-hidden', 'true');
-        iconSpan.innerHTML = project.headlineIcon;
-        const accent = lead.querySelector('.pc-lead-muted');
-        if (accent) accent[project.headlineIconBefore ? 'before' : 'after'](iconSpan);
-        else lead.appendChild(iconSpan);
-      }
 
       if (project.headlineScramble && typeof window.AsciiScramble === 'function') {
         window.AsciiScramble({
