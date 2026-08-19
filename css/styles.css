@@ -6111,9 +6111,21 @@ body.page-is-leaving .top-blur {
     font-size: 30px;
   }
 
-  /* Shrink the about ("he's Irish and Dutch…") title so it fits on mobile */
+  /* Shrink the about ("Sustained by my love for…") title so it fits on mobile */
   .home-about-intro .about-hero-title {
-    font-size: 35px;
+    font-size: 32px;
+  }
+
+  /* The three lines are hard-broken for desktop; at mobile widths each one is
+     wider than the screen and wraps again, which leaves a ragged five-line
+     stack. Let them run as one sentence instead and balance the wrap so the
+     lines come out even. */
+  .home-about-intro .about-hero-title .hero-title-line {
+    display: inline;
+  }
+
+  .home-about-intro .about-hero-title {
+    text-wrap: balance;
   }
 
   .hero-subtitle {
