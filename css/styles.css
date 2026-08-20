@@ -2325,12 +2325,44 @@ body[data-page="home"] .page {
   --row-ink: var(--text);
 }
 
-/* "In progress" is wider than the 48px track the years sit in, so the cell is sized
-   to its own text and pinned to the track's end — that puts its right edge exactly
-   where the years' right edges are. */
+/* The year sits here at rest and "In progress" arrives on hover. The cell is pinned
+   to the end of the year track so its right edge lands where the other years' do,
+   and the label is taken out of flow so the swap doesn't resize anything — it just
+   fades in over the year's position. */
 .work-row-main--locked .work-col--year {
   justify-self: end;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 16px;
 }
+
+.wip-dots {
+  /* Lining figures, same as the years below it. */
+  font-variant-numeric: tabular-nums;
+  transition: opacity 0.2s ease;
+}
+
+.wip-label {
+  position: absolute;
+  right: 0;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.work-row-main--locked:hover .wip-dots,
+.work-row-main--locked:focus-visible .wip-dots {
+  opacity: 0;
+}
+
+.work-row-main--locked:hover .wip-label,
+.work-row-main--locked:focus-visible .wip-label {
+  opacity: 1;
+}
+
+
 
 .work-row-main--locked .work-col--project {
   text-decoration: none;
