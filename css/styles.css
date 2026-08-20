@@ -2357,9 +2357,25 @@ body[data-page="home"] .page {
   opacity: 0;
 }
 
+/* Once it's arrived, the label breathes gently — a live status rather than a
+   fixed one. The fade-in runs on opacity, so the pulse waits for it to finish
+   before taking the property over. */
 .work-row-main--locked:hover .wip-label,
 .work-row-main--locked:focus-visible .wip-label {
   opacity: 1;
+  animation: wipPulse 2.2s ease-in-out 0.2s infinite;
+}
+
+@keyframes wipPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-row-main--locked:hover .wip-label,
+  .work-row-main--locked:focus-visible .wip-label {
+    animation: none;
+  }
 }
 
 
