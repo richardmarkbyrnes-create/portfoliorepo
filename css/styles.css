@@ -5211,8 +5211,8 @@ body.page-is-leaving .top-blur {
   aspect-ratio: 541 / 682;
   flex-shrink: 0;
   background-color: var(--line-art-stroke);
-  -webkit-mask-image: url('../images/richard-line-art.png?v=2');
-  mask-image: url('../images/richard-line-art.png?v=2');
+  -webkit-mask-image: url('../images/richard-line-art.webp?v=2');
+  mask-image: url('../images/richard-line-art.webp?v=2');
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -5444,8 +5444,8 @@ body.page-is-leaving .top-blur {
 }
 
 [data-theme="dark"] .about-line-art-image {
-  -webkit-mask-image: url('../images/richard-line-art-dark.png?v=3');
-  mask-image: url('../images/richard-line-art-dark.png?v=3');
+  -webkit-mask-image: url('../images/richard-line-art-dark.webp?v=3');
+  mask-image: url('../images/richard-line-art-dark.webp?v=3');
   /* The two drawings are the same height to the pixel; the dark one is just inked
      ~3% narrower, which is what makes it read smaller. So the correction is
      horizontal only — scaling both axes would make him taller than his light

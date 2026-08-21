@@ -33,13 +33,13 @@ window.PROJECTS = {
     headline: 'Unblocking Personal\nExpression with Gen AI',
     team: 'Miro · Growth Adoption',
     images: [
-      'images/custom-stickers-hero.png',
+      'images/custom-stickers-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     polaroids: [
-      { src: 'images/sticker-photo-1.jpg', r: -5 },
-      { src: 'images/sticker-photo-2.jpg', r: 4 },
+      { src: 'images/sticker-photo-1.webp', r: -5 },
+      { src: 'images/sticker-photo-2.webp', r: 4 },
     ],
     intro: 'A text-to-sticker generative AI tool built into Miro’s stickers panel.',
     paragraphs: [
@@ -59,7 +59,7 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     images: [
-      'images/automations-hero.png',
+      'images/automations-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -80,7 +80,7 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     images: [
-      'images/ask-ai-hero.png',
+      'images/ask-ai-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -101,7 +101,7 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
     images: [
-      'images/canvas-insights-hero.png',
+      'images/canvas-insights-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -122,7 +122,7 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     images: [
-      'images/navigation-hero.png?v=3',
+      'images/navigation-hero.webp?v=3',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -142,7 +142,7 @@ window.PROJECTS = {
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     images: [
-      'images/visualisations-hero.png?v=4',
+      'images/visualisations-hero.webp?v=4',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -161,7 +161,7 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
-      'images/developer-tools-hero.png?v=2',
+      'images/developer-tools-hero.webp?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -180,7 +180,7 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
     images: [
-      'images/sap-fiori-hero.png?v=2',
+      'images/sap-fiori-hero.webp?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
