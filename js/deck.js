@@ -26,17 +26,13 @@
   }
 
   // Light or dark, stored under its own key so the deck never changes the theme
-  // the portfolio site is using.
+  // the portfolio site is using. No visible control — it's on "T", so there's
+  // one less thing on screen while presenting.
   const THEME_KEY = 'deck-theme';
-  const themeBtn = document.getElementById('deck-theme');
 
   function applyTheme(dark) {
     if (dark) document.documentElement.setAttribute('data-theme', 'dark');
     else document.documentElement.removeAttribute('data-theme');
-    if (themeBtn) {
-      themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
-      themeBtn.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
-    }
   }
 
   let dark = false;
@@ -47,7 +43,7 @@
   }
   applyTheme(dark);
 
-  themeBtn?.addEventListener('click', () => {
+  function toggleTheme() {
     dark = !dark;
     applyTheme(dark);
     try {
@@ -55,7 +51,7 @@
     } catch (error) {
       /* private mode — the switch still works, it just won't be remembered */
     }
-  });
+  }
 
   const dots = slides.map((slide, i) => {
     const dot = document.createElement('button');
@@ -66,6 +62,40 @@
     dotsWrap?.appendChild(dot);
     return dot;
   });
+
+  // How many dots the rail shows at once, and the distance between two of them
+  // — .deck-dot width plus .deck-dots gap in deck.css. Keep the two in step.
+  const DOTS_VISIBLE = 7;
+  const DOT_PITCH = 14;
+  const dotsWindowed = slides.length > DOTS_VISIBLE;
+  if (dotsWindowed) dotsWrap?.parentElement?.classList.add('is-windowed');
+
+  // Slide the track so the current dot sits mid-window where it can, and shrink
+  // whichever end still has slides behind it — that's the only cue that the
+  // rail is a window rather than the whole deck.
+  function paintDots() {
+    const last = slides.length - 1;
+    const start = dotsWindowed
+      ? Math.min(
+          Math.max(index - Math.floor(DOTS_VISIBLE / 2), 0),
+          slides.length - DOTS_VISIBLE
+        )
+      : 0;
+    const end = dotsWindowed ? start + DOTS_VISIBLE - 1 : last;
+    if (dotsWrap) dotsWrap.style.translate = `${-start * DOT_PITCH}px 0`;
+    dots.forEach((dot, i) => {
+      const inWindow = i >= start && i <= end;
+      dot.classList.toggle('is-current', i === index);
+      dot.classList.toggle(
+        'is-edge',
+        inWindow && ((i === start && start > 0) || (i === end && end < last))
+      );
+      dot.setAttribute('aria-current', i === index ? 'true' : 'false');
+      // Dots outside the window are clipped, so keep them off the tab ring.
+      dot.setAttribute('aria-hidden', inWindow ? 'false' : 'true');
+      dot.tabIndex = inWindow ? 0 : -1;
+    });
+  }
 
   let index = 0;
   // Lines that reveal one keypress at a time, for slides that build up.
@@ -101,10 +131,7 @@
       // Keep the off-screen slides out of the reading order entirely.
       slide.setAttribute('aria-hidden', current ? 'false' : 'true');
     });
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('is-current', i === index);
-      dot.setAttribute('aria-current', i === index ? 'true' : 'false');
-    });
+    paintDots();
     if (countEl) countEl.textContent = `${index + 1} / ${slides.length}`;
     document.body.dataset.deckSlide = String(index + 1);
     if (prevBtn) prevBtn.disabled = index === 0;
@@ -167,6 +194,9 @@
     } else if (event.key === 'End') {
       event.preventDefault();
       show(slides.length - 1, { revealAll: true });
+    } else if (event.key === 't' || event.key === 'T') {
+      event.preventDefault();
+      toggleTheme();
     }
   });
 

@@ -14,17 +14,16 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <base href="/">
   <link rel="stylesheet" href="/css/styles.css?v=808">
-  <link rel="stylesheet" href="/css/deck.css?v=69">
+  <link rel="stylesheet" href="/css/deck.css?v=134">
 </head>
 <body data-page="deck">
   <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <button class="deck-theme" id="deck-theme" type="button" aria-label="Switch to dark theme" aria-pressed="false">
-    <svg class="deck-theme-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"></path></svg>
-    <svg class="deck-theme-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"></path></svg>
-  </button>
+  <!-- The theme switch lost its button; "T" toggles it instead, and the corner
+       carries the name. -->
+  <p class="deck-signature">Richard Byrnes</p>
 
-  <img class="cradle-mark cradle-mark--corner" src="images/cradle-logo.png" alt="Cradle" width="1760" height="420">
+  <img class="cradle-mark cradle-mark--corner" src="images/cradle-logo.webp" alt="Cradle" width="1760" height="420">
   <img class="cradle-mark cradle-mark--corner cradle-mark--mono" src="images/cradle-logo-mono.png" alt="" width="425" height="120">
 
   <!-- Decorative wash behind the title slide only. Sits before <main> so it
@@ -36,17 +35,28 @@
   <main class="deck" id="main-content">
 
     <section class="slide slide--title" aria-label="Slide 1">
-      <img class="intro-mark" src="images/cradle-intro.png" alt="Richard holding Jessie, a Bernese mountain dog puppy, beside the Cradle mark" width="466" height="279">
+      <img class="intro-mark" src="images/cradle-intro.webp" alt="Richard holding Jessie, a Bernese mountain dog puppy, beside the Cradle mark" width="466" height="279">
       <h1 class="slide-title">Richard <span class="muted">&amp;</span> Cradle</h1>
       <p class="slide-lede">A short introduction into who I am and what I&rsquo;ve done, followed by a project walkthrough.</p>
     </section>
 
     <section class="slide" aria-label="Slide 2">
-      <p class="slide-kicker">Little about me</p>
-      <h2 class="slide-title slide-title--long">Hey <img class="inline-gif" src="images/wave-hello.gif" alt="A bear waving hello" width="245" height="184" loading="lazy"> Cradle, I&rsquo;m Richard.<span class="muted step">An Irish and Dutch product designer<br>currently at Miro in Amsterdam.</span></h2>
+      <div class="slide-split-main">
+          <p class="slide-kicker">What we&rsquo;ll cover</p>
+          <div class="career-lines">
+            <p class="career-line"><span class="chip" aria-hidden="true"></span><b>5m</b> A little bit about me</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>25m</b> A walkthrough of my role in Miro Insights</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>10m</b> Time to chat</p>
+          </div>
+      </div>
     </section>
 
     <section class="slide" aria-label="Slide 3">
+      <p class="slide-kicker">Little about me</p>
+      <h2 class="slide-title slide-title--long">Hey <img class="inline-gif" src="images/wave-hello.webp" alt="A bear waving hello" width="245" height="184" loading="lazy"> Cradle, I&rsquo;m Richard.<span class="muted step">An Irish and Dutch product designer<br>currently at Miro in Amsterdam.</span></h2>
+    </section>
+
+    <section class="slide" aria-label="Slide 4">
       <div class="slide-split-main">
           <p class="slide-kicker">Where I&rsquo;ve been</p>
           <div class="career-lines">
@@ -59,7 +69,7 @@
       </div>
     </section>
 
-    <section class="slide" aria-label="Slide 4">
+    <section class="slide" aria-label="Slide 5">
       <div class="slide-split-main">
           <p class="slide-kicker">From a personal side</p>
           <div class="career-lines">
@@ -71,47 +81,288 @@
       </div>
     </section>
 
-    <section class="slide" aria-label="Slide 5">
-      <p class="slide-kicker">The through-line</p>
-      <h2 class="slide-title">Systems, <span class="muted">not screens.</span></h2>
-      <ul class="slide-list">
-        <li><b>SAP · Fiori Tools</b> <span>&mdash; built and maintained a 200-component Figma library that had to retheme across ten-plus VS Code themes, with tokens mapped to production CSS and JSON.</span></li>
-        <li><b>Cashbook</b> <span>&mdash; rebuilt a navigation architecture so new product modules could be switched on without redesigning the shell.</span></li>
-        <li><b>Miro · Insights</b> <span>&mdash; designed an adaptive card component that has to hold up in every structure a team invents on an open canvas.</span></li>
-      </ul>
-    </section>
-
     <section class="slide" aria-label="Slide 6">
-      <p class="slide-kicker">How I work</p>
-      <h2 class="slide-title">Close to the users, <span class="muted">close to the engineers.</span></h2>
-      <ul class="slide-list">
-        <li><b>Start with the mess</b> <span>&mdash; the interesting problems are usually in the workflow around the product, not inside it.</span></li>
-        <li><b>Build to think</b> <span>&mdash; I design in the browser. This deck and my portfolio are hand-written HTML, CSS and JavaScript, no framework.</span></li>
-        <li><b>Stay through the build</b> <span>&mdash; a design isn&rsquo;t done when it&rsquo;s handed over. I&rsquo;d rather be in the pull request than in the review.</span></li>
-        <li><b>Trust is a design problem</b> <span>&mdash; with AI features especially, showing the source beats sounding confident.</span></li>
+      <p class="slide-kicker">Why Cradle</p>
+      <h2 class="slide-title">Interest in biology, the domain, <span class="muted">and moving back to a smaller organisation.</span></h2>
+      <ul class="slide-list slide-list--flow">
+        <li class="step">Passion for medicine and the complexities of humans and our planet. I&rsquo;d have been a doctor if I&rsquo;d had the commitment to study that long.</li>
+        <li class="step">Interesting and impactful application of artificial intelligence, which is refreshing over most use cases I see today.</li>
+        <li class="step">Loved the scrappy smaller team dynamic at Insights, and would like to do it all again.</li>
       </ul>
     </section>
 
-    <section class="slide" aria-label="Slide 7">
-      <p class="slide-kicker">Why this role</p>
-      <h2 class="slide-title">Complex domain, <span class="muted">expert users, one coherent product.</span></h2>
-      <ul class="slide-list">
-        <li><b>Data-dense surfaces are the work I know</b> <span>&mdash; ledgers, IDEs, thousands of customer calls. Finding the few things that matter and making them impossible to miss.</span></li>
-        <li><b>Owning a system, not policing one</b> <span>&mdash; I&rsquo;ve held a library at 200 components and know when consistent beats perfectly systematic.</span></li>
-        <li><b>A domain I&rsquo;d have to earn</b> <span>&mdash; I don&rsquo;t know protein engineering. I do know how to sit with an expert until their workflow makes sense.</span></li>
+    <section class="slide slide--title" aria-label="Slide 7">
+      <p class="slide-kicker">Presentation</p>
+      <h2 class="slide-title slide-title--long">My experience building Insights<br><span class="muted">and what it taught me about<br>Speed, Cohesion and Quality.</span></h2>
+      <p class="slide-note">20 min</p>
+    </section>
+
+    <section class="slide slide--photos" aria-label="Slide 8">
+      <div class="slide-split-main">
+          <p class="slide-kicker">Backstory</p>
+          <div class="career-lines">
+            <p class="career-line"><span class="chip" aria-hidden="true"></span><b>Insights</b> Gets acquired by Miro</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Woo</b> I joined as founding designer</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Three amigos</b> Richard, Mor, Wiz</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>We grew</b> From 3 to 14 members</p>
+          </div>
+      </div>
+      <div class="slide-photos">
+        <img src="images/insights-team-bbq.webp" alt="The team around a long table at a Texas barbecue" width="1179" height="844" loading="lazy">
+        <img src="images/insights-team-gameon.webp" alt="The team crowded around a game show wheel, holding up a trophy" width="1179" height="1089" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Slide 9">
+      <p class="slide-kicker">What Insights is</p>
+      <h2 class="slide-title slide-title--long">An AI customer feedback aggregator. <span class="muted">Millions of data points, thousands of signals.</span></h2>
+      <p class="slide-lede slide-lede--wide">Sales calls, app reviews, CRM entries, support tickets across multiple integration sources &mdash; ingested and sorted automatically into thematic clusters, product areas and opportunity maps.</p>
+      <div class="slide-logos">
+        <img src="images/logo-salesforce.png" alt="Salesforce" width="1000" height="1000" loading="lazy">
+        <img src="images/logo-gong.webp" alt="Gong" width="513" height="512" loading="lazy">
+        <img src="images/logo-slack.webp" alt="Slack" width="512" height="512" loading="lazy">
+        <img src="images/logo-intercom.svg" alt="Intercom" width="512" height="512" loading="lazy">
+        <img src="images/logo-google.webp" alt="Google" width="327" height="350" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Slide 10">
+      <p class="slide-kicker">The journey</p>
+      <h2 class="slide-title">How we built, maintained and contributed to <span class="muted">Miro&rsquo;s design system and journey.</span></h2>
+      <p class="slide-lede">The steps it took to get there&hellip;</p>
+    </section>
+
+    <section class="slide" aria-label="Slide 11">
+      <p class="slide-kicker">My role</p>
+      <h2 class="slide-title">Two jobs, <span class="muted">pulling <img class="inline-gif" src="images/lol.webp" alt="Awkwafina laughing" width="480" height="270" loading="lazy"> opposite ways.</span></h2>
+      <ul class="slide-list slide-list--plain">
+        <li class="step"><b>Move Insights into the Miro Design System</b> <span>&mdash; so a product that arrived by acquisition could carry a multi-product growth identity rather than its own.</span></li>
+        <li class="step"><b>Keep shipping features the whole time</b> <span>&mdash; customer and leadership feature requests didn&rsquo;t slow. We needed to keep building.</span></li>
+        <li class="step"><b>And make it true in two places at once</b> <span>&mdash; Insights had to hold up as a standalone tool and as a native part of the canvas: two different code bases with the same user experience.</span></li>
       </ul>
     </section>
 
-    <section class="slide slide--title" aria-label="Slide 8">
-      <p class="slide-kicker">Next</p>
-      <h2 class="slide-title">The project.</h2>
-      <p class="slide-lede">Where the design system was the work, not the deliverable.</p>
+    <section class="slide slide--art" aria-label="Slide 12">
+      <p class="slide-kicker">Before</p>
+      <h2 class="slide-title">Scattered Figma files,<br><span class="muted">growing vision, no system.</span></h2>
+      <p class="slide-lede">Classic early-stage debt. Every new feature request turned into friction for engineering and design, because components started from scratch.</p>
+      <img class="slide-art" src="images/insights-figma-before.webp" alt="The Figma files before the system: Canvas AI discovery, updated components, modal onboarding and the Cardinal UI grid, scattered across one board" width="2842" height="1856" loading="lazy">
+      <img class="slide-art-gif" src="images/eww.webp" alt="David from Schitt's Creek pulling a disgusted face" width="555" height="555" loading="lazy">
     </section>
+
+    <section class="slide slide--side-art" aria-label="Slide 13">
+      <p class="slide-kicker">The audit</p>
+      <h2 class="slide-title slide-title--nowrap">Many components,<br><span class="muted">no system.</span></h2>
+      <p class="slide-lede">Failing accessibility requirements, visual inconsistencies with no documentation, massively misaligned with Miro design system and language harming brand reputation and standards.</p>
+      <img class="slide-side-art" src="images/insights-audit-ui.webp?v=2" alt="Two Insights screens side by side: the companies table and the prioritisation view with its filter open" width="2099" height="939" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 14">
+      <p class="slide-kicker">The trade-off</p>
+      <h2 class="slide-title">Adopt where I could.<br><span class="muted">Bridge where I couldn&rsquo;t.</span></h2>
+      <ul class="slide-list slide-list--flow">
+        <li class="step">Matching components with their MDS counterparts, no local variant, no reason to keep our own. If it fit the use case it was updated.</li>
+        <li class="step">Some data-heavy pieces had no counterparts &mdash; aggregation tables, dense filters. MDS didn&rsquo;t support that yet so we kept core components local but updated the tokens.</li>
+        <li class="step">So I built an intermediate library &mdash; a deliberate Frankenstein, holding the product&rsquo;s needs now against the platform&rsquo;s direction later so we could have a system behind the madness.</li>
+      </ul>
+    </section>
+    <section class="slide slide--title slide--stack-left" aria-label="Slide 15">
+      <h2 class="slide-title">From chaos <span class="muted">to structure.</span></h2>
+      <p class="slide-lede">Finding structure in the messy middle&hellip;</p>
+      <div class="slide-side-stack">
+        <img src="images/figma-selection-colors.png" alt="A Figma panel showing 376 selection colours on one selection" width="504" height="176" loading="lazy">
+        <img src="images/figma-layer-chaos.webp" alt="A Figma layer tree of unnamed groups and duplicated frames beside a board of near-identical screens" width="2280" height="946" loading="lazy">
+        <img src="images/figma-mock-layers.png" alt="A Figma layer tree of repeated mock/row entries under a mock table" width="1016" height="826" loading="lazy">
+        <img src="images/figma-colour-sprawl.png?v=2" alt="A long Figma colour list of near-duplicate hex values" width="668" height="760" loading="lazy">
+      </div>
+      <div class="slide-side-stack slide-side-stack--right">
+        <img src="images/mds-board-annotated.webp" alt="An annotated Insights design board: AI prompt input, core navigation and modals" width="1228" height="1106" loading="lazy">
+        <img src="images/mds-chips.webp" alt="The chip component sheet: sub-components, examples and dark mode preview" width="1140" height="722" loading="lazy">
+        <img src="images/mds-tabs.webp" alt="The tabs component sheet: sub-components, examples and dark mode preview" width="1662" height="894" loading="lazy">
+        <img src="images/mds-dialogs.webp" alt="The dialog component sheet: sub-components, components and examples" width="1464" height="672" loading="lazy">
+      </div>
+    </section>
+
+
+    <section class="slide" aria-label="Slide 16">
+      <p class="slide-kicker">The payoff</p>
+      <h2 class="slide-title">Proper structure <span class="muted">fuels efficiency.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">My designing got faster, more consistent and easier to maintain as we built more features. Quality and maintenance became a breeze.</p>
+        <p class="slide-lede slide-lede--wide step">But one big thing was holding the value back&hellip;</p>
+      </div>
+    </section>
+
+    <section class="slide slide--art" aria-label="Slide 17">
+      <p class="slide-kicker">Then reality</p>
+      <h2 class="slide-title">Immaculate in Figma.<br><span class="muted">Unshipped in production.</span></h2>
+      <p class="slide-lede">Design files polished, tokens standardised, components documented. Meanwhile engineering was deep in migrating to Miro&rsquo;s infra and shipping new features &mdash; so token colours, button variants and icons sank to the bottom of the backlog.</p>
+      <img class="slide-art" src="images/insights-figma-system.webp" alt="The documented Insights Figma system: AI prompt input, core navigation and modals, and core product screens" width="2842" height="1856" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 18">
+      <p class="slide-kicker">Learning time</p>
+      <h2 class="slide-title">I wanted to push the craft forward<br><span class="muted">and support where I could.</span></h2>
+      <ul class="slide-list slide-list--flow">
+        <li class="step">Good timing, we had an offsite in Austin, TX the following week &mdash; sat with my engineers and paired with them to learn about how they push changes to our repo.</li>
+        <li class="step">Set up the tooling &mdash; Design System MCP, and Claude Code to open pull requests directly using existing MDS components instead of custom made.</li>
+      </ul>
+      <div class="slide-cluster" aria-hidden="true">
+        <img src="images/team-mor.jpg" alt="" width="337" height="337" loading="lazy">
+        <img src="images/team-frank.jpg" alt="" width="560" height="560" loading="lazy">
+        <img src="images/team-ophir.jpg" alt="" width="800" height="800" loading="lazy">
+        <img src="images/team-kosta.webp" alt="" width="800" height="800" loading="lazy">
+        <img class="slide-cluster-mark" src="images/logo-claude.webp" alt="" width="1280" height="1280" loading="lazy">
+        <img class="slide-cluster-mark" src="images/logo-github.svg" alt="" width="24" height="24" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide slide--art" aria-label="Slide 19">
+      <p class="slide-kicker">The shift</p>
+      <h2 class="slide-title">Becoming comfortable with code.<br><span class="muted">Not so scary.</span></h2>
+      <ul class="slide-list slide-list--flow">
+        <li class="step">Shipped my first design PR that week &mdash; twenty more followed, every one through engineering review and became more comfortable in understanding how design systems work.</li>
+        <li class="step">It turned the smallest, most-deferred class of work into something that no longer needed anyone else&rsquo;s sprint. Allowed me to push the design system and craft to the next level while strengthening my relationship with my engineering team.</li>
+      </ul>
+      <img class="slide-art" src="images/insights-merged-pr.webp" alt="A GitHub merge-queue notification: merged #68684 into master" width="2134" height="1100" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 20">
+      <p class="slide-kicker">What it taught me</p>
+      <h2 class="slide-title">Being comfortable <span class="muted">with not knowing.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">It&rsquo;s good to embrace the scary. I started this team being too scared to even look at a GitHub repo.</p>
+        <p class="slide-lede slide-lede--wide step">I ended with a deeper understanding into how Figma component systems become design systems in production, and how it all contributes to a faster and more cohesive experience for design, engineering and the end users.</p>
+      </div>
+    </section>
+
+    <section class="slide slide--title" aria-label="Slide 21">
+      <img class="slide-gif" src="images/thats-all-folks.webp" alt="A Looney Tunes closing iris" width="499" height="366" loading="lazy">
+      <h2 class="slide-title">The end!<br><span class="muted">Thanks for watching.</span></h2>
+    </section>
+
+    <section class="slide slide--side-art slide--art-close" aria-label="Slide 22">
+      <p class="slide-kicker">Just joking</p>
+      <h2 class="slide-title">Design systems<br><span class="muted">never end.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">Maintaining and contributing to a design system never ends. It requires contribution and expansion as a product&rsquo;s vision grows and shifts.</p>
+        <p class="slide-lede slide-lede--wide step">As we grew as a team and product, so did our needs&hellip;</p>
+      </div>
+      <img class="slide-side-art slide-side-art--tall" src="images/never-ending-stairs.gif" alt="An endless flight of stairs curving upward" width="350" height="350" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 23">
+      <p class="slide-kicker">Scoped expansion</p>
+      <h2 class="slide-title">Our product offerings grew,<br><span class="muted">and so did our design needs.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">As we started to look beyond features that existed in our own product, we wanted to bring our value to the Miro canvas.</p>
+        <p class="slide-lede slide-lede--wide step">The issue was bringing custom features to the canvas &mdash; we had design needs that weren&rsquo;t possible with the current design system&rsquo;s components, but we had a need.</p>
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Slide 24">
+      <p class="slide-kicker">Cross organisational</p>
+      <h2 class="slide-title slide-title--long">Our engineering team built a scrappy MVP, <span class="muted">something that worked, but didn&rsquo;t scale.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide step">Miro&rsquo;s system had rigour and standards we needed to align to. Through sharing our vision early and often we got buy-in from several other platform teams &mdash; Diagramming, Tables, Roadmapping and more.</p>
+        <p class="slide-lede slide-lede--wide step">They saw utility in our design proposal, and we created a case to bring forward to Eddie, our design systems lead.</p>
+      </div>
+    </section>
+
+    <section class="slide slide--side-art slide--wide-copy" aria-label="Slide 25">
+      <p class="slide-kicker">Contribution</p>
+      <h2 class="slide-title slide-title--nowrap">Working with <img class="inline-gif inline-face" src="images/team-eddie.jpg" alt="Eddie Machado" width="800" height="800" loading="lazy"> Eddie<br><span class="muted">to expand the design system.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">We set out on expanding the current utility of our card components. I sat down with the platform teams &mdash; Diagramming, Tables, Roadmapping &mdash; to learn about their design needs for cards. We needed sub-headers, more room for different sizing options, and more flexibility in the colour values used in tags.</p>
+        <p class="slide-lede slide-lede--wide step">So we built it. Expanded component and boolean properties in Figma and in our design system, and enabled the expansion of our system through collective need.</p>
+      </div>
+      <div class="slide-side-pair">
+        <img src="images/mds-tabs-docs.webp" alt="Miro Design System documentation for the Tabs component, with code examples and sub-components" width="1170" height="1158" loading="lazy">
+        <img class="slide-side-pair-tall" src="images/insights-card-variants.webp?v=2" alt="Expanded Insights card variants: idea, bug, customer, feedback and call, each with tags and metadata" width="1934" height="2060" loading="lazy">
+      </div>
+    </section>
+
+    <section class="slide" aria-label="Slide 26">
+      <p class="slide-kicker">Retrospective</p>
+      <h2 class="slide-title slide-title--long">What I learned from Eddie<br><span class="muted">and enterprise design systems.</span></h2>
+      <ul class="slide-list slide-list--flow">
+        <li class="step">Ruthlessly protect what gets prioritised and what doesn&rsquo;t. Only expanding design systems and functionality once there is a collective need.</li>
+        <li class="step">Clear documentation and accessibility for engineering, design and more.</li>
+      </ul>
+    </section>
+
+    <section class="slide" aria-label="Slide 27">
+      <p class="slide-kicker">Beyond the product</p>
+      <h2 class="slide-title">Pushing brand consistency<br><span class="muted">to our web presence.</span></h2>
+      <div class="slide-copy">
+        <p class="slide-lede slide-lede--wide">I had the opportunity to build and maintain our team&rsquo;s website and help centre, all built in Framer using the exact design language and properties from our Figma and brand centre.</p>
+        <p class="slide-lede slide-lede--wide step">Driving consistency and craft across product and web.</p>
+      </div>
+      <img class="slide-art-wide" src="images/insights-framer-web.webp?v=3" alt="The Insights marketing site and help centre in Framer, with its text styles panel and responsive breakpoints" width="2099" height="560" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 28">
+      <p class="slide-kicker">Cohesion across domains</p>
+      <h2 class="slide-title">One visual language,<br><span class="muted">a lot of people relying on it.</span></h2>
+      <p class="slide-lede slide-lede--wide">The visibility and importance proper system guidelines for brand and visual language have for so many different cross-functional partners.</p>
+    </section>
+
+    <section class="slide slide--title" aria-label="Slide 29">
+      <div class="slide-cluster slide-cluster--row" aria-hidden="true">
+        <img src="images/team-goran.jpg" alt="Goran" loading="lazy">
+        <img src="images/team-roana.jpg" alt="Roana" loading="lazy">
+        <img src="images/team-eddie.jpg" alt="Eddie" loading="lazy">
+        <img src="images/team-ophir.jpg" alt="Ophir" loading="lazy">
+        <img src="images/team-wiz.jpg" alt="Wiz" loading="lazy">
+        <img src="images/team-mor.jpg" alt="Mor" loading="lazy">
+        <img src="images/team-mehdi.jpg" alt="Mehdi" loading="lazy">
+        <img src="images/team-frank.jpg" alt="Frank" loading="lazy">
+        <img src="images/team-brittney.jpg" alt="Brittney" loading="lazy">
+        <img src="images/team-kosta.webp" alt="Kosta" loading="lazy">
+      </div>
+      <p class="slide-kicker">Thank you</p>
+      <h2 class="slide-title">Shoutout to <span class="muted">everyone involved.</span></h2>
+      <p class="slide-lede">From the Insights team, design systems, marketing and our platform teams &mdash; they all pushed my understanding and appreciation for consistent, systemic design further.</p>
+    </section>
+
+
+    <section class="slide slide--title" aria-label="Slide 30">
+      <p class="slide-kicker">Retrospective</p>
+      <h2 class="slide-title">What I learned from all of this&hellip;<br><span class="muted">Speed, Cohesion and Quality.</span></h2>
+    </section>
+
+    <section class="slide" aria-label="Slide 31">
+      <p class="slide-kicker">Speed</p>
+      <h2 class="slide-title">Slow now, <span class="muted">or slower later.</span></h2>
+      <p class="slide-lede slide-lede--wide">Taking a systematic and structured approach to product development can be time consuming and sometimes painful. One thing I know now: it&rsquo;s nowhere near as painful as trying to fix the lack of systems later.</p>
+    </section>
+
+    <section class="slide" aria-label="Slide 32">
+      <p class="slide-kicker">Cohesion</p>
+      <h2 class="slide-title">Learn their workflow,<br><span class="muted">move together faster.</span></h2>
+      <p class="slide-lede slide-lede--wide">Applying an empathic mindset to cross-functional partners can move everyone together faster. Learning their needs and their workflows can amplify your team&rsquo;s progress, efficiency and relationships tenfold.</p>
+    </section>
+
+    <section class="slide" aria-label="Slide 33">
+      <p class="slide-kicker">Quality</p>
+      <h2 class="slide-title">Proper systems <span class="muted">build quality outputs.</span></h2>
+      <p class="slide-lede slide-lede--wide">Structure across processes eventually bleeds out into the consumer-facing experience. Doing things right leads to long-term quality and consistency.</p>
+    </section>
+
+
+    <section class="slide slide--title" aria-label="Slide 34">
+      <img class="slide-gif" src="images/thats-all-folks.webp" alt="A Looney Tunes closing iris" width="499" height="366" loading="lazy">
+      <h2 class="slide-title">The end!<br><span class="muted">Thanks for watching.</span></h2>
+      <p class="slide-note">*Not joking</p>
+    </section>
+
   </main>
 
   <div class="deck-bar">
     <span class="deck-count" id="deck-count"></span>
-    <div class="deck-dots" id="deck-dots" role="tablist" aria-label="Slides"></div>
+    <div class="deck-dots-viewport">
+      <div class="deck-dots" id="deck-dots" role="tablist" aria-label="Slides"></div>
+    </div>
     <div class="deck-arrows">
       <button class="deck-arrow" id="deck-prev" type="button" aria-label="Previous slide">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
@@ -123,6 +374,6 @@
   </div>
 
   <script src="/js/projects.js?v=38"></script>
-  <script src="/js/deck.js?v=18"></script>
+  <script src="/js/deck.js?v=20"></script>
 </body>
 </html>
