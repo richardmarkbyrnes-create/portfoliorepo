@@ -2918,7 +2918,9 @@ body[data-project="design-systems"] {
   font-size: 12px;
   font-weight: 400;
   letter-spacing: -0.01em;
-  color: var(--nav-text-inactive);
+  /* Mixed from --text rather than a fixed grey, so it inverts with the theme
+     instead of washing out when light content scrolls behind the pill. */
+  color: color-mix(in srgb, var(--text) 68%, transparent);
 }
 
 .pc-next-pill > svg {
@@ -2961,7 +2963,7 @@ body[data-page="project"] .pc-next-pill {
   z-index: 320;
   animation: none;
   will-change: transform;
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.74);
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
   transition:
@@ -2972,7 +2974,7 @@ body[data-page="project"] .pc-next-pill {
 /* Dark theme: a white 50% pill reads as an unreadable light blob against the
    dark backdrop, so use a dark translucent fill with a hairline border. */
 [data-theme="dark"] body[data-page="project"] .pc-next-pill {
-  background: rgba(20, 20, 22, 0.5);
+  background: rgba(20, 20, 22, 0.78);
   border-color: rgba(255, 255, 255, 0.12);
 }
 
