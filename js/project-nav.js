@@ -350,6 +350,21 @@
       });
     });
 
+  // Glyph per project for the next-project pill. The colours are not here: they
+  // live in styles.css beside the home page's row washes, keyed by the same
+  // data-project value, so the two can't drift apart.
+  const PROJECT_GLYPHS = {
+    'onboarding': '<g transform="translate(2.5 -0.5)"><path d="M4 21V4"/><path d="M4 5h11l-1.6 3.5L15 12H4"/></g>',
+    'custom-stickers': '<path d="M14.5 3H11a8 8 0 0 0-8 8v2.5A6.5 6.5 0 0 0 9.5 20H12a9 9 0 0 0 9-9V9.5z"/><path d="M14 3.5V8a2 2 0 0 0 2 2h4.5"/><path d="M8.5 13.5a3.5 3.5 0 0 0 5 0"/>',
+    'automations': '<path d="M13 2 4 14h7l-1 8 9-12h-7z"/>',
+    'ask-ai': '<g transform="translate(-1.5 0)"><path d="M12 3.5 13.7 8 18 9.7 13.7 11.4 12 16l-1.7-4.6L6 9.7 10.3 8z"/><path d="M18.5 15.5 19.2 17.3 21 18l-1.8.7-.7 1.8-.7-1.8L16 18l1.8-.7z"/></g>',
+    'customer-insights': '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/><path d="M9 9v11"/>',
+    'navigation': '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/>',
+    'visualisations': '<path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 20v-6"/><path d="M13 20V9"/><path d="M18 20v-9"/>',
+    'developer-tools': '<path d="m17 8 4 4-4 4"/><path d="m7 16-4-4 4-4"/><path d="m14 4-4 16"/>',
+    'design-systems': '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  };
+
     // Next project button (bottom-right, fades in near the page bottom)
     const order = window.PROJECT_ORDER || [];
     const index = order.indexOf(slug);
@@ -422,6 +437,24 @@
     if (nextPill) {
       if (nextSlug) {
         nextPill.setAttribute('href', projectHref(nextSlug));
+
+        // Name the project the pill leads to, and show its hero as a thumbnail.
+        const next = window.PROJECTS?.[nextSlug];
+        const nameEl = document.getElementById('pc-next-name');
+        const thumbEl = document.getElementById('pc-next-thumb');
+        const labelEl = nextPill.querySelector('.pc-next-label');
+        if (next) {
+          if (nameEl) nameEl.textContent = next.title;
+          if (labelEl && next.company) labelEl.textContent = next.company;
+          nextPill.setAttribute('aria-label', `Next project: ${next.title}`);
+          const glyph = PROJECT_GLYPHS[nextSlug];
+          if (thumbEl && glyph) {
+            thumbEl.dataset.project = nextSlug;
+            thumbEl.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${glyph}</svg>`;
+          } else if (thumbEl) {
+            thumbEl.remove();
+          }
+        }
         nextPill.addEventListener('click', (event) => {
           event.preventDefault();
           goNext();
@@ -433,10 +466,10 @@
         if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
 
         // Dock the pill to the bottom of the screen once the user scrolls into the
-        // last 10% of the page (CSS handles the magnetic slide-in).
+        // last 20% of the page (CSS handles the magnetic slide-in).
         const updatePillDock = () => {
           const reached = window.scrollY + window.innerHeight
-            >= document.documentElement.scrollHeight * 0.9;
+            >= document.documentElement.scrollHeight * 0.8;
           nextPill.classList.toggle('is-docked', reached);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });

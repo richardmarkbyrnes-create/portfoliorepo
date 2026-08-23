@@ -2832,9 +2832,10 @@ body[data-project="design-systems"] {
   align-self: center;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
   margin: 104px auto 8px;
-  padding: 12px 22px;
+  /* Tighter on the left: the thumbnail carries its own visual padding. */
+  padding: 8px 20px 8px 8px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -2848,7 +2849,79 @@ body[data-project="design-systems"] {
   transition: color 0.35s ease-in-out, background-color 0.35s ease-in-out, transform 0.35s ease-in-out;
 }
 
-.pc-next-pill svg {
+/* A tinted badge for the next project, sat at the pill's left. Colours come
+   from the per-project map in project-nav.js. */
+.pc-next-thumb {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--badge-bg, color-mix(in srgb, var(--text) 8%, transparent));
+  color: var(--badge-fg, var(--text-body));
+}
+
+.pc-next-thumb svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Same wash and ink pairs the home page hovers each project row in, so the
+   badge and that row agree. Grouped exactly as those rules are. */
+.pc-next-thumb[data-project="custom-stickers"],
+.pc-next-thumb[data-project="navigation"] {
+  background: #fef8e0;
+  color: var(--ink-amber);
+}
+
+.pc-next-thumb[data-project="automations"],
+.pc-next-thumb[data-project="visualisations"] {
+  background: #effafc;
+  color: var(--ink-teal);
+}
+
+.pc-next-thumb[data-project="developer-tools"] {
+  background: #f3fafd;
+  color: var(--ink-blue);
+}
+
+.pc-next-thumb[data-project="ask-ai"] {
+  background: #faf6fd;
+  color: var(--ink-violet);
+}
+
+.pc-next-thumb[data-project="customer-insights"],
+.pc-next-thumb[data-project="design-systems"] {
+  background: #eff7f4;
+  color: var(--ink-green);
+}
+
+/* Title over label, so the project name leads and "Next project" explains it. */
+.pc-next-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  text-align: left;
+}
+
+.pc-next-name {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--nav-text-active);
+}
+
+.pc-next-label {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: var(--nav-text-inactive);
+}
+
+.pc-next-pill > svg {
   width: 16px;
   height: 16px;
   transition: transform 0.35s ease-in-out;
@@ -2859,7 +2932,19 @@ body[data-project="design-systems"] {
   transform: translateY(-1px) scale(0.9);
 }
 
-.pc-next-pill:hover svg {
+/* Press: a smooth squeeze on the way down, springing back on release. The
+   docked pill keeps its centring translate, which the shorthand would drop. */
+.pc-next-pill:active {
+  transform: scale(0.9);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body[data-page="project"] .pc-next-pill.is-docked:active {
+  transform: translate(-50%, 0) scale(0.9);
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-next-pill:hover > svg {
   transform: translateX(3px);
 }
 
