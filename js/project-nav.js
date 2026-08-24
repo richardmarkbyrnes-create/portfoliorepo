@@ -447,6 +447,10 @@
           if (nameEl) nameEl.textContent = next.title;
           if (labelEl && next.company) labelEl.textContent = next.company;
           nextPill.setAttribute('aria-label', `Next project: ${next.title}`);
+          // Lets CSS tint the bottom wash in the colour of the project the pill
+          // leads to, keyed by the same value the badge uses.
+          document.body.dataset.nextProject = nextSlug;
+
           const glyph = PROJECT_GLYPHS[nextSlug];
           if (thumbEl && glyph) {
             thumbEl.dataset.project = nextSlug;
@@ -459,6 +463,21 @@
           event.preventDefault();
           goNext();
         });
+
+        // Hovering the pill blooms that tint up from the bottom edge. The layer
+        // is created here so the ten project pages don't each need the markup.
+        let hoverGlow = document.querySelector('.pc-next-hover-glow');
+        if (!hoverGlow) {
+          hoverGlow = document.createElement('div');
+          hoverGlow.className = 'pc-next-hover-glow';
+          hoverGlow.setAttribute('aria-hidden', 'true');
+          document.body.appendChild(hoverGlow);
+        }
+        const setHover = (on) => document.body.classList.toggle('next-pill-hover', on);
+        nextPill.addEventListener('pointerenter', () => setHover(true));
+        nextPill.addEventListener('pointerleave', () => setHover(false));
+        nextPill.addEventListener('focus', () => setHover(true));
+        nextPill.addEventListener('blur', () => setHover(false));
 
         // The pill is fixed and docks to the bottom of the screen. Move it out to
         // <body> so it isn't trapped in the `.page` stacking context (which sits
