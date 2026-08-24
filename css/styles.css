@@ -4274,6 +4274,56 @@ body.next-glow-visible .pc-next-glow {
   opacity: 1;
 }
 
+/* Hovering the pill blooms a second wash in the colour of the project it leads
+   to, so the bottom of the screen previews where you're about to go. Same
+   groupings as the badge and the home page's row hovers. */
+body[data-next-project="custom-stickers"],
+body[data-next-project="navigation"] {
+  --next-ink: var(--ink-amber);
+}
+
+body[data-next-project="automations"],
+body[data-next-project="visualisations"] {
+  --next-ink: var(--ink-teal);
+}
+
+body[data-next-project="developer-tools"] {
+  --next-ink: var(--ink-blue);
+}
+
+body[data-next-project="ask-ai"] {
+  --next-ink: var(--ink-violet);
+}
+
+body[data-next-project="customer-insights"],
+body[data-next-project="design-systems"] {
+  --next-ink: var(--ink-green);
+}
+
+/* Its own layer rather than a child of .pc-next-glow: that element sits at
+   opacity 0 until the ambient wash is called for, and a parent's opacity
+   multiplies down onto anything inside it. */
+.pc-next-hover-glow {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 180px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  background-image: radial-gradient(
+    ellipse 18% 100% at 50% 100%,
+    color-mix(in srgb, var(--next-ink, var(--text)) 18%, transparent) 0%,
+    color-mix(in srgb, var(--next-ink, var(--text)) 6%, transparent) 45%,
+    transparent 78%);
+  transition: opacity 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+body.next-pill-hover .pc-next-hover-glow {
+  opacity: 1;
+}
+
 /* The matching wash in the top-right corner, tied to the close button's hover. It's
    a sibling rather than a pseudo-element because the button's backdrop-filter makes
    it a containing block — a fixed child would anchor to the button, not the viewport. */
