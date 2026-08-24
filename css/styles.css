@@ -1662,7 +1662,9 @@ body[data-page="about"] {
   /* On top of the row's own 8px gap — the mark needs more air than the small
      external-link glyph that trails the text. */
   margin-right: 4px;
-  object-fit: contain;
+  /* Set back from the link text, and mixed from --text so it follows the theme
+     rather than staying a fixed grey. */
+  color: color-mix(in srgb, var(--text) 42%, transparent);
 }
 
 .contact-external {
