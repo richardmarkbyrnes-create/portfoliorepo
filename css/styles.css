@@ -1653,6 +1653,18 @@ body[data-page="about"] {
   width: fit-content;
 }
 
+/* Service mark ahead of each contact line. Both marks occupy the same 14px box;
+   contain keeps the Gmail mark's wider ratio intact inside it. */
+.contact-mark {
+  flex: 0 0 auto;
+  width: 14px;
+  height: 14px;
+  /* On top of the row's own 8px gap — the mark needs more air than the small
+     external-link glyph that trails the text. */
+  margin-right: 4px;
+  object-fit: contain;
+}
+
 .contact-external {
   display: inline-flex;
   align-items: center;
@@ -2347,9 +2359,19 @@ body[data-page="home"] .page {
 .wip-label {
   position: absolute;
   right: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.2s ease;
+}
+
+/* Sized off the label rather than fixed, so it tracks the row's type. */
+.wip-label svg {
+  width: 0.85em;
+  height: 0.85em;
+  flex: 0 0 auto;
 }
 
 .work-row-main--locked:hover .wip-dots,
