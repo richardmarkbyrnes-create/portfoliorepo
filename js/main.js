@@ -75,35 +75,6 @@ function playThemeTransitionSound() {
   audio.play().catch(() => {});
 }
 
-// Root-relative: project pages live one directory down, so a bare 'sounds/...'
-// would resolve against /<slug>/ and 404.
-const PAGE_TURN_SOUND = '/sounds/book-page.mp3';
-let pageTurnAudio = null;
-
-function loadPageTurnSound() {
-  if (pageTurnAudio) return pageTurnAudio;
-  pageTurnAudio = new Audio(PAGE_TURN_SOUND);
-  pageTurnAudio.preload = 'auto';
-  pageTurnAudio.volume = 0.55;
-  return pageTurnAudio;
-}
-
-function playPageTurnSound() {
-  if (isSoundMuted()) return;
-  const audio = loadPageTurnSound();
-  audio.currentTime = 0;
-  audio.play().catch(() => {});
-}
-
-// Page-turn on "Next project". The clip is buffered up front rather than on the
-// click itself, since the page starts fading out immediately after.
-function initPageTurnSound() {
-  const pill = document.getElementById('pc-next-pill');
-  if (!pill) return;
-  loadPageTurnSound();
-  pill.addEventListener('click', playPageTurnSound);
-}
-
 const CLICK_SPARK_SOUNDS = ['sounds/tap_01.wav', 'sounds/tap_02.wav', 'sounds/tap_03.wav', 'sounds/tap_04.wav'];
 let clickSparkAudios = null;
 let clickSparkSoundIndex = 0;
@@ -970,7 +941,6 @@ initProjectPreview();
 initCountUp();
 initFooter();
 initClickSpark();
-initPageTurnSound();
 initInProgressStatus();
 initHeroWeather();
 initReducedMotionVideo();
