@@ -2888,7 +2888,7 @@ body[data-project="design-systems"] {
 }
 
 .pc-next-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--nav-text-active);
@@ -2899,7 +2899,7 @@ body[data-project="design-systems"] {
    washing out when light content scrolls behind the pill. */
 .pc-next-company,
 .pc-next-sep {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 400;
   letter-spacing: -0.02em;
   color: color-mix(in srgb, var(--text) 38%, transparent);
