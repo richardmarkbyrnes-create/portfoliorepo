@@ -2858,8 +2858,7 @@ body[data-project="design-systems"] {
   align-items: center;
   gap: 12px;
   margin: 104px auto 8px;
-  /* Tighter on the left: the thumbnail carries its own visual padding. */
-  padding: 8px 20px 8px 8px;
+  padding: 10px 20px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -2879,62 +2878,12 @@ body[data-project="design-systems"] {
     border-radius 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* A tinted badge for the next project, sat at the pill's left. Colours come
-   from the per-project map in project-nav.js. */
-.pc-next-thumb {
-  flex: 0 0 auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: 11px;
-  background: var(--badge-bg, color-mix(in srgb, var(--text) 8%, transparent));
-  color: var(--badge-fg, var(--text-body));
-  transition: border-radius 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-}
-
-.pc-next-thumb svg {
-  width: 18px;
-  height: 18px;
-}
-
-/* Same wash and ink pairs the home page hovers each project row in, so the
-   badge and that row agree. Grouped exactly as those rules are. */
-.pc-next-thumb[data-project="custom-stickers"],
-.pc-next-thumb[data-project="navigation"] {
-  background: #fef8e0;
-  color: var(--ink-amber);
-}
-
-.pc-next-thumb[data-project="automations"],
-.pc-next-thumb[data-project="visualisations"] {
-  background: #effafc;
-  color: var(--ink-teal);
-}
-
-.pc-next-thumb[data-project="developer-tools"] {
-  background: #f3fafd;
-  color: var(--ink-blue);
-}
-
-.pc-next-thumb[data-project="ask-ai"] {
-  background: #faf6fd;
-  color: var(--ink-violet);
-}
-
-.pc-next-thumb[data-project="customer-insights"],
-.pc-next-thumb[data-project="design-systems"] {
-  background: #eff7f4;
-  color: var(--ink-green);
-}
-
-/* Title over label, so the project name leads and "Next project" explains it. */
+/* One line, "Company / Project", matching the back link at the top of the page. */
 .pc-next-copy {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 1px;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 5px;
   text-align: left;
 }
 
@@ -2945,13 +2894,15 @@ body[data-project="design-systems"] {
   color: var(--nav-text-active);
 }
 
-.pc-next-label {
-  font-size: 12px;
+/* The company and its separator sit back so the project name leads. Mixed from
+   --text rather than a fixed grey, so it inverts with the theme instead of
+   washing out when light content scrolls behind the pill. */
+.pc-next-company,
+.pc-next-sep {
+  font-size: 14px;
   font-weight: 400;
-  letter-spacing: -0.01em;
-  /* Mixed from --text rather than a fixed grey, so it inverts with the theme
-     instead of washing out when light content scrolls behind the pill. */
-  color: color-mix(in srgb, var(--text) 68%, transparent);
+  letter-spacing: -0.02em;
+  color: color-mix(in srgb, var(--text) 38%, transparent);
 }
 
 .pc-next-pill > svg {
@@ -2960,8 +2911,7 @@ body[data-project="design-systems"] {
   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Hover rounds the pill right off, and the badge follows so the two read as one
-   shape rather than a squircle rattling inside a capsule. */
+/* Hover rounds the pill right off. */
 .pc-next-pill:hover {
   color: var(--nav-text-active);
   transform: translateY(-1px) scale(0.9);
@@ -2972,20 +2922,15 @@ body[data-project="design-systems"] {
   border-radius: 25px;
 }
 
-/* Likewise half the badge's 34px. */
-.pc-next-pill:hover .pc-next-thumb {
-  border-radius: 17px;
-}
-
 /* Press: a smooth squeeze on the way down, springing back on release. The
    docked pill keeps its centring translate, which the shorthand would drop. */
 .pc-next-pill:active {
-  transform: scale(0.9);
+  transform: scale(0.95);
   transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 body[data-page="project"] .pc-next-pill.is-docked:active {
-  transform: translate(-50%, 0) scale(0.9);
+  transform: translate(-50%, 0) scale(0.95);
   transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
