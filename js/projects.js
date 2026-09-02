@@ -58,6 +58,13 @@ window.PROJECTS = {
     headline: 'Designing Proactive Customer Insights Automations',
     team: 'Miro · Insights',
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
+      { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg' },
+    ],
     images: [
       'images/automations-hero.png',
     ],
@@ -79,6 +86,13 @@ window.PROJECTS = {
     headline: 'Instant Answers to Complex Customer Questions',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
+    ],
     images: [
       'images/ask-ai-hero.png',
     ],
@@ -100,6 +114,14 @@ window.PROJECTS = {
     headline: 'Bringing Rich Customer\nData to the Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
+    teamMembers: [
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+      { name: 'Wiz', photo: 'images/team-wiz.jpg' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
+      { break: true },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
+      { name: 'Mor Sela', photo: 'images/team-mor.jpg' },
+    ],
     images: [
       'images/canvas-insights-hero.png',
     ],
@@ -121,6 +143,7 @@ window.PROJECTS = {
     headline: 'Designing a Scalable Foundation for Multi-Product Growth',
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
+    teamMembers: [],
     images: [
       'images/navigation-hero.png?v=3',
     ],
@@ -141,6 +164,7 @@ window.PROJECTS = {
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
+    teamMembers: [],
     images: [
       'images/visualisations-hero.png?v=4',
     ],
@@ -193,3 +217,27 @@ window.PROJECTS = {
   },
 };
 
+// Core team credited on every project page (shown as pills under the quote).
+const CORE_TEAM = [
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+  { name: 'Mehdi Ghaeini', photo: 'images/team-mehdi.jpg' },
+  { name: 'Ben Shih', photo: 'images/team-ben.jpg' },
+  { name: 'Iuliia Dutchak', photo: 'images/team-iuliia.jpg' },
+  { name: 'Cyan Xiao', photo: 'images/team-cyan.jpg' },
+];
+
+// SAP (Fiori) team, shared across the two SAP projects.
+const SAP_TEAM = [
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
+  { name: 'Goran Peuc', photo: 'images/team-goran.jpg' },
+  { name: 'Colin Doherty', photo: 'images/team-colin.jpg' },
+  { name: 'Christine McCarthy', photo: 'images/team-christine.png' },
+  { name: 'Aisling Noone', photo: 'images/team-aisling.jpg' },
+];
+
+window.PROJECTS['developer-tools'].teamMembers = SAP_TEAM;
+window.PROJECTS['design-systems'].teamMembers = SAP_TEAM;
+
+Object.values(window.PROJECTS).forEach((project) => {
+  if (!project.teamMembers) project.teamMembers = CORE_TEAM;
+});

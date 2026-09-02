@@ -1653,20 +1653,6 @@ body[data-page="about"] {
   width: fit-content;
 }
 
-/* Service mark ahead of each contact line. Both marks occupy the same 14px box;
-   contain keeps the Gmail mark's wider ratio intact inside it. */
-.contact-mark {
-  flex: 0 0 auto;
-  width: 14px;
-  height: 14px;
-  /* On top of the row's own 8px gap — the mark needs more air than the small
-     external-link glyph that trails the text. */
-  margin-right: 4px;
-  /* Set back from the link text, and mixed from --text so it follows the theme
-     rather than staying a fixed grey. */
-  color: color-mix(in srgb, var(--text) 42%, transparent);
-}
-
 .contact-external {
   display: inline-flex;
   align-items: center;
@@ -1846,7 +1832,7 @@ body[data-page="home"] .page {
 }
 
 .home-hero .hero-title-wrap {
-  padding-top: 32px;
+  padding-top: 50px;
 }
 
 .hero-title {
@@ -2866,7 +2852,9 @@ body[data-project="design-systems"] {
   color: var(--nav-text-inactive);
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
-  border-radius: 18px;
+  /* A squircle, not a capsule: well under half the pill's height so the corners
+     stay square-shouldered. */
+  border-radius: 14px;
   box-shadow: var(--nav-shadow);
   text-decoration: none;
   /* Slow and eased at both ends, so the pill leaves and returns as gently as it
@@ -2911,15 +2899,12 @@ body[data-project="design-systems"] {
   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
 
-/* Hover rounds the pill right off. */
+/* Hover eases the corners open a touch, staying a squircle rather than rounding
+   the pill right off. */
 .pc-next-pill:hover {
   color: var(--nav-text-active);
   transform: translateY(-1px) scale(0.9);
-  /* Half the pill's 50px height — fully round, and the largest value that still
-     reads as a change. Going to 999px looks identical past 25px, so the motion
-     would finish in the first few frames and the rest of the duration is spent
-     animating nothing. */
-  border-radius: 25px;
+  border-radius: 17px;
 }
 
 /* Press: a smooth squeeze on the way down, springing back on release. The
@@ -4452,6 +4437,94 @@ html:not([data-theme]) .pc-divider,
   font-style: normal;
   letter-spacing: -0.01em;
   color: var(--text-light);
+}
+
+/* Team credit shown under the quote block at the end of a project page */
+.pc-team {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  margin: 0 auto;
+  max-width: 92%;
+}
+
+.pc-team-divider {
+  margin: 80px 0 56px;
+}
+
+/* No quote above it — the last paragraph already supplies the top gap. */
+.pc-team-divider--no-quote {
+  margin-top: 0;
+}
+
+.pc-team-label {
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-light);
+}
+
+.pc-team-pills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  /* Roomier row gap than column gap — the rows read as separate lines of names */
+  gap: 14px 12px;
+}
+
+.pc-team-break {
+  flex-basis: 100%;
+  height: 0;
+}
+
+/* Each member is separated from the last by a hairline. The 12px column gap plus
+   12px of left padding puts the rule midway between them. */
+.pc-team-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-body);
+  white-space: nowrap;
+}
+
+/* Nothing to divide from at the start of a row. The first two cases are static;
+   is-row-start is set by JS for rows created by a natural flex wrap. */
+.pc-team-pill:first-child,
+.pc-team-break + .pc-team-pill,
+.pc-team-pill.is-row-start {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.pc-team-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #fff;
+  background: hsl(var(--avatar-hue, 220), 55%, 58%);
+}
+
+.pc-team-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* Project detail page — alternating image + description sections */
