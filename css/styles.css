@@ -18,18 +18,19 @@
 
 :root,
 [data-theme="normal"] {
-  /* The paper is pure white; the greys keep a faint warm cast (~45° hue, low
-     saturation) so the text doesn't read cold against it. */
+  /* The paper is pure white; the inks are one cool slate family (~212° hue).
+     Saturation tapers as the greys lighten — the 20% that reads as slate at
+     display weight reads as plainly blue by the time it is a 55% subtext. */
   --bg: #ffffff;
   --note-halo: rgba(255, 255, 255, 0.95);
-  --text: #3b3935;
-  --text-body: #12110c;
-  --text-muted: #6c6a62;
-  --text-subtle: #525048;
-  --text-light: #939086;
-  --text-nav: #525048;
-  --text-detail: #060604;
-  --text-resume-header: #57544e;
+  --text: #333f4d;
+  --text-body: #2b3542;
+  --text-muted: #586676;
+  --text-subtle: #3e4c5c;
+  --text-light: #818c98;
+  --text-nav: #3e4c5c;
+  --text-detail: #040506;
+  --text-resume-header: #445161;
   --surface: #ffffff;
   --surface-muted: #ffffff;
   --border-color: #ffffff;
@@ -47,8 +48,8 @@
   --nav-active-bg: rgba(251, 250, 247, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.076), 0 1px 6px rgba(0, 0, 0, 0.048);
   --nav-hover-bg: rgba(0, 0, 0, 0.03);
-  --nav-text-active: #12110d;
-  --nav-text-inactive: #88857e;
+  --nav-text-active: #0c0f13;
+  --nav-text-inactive: #758291;
   --nav-pill-home: transparent;
   --nav-pill-about: transparent;
   --nav-pill-resume: transparent;
