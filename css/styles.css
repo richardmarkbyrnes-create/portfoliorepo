@@ -1890,7 +1890,9 @@ body[data-page="home"] .page {
 
 .hero-bio {
   display: block;
-  max-width: 30em;
+  /* Fills the hero column rather than measuring itself — the shell above already
+     caps the line length. */
+  max-width: 100%;
   /* Paragraphs now, so the UA's bottom margin has to go. */
   margin-bottom: 0;
   font-family: var(--serif);
@@ -5567,16 +5569,21 @@ body.page-is-leaving .top-blur {
   visibility: hidden;
   transform: translate(-50%, -50%) scale(0.78);
   transform-origin: center center;
+  /* Defocused on the way in, resolving as it settles — the photo reads as coming
+     into focus rather than simply appearing. */
+  filter: blur(8px);
   transition:
     opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dog-photo-popover.is-visible {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
+  filter: blur(0);
 }
 
 #eddie-photo-popover {
@@ -5631,6 +5638,7 @@ body.page-is-leaving .top-blur {
 @media (prefers-reduced-motion: reduce) {
   .dog-photo-popover {
     transition: none;
+    filter: none;
   }
 
   .dog-photo-popover.is-visible {
