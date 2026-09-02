@@ -576,11 +576,17 @@ function initBottomBlurVisibility() {
 
   function updateBottomBlur() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
-    // Hidden at rest, fades in once the page starts moving, then fades out over
-    // the last 10% of the scroll. Pages too short to scroll never show it.
+    // Hidden at rest, fades in once the page starts moving, then fades out as the
+    // page bottoms out so whatever ends it is read clean. Pages too short to
+    // scroll never show it.
+    //
+    // A fixed distance rather than a fraction of the scroll: at 10% of a long
+    // project page the blur switched off hundreds of pixels before the team
+    // shoutout at the foot of it had even scrolled into view, so it could never
+    // pass under the blur. Roughly the blur's own visible height.
     const atTop = window.scrollY < 40;
-    const inLastTenth = maxScroll <= 0 || window.scrollY / maxScroll >= 0.9;
-    document.body.classList.toggle('bottom-blur-visible', !atTop && !inLastTenth);
+    const atBottom = maxScroll <= 0 || maxScroll - window.scrollY < 160;
+    document.body.classList.toggle('bottom-blur-visible', !atTop && !atBottom);
     ticking = false;
   }
 
