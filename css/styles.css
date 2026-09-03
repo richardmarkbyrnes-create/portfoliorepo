@@ -6274,13 +6274,14 @@ body.page-is-leaving .top-blur {
 }
 
 
+/* Depth and speed come from --fade-blur/--fade-dur so the first view of a session
+   can resolve slowly out of a deep defocus while every later load does the same
+   thing briskly. Defaults here are the quick version; .hero-intro raises them. */
 @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(24px);
-    /* A deeper defocus than the 5px this used to carry — the page should read as
-       resolving into focus, not merely sliding up. */
-    filter: blur(10px);
+    filter: blur(var(--fade-blur, 6px));
   }
   to {
     opacity: 1;
@@ -6330,21 +6331,31 @@ body.page-is-leaving .top-blur {
 }
 
 .animate-in {
-  animation: fadeUp 1.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fadeUp var(--fade-dur, 1.25s) cubic-bezier(0.22, 1, 0.36, 1) forwards;
   overflow: visible;
 }
 
-.animate-in-delay-1 { animation-delay: 0.17s; opacity: 0; }
-.animate-in-delay-2 { animation-delay: 0.34s; opacity: 0; }
-.animate-in-delay-3 { animation-delay: 0.51s; opacity: 0; }
-.animate-in-delay-4 { animation-delay: 0.68s; opacity: 0; }
-.animate-in-delay-5 { animation-delay: 0.85s; opacity: 0; }
+/* First homepage view of the session — the flag theme-init.js sets in the head.
+   Slower, and out of a deeper blur. */
+.hero-intro {
+  --fade-dur: 1.9s;
+  --fade-blur: 10px;
+  --fade-step: 0.17s;
+}
 
+.animate-in-delay-1 { animation-delay: calc(var(--fade-step, 0.115s) * 1); opacity: 0; }
+.animate-in-delay-2 { animation-delay: calc(var(--fade-step, 0.115s) * 2); opacity: 0; }
+.animate-in-delay-3 { animation-delay: calc(var(--fade-step, 0.115s) * 3); opacity: 0; }
+.animate-in-delay-4 { animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0; }
+.animate-in-delay-5 { animation-delay: calc(var(--fade-step, 0.115s) * 5); opacity: 0; }
+
+/* Matches the keyframe's start exactly, or the element jumps depth the instant
+   it begins. */
 .animate-on-scroll-root:not(.is-in-view) .animate-in {
   animation: none;
   opacity: 0;
   transform: translateY(24px);
-  filter: blur(10px);
+  filter: blur(var(--fade-blur, 6px));
 }
 
 .home-about-intro.animate-on-scroll-root:not(.is-in-view) .about-line-art-dog {
