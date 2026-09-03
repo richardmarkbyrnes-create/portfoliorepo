@@ -1,12 +1,4 @@
-# Richard Mark Byrnes — Portfolio
 
-A recreation of [richardmbyrnes.framer.website](https://richardmbyrnes.framer.website/).
-
-## Pages
-
-- **Home** (`index.html`) — Hero headline and project cards
-- **About** (`about.html`) — Personal intro, passions, books, and music
-- **Resume** (`resume.html`) — Experience, education, tools, and languages
 
 ## Getting started
 
