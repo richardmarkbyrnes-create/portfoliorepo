@@ -3330,7 +3330,10 @@ body[data-page="project"] .pc-next-pill.is-docked {
     z-index: 310;
   }
 
-  .pc-back {
+  /* Scoped to body[data-page] so top/left win over the later-in-source base
+     .pc-back rule, which otherwise pins this back to the desktop 34px/27px and
+     leaves it sitting lower and further in than the menu button opposite. */
+  body[data-page="project"] .pc-back {
     left: 16px;
     /* Matches the 16px inset on the menu button opposite, top and side. */
     top: 16px;
