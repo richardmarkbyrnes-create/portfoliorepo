@@ -6241,11 +6241,46 @@ body.page-is-leaving .top-blur {
   }
 }
 
+/* "Miro" types itself in once the hero has resolved. Each letter is its own span
+   revealed in turn, rather than the word's width being clipped in equal steps —
+   equal steps cut through the middle of a glyph, since M and i are nowhere near
+   the same width, and left the caret sitting on top of a half-drawn letter. */
+.hero-type {
+  position: relative;
+  white-space: nowrap;
+}
+
+/* [hidden] is display:none, so an unrevealed letter takes no space and the caret
+   always sits immediately after the last one that has landed. */
+.hero-type-char[hidden] {
+  display: none;
+}
+
+.hero-type.is-typing .hero-type-out::after {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 0.78em;
+  margin-left: 3px;
+  vertical-align: -0.06em;
+  background: currentColor;
+  /* steps(1) so it blinks rather than fades — a fading caret reads as a glow. */
+  animation: heroCaretBlink 0.9s steps(1) infinite;
+}
+
+@keyframes heroCaretBlink {
+  0%, 50% { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+
 @keyframes fadeUp {
   from {
     opacity: 0;
     transform: translateY(24px);
-    filter: blur(5px);
+    /* A deeper defocus than the 5px this used to carry — the page should read as
+       resolving into focus, not merely sliding up. */
+    filter: blur(10px);
   }
   to {
     opacity: 1;
@@ -6295,21 +6330,21 @@ body.page-is-leaving .top-blur {
 }
 
 .animate-in {
-  animation: fadeUp 1.287s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fadeUp 1.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   overflow: visible;
 }
 
-.animate-in-delay-1 { animation-delay: 0.114s; opacity: 0; }
-.animate-in-delay-2 { animation-delay: 0.229s; opacity: 0; }
-.animate-in-delay-3 { animation-delay: 0.343s; opacity: 0; }
-.animate-in-delay-4 { animation-delay: 0.458s; opacity: 0; }
-.animate-in-delay-5 { animation-delay: 0.572s; opacity: 0; }
+.animate-in-delay-1 { animation-delay: 0.17s; opacity: 0; }
+.animate-in-delay-2 { animation-delay: 0.34s; opacity: 0; }
+.animate-in-delay-3 { animation-delay: 0.51s; opacity: 0; }
+.animate-in-delay-4 { animation-delay: 0.68s; opacity: 0; }
+.animate-in-delay-5 { animation-delay: 0.85s; opacity: 0; }
 
 .animate-on-scroll-root:not(.is-in-view) .animate-in {
   animation: none;
   opacity: 0;
   transform: translateY(24px);
-  filter: blur(5px);
+  filter: blur(10px);
 }
 
 .home-about-intro.animate-on-scroll-root:not(.is-in-view) .about-line-art-dog {
