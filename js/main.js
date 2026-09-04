@@ -548,56 +548,6 @@ function initProjectPreview() {
   });
 }
 
-// Types "Miro" into the hero once the line it sits on has finished resolving.
-// Each letter becomes its own span and is revealed in turn, so the caret always
-// sits flush after a whole glyph. The word is only split once the script runs —
-// with JS off it stays a plain word in the markup.
-function initHeroTypeIn() {
-  const wrap = document.getElementById('hero-type');
-  const out = wrap?.querySelector('.hero-type-out');
-  if (!out) return;
-
-  // A first-impression flourish, so it runs on the first homepage view of a
-  // session only — not every time you come back from a project. Shares the flag
-  // theme-init.js sets in the head for the muted-word settle, which already
-  // carries the same "first view, homepage only, motion allowed" rule.
-  if (!document.documentElement.classList.contains('hero-intro')) return;
-
-  // No caret and no wait if the visitor asked for less movement: the word is
-  // simply there, which is where it ends up anyway.
-  if (prefersReducedMotion()) return;
-
-  const START_MS = 900;
-  const PER_CHAR_MS = 125;
-
-  const chars = [...out.textContent].map((ch) => {
-    const span = document.createElement('span');
-    span.className = 'hero-type-char';
-    span.textContent = ch;
-    span.hidden = true;
-    return span;
-  });
-  if (!chars.length) return;
-
-  out.textContent = '';
-  chars.forEach((span) => out.appendChild(span));
-  wrap.classList.add('is-typing');
-
-  let i = 0;
-  function typeNext() {
-    chars[i].hidden = false;
-    i += 1;
-    if (i < chars.length) {
-      window.setTimeout(typeNext, PER_CHAR_MS);
-    } else {
-      // Let the caret blink on a beat before it goes.
-      window.setTimeout(() => wrap.classList.remove('is-typing'), 700);
-    }
-  }
-
-  window.setTimeout(typeNext, START_MS);
-}
-
 function initScrollAnimations() {
   const roots = document.querySelectorAll('.animate-on-scroll-root');
   if (!roots.length) return;
@@ -994,7 +944,6 @@ initLockedWorkRows();
 initClosingHeart();
 initDogPhotoPopovers();
 initProjectPreview();
-initHeroTypeIn();
 initCountUp();
 initFooter();
 initClickSpark();

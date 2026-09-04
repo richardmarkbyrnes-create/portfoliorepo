@@ -6241,42 +6241,6 @@ body.page-is-leaving .top-blur {
   }
 }
 
-/* "Miro" types itself in once the hero has resolved. Each letter is its own span
-   revealed in turn, rather than the word's width being clipped in equal steps —
-   equal steps cut through the middle of a glyph, since M and i are nowhere near
-   the same width, and left the caret sitting on top of a half-drawn letter. */
-.hero-type {
-  position: relative;
-  white-space: nowrap;
-}
-
-/* [hidden] is display:none, so an unrevealed letter takes no space and the caret
-   always sits immediately after the last one that has landed. */
-.hero-type-char[hidden] {
-  display: none;
-}
-
-.hero-type.is-typing .hero-type-out::after {
-  content: '';
-  display: inline-block;
-  width: 2px;
-  height: 0.78em;
-  margin-left: 3px;
-  vertical-align: -0.06em;
-  background: currentColor;
-  /* steps(1) so it blinks rather than fades — a fading caret reads as a glow. */
-  animation: heroCaretBlink 0.9s steps(1) infinite;
-}
-
-@keyframes heroCaretBlink {
-  0%, 50% { opacity: 1; }
-  50.01%, 100% { opacity: 0; }
-}
-
-
-/* Depth and speed come from --fade-blur/--fade-dur so the first view of a session
-   can resolve slowly out of a deep defocus while every later load does the same
-   thing briskly. Defaults here are the quick version; .hero-intro raises them. */
 @keyframes fadeUp {
   from {
     opacity: 0;
