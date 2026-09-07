@@ -6302,9 +6302,19 @@ body.page-is-leaving .top-blur {
 /* First homepage view of the session — the flag theme-init.js sets in the head.
    Slower, and out of a deeper blur. */
 .hero-intro {
-  --fade-dur: 1.9s;
-  --fade-blur: 10px;
-  --fade-step: 0.17s;
+  --fade-dur: 1.6s;
+  --fade-blur: 9px;
+  --fade-step: 0.145s;
+}
+
+/* Only what is on screen at load gets the slow treatment. The flag above sits on
+   <html>, so without this every section revealed further down the same first visit
+   would inherit it too — and a reveal you scroll to should feel as brisk as it does
+   on any later load. */
+.animate-on-scroll-root {
+  --fade-dur: 1.25s;
+  --fade-blur: 6px;
+  --fade-step: 0.115s;
 }
 
 .animate-in-delay-1 { animation-delay: calc(var(--fade-step, 0.115s) * 1); opacity: 0; }
