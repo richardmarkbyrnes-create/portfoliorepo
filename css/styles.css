@@ -2230,7 +2230,7 @@ body[data-page="home"] .page {
      over dash length or gap. */
   height: 1px;
   background-image: repeating-linear-gradient(to right,
-    var(--resume-paper-border) 0 3px,
+    color-mix(in srgb, var(--text) 5%, transparent) 0 3px,
     transparent 3px 9px);
 }
 
