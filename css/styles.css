@@ -1896,7 +1896,7 @@ body[data-page="home"] .page {
   max-width: 100%;
   /* Paragraphs now, so the UA's bottom margin has to go. */
   margin-bottom: 0;
-  font-family: var(--serif);
+  font-family: var(--sans);
   font-size: clamp(14px, 1.55vw, 16px);
   line-height: 1.5;
   letter-spacing: -0.02em;
