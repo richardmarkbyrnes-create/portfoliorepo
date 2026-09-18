@@ -6480,6 +6480,16 @@ body.page-is-leaving .top-blur {
     left: 16px;
   }
 
+  /* Half the screen on narrow viewports, rather than hugging its copy. The pill is
+     fixed, so the 50% resolves against the viewport; `left: 50%` and the -50%
+     translate that the dock animation drives both still apply, so it stays centred
+     and the slide-in is untouched. */
+  body[data-page="project"] .pc-next-pill {
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+
   .project-hero-media {
     min-height: min(40vh, 300px);
     border-radius: 14px;
