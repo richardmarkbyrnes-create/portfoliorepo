@@ -74,6 +74,9 @@
   --content-resume: 480px;
   --resume-paper: #ffffff;
   --resume-paper-border: rgba(0, 0, 0, 0.1);
+  /* The same outward arrow the contact links use, as a mask so it can take
+     `currentColor` from whatever link it sits on. */
+  --external-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
     0 6px 16px rgba(0, 0, 0, 0.05),
@@ -1603,6 +1606,7 @@ body[data-page="about"] {
 }
 
 .about-link {
+  position: relative;
   color: inherit;
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -1615,6 +1619,42 @@ body[data-page="about"] {
 .about-link:hover {
   color: var(--text);
   text-decoration-color: var(--text);
+}
+
+/* Same hover arrow as .contact-external, but positioned out of flow: these links
+   sit inside justified prose, so reserving space for the arrow would both open a
+   gap before the following punctuation and drag the dotted underline out past the
+   word. Raised towards the ascender so it clears any comma it lands next to. */
+.about-link::after {
+  content: "";
+  position: absolute;
+  left: calc(100% + 2px);
+  bottom: 0.35em;
+  width: 10px;
+  height: 10px;
+  background-color: currentColor;
+  -webkit-mask: var(--external-arrow) no-repeat center / 10px 10px;
+  mask: var(--external-arrow) no-repeat center / 10px 10px;
+  opacity: 0;
+  transform: translate(-3px, 3px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.about-link:hover::after {
+  opacity: 0.55;
+  transform: translate(0, 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-link::after {
+    transition: opacity 0.25s ease;
+    transform: none;
+  }
+
+  .about-link:hover::after {
+    transform: none;
+  }
 }
 
 .contact-link {
@@ -5668,6 +5708,11 @@ body.page-is-leaving .top-blur {
      layout size, so the dogs either side stay put, and `scale` is its own property
      so the fade-up animation (`forwards`, owns `transform`) can't clobber it. */
   scale: 1.03 1;
+  /* Trim 2px off the bottom of the drawing. The artwork's own 12px transparent
+     margin is 12/682 of the box height, so it has to be cleared before the inset
+     reaches any ink — as a percentage that stays true at every rendered width.
+     Vertical scale is 1 above, so the 2px survives the scale untouched. */
+  clip-path: inset(0 0 calc(1.76% + 2px) 0);
 }
 
 [data-theme="dark"] .about-line-art-dog--berner {
@@ -6494,15 +6539,18 @@ body.page-is-leaving .top-blur {
     padding-top: 8px;
   }
 
-  /* nav-offset + 8 + 8 is exactly the space above the hero, which lands the canvas
-     edge on the viewport edge. Glyphs are drawn at cell centres, though, so a row
-     centre sitting exactly on the edge clips the small characters in half and they
-     vanish — reading as a whole empty cell. Bleeding most of a half-cell keeps the
-     top row whole and just below the edge. */
+  /* nav-offset + 8 is .page's padding here, and 58px is .home-main's — the latter
+     comes from `body[data-page="home"] .home-main`, which outweighs the .home-main
+     override below, so the space above the hero is the full 93px. Together they land
+     the canvas edge on the viewport edge. Glyphs are drawn at cell centres, though,
+     so a row centre sitting exactly on the edge clips the small characters in half
+     and they vanish — reading as a whole empty cell. Bleeding most of a half-cell
+     keeps the top row whole and just below the edge. */
   body[data-page="home"] {
-    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 7px);
+    --ascii-bleed-top: calc(var(--nav-offset) + 8px + 58px + 7px);
   }
 
+  /* About has no .home-main, so only .page's padding sits above its hero. */
   body[data-page="about"] {
     --ascii-bleed-top: calc(var(--nav-offset) + 8px + 8px + 7px);
   }
