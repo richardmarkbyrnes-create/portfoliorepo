@@ -879,6 +879,24 @@ html[data-theme="dark"] .cradle-mark--mono {
   display: block;
 }
 
+/* A flat black wordmark, so one file covers both themes: dark just inverts it to
+   white, the way the Cradle mono lockup does, instead of shipping a second asset.
+   Matching the corner lockup means matching the mark's height, not its width —
+   Cradle's 4.19:1 wordmark is ~23px tall at 96px, which a 3.04:1 one reaches at
+   70px. */
+.cradle-mark--bw {
+  width: 70px;
+  /* Lighter than the 0.75 the colour lockups carry: flat black reads heavier at
+     the same opacity than Cradle's blues and greens do, so it needs to sit back
+     further to stay a stamp rather than a logo. */
+  opacity: 0.4;
+}
+
+html[data-theme="dark"] .cradle-mark--corner.cradle-mark--bw {
+  display: block;
+  filter: invert(1);
+}
+
 /* Chrome: counter, progress rail, arrows. */
 .deck-bar {
   position: fixed;
@@ -921,8 +939,14 @@ html[data-theme="dark"] .cradle-mark--mono {
    track slides underneath, so the pager stays a pager instead of turning into
    a progress bar. */
 .deck-dots-viewport.is-windowed {
-  /* 7 dots at 7px, 6 gaps at 7px. */
-  width: 91px;
+  /* 7 dots at 7px, 6 gaps at 7px, plus a pixel of slack at each end. The current
+     dot scales to 1.25, so it overhangs its 7px slot by 0.875px per side — on the
+     first and last slides that overhang sat outside a flush 91px window and the
+     clip sliced the dot flat. The padding is inside the clip (which is taken at
+     the padding edge), so the track still measures 91px and the pitch the script
+     translates by is unchanged. */
+  width: 93px;
+  padding: 0 1px;
   overflow: hidden;
 }
 
@@ -1045,6 +1069,11 @@ html[data-theme="dark"] .cradle-mark--mono {
     top: 20px;
     right: 20px;
     width: 76px;
+  }
+
+  /* Same height-matching as above, against the 76px mobile wordmark. */
+  .cradle-mark--corner.cradle-mark--bw {
+    width: 55px;
   }
 
   .deck-bar {
