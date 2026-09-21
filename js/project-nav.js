@@ -1,6 +1,9 @@
 (function () {
   const PROJECT_TRANSITION_MS = 320;
   const LEAVE_KEY = 'portfolio-project-leave';
+  // Read in the head by theme-init.js on the next page, which is what lets it
+  // start blurred rather than flash in sharp. Keep the name in step there.
+  const TRANSITION_KEY = 'portfolio-page-transition';
 
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -32,8 +35,76 @@
       return;
     }
     document.body.classList.add('page-is-leaving');
+    armEntrance();
     if (leaveProject) sessionStorage.setItem(LEAVE_KEY, '1');
     window.setTimeout(() => { window.location.href = href; }, PROJECT_TRANSITION_MS);
+  }
+
+  function armEntrance() {
+    try {
+      sessionStorage.setItem(TRANSITION_KEY, '1');
+    } catch (err) {
+      // storage blocked — the next page just skips its entrance
+    }
+  }
+
+  // Everything that isn't a work row or the project pill: nav links, the back
+  // link, the next-project pill. They were plain navigations, so most of the site
+  // cut straight to the next page while a couple of routes faded.
+  function initLinkTransitions() {
+    document.addEventListener('click', (event) => {
+      if (event.defaultPrevented) return;
+      if (event.button !== 0) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+
+      const link = event.target.closest('a[href]');
+      if (!link) return;
+      if (link.hasAttribute('download')) return;
+      if (link.target && link.target !== '_self') return;
+
+      // Anything the browser shouldn't treat as a page load: mailto:, tel:,
+      // javascript:, and off-site links.
+      let url;
+      try {
+        url = new URL(link.getAttribute('href'), window.location.href);
+      } catch (err) {
+        return;
+      }
+      if (url.origin !== window.location.origin) return;
+      if (url.protocol !== 'http:' && url.protocol !== 'https:') return;
+
+      // A same-document jump (#main-content, the skip link) isn't a page change —
+      // fading out and never navigating would leave the page blank.
+      const samePage = url.pathname === window.location.pathname
+        && url.search === window.location.search;
+      if (samePage) return;
+
+      event.preventDefault();
+      navigateWithFade(url.href);
+    });
+  }
+
+  // The class only needs to survive the animation. Left on, it would replay the
+  // entrance on anything that later re-runs the rule.
+  function clearEntrance() {
+    const root = document.documentElement;
+    if (!root.classList.contains('page-entering')) return;
+
+    const page = document.querySelector('.page');
+    if (!page) {
+      root.classList.remove('page-entering');
+      return;
+    }
+
+    const done = () => root.classList.remove('page-entering');
+    page.addEventListener('animationend', (event) => {
+      if (event.animationName === 'pageBlurIn') done();
+    }, { once: true });
+    // This script runs after the animation has already started, and on a fast
+    // paint it can have finished before the listener lands — in which case
+    // animationend never comes. The timeout is the backstop, comfortably past the
+    // 0.52s the keyframes take.
+    window.setTimeout(done, 700);
   }
 
   function initWorkLinks() {
@@ -514,6 +585,7 @@
           window.history.back();
         } else {
           document.body.classList.add('page-is-leaving');
+          armEntrance();
           window.setTimeout(() => window.history.back(), PROJECT_TRANSITION_MS);
         }
       } else {
@@ -742,6 +814,17 @@
   window.addEventListener('pageshow', (event) => {
     document.body.classList.remove('page-is-leaving');
 
+    // Restored pages skip the head script, so the entrance flag would otherwise
+    // sit unread and fire on whatever navigation came next.
+    if (event.persisted) {
+      document.documentElement.classList.remove('page-entering');
+      try {
+        sessionStorage.removeItem(TRANSITION_KEY);
+      } catch (err) {
+        // storage blocked — nothing was set to begin with
+      }
+    }
+
     // Restored from bfcache: entrance animations already finished, so replay them.
     if (event.persisted) {
       document.querySelectorAll('.animate-in').forEach((el) => {
@@ -752,6 +835,8 @@
     }
   });
 
+  clearEntrance();
+  initLinkTransitions();
   initWorkLinks();
   initHomeReturn();
   initProjectPage();
