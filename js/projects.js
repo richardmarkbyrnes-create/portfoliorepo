@@ -117,7 +117,7 @@ window.PROJECTS = {
       { name: 'Mor Sela', photo: 'images/team-mor.jpg' },
     ],
     images: [
-      'images/canvas-insights-hero.png',
+      'images/canvas-insights-hero.png?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
