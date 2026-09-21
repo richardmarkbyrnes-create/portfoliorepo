@@ -548,6 +548,14 @@ function initProjectPreview() {
   });
 }
 
+function markLineArtPlayed() {
+  try {
+    sessionStorage.setItem('portfolio-line-art-played', '1');
+  } catch (err) {
+    // storage blocked — it just animates again next time
+  }
+}
+
 function initScrollAnimations() {
   const roots = document.querySelectorAll('.animate-on-scroll-root');
   if (!roots.length) return;
@@ -563,6 +571,10 @@ function initScrollAnimations() {
         if (!entry.isIntersecting) return;
         entry.target.classList.add('is-in-view');
         observer.unobserve(entry.target);
+        // Spend the illustration's once-per-session flag at the moment it plays,
+        // not on page load — it lives below the fold, and someone who never
+        // scrolls this far hasn't seen it yet.
+        if (entry.target.classList.contains('home-about-intro')) markLineArtPlayed();
       });
     },
     { threshold: 0.18, rootMargin: '0px 0px -6% 0px' }

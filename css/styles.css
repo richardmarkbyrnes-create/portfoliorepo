@@ -4809,10 +4809,6 @@ body.project-is-entering .project-top-bar {
   max-width: var(--content-mid);
 }
 
-body.project-is-entering .page--project {
-  animation: fadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.04s both;
-}
-
 .project-detail {
   width: 100%;
   display: flex;
@@ -5257,14 +5253,48 @@ body.work-overlay-open .page {
   }
 }
 
+/* Leaving: the page defocuses and lifts away. The 0.32s matches
+   PROJECT_TRANSITION_MS in project-nav.js, which is how long the script waits
+   before actually navigating — change one and change the other, or the page
+   either cuts mid-blur or sits finished and waiting. */
 body.page-is-leaving .page {
   opacity: 0;
   transform: translateY(-10px);
-  filter: blur(4px);
+  filter: blur(8px);
   transition:
     opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.32s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Arriving: the other half of the same gesture — the next page pulls into focus
+   from a slightly deeper blur than it left on, and settles a touch slower so the
+   pair reads as one movement rather than two.
+
+   Only set when the previous page faded out on the way here (theme-init.js reads
+   a one-shot session flag in the head, before first paint). A cold load or a
+   reload gets the per-element `.animate-in` stagger on its own — a whole-page
+   blur on a page you arrived at directly is a transition from nothing.
+
+   Blurring `.page` makes it a containing block for any `position: fixed`
+   descendant while it runs. Nothing fixed lives inside it: the nav sits outside,
+   and project-nav.js deliberately moves the docked next-project pill out to
+   <body>. */
+@keyframes pageBlurIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+html.page-entering .page {
+  animation: pageBlurIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 body.page-is-leaving .nav-primary,
@@ -6390,6 +6420,33 @@ body.page-is-leaving .top-blur {
   translate: -20px 0;
 }
 
+/* Already played this session, so the illustration arrives finished instead of
+   drawing itself in again every time you come back from a project. The flag is
+   read in the head by theme-init.js, before first paint, so there's no flash of
+   the start state — same approach as the hero's muted-word settle.
+
+   Specificity has to clear the :not(.is-in-view) hold rules above, which is why
+   these carry the full root selector rather than just the element. The setter
+   keeps its 4px resting offset; only the entrance travel is dropped. */
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-image,
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog {
+  animation: none;
+  opacity: 1;
+}
+
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-image {
+  transform: none;
+  filter: none;
+}
+
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog--setter {
+  translate: 0 4px;
+}
+
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog--berner {
+  translate: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .nav-primary,
   .pc-back,
@@ -6403,18 +6460,15 @@ body.page-is-leaving .top-blur {
     scale: 1;
   }
 
-  body.project-is-entering .page--project {
-    animation: none;
-    opacity: 1;
-    transform: none;
-    filter: none;
-  }
-
   body.page-is-leaving .page,
   body.page-is-leaving .nav-primary,
   body.page-is-leaving .pc-back,
   body.page-is-leaving .pc-close {
     transition: none;
+  }
+
+  html.page-entering .page {
+    animation: none;
   }
 
   .nav-primary {

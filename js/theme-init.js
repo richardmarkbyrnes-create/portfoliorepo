@@ -50,6 +50,50 @@
 
   markHeroIntro();
 
+  // The arriving half of the page transition. project-nav.js sets this flag as a
+  // page fades out; reading it here — in the head, before first paint — is what
+  // lets the next page start blurred instead of flashing in sharp and then
+  // animating. One-shot: cleared on read, so a reload or a direct visit gets no
+  // entrance, only a navigation that actually faded out does.
+  var TRANSITION_KEY = 'portfolio-page-transition';
+
+  function markPageEntering() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    try {
+      if (!sessionStorage.getItem(TRANSITION_KEY)) return;
+      sessionStorage.removeItem(TRANSITION_KEY);
+    } catch (err) {
+      return; // storage blocked — skip the entrance rather than run it every load
+    }
+
+    document.documentElement.classList.add('page-entering');
+  }
+
+  markPageEntering();
+
+  // The line-art illustration draws itself in once per session. Unlike the hero
+  // flourish this one sits below the fold, so the flag can't be spent here on
+  // load — main.js writes it only when the illustration actually scrolls into
+  // view and plays. All that happens here is reading it, early enough that the
+  // finished state is what gets painted.
+  var LINE_ART_KEY = 'portfolio-line-art-played';
+
+  function markLineArtSeen() {
+    var path = window.location.pathname;
+    if (path !== '/' && !/\/index\.html$/.test(path)) return;
+
+    try {
+      if (!sessionStorage.getItem(LINE_ART_KEY)) return;
+    } catch (err) {
+      return; // storage blocked — let it animate
+    }
+
+    document.documentElement.classList.add('line-art-seen');
+  }
+
+  markLineArtSeen();
+
   // Sound starts off when someone arrives and whenever they reload, so nobody
   // gets audio they didn't ask for. Moving between projects leaves the choice
   // alone — an unmute should survive the click through to the next page.
