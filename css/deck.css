@@ -863,6 +863,13 @@ body[data-deck-slide="1"] .cradle-mark--corner {
   user-select: none;
 }
 
+/* Proportional digits shift the whole readout every time a 1 rolls past, which
+   is very visible on something that updates once a second in a fixed corner. */
+.deck-signature--timer {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
 /* Two corner marks, one per theme: the colour lockup on light, and the mono one
    inverted to white on dark. Inverting the colour version would have turned the
    blue and green C orange and magenta. */
@@ -1148,3 +1155,189 @@ html[data-theme="dark"] .cradle-mark--corner.cradle-mark--bw {
   border-radius: 8px;
 }
 
+
+/* ── Inline slide editor (dev only; see js/deck-edit.js) ─────────────────── */
+
+/* Steps are built up a keypress at a time and sit at opacity 0 until revealed.
+   While editing, every line has to be visible and clickable or you would be
+   typing into text you cannot see. */
+body.deck-is-editing .slide.is-current .step,
+body.deck-is-editing .slide.is-current > .step:not(.is-revealed) {
+  opacity: 1;
+  translate: 0 0;
+}
+
+body.deck-is-editing [contenteditable="true"] {
+  outline: 1px dashed color-mix(in srgb, var(--text) 26%, transparent);
+  outline-offset: 8px;
+  border-radius: 2px;
+}
+
+body.deck-is-editing [contenteditable="true"]:focus {
+  outline-style: solid;
+  outline-color: color-mix(in srgb, var(--text) 50%, transparent);
+}
+
+/* Sits above the deck chrome, opposite the arrows so it never covers them. */
+.deck-edit-banner {
+  position: fixed;
+  left: 50%;
+  bottom: 22px;
+  z-index: 400;
+  translate: -50% 8px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: var(--text-body);
+  background: var(--nav-bg);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  box-shadow: var(--nav-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.25s ease;
+}
+
+.deck-edit-banner.is-visible {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.deck-edit-banner[data-tone="error"] {
+  color: #b3261e;
+  border-color: color-mix(in srgb, #b3261e 35%, transparent);
+}
+
+/* The editor's grey/plain toggle works on any slide copy, not only a headline,
+   so the two run styles are defined for the whole slide. Same values as the
+   .slide-title pair above — those stay put; this only widens where they apply.
+   Both carry two classes so they outrank `.slide-list li span`, which would
+   otherwise hold a greyed word inside a list item at the list's own tone. */
+.slide .muted {
+  color: color-mix(in srgb, var(--text-body) 45%, transparent);
+}
+
+.slide .solid {
+  color: var(--text-body);
+}
+
+/* Floating run-style menu, shown while text is selected in edit mode. */
+.deck-edit-menu {
+  position: fixed;
+  z-index: 410;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border-radius: 9px;
+  background: var(--nav-bg);
+  border: var(--nav-border-width) solid var(--nav-glass-border);
+  box-shadow: var(--nav-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+
+.deck-edit-menu.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.deck-edit-menu button {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 5px 9px;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.deck-edit-menu button:hover {
+  background: color-mix(in srgb, var(--text) 8%, transparent);
+}
+
+/* Each button previews the run style it applies. */
+.deck-edit-menu button[data-run="solid"] { color: var(--text-body); }
+.deck-edit-menu button[data-run="muted"] { color: color-mix(in srgb, var(--text-body) 45%, transparent); }
+
+/* Project hero above a title slide's headline. Wider than .intro-mark, which is
+   sized for the square lockup on slide 1 and would render a 1.53:1 screenshot
+   postage-stamp small. Capped so the image plus the two-line title and the
+   timing note still clear the slide's 96/120 padding at 760px tall. */
+.slide-hero {
+  width: clamp(340px, 46vw, 600px);
+  height: auto;
+  margin-inline: auto;
+}
+
+/* The hero fills most of the frame, so the slide carrying one gives back some
+   of its own breathing room — a tighter stack and less headroom — rather than
+   pushing the timing note off the bottom. (:has is already load-bearing at the
+   top of this file, so it is safe to lean on here.) */
+.slide--title:has(.slide-hero) {
+  gap: 14px;
+  padding-top: 72px;
+}
+
+/* A headline sharing the frame with a hero has less room than one carrying the
+   slide alone, so it steps down a size. Keyed off the hero rather than a
+   modifier class, so it only applies where there is actually an image to make
+   room for. */
+.slide-hero ~ .slide-title--long {
+  font-size: clamp(20px, 2.9vw, 33px);
+}
+
+/* Width handle on the focused field while editing. Fixed-positioned and placed
+   from script, so it sits on the element's right edge without needing a wrapper
+   around every editable. */
+.deck-edit-grip {
+  position: fixed;
+  z-index: 405;
+  width: 8px;
+  height: 34px;
+  margin: -17px 0 0 2px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--text) 22%, transparent);
+  cursor: ew-resize;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, background-color 0.15s ease;
+}
+
+.deck-edit-grip.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.deck-edit-grip:hover,
+body.deck-is-resizing .deck-edit-grip {
+  background: color-mix(in srgb, var(--text) 45%, transparent);
+}
+
+/* A drag that leaves the handle shouldn't select half the slide on the way. */
+body.deck-is-resizing {
+  user-select: none;
+  cursor: ew-resize;
+}
+
+/* A list down to a single point reads oddly with a lone "01" hanging off it.
+   `content: none` stops the marker being generated at all, so the flex gap that
+   sat between it and the text goes with it and the copy starts flush. */
+.slide-list--unnumbered li::before {
+  content: none;
+}
+
+/* Stipple line art keyed to black on transparent, so it sits on the deck's own
+   paper rather than carrying a cream rectangle of its own. On the dark canvas
+   black ink would disappear, so it inverts to white — the same one-asset trick
+   the mono corner mark uses. */
+[data-theme="dark"] .slide-side-art[src*="unplugged"] {
+  filter: invert(1);
+}

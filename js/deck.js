@@ -7,6 +7,32 @@
   const prevBtn = document.getElementById('deck-prev');
   const nextBtn = document.getElementById('deck-next');
 
+  // Elapsed-time readout where the signature used to sit, for pacing a live
+  // run-through. Starts at load and restarts on every load — including a
+  // back/forward-cache restore, where this script doesn't re-run and the clock
+  // would otherwise carry on from the previous visit.
+  const timerEl = document.getElementById('deck-timer');
+  if (timerEl) {
+    let startedAt = performance.now();
+
+    const renderTimer = () => {
+      const total = Math.max(0, Math.floor((performance.now() - startedAt) / 1000));
+      timerEl.textContent = `${Math.floor(total / 60)}:${String(total % 60).padStart(2, '0')}`;
+    };
+
+    renderTimer();
+    // Twice a second, but the value is always derived from the start timestamp
+    // rather than incremented, so a throttled or delayed tick corrects itself
+    // instead of quietly losing seconds over an hour-long deck.
+    window.setInterval(renderTimer, 500);
+
+    window.addEventListener('pageshow', (event) => {
+      if (!event.persisted) return;
+      startedAt = performance.now();
+      renderTimer();
+    });
+  }
+
   // The work list comes from the same source as the site, so the deck can't
   // drift out of date when a project is added or renamed.
   const rows = document.getElementById('deck-work-rows');
@@ -180,6 +206,9 @@
 
   document.addEventListener('keydown', (event) => {
     if (event.metaKey || event.ctrlKey || event.altKey) return;
+    // Typing in the inline editor must not also drive the deck — space would
+    // advance a slide and "t" would flip the theme mid-sentence.
+    if (event.target instanceof HTMLElement && event.target.isContentEditable) return;
     if (NEXT_KEYS.includes(event.key)) {
       event.preventDefault();
       flash(nextBtn);
