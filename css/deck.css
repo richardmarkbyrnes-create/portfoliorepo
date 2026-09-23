@@ -1839,3 +1839,30 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   text-align: center;
 }
 
+
+/* Sticker spread beside a slide's copy. */
+/* Anchored to the screen's right edge rather than the slide's: the slide is
+   capped at 940px and centred, so this cancels the gutter either side of it. */
+.slide-side-art--flush {
+  right: calc((940px - 100vw) / 2);
+  top: 50%;
+}
+
+.slide-side-art--stickers {
+  width: min(680px, 48vw);
+}
+
+/* A screenshot beside copy that runs wide. Narrow enough to clear the text at
+   the width set on this slide, with a ring in the page colour — the shot is
+   white UI and would otherwise dissolve into the page. */
+.slide-side-art--forum {
+  width: min(580px, 45vw);
+  border-radius: 8px;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+/* A step up from --small, for a gif that should carry a bit more of the slide.
+   Kept separate so the thinking-Pooh gif on the earlier slide stays as it was. */
+.slide-side-art--medium {
+  width: clamp(240px, 29vw, 380px);
+}
