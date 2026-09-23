@@ -29,14 +29,25 @@ ALLOWED = {
     'em': set(),
     'i': set(),
     'br': set(),
-    'img': {'class', 'src', 'alt', 'width', 'height', 'loading', 'aria-hidden'},
+    'img': {'class', 'src', 'alt', 'width', 'height', 'loading', 'aria-hidden', 'style'},
 }
+# The only inline style an image is allowed to carry through a text edit: the
+# offset the editor's drag writes. Anything else on a pasted image is junk.
+STYLE_KEEP = ('--nudge-x', '--nudge-y')
 VOID = {'br', 'img'}
 # Unwrapping one of these would weld the line to the one before it. They aren't
 # allowed through, but the boundary they mark is preserved as a break.
 BLOCK_TAGS = {'div', 'p', 'li', 'section', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
 # Unwrapping these would leave their source sitting in the slide as visible text.
 DROP_CONTENT = {'script', 'style', 'template'}
+
+
+def keep_style(value):
+    """Strip an inline style down to the declarations the editor writes."""
+    return '; '.join(
+        d.strip() for d in value.split(';')
+        if d.strip().lower().startswith(STYLE_KEEP)
+    )
 
 
 class Sanitiser(HTMLParser):
@@ -56,11 +67,16 @@ class Sanitiser(HTMLParser):
             if tag in BLOCK_TAGS and self.out and not ''.join(self.out).endswith('<br>'):
                 self.out.append('<br>')
             return
-        keep = ''.join(
-            ' %s="%s"' % (k, v.replace('"', '&quot;'))
-            for k, v in attrs
-            if k in ALLOWED[tag] and v is not None
-        )
+        kept = []
+        for k, v in attrs:
+            if k not in ALLOWED[tag] or v is None:
+                continue
+            if k == 'style':
+                v = keep_style(v)
+                if not v:
+                    continue
+            kept.append(' %s="%s"' % (k, v.replace('"', '&quot;')))
+        keep = ''.join(kept)
         self.out.append('<%s%s>' % (tag, keep))
 
     def handle_startendtag(self, tag, attrs):
@@ -125,6 +141,11 @@ def slide_bounds(text, number):
 
 WIDTH_RE = re.compile(r'^\d{1,3}(\.\d)?%$')
 SIZE_RE = re.compile(r'^\d{1,3}(\.\d)?px$')
+NUDGE_RE = re.compile(r'^-?\d{1,4}(\.\d)?px$')
+
+# Images carry their own index, separate from EDITABLE_TAGS: the client walks
+# `slide.querySelectorAll('img')`, which is the same document order this finds.
+IMG_TAG_RE = re.compile(r'<img\b[^>]*>', re.I)
 
 
 def set_style(open_tag, prop, value):
@@ -146,9 +167,11 @@ def set_style(open_tag, prop, value):
     return open_tag
 
 
-def apply_edits(text, number, edits, widths=None, sizes=None):
+def apply_edits(text, number, edits, widths=None, sizes=None, nudges=None,
+                img_count=None):
     widths = widths or {}
     sizes = sizes or {}
+    nudges = nudges or {}
     start, end = slide_bounds(text, number)
     body = text[start:end]
 
@@ -196,6 +219,30 @@ def apply_edits(text, number, edits, widths=None, sizes=None):
             inner_start += len(new_tag) - len(open_tag)
             written += 1
 
+    # Images last, and re-scanned: a text edit rewrites the copy around them, so
+    # any offset taken before that pass would point at stale bytes.
+    if nudges:
+        tags = list(IMG_TAG_RE.finditer(body))
+        if img_count is not None and img_count != len(tags):
+            raise ValueError(
+                'slide %d holds %d image%s, the page sent %d — reload and retry'
+                % (number, len(tags), '' if len(tags) == 1 else 's', img_count)
+            )
+        for index in sorted((int(k) for k in nudges), reverse=True):
+            if index < 0 or index >= len(tags):
+                raise ValueError('image %d out of range for slide %d' % (index, number))
+            spec = nudges[str(index)] or {}
+            tag = tags[index].group(0)
+            new_tag = tag
+            for prop, key in (('--nudge-x', 'x'), ('--nudge-y', 'y')):
+                value = spec.get(key)
+                if value is not None and not NUDGE_RE.match(str(value)):
+                    raise ValueError('bad %s %r — expected a px value' % (prop, value))
+                new_tag = set_style(new_tag, prop, value)
+            if new_tag != tag:
+                body = body[:tags[index].start()] + new_tag + body[tags[index].end():]
+                written += 1
+
     return text[:start] + body + text[end:], written
 
 
@@ -228,6 +275,8 @@ class DeckHandler(SimpleHTTPRequestHandler):
                 payload.get('edits') or {},
                 payload.get('widths') or {},
                 payload.get('sizes') or {},
+                payload.get('nudges') or {},
+                payload.get('imgCount'),
             )
             with open(path, 'w', encoding='utf-8') as handle:
                 handle.write(updated)
