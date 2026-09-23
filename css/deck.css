@@ -1347,7 +1347,9 @@ body.deck-is-resizing {
    individually instead would size each to its own content and leave the kicker
    floating out of line with the copy beneath it. The measure is in px, not em —
    30em against a 12px kicker and a 20px lede are two different widths. */
-.slide--centred > * {
+/* Artwork is absolutely positioned and sized on its own terms — pulling it into
+   the reading column would shrink it and drag it to the middle. */
+.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero) {
   width: 100%;
   max-width: 600px;
   margin-inline: auto;
@@ -1436,7 +1438,7 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
 .slide-columns {
   display: flex;
   align-items: flex-start;
-  gap: 56px;
+  gap: 88px;
   width: 112%;
   margin-left: -6%;
 }
@@ -1485,4 +1487,278 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
    middle to sit level with it. */
 .slide--intro .slide-side-art {
   top: 50%;
+}
+
+/* A scattered pile of photos, one per line of the list beside it. Absolutely
+   placed and overlapping rather than stacked in flow — four of these in a column
+   would run twice the height of the slide. Sits on the same layer as the other
+   artwork: under the copy and under the page grain. */
+.slide-photo-stack {
+  position: absolute;
+  top: 50%;
+  right: 3%;
+  transform: translateY(-50%);
+  z-index: -1;
+  width: 330px;
+  height: 430px;
+  pointer-events: none;
+}
+
+.slide-photo-stack img {
+  position: absolute;
+  width: 152px;
+  height: auto;
+  /* A white frame rather than a ring in the page colour: these read as prints
+     lying on the page, and the frame is what separates them where they overlap. */
+  border: 6px solid #fff;
+  border-radius: 2px;
+  box-shadow: 0 5px 14px -6px rgba(0, 0, 0, 0.28);
+}
+
+.slide-photo-stack img:nth-child(1) { top: 0;     left: 6px;   rotate: -6deg; }
+.slide-photo-stack img:nth-child(2) { top: 28px;  left: 158px; rotate: 5deg; }
+.slide-photo-stack img:nth-child(3) { top: 196px; left: 0;     rotate: -3deg; }
+/* The sticker characters are landscape, so at the shared width they read much
+   smaller than the portraits beside them. Wider, and pulled left to keep the
+   extra width inside the slide. */
+.slide-photo-stack img:nth-child(4) { top: 268px; left: 138px; width: 192px; rotate: 8deg; }
+
+/* Each photo arrives with its line. Not the .step class — that would cost a
+   keypress per photo; deck.js pairs these by data-step instead. Starts a touch
+   lower and flat, so it settles into its tilt as it lands on the pile. */
+.slide-photo-stack img {
+  opacity: 0;
+  translate: 0 10px;
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-photo-stack img.is-revealed {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Later photos land on top of earlier ones. */
+.slide-photo-stack img:nth-child(1) { z-index: 1; }
+.slide-photo-stack img:nth-child(2) { z-index: 2; }
+.slide-photo-stack img:nth-child(3) { z-index: 3; }
+.slide-photo-stack img:nth-child(4) { z-index: 4; }
+
+@media (prefers-reduced-motion: reduce) {
+  .slide-photo-stack img {
+    transition: opacity 0.2s linear;
+    translate: 0 0;
+  }
+}
+
+/* Wide banner carried above a slide's copy. On a centred slide it inherits the
+   column's measure, so it lines up with the text beneath it. */
+.slide-banner {
+  height: auto;
+}
+
+/* Runs wider than the reading measure the rest of the column sits at — it's a
+   picture, not a line of text, and the copy stays comfortable to read. */
+.slide--centred > .slide-banner {
+  max-width: 760px;
+}
+
+/* The Custom Stickers diagram, carried above a slide's copy. Two files rather
+   than one inverted: the dark variant is redrawn, not a colour flip, so a filter
+   would not produce it. */
+.slide-diagram {
+  width: clamp(280px, 33vw, 420px);
+  height: auto;
+}
+
+/* On a centred slide it fills the column, so it lands on the same left edge as
+   the copy rather than floating inset within it. */
+.slide--centred > .slide-diagram {
+  width: 100%;
+  max-width: 600px;
+}
+
+.slide-diagram--dark {
+  display: none;
+}
+
+[data-theme="dark"] .slide-diagram--light {
+  display: none;
+}
+
+[data-theme="dark"] .slide-diagram--dark {
+  display: block;
+}
+
+/* Ranges the lines centre as well as the column. Kept separate from
+   .slide--centred, which deliberately centres the block while leaving the text
+   ranged left — most slides want that, this one doesn't. */
+.slide--text-centre {
+  text-align: center;
+}
+
+/* Divider between the tone pair and the size pair in the editor menu. */
+.deck-edit-menu-rule {
+  align-self: stretch;
+  width: 1px;
+  margin: 3px 3px;
+  background: color-mix(in srgb, var(--text) 12%, transparent);
+}
+
+.deck-edit-menu button[data-size] {
+  min-width: 26px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-body);
+}
+
+/* Three findings side by side, each arriving on its own keypress. Carries the
+   same negative inset .slide-split-main uses, so the columns start on the line
+   the copy does elsewhere and get a little more room than the slide's measure. */
+.slide-triptych {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 34px;
+  width: 112%;
+  margin-left: -6%;
+  margin-top: 10px;
+}
+
+.slide-panel-head {
+  margin: 0 0 12px;
+  font-family: var(--serif);
+  font-size: clamp(16px, 1.7vw, 20px);
+  line-height: 1.25;
+  letter-spacing: -0.025em;
+  color: var(--text-body);
+}
+
+.slide-panel-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.slide-panel-list li {
+  position: relative;
+  padding-left: 14px;
+  font-family: var(--sans);
+  font-size: clamp(12px, 1.05vw, 13px);
+  line-height: 1.5;
+  letter-spacing: -0.015em;
+  color: var(--text-muted);
+}
+
+/* Hung in the gutter so the text edges stay flush, matching the career lines. */
+.slide-panel-list li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--text) 30%, transparent);
+}
+
+/* The heading arrives as a step of its own, so the slide opens empty and builds:
+   title, then one finding at a time. Grouping the kicker and headline means both
+   land on the same press rather than costing two. */
+.slide-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+/* Material Symbols, inlined rather than loaded as a webfont — a deck shouldn't
+   need the network mid-presentation, and currentColor lets them follow the theme
+   instead of needing a second set for dark. */
+.slide-panel-glyph {
+  display: block;
+  width: 26px;
+  height: 26px;
+  margin-bottom: 14px;
+  color: color-mix(in srgb, var(--text) 55%, transparent);
+}
+
+/* The hand-off itself is applied inline by deck.js; this is only the easing. */
+.slide-heading {
+  transition:
+    opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Artwork anchored to the bottom edge and cropped in half by it, so it reads as
+   rising into the slide from below. The 50% vertical shift is of the image's own
+   height, which is what puts exactly half of it past the edge; the deck's
+   overflow does the cropping. Sits under the copy and the chrome. */
+.slide-riser {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  /* transform, not translate: the slide's reveal writes `translate` on every
+     direct child and would wipe this, the same trap .slide-photos documents. */
+  transform: translate(-50%, 50%);
+  z-index: -1;
+  width: clamp(420px, 58vw, 780px);
+  height: auto;
+  pointer-events: none;
+}
+
+/* The half hanging past the bottom edge has to be clipped by the slide, or it
+   just makes the slide scrollable. */
+.slide:has(.slide-riser) {
+  overflow: hidden;
+}
+
+/* Black ink on transparent, so it disappears against the dark canvas without
+   being flipped. */
+[data-theme="dark"] .slide-riser {
+  filter: invert(1);
+}
+
+/* Larger, and pulled back inside the slide's right edge so it sits near the copy
+   instead of bleeding off the page. Separate from --tall, which the Cradle deck
+   also uses. */
+.slide-side-art--close {
+  /* Sized against the slide, not the viewport. The copy beside it is 56% of the
+     slide, so a vw width grew past the text on any screen wider than about
+     1300px and ran underneath it — a percentage keeps the gap identical at
+     every size. */
+  width: 64%;
+  /* A little past the slide's right edge — still a percentage of the slide, so
+     the overhang scales with it rather than with the window. */
+  right: -12%;
+}
+
+/* Interview stills sitting above the boards. Placed off the pair's own box with
+   a negative top rather than added to its flex row, so they stack above the
+   cluster instead of widening it. */
+.slide-side-pair .slide-pair-still {
+  position: absolute;
+  width: 190px;
+  height: auto;
+  margin: 0;
+  z-index: 1;
+  border-radius: 8px;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+/* One above the cluster, one below it — both hung off the pair's own box so they
+   move with the boards rather than needing their own anchor on the slide. */
+.slide-side-pair .slide-pair-still--a {
+  top: -118px;
+  left: 2%;
+  rotate: -4deg;
+}
+
+.slide-side-pair .slide-pair-still--b {
+  top: auto;
+  bottom: -74px;
+  left: 34%;
+  rotate: 3deg;
 }
