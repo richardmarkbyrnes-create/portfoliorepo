@@ -124,17 +124,18 @@ def slide_bounds(text, number):
 
 
 WIDTH_RE = re.compile(r'^\d{1,3}(\.\d)?%$')
+SIZE_RE = re.compile(r'^\d{1,3}(\.\d)?px$')
 
 
-def set_width(open_tag, value):
-    """Rewrite an element's inline max-width, leaving any other styling alone."""
+def set_style(open_tag, prop, value):
+    """Rewrite one inline declaration on an element, leaving the rest alone."""
     match = re.search(r'\sstyle="([^"]*)"', open_tag)
     decls = [
         d.strip() for d in (match.group(1) if match else '').split(';')
-        if d.strip() and not d.strip().lower().startswith('max-width')
+        if d.strip() and not d.strip().lower().startswith(prop)
     ]
     if value:
-        decls.append('max-width: %s' % value)
+        decls.append('%s: %s' % (prop, value))
     style = '; '.join(decls)
 
     if match:
@@ -145,8 +146,9 @@ def set_width(open_tag, value):
     return open_tag
 
 
-def apply_edits(text, number, edits, widths=None):
+def apply_edits(text, number, edits, widths=None, sizes=None):
     widths = widths or {}
+    sizes = sizes or {}
     start, end = slide_bounds(text, number)
     body = text[start:end]
 
@@ -159,7 +161,8 @@ def apply_edits(text, number, edits, widths=None):
             raise ValueError('unclosed <%s> in slide %d' % (tag, number))
         spans.append((match.start(), match.end(), close))
 
-    touched = set(int(k) for k in edits) | set(int(k) for k in widths)
+    touched = (set(int(k) for k in edits) | set(int(k) for k in widths)
+               | set(int(k) for k in sizes))
     for index in touched:
         if index < 0 or index >= len(spans):
             raise ValueError('element %d out of range for slide %d' % (index, number))
@@ -176,12 +179,21 @@ def apply_edits(text, number, edits, widths=None):
             body = body[:inner_start] + clean(edits[key]) + body[inner_end:]
             written += 1
 
-        if key in widths:
-            value = widths[key]
-            if value is not None and not WIDTH_RE.match(str(value)):
-                raise ValueError('bad width %r — expected a percentage' % value)
+        # Both rewrite the opening tag, so they are applied together — doing
+        # them in two passes would have the second read a stale offset.
+        for prop, source, pattern, label in (
+            ('max-width', widths, WIDTH_RE, 'a percentage'),
+            ('font-size', sizes, SIZE_RE, 'a px value'),
+        ):
+            if key not in source:
+                continue
+            value = source[key]
+            if value is not None and not pattern.match(str(value)):
+                raise ValueError('bad %s %r — expected %s' % (prop, value, label))
             open_tag = body[tag_start:inner_start]
-            body = body[:tag_start] + set_width(open_tag, value) + body[inner_start:]
+            new_tag = set_style(open_tag, prop, value)
+            body = body[:tag_start] + new_tag + body[inner_start:]
+            inner_start += len(new_tag) - len(open_tag)
             written += 1
 
     return text[:start] + body + text[end:], written
@@ -215,6 +227,7 @@ class DeckHandler(SimpleHTTPRequestHandler):
                 int(payload['slide']),
                 payload.get('edits') or {},
                 payload.get('widths') or {},
+                payload.get('sizes') or {},
             )
             with open(path, 'w', encoding='utf-8') as handle:
                 handle.write(updated)

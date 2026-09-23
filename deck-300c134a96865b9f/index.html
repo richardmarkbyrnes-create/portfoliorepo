@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <base href="/">
   <link rel="stylesheet" href="/css/styles.css?v=870">
-  <link rel="stylesheet" href="/css/deck.css?v=165">
+  <link rel="stylesheet" href="/css/deck.css?v=189">
 </head>
 <body data-page="deck">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -46,7 +46,7 @@
             <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>5m</b> Chit-chat</p>
             <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>15m</b> Project 2 ✨</p>
             <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>5m</b> Chit-chat</p>
-            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>5m</b> Wrap-up ↺</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>5m</b> Wrap-up <span class="muted">↺</span></p>
           </div>
       </div>
     </section>
@@ -69,15 +69,21 @@
       </div>
     </section>
 
-    <section class="slide" aria-label="Slide 5">
+    <section class="slide slide--photos" aria-label="Slide 5">
       <div class="slide-split-main">
           <p class="slide-kicker">From a personal side</p>
           <div class="career-lines">
             <p class="career-line"><span class="chip" aria-hidden="true"></span><b>Football</b> Playing for over 20 years</p>
             <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Travel</b> Visited 19 countries so far</p>
-            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Animals</b> 28 pets throughout my life</p>
+            <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Animals</b> 28* pets throughout my life</p>
             <p class="career-line step"><span class="chip" aria-hidden="true"></span><b>Building</b> Working on 2 passion projects</p>
           </div>
+      </div>
+      <div class="slide-photo-stack" aria-hidden="true">
+        <img data-step="0" src="images/personal-football.jpg" alt="" width="468" height="646" loading="lazy">
+        <img data-step="1" src="images/personal-travel.jpg" alt="" width="678" height="900" loading="lazy">
+        <img data-step="2" src="images/personal-animals.jpg" alt="" width="559" height="633" loading="lazy">
+        <img data-step="3" src="images/personal-building.jpg" alt="" width="549" height="399" loading="lazy">
       </div>
     </section>
 
@@ -93,8 +99,8 @@
 
 
     <section class="slide slide--side-art slide--intro" aria-label="Slide 7">
-      <h2 class="slide-title slide-title--long">Miro<br><span class="muted">Canvas Insights</span></h2>
-      <p class="slide-note">Lead product designer</p>
+      <h2 class="slide-title slide-title--long" style="font-size: 38px">Miro<br><span class="muted">Bringing Rich Customer<br>Data to the Canvas</span></h2>
+      <p class="slide-note">Insights Team</p>
       <img class="slide-side-art" src="images/canvas-insights-hero.png?v=2" alt="Canvas Insights: insight cards placed on a Miro board beside the insights panel" width="2842" height="1856">
     </section>
 
@@ -112,7 +118,7 @@
         <div class="slide-meta">
           <div>
             <p class="slide-kicker">Timeline</p>
-            <p class="slide-meta-value">2 months</p>
+            <p class="slide-meta-value">2.5 months</p>
           </div>
           <div>
             <p class="slide-kicker">Type</p>
@@ -123,102 +129,148 @@
     </section>
 
     <section class="slide slide--centred" aria-label="Slide 9">
-      <p class="slide-kicker" style="max-width: 70%"><span class="solid">context &amp; opportunity</span></p>
+      <img class="slide-banner" src="images/insights-sources-banner.png" alt="Feedback sources feeding Insights — Salesforce, Slack, Intercom, HubSpot and more — beside a feature request card built from a customer quote" width="1800" height="500" loading="lazy">
+      <p class="slide-kicker" style="max-width: 70%"><span class="muted"><br><br>WHAT IS MIRO INSIGHTS?</span></p>
       <div class="slide-copy">
         <p class="slide-lede slide-lede--wide">Miro Insights, an acquired AI platform, aggregated qualitative customer data across tools like Gong, Salesforce, and Zendesk to surface actionable voice-of-customer insights tied directly to revenue opportunities and the features they requested.</p>
         <p class="slide-lede slide-lede--wide step"><br></p>
       </div>
     </section>
 
-    <section class="slide slide--side-art" aria-label="Slide 10">
-      <p class="slide-kicker">PROBLEM SPACE</p>
-      <h2 class="slide-title" style="max-width: 70.2%">Disconnection from <br><span class="muted">where</span> <span class="muted">the work happened.</span></h2>
+    <section class="slide slide--side-art slide--intro" aria-label="Slide 10">
+      <h2 class="slide-title slide-title--long" style="font-size: 38px; max-width: 60.1%">How <span class="muted">&amp;</span> why we built a native customer insights app in Miro</h2>
+      <p class="slide-note">Project walkthrough</p>
+      <img class="slide-side-art" src="images/canvas-insights-detail.png?v=2" alt="The Miro Insights panel open beside a board: a searchable backlog of requests, and insight cards placed on the canvas" width="2350" height="1666" loading="lazy">
+    </section>
+
+    <section class="slide slide--side-art" aria-label="Slide 11">
+      <p class="slide-kicker">problem space</p>
+      <h2 class="slide-title" style="max-width: 70.2%; font-size: 44px">There was a disconnect from <br><span class="muted">where</span> <span class="muted">the work happened.</span></h2>
       <ul class="slide-list slide-list--flow slide-list--unnumbered">
-        <li class="step" style="max-width: 100%">Before rich customer feedback sat in siloed tools — Zendesk, Gong, Jira, etc.. Insights provided a solution for this but was disconnected from where the real synthesis that happened collaboratively on the canvas, in roadmapping, backlog grooming and sprint planning across product, design, research and even go to market teams.<br></li>
+        <li class="step" style="max-width: 100%">Insights provided a solution for fragmented customer feedback but was disconnected from where the real synthesis happened. <br><br>Synthesis happened visually on the Miro canvas during rituals like roadmapping, backlog grooming, and sprint planning.</li>
       </ul>
-      <img class="slide-side-art" src="images/unplugged-illustration.png" alt="A plug hanging loose beside its socket, drawn in stipple" width="1600" height="873" loading="lazy">
+      <img class="slide-side-art" src="images/insights-disconnect-diagram.svg" alt="Two overlapping circles, the intersection shaded" width="499" height="282" loading="lazy">
     </section>
-
-    <section class="slide" aria-label="Slide 11">
-      <p class="slide-kicker">The opportunity</p>
-      <p class="slide-lede slide-lede--wide"><span class="solid">A strategic pillar for our products growth we saw an opportunity to leverage Miro's canvas and 100+ million user base to scale adoption of Miro Insights. The main issue was that we needed to understand how users actually used customer insights in their existing workflows in Miro today.</span></p>
-    </section>
-
 
     <section class="slide slide--side-art" aria-label="Slide 12">
+      <p class="slide-kicker">The opportunity</p>
+      <h2 class="slide-title" style="font-size: 35px; max-width: 68.9%">Scaling Miro Insights adoption to Miro’s <span class="muted">100+</span> million user base.</h2>
+      <p class="slide-lede slide-lede--wide" style="max-width: 72.6%">The main issue was that we needed to understand how users actually used customer insights in their existing workflows in Miro boards today where the actual synthesis happened.</p>
+      <img class="slide-side-art slide-side-art--small" src="images/think-pooh.gif" alt="Winnie the Pooh tapping his head, thinking" width="500" height="270" loading="lazy">
+    </section>
+
+
+    <section class="slide slide--side-art" aria-label="Slide 13">
       <p class="slide-kicker" data-placeholder="Kicker"></p>
-      <h2 class="slide-title slide-title--long" style="max-width: 73.9%">Paired with Brittney to <span class="muted">understand</span> <span class="muted">this space deeper.</span></h2>
-      <p class="slide-lede slide-lede--wide" style="max-width: 67.5%">Conducted 16 interviews and synthesis observation across three contrasting personas: Researchers, Product Managers, and Sales to give us a deeper understanding of how they used insights in their Miro workflows today.</p>
+      <h2 class="slide-title slide-title--long" style="max-width: 61.2%; font-size: 38px"><span class="muted"><span class="solid">Interviewing Miro users to</span> understand</span> <span class="muted">this space deeper.</span></h2>
+      <p class="slide-lede slide-lede--wide" style="max-width: 67.5%; font-size: 19px">Together with Brittney, we conducted 16 interviews and synthesis observation across three contrasting personas: Researchers, Product Managers, and Sales to give us a deeper understanding of how they used insights in their Miro workflows today.</p>
       <div class="slide-side-pair slide-side-pair--overlap">
         <img src="images/synthesis-board.png" alt="An affinity board clustering the interviews into workflows, processes and product feedback" width="1522" height="882" loading="lazy">
         <img src="images/research-interviews.png" alt="A Miro board of twelve interview cards, each with a recording and notes, tagged by persona" width="972" height="1194" loading="lazy">
+        <img class="slide-pair-still slide-pair-still--a" src="images/interview-still-1.png" alt="A recorded interview session" width="607" height="463" loading="lazy">
+        <img class="slide-pair-still slide-pair-still--b" src="images/interview-still-2.png" alt="A recorded interview session" width="611" height="449" loading="lazy">
         <img class="slide-pair-face" src="images/team-brittney.jpg" alt="Brittney" width="800" height="800" loading="lazy">
       </div>
     </section>
 
-    <section class="slide" aria-label="Slide 13">
-      <p class="slide-kicker">What we discovered</p>
-      <h2 class="slide-title" style="max-width: 86.4%"><span class="solid">Core breakdown points</span> <br><span class="muted">during insight synthesis</span></h2>
-      <p class="slide-lede slide-lede--wide" style="max-width: 95.9%">Processes were messy. Standard outputs lacked metadata, blocking collaborators from verifying or digging deeper into the data themselves devaluing the work the creators put in.<br><br>Insights lost their customer tier, source transcript, and revenue weight once on the canvas.<br>Static board data decayed overnight, decoupling ongoing team decisions from evolving customer feedback.</p>
-    </section>
-
     <section class="slide" aria-label="Slide 14">
-      <p class="slide-kicker" data-placeholder="Kicker">OUR 3 CORE PERSONAS</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">They worked in distinctly different ways but still grounded on the same data.<br><br>Product managers cared most about the volume of a specific feature mentioned. Researchers care more about holistic themes and patterns while Sales team cared more about using company data and requests to roadmap their pipelines.</p>
+      <div class="slide-heading">
+        <p class="slide-kicker">What we identified</p>
+        <h2 class="slide-title" style="max-width: 100%; font-size: 35px">Three breakdown points <span class="muted">during board synthesis.</span></h2>
+      </div>
+      <div class="slide-triptych">
+        <div class="slide-panel step">
+          <svg class="slide-panel-glyph" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M818-28 26-820l57-57L875-85l-57 57ZM440-200q-66 0-113-47t-47-113q0-66 47-113t113-47l80 80h-80q-33 0-56.5 23.5T360-360q0 33 23.5 56.5T440-280h240l142 142q-14 8-29.5 13t-32.5 5q-39 0-70-22.5T647-200H440Zm433-1L721-353q9-3 18.5-5t20.5-2q50 0 85 35t35 85q0 11-2 20.5t-5 18.5ZM608-466l-59-59q23-9 37-29t14-46q0-33-23.5-56.5T520-680H394l-80-80h206q66 0 113 47t47 113q0 42-20 77t-52 57ZM200-600q-50 0-85-35t-35-85q0-32 16-59t42-43l164 164q-16 26-43 42t-59 16Z"/></svg>
+          <p class="slide-panel-head" style="font-size: 22px"><br>Stripped metadata<br><br></p>
+          <ul class="slide-panel-list">
+            <li>Moving quotes to sticky notes stripped away user tier, source transcripts, and revenue weight.</li>
+            <li>Collaborators couldn’t verify or trace feedback back to sources.</li>
+          </ul>
+        </div>
+        <div class="slide-panel step">
+          <svg class="slide-panel-glyph" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M700-160v-220h-60v-198q0-15 8-26.5t23-19.5q15-8 37.5-12t51.5-4q29 0 51.5 4t37.5 12q15 8 23 19.5t8 26.5v198h-60v220H700Zm60-520q-29 0-49.5-20.5T690-750q0-29 20.5-49.5T760-820q29 0 49.5 20.5T830-750q0 29-20.5 49.5T760-680Zm-300 80q-25 0-42.5-17.5T400-660q0-25 17.5-42.5T460-720q25 0 42.5 17.5T520-660q0 25-17.5 42.5T460-600Zm-280 70q-21 0-35.5-14.5T130-580q0-21 14.5-35.5T180-630q21 0 35.5 14.5T230-580q0 21-14.5 35.5T180-530Zm230 370v-180h-60v-164q0-14 7-24.5t21-17.5q14-7 35-10.5t47-3.5q26 0 47 3.5t35 10.5q14 7 21 17.5t7 24.5v164h-60v180H410Zm-270 0v-140H80v-149q0-12 6.5-21.5T106-487q13-7 31.5-10t42.5-3q24 0 42.5 3t31.5 10q13 7 19.5 16.5T280-449v149h-60v140h-80Z"/></svg>
+          <p class="slide-panel-head" style="font-size: 22px"><br>Conflicting focus<br><br></p>
+          <ul class="slide-panel-list">
+            <li>Researchers needed qualitative depth: verbatims, sentiment, and video snippets.</li>
+            <li>PMs required quantitative macro weight: aggregated ARR or request frequencies</li>
+          </ul>
+        </div>
+        <div class="slide-panel step">
+          <svg class="slide-panel-glyph" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M280-720v520-520Zm170 600H280q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v172q-17-5-39.5-8.5T680-560v-160H280v520h132q6 21 16 41.5t22 38.5Zm-90-160h40q0-63 20-103.5l20-40.5v-216h-80v360Zm160-230q17-11 38.5-22t41.5-16v-92h-80v130Zm18.5 371.5Q480-197 480-280t58.5-141.5Q597-480 680-480t141.5 58.5Q880-363 880-280t-58.5 141.5Q763-80 680-80t-141.5-58.5ZM746-186l28-28-74-74v-112h-40v128l86 86Z"/></svg>
+          <p class="slide-panel-head" style="font-size: 22px"><br>Static canvas data<br><br></p>
+          <ul class="slide-panel-list">
+            <li>Canvas stickies severed live ties to source databases (Zendesk, Gong).</li>
+            <li>Boards decayed overnight, decoupling active decisions from evolving feedback.</li>
+          </ul>
+        </div>
+      </div>
     </section>
 
     <section class="slide" aria-label="Slide 15">
-      <p class="slide-kicker" data-placeholder="Kicker">WE GOT TO EXPLORING</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We knew how they worked, we recognized the issues and gaps in their existing workflows and we saw room to improve. <br><br>We ideated and brainstormed potential solutions to that we felt were a viable first step solution to address this problem space.<br></p>
+      <p class="slide-kicker" data-placeholder="Kicker">What we learned about</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Product managers, research and sales.<br><br>Product managers cared most about the volume of a specific feature mentioned. <br><br>Researchers care more about holistic themes and patterns while <br><br>Sales team cared more about using company data and requests to roadmap their pipelines.</p>
     </section>
 
-    <section class="slide" aria-label="Slide 16">
-      <p class="slide-kicker" data-placeholder="Kicker">DESIGN pillars</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">1. Trust behind the data was a huge barrier for adoption<br><br>2. Insights gain value only when they can be seamlessly used in multiplayer environments.<br><br>3. Data should be bi directional and synced to avoid data decay and outdated artifacts left on boards.</p>
+    <section class="slide slide--side-art" aria-label="Slide 16">
+      <p class="slide-kicker" data-placeholder="Kicker">WE GOT TO ideating</p>
+      <h2 class="slide-title" style="font-size: 35px">We saw potential in this space</h2>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We knew how they worked, we recognized the issues and gaps in their existing workflows and we saw room to improve. We ideated and brainstormed potential solutions to that we felt were a viable first step solution to address this problem space.<br></p>
+      <img class="slide-side-art slide-side-art--tall slide-side-art--close" src="images/ideation-boards.png" alt="Ideation boards exploring how insights could live on the canvas" width="1409" height="912" loading="lazy">
     </section>
 
-    <section class="slide" aria-label="Slide 17">
+    <section class="slide slide--centred" aria-label="Slide 17">
+      <p class="slide-kicker" data-placeholder="Kicker" style="max-width: 73.3%">DESIGN pillars</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy" style="max-width: 73.3%"><span class="solid">Trust</span> - Trust behind the data was a huge barrier for adoption<br><br><span class="solid">Collaboration -</span> Insights gain value only when they can be seamlessly used in multiplayer environments.<br><br><span class="solid">Synced -</span> Data should be bi-directional and synced to avoid data decay and outdated artifacts left on boards.</p>
+      <img class="slide-riser" src="images/design-pillars.png" alt="Three stipple-drawn classical columns" width="1600" height="896" loading="lazy">
+    </section>
+
+    <section class="slide" aria-label="Slide 18">
       <p class="slide-kicker" data-placeholder="Kicker">we landed on 3 potentials routes (3 horizontal rows here)</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">1. Concept of adding an invisible data layer to already existing features (sticky notes, docs, screenshots) and when selected users can triggers Miro AI to learn more about this specific insight.<br><br>2. A brand new insights format that when data was added to inside the format container it automatically sync to our insights database.<br><br>3. Structured insight cards components and a new app experience to find and discover feedback straight from the canvas. <span class="muted">Winner winner chicken dinner.</span></p>
     </section>
 
-    <section class="slide" aria-label="Slide 18">
+    <section class="slide" aria-label="Slide 19">
       <p class="slide-kicker" data-placeholder="Kicker">WHAT WE BUILT</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Turning scattered insight data into structured, multiplayer components on the Miro canvas.<br><i><br></i>Insight cards bring the source of truth onto the canvas. They restructure themselves depending on where you drop them — compact inside a table, spanning a kanban column, opening out to the full customer quote when they stand alone — so they fit whatever structure a team already works in. Either way the card links back to the original feedback, so anyone can trace a workshop conclusion back to something a customer actually said.<i></i></p>
     </section>
 
-    <section class="slide" aria-label="Slide 19">
+    <section class="slide" aria-label="Slide 20">
       <p class="slide-kicker" data-placeholder="Kicker">CORE FEATURE 1 WALKTHROUGH</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">THE CARDS THEMSELVES AND A BREAKDOWN OF THEM</p>
     </section>
 
-    <section class="slide" aria-label="Slide 20">
+    <section class="slide" aria-label="Slide 21">
       <p class="slide-kicker" data-placeholder="Kicker">core feature 2 walkthrough</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">THE APP EXPERIENCE AND INTERACTION DESIGN WITH CANVAS OBJECTS</p>
     </section>
 
-    <section class="slide" aria-label="Slide 21">
+    <section class="slide" aria-label="Slide 22">
       <p class="slide-kicker" data-placeholder="Kicker">THE VOICE</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">"Miro Insights ensures we’re making decisions based on data we can trust, and gives stakeholders visibility into results without constant back and forth among teams. It provides a central place for our whole company to see the true impact of our entire product strategy as a whole."<br><br><br>Christopher Byrum<br>VP Product</p>
     </section>
 
-    <section class="slide" aria-label="Slide 22">
+    <section class="slide" aria-label="Slide 23">
       <p class="slide-kicker" data-placeholder="Kicker">the results</p>
       <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Became a core staple in our sales playbook as it resonated with prospect miro customers experiences and acted as a nice upsell moments for miro insights to fill this gap<br><br>87% adoption rate from our existing user base from our standalone product experience. This drove adoption of Miro and also increased our monthly active usage metrics of our platform.</p>
     </section>
 
-    <section class="slide" aria-label="Slide 23">
+    <section class="slide" aria-label="Slide 24">
       <p class="slide-kicker" data-placeholder="Kicker">THE STRUGGLES</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Despite many successes with this project we struggled with a major discoverability problem. Unless users were told to look they weren't aware of the product offering which hurt our adoption rate going forward.<br><br>We addessed this later with contextual prompts triggered during user workflows to prompt them to use Insights and also deeply intergated into Miro's AI chat and MCP experiences. But that's a story for another day.</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Despite many successes with this project we struggled with a major discoverability problem. Unless users were told to look they weren't aware of the product offering which hurt our adoption rate going forward.<br><br>We addessed this later with contextual prompts triggered during user workflows to prompt them to use Insights and also deeply intergated into Miro's AI chat and MCP eco system. <br><span class="muted">But that's a story for another day.</span></p>
     </section>
 
-    <section class="slide slide--side-art slide--intro" aria-label="Slide 24">
-      <h2 class="slide-title slide-title--long">Miro<br><span class="muted">Custom Stickers</span></h2>
-      <p class="slide-note"><span class="muted">Product designer</span></p>
+    <section class="slide slide--centred" aria-label="Slide 25">
+      <p class="slide-kicker" data-placeholder="Kicker">THANK YOU</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Questions?</p>
+    </section>
+
+    <section class="slide slide--side-art slide--intro" aria-label="Slide 26">
+      <h2 class="slide-title slide-title--long" style="max-width: 61%; font-size: 38px">Miro<br><span class="muted">Scaling visual expression across a multi-device ecosystem.</span></h2>
+      <p class="slide-note">Growth team</p>
       <img class="slide-side-art" src="images/custom-stickers-hero.png" alt="Custom Stickers: the generation panel open in Miro with generated stickers on the board" width="2842" height="1856">
     </section>
 
-    <section class="slide" aria-label="Slide 25">
+    <section class="slide" aria-label="Slide 27">
       <div class="slide-columns">
         <div class="slide-column">
           <p class="slide-kicker" style="max-width: 100%">Role and team</p>
@@ -232,7 +284,7 @@
         <div class="slide-meta">
           <div>
             <p class="slide-kicker">Timeline</p>
-            <p class="slide-meta-value">2 months</p>
+            <p class="slide-meta-value">3 months</p>
           </div>
           <div>
             <p class="slide-kicker">Type</p>
@@ -242,29 +294,81 @@
       </div>
     </section>
 
-    <section class="slide" aria-label="Slide 26">
-      <p class="slide-kicker" data-placeholder="Kicker">CONTEXT</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Stickers are one of Miro's most used features. Around 3.5 million stickers are added to boards every week and have stamped itself as a user favourite for expression while collaborating on the canvas.</p>
-    </section>
-
-    <section class="slide" aria-label="Slide 27">
-      <p class="slide-kicker" data-placeholder="Kicker">the demand</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We lot's of customer demand for more sticker variants roughly 1.5k requests last year alone. While</p>
-    </section>
-
     <section class="slide" aria-label="Slide 28">
-      <p class="slide-kicker" data-placeholder="Kicker">Section label</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit.</p>
+      <p class="slide-kicker" data-placeholder="Kicker">CONTEXT</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Stickers are one of Miro's most used features. Around 3.5 million stickers are added to boards every week and have stamped itself as a user favourite for expression while collaborating on the canvas.<br><br>Balance delight with organic viral loops and high engagement (retention and collaboration lift).</p>
     </section>
 
     <section class="slide" aria-label="Slide 29">
-      <p class="slide-kicker" data-placeholder="Kicker">Section label</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt neque porro quisquam est qui dolorem.</p>
+      <p class="slide-kicker" data-placeholder="Kicker">the demand</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy" style="max-width: 81.3%">We saw lot's of customer requests for more sticker variants, the current options felt limited and stale. Roughly 2,500 requests in 2025 alone including some larger F100 customers. While the demand and user value was clear, it was unsustainable for our team to maintain and grow this internally.<br><span class="muted">We needed a more scalable and flexible solution.....</span></p>
     </section>
 
-    <section class="slide" aria-label="Slide 30">
-      <p class="slide-kicker" data-placeholder="Kicker">Section label</p>
-      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate.</p>
+    <section class="slide slide--centred slide--text-centre" aria-label="Slide 30">
+      <img class="slide-diagram slide-diagram--light" src="images/custom-stickers-illustration-light.svg" alt="Diagram of the Custom Stickers frame" width="499" height="282" loading="lazy">
+      <img class="slide-diagram slide-diagram--dark" src="images/custom-stickers-illustration-dark.svg" alt="" aria-hidden="true" width="499" height="282" loading="lazy">
+      <p class="slide-kicker" data-placeholder="Kicker">THE PROPOSAL</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Our team saw an opportunity to utilize generative AI to take advantage of this space by providing a scalable solution for customers while still leverage cutting edge AI technology. In theory, a fun project for us to build and perfect solution for our user base.... <span class="muted">win win, right?</span></p>
+    </section>
+
+    <section class="slide" aria-label="Slide 31">
+      <p class="slide-kicker" data-placeholder="Kicker">THE BUY IN ISSUE</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy" style="max-width: 74.4%">The issue was we needed leadership buy-in to build this capability, we would need to dedicate resources and costly AI tokens to make this which made it a hard sell with no direct revenue return. We needed to re-angle our approach to build this feature in a way that made sense from a business aspect...<br><br><span class="muted">So we looked at potential growth tactics to make this a reality.</span></p>
+    </section>
+
+    <section class="slide" aria-label="Slide 32">
+      <p class="slide-kicker" data-placeholder="Kicker">tieing this to 2 growth paths</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy" style="max-width: 85.6%">1. Revolving this feature around promoting our upcoming Canvas 26 event.<br><br>2. Building in adoption triggers to prompt virality across social media platforms to increase Miro sign ups.</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 33">
+      <p class="slide-kicker" data-placeholder="Kicker">WHAT WE BUILT</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We designed a core sticker generator feature built on top of existing stickers panel. We gave users the opportunity to upload their own images and photos to generate personalized stickers straight into their own sticker libraries. This built the core foundation to build our growth layers..</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 34">
+      <p class="slide-kicker" data-placeholder="Kicker">GROWTH LAYER</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We designed some post creation experiences for users to promote their newly create sticker packs and save them as assets. This was designed to trigger virality through social media and promote our upcoming Canvas 26 event.</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 35">
+      <p class="slide-kicker" data-placeholder="Kicker">MARKETING</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">We worked closely with the marketing team to build an in-person sticker printing experience. We designed a tablet native UI for users to print custom stickers at these Canvas 26 events across the world (SF, Tokyo, London and Sydney) which also drove impressive metrics to our social media engagement.</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 36">
+      <p class="slide-kicker" data-placeholder="Kicker">THE OUTCOME</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">255,239 stickers generated to this date, roughly 19% of all stickers added to the canvas are custom made.<br><br>469 posts shared across social media platforms with a total of 2.3 million unique views.<br></p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 37">
+      <p class="slide-kicker" data-placeholder="Kicker">biggest learning</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Advocating for prioritization of craft and delight can be sometimes difficult with contrasting business priorities.<br>This project taught me to think outside the box. Pushing the scope and goals of a project can make what usually get's abandoned to something worthwhile and advantageous to a companies vision.</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 38">
+      <p class="slide-kicker" data-placeholder="Kicker">voice of customer</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">“What seems like a simple feature to us can be a profound tool for self-validation to someone else; great ideas always transcend their original purpose."<br><br>Amy Harclerode</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 39">
+      <p class="slide-kicker" data-placeholder="Kicker">something i found interesting</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Stickers resonated with different markets especially our Japan market. CSM expressed the immense interests expressed at our Tokyo event and how our Japanese users want to keep the physical sticker printing as a permanent paid service.<br></p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 40">
+      <p class="slide-kicker" data-placeholder="Kicker">how this resonates</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">I'm currently reading The Culture Map, a book about navigating culture differences, and this made me think deeper about how features can receive more success in different markets around the world depending on how the market perceives it.</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 41">
+      <p class="slide-kicker" data-placeholder="Kicker">THANK YOU</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Questions?</p>
+    </section>
+
+    <section class="slide slide--centred" aria-label="Slide 42">
+      <p class="slide-kicker" data-placeholder="Kicker">WHY I PICKED THESE PROJECT</p>
+      <p class="slide-lede slide-lede--wide" data-placeholder="Body copy">Miro Insights: Demonstrates heavy backend workflows, AI-driven aggregation, data density, and measurable B2B monetization.<br><br>Custom Stickers: Consumer-grade delight, cross-device responsiveness (Web vs. Tablet/touch paradigms), high-volume adoption, and design system scalability.</p>
     </section>
 
   </main>
@@ -285,7 +389,7 @@
   </div>
 
   <script src="/js/projects.js?v=42"></script>
-  <script src="/js/deck.js?v=22"></script>
-  <script src="/js/deck-edit.js?v=9"></script>
+  <script src="/js/deck.js?v=24"></script>
+  <script src="/js/deck-edit.js?v=10"></script>
 </body>
 </html>

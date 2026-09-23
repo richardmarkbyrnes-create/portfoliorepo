@@ -57,6 +57,7 @@
 
     editing = true;
     widths = {};
+    sizes = {};
     originals = els.map((el) => el.innerHTML);
     els.forEach((el) => {
       el.setAttribute('contenteditable', 'true');
@@ -110,9 +111,12 @@
     if (exit) teardown(slide);
 
     const pendingWidths = widths;
-    if (exit) widths = {};
+    const pendingSizes = sizes;
+    if (exit) { widths = {}; sizes = {}; }
 
-    const count = Object.keys(edits).length + Object.keys(pendingWidths).length;
+    const count = Object.keys(edits).length
+      + Object.keys(pendingWidths).length
+      + Object.keys(pendingSizes).length;
     if (!count) {
       say(exit ? 'No changes' : 'Nothing to save');
       return;
@@ -127,6 +131,7 @@
         slide: number,
         edits,
         widths: pendingWidths,
+        sizes: pendingSizes,
       }),
     })
       .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
@@ -135,7 +140,7 @@
         // The saved markup is the sanitised copy, so re-baseline against what is
         // now on disk — otherwise the next save would resend unchanged fields.
         originals = fields(slide).map((el) => el.innerHTML);
-        if (!exit) widths = {};
+        if (!exit) { widths = {}; sizes = {}; }
         say('Saved ' + data.written + ' edit' + (data.written === 1 ? '' : 's') + ' → ' + data.file);
       })
       .catch((err) => say('Save failed: ' + err.message, 'error'));
@@ -164,7 +169,10 @@
   menu.className = 'deck-edit-menu';
   menu.innerHTML =
     '<button type="button" data-run="solid">Plain</button>' +
-    '<button type="button" data-run="muted">Grey</button>';
+    '<button type="button" data-run="muted">Grey</button>' +
+    '<span class="deck-edit-menu-rule" aria-hidden="true"></span>' +
+    '<button type="button" data-size="-1" title="Smaller">A&minus;</button>' +
+    '<button type="button" data-size="1" title="Larger">A+</button>';
   document.body.appendChild(menu);
 
   function hideMenu() {
@@ -284,13 +292,44 @@
     positionMenu(after);
   }
 
+  /* Size acts on the whole field, not the selection. Sizing a fragment of a
+     headline means inline spans carrying their own px values, which fight the
+     deck's type scale the moment anything reflows — and it is almost never what
+     you want on a slide. Steps are proportional so a 44px headline and a 16px
+     lede move by a sensible amount each. */
+  const SIZE_STEP = 1.08;
+  const SIZE_MIN = 10;
+  const SIZE_MAX = 96;
+  let sizes = {};
+
+  function fieldFor(node) {
+    const el = node && (node.nodeType === 1 ? node : node.parentElement);
+    return el ? el.closest('[contenteditable="true"]') : null;
+  }
+
+  function stepSize(direction) {
+    const sel = window.getSelection();
+    const field = fieldFor(sel && sel.anchorNode) || document.activeElement;
+    if (!field || !field.isContentEditable) return;
+
+    const current = parseFloat(window.getComputedStyle(field).fontSize);
+    const next = Math.round(
+      Math.min(SIZE_MAX, Math.max(SIZE_MIN, direction > 0 ? current * SIZE_STEP : current / SIZE_STEP))
+    );
+    field.style.fontSize = next + 'px';
+    sizes[fields(currentSlide()).indexOf(field)] = next + 'px';
+    say('Size ' + next + 'px — esc to save and exit');
+    if (gripTarget === field) placeGrip(field);
+  }
+
   // mousedown, not click: the default would blur the editable and collapse the
   // selection before the handler ever ran.
   menu.addEventListener('mousedown', (event) => {
-    const button = event.target.closest('button[data-run]');
+    const button = event.target.closest('button[data-run], button[data-size]');
     if (!button) return;
     event.preventDefault();
-    applyRun(button.dataset.run);
+    if (button.dataset.size) stepSize(Number(button.dataset.size));
+    else applyRun(button.dataset.run);
   });
 
   document.addEventListener('selectionchange', () => {
@@ -390,6 +429,15 @@
   // Capture phase, so this settles what a keypress means before deck.js sees it
   // and tries to page the deck with it.
   document.addEventListener('keydown', (event) => {
+    // Size without reaching for the menu. Checked before the modifier bail-out
+    // below, which exists to let browser shortcuts through.
+    if ((event.metaKey || event.ctrlKey) && editing
+        && (event.key === '=' || event.key === '+' || event.key === '-' || event.key === '_')) {
+      event.preventDefault();
+      stepSize(event.key === '-' || event.key === '_' ? -1 : 1);
+      return;
+    }
+
     if ((event.metaKey || event.ctrlKey) && (event.key === 's' || event.key === 'S')) {
       if (!editing) return;
       event.preventDefault();

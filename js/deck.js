@@ -135,6 +135,33 @@
   function paintSteps() {
     steps.forEach((el, i) => el.classList.toggle('is-revealed', i < step));
     paintActiveLine();
+    paintPairedArt();
+    paintHeading();
+  }
+
+  // A heading that hands the slide over once the content starts arriving. Set
+  // inline rather than from a stylesheet: opacity and translate on a slide's
+  // direct children are owned by the entry transition (.slide.is-current > *),
+  // which wins them however specific the competing rule is — pointer-events from
+  // the same rule applies, those two don't.
+  function paintHeading() {
+    const heading = slides[index].querySelector('.slide-heading');
+    if (!heading) return;
+    const handedOver = step > 0;
+    heading.style.opacity = handedOver ? '0' : '';
+    heading.style.translate = handedOver ? '0 -6px' : '';
+    heading.style.pointerEvents = handedOver ? 'none' : '';
+  }
+
+  // Artwork tied to a line rather than taking a keypress of its own. Giving these
+  // the .step class would work visually but would also make each one its own
+  // press, so a four-line list would take eight; data-step pairs a photo to the
+  // line it belongs to and they arrive together. Index 0 is on screen from the
+  // start, matching the first line, which is never a step.
+  function paintPairedArt() {
+    slides[index].querySelectorAll('[data-step]').forEach((el) => {
+      el.classList.toggle('is-revealed', step >= Number(el.dataset.step));
+    });
   }
 
   // The marker on the line that just arrived reads at full strength; the ones
