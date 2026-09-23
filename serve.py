@@ -32,6 +32,9 @@ ALLOWED = {
     'img': {'class', 'src', 'alt', 'width', 'height', 'loading', 'aria-hidden'},
 }
 VOID = {'br', 'img'}
+# Unwrapping one of these would weld the line to the one before it. They aren't
+# allowed through, but the boundary they mark is preserved as a break.
+BLOCK_TAGS = {'div', 'p', 'li', 'section', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'}
 # Unwrapping these would leave their source sitting in the slide as visible text.
 DROP_CONTENT = {'script', 'style', 'template'}
 
@@ -50,6 +53,8 @@ class Sanitiser(HTMLParser):
             self.muted += 1
             return
         if tag not in ALLOWED:
+            if tag in BLOCK_TAGS and self.out and not ''.join(self.out).endswith('<br>'):
+                self.out.append('<br>')
             return
         keep = ''.join(
             ' %s="%s"' % (k, v.replace('"', '&quot;'))
