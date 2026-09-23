@@ -128,9 +128,11 @@ html:has(body[data-page="deck"]) {
     translate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* A step inside a heading has to be a block for the rise to apply — inline
-   elements aren't transformable. It also replaces the <br> that preceded it. */
-.slide-title .step {
+/* A step inside a heading or a lede has to be a block for the rise to apply —
+   inline elements aren't transformable. It also replaces the <br> that preceded
+   it. */
+.slide-title .step,
+.slide-lede .step {
   display: block;
 }
 
@@ -1349,7 +1351,7 @@ body.deck-is-resizing {
    30em against a 12px kicker and a 20px lede are two different widths. */
 /* Artwork is absolutely positioned and sized on its own terms — pulling it into
    the reading column would shrink it and drag it to the middle. */
-.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero):not(.slide-photo-row):not(.slide-portrait):not(.slide-gif) {
+.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero):not(.slide-photo-row):not(.slide-portrait):not(.slide-gif):not(.slide-book) {
   width: 100%;
   max-width: 600px;
   margin-inline: auto;
@@ -1499,14 +1501,23 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   right: 3%;
   transform: translateY(-50%);
   z-index: -1;
-  width: 330px;
-  height: 430px;
+  /* One grid cell holding all four prints, so they land squarely on each other
+     rather than being placed one by one. Grid rather than absolute offsets
+     because centring that way needs a transform, and both of the properties
+     that would take it are spoken for here — `translate` runs the arrival and
+     `transform` carries a hand-set nudge from the editor. */
+  display: grid;
+  place-items: center;
+  /* Wide enough for the biggest print in the pile: styles.css caps every image
+     at 100% of its box, so a narrower cell would quietly shrink it back. */
+  width: 350px;
+  height: 390px;
   pointer-events: none;
 }
 
 .slide-photo-stack img {
-  position: absolute;
-  width: 152px;
+  grid-area: 1 / 1;
+  width: 268px;
   height: auto;
   /* A white frame rather than a ring in the page colour: these read as prints
      lying on the page, and the frame is what separates them where they overlap. */
@@ -1515,13 +1526,17 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   box-shadow: 0 5px 14px -6px rgba(0, 0, 0, 0.28);
 }
 
-.slide-photo-stack img:nth-child(1) { top: 0;     left: 6px;   rotate: -6deg; }
-.slide-photo-stack img:nth-child(2) { top: 28px;  left: 158px; rotate: 5deg; }
-.slide-photo-stack img:nth-child(3) { top: 196px; left: 0;     rotate: -3deg; }
+/* Only the tilt varies now — the pile is what tells them apart, and without a
+   little rotation four squared-up prints just read as one. */
+.slide-photo-stack img:nth-child(1) { rotate: -6deg; }
+.slide-photo-stack img:nth-child(2) { rotate: 5deg; }
+.slide-photo-stack img:nth-child(3) { rotate: -3deg; }
 /* The sticker characters are landscape, so at the shared width they read much
-   smaller than the portraits beside them. Wider, and pulled left to keep the
-   extra width inside the slide. */
-.slide-photo-stack img:nth-child(4) { top: 268px; left: 138px; width: 192px; rotate: 8deg; }
+   smaller than the portraits under them. Wider, to match their weight. */
+.slide-photo-stack img:nth-child(4) {
+  rotate: 8deg;
+  width: 330px;
+}
 
 /* Each photo arrives with its line. Not the .step class — that would cost a
    keypress per photo; deck.js pairs these by data-step instead. Starts a touch
@@ -1619,7 +1634,7 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
 .slide-triptych {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 34px;
+  gap: 64px;
   width: 112%;
   margin-left: -6%;
   margin-top: 10px;
@@ -1679,9 +1694,9 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
    instead of needing a second set for dark. */
 .slide-panel-glyph {
   display: block;
-  width: 26px;
-  height: 26px;
-  margin-bottom: 14px;
+  width: 38px;
+  height: 38px;
+  margin-bottom: 16px;
   color: color-mix(in srgb, var(--text) 55%, transparent);
 }
 
@@ -1939,18 +1954,24 @@ body.deck-is-dragging .slide.is-current img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
-  height: clamp(150px, 24vh, 205px);
+  height: clamp(140px, 21vh, 180px);
 }
 
 .slide-photo-row img {
   height: 100%;
   width: auto;
   min-width: 0;
+  /* The frame has to come out of the height the row set, or the two shots stop
+     matching the moment a border is added. */
+  box-sizing: border-box;
   object-fit: cover;
-  border-radius: 10px;
-  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.4);
+  /* A white frame rather than a ring in the page colour — these read as prints
+     from the event, the same as the photo pile on the personal slide. */
+  border: 6px solid #fff;
+  border-radius: 4px;
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, 0.32);
 }
 
 /* Side by side there is no room for either on a phone, so they stack. */
@@ -1978,13 +1999,6 @@ body.deck-is-dragging .slide.is-current img {
   object-fit: cover;
 }
 
-/* A little more air between the stats columns. Scoped rather than widened on
-   .slide-triptych itself: the stepped learnings slide shares that grid and its
-   columns carry far more copy, so they want the tighter gap and the measure. */
-.slide-triptych--airy {
-  gap: 64px;
-}
-
 /* The role under a quote's attribution — smaller than the name it hangs from.
    Relative, not px: the lede it lives in gets resized from the editor, and a
    fixed size would drift out of proportion the first time that happens. It is a
@@ -1992,4 +2006,58 @@ body.deck-is-dragging .slide.is-current img {
    editor's sanitiser keeps classes on a span and drops style attributes. */
 .slide-attrib {
   font-size: 0.7em;
+}
+
+/* The contextual-prompt mock beside the next-steps copy. Narrower than --forum:
+   that slide's copy runs to 72% of the column and leaves less to give. At this
+   size it can't take --near's small offset and still clear the copy at 1280, so
+   it carries its own: a percentage of the slide, which holds the gap steady at
+   every width, clamped by max() so it never pushes past a narrow window. */
+.slide-side-art--prompt {
+  width: min(500px, 39vw);
+  right: max(-11%, calc((940px - 100vw) / 2));
+  border-radius: 8px;
+}
+
+/* A book propped against the bottom edge, off to one side so it rises into the
+   corner rather than up through the copy. Paired to a line by data-step, so it
+   eases up as that line lands. */
+.slide-book {
+  position: absolute;
+  right: 3%;
+  bottom: 0;
+  z-index: -1;
+  width: clamp(130px, 13vw, 186px);
+  height: auto;
+  border-radius: 3px 3px 0 0;
+  box-shadow: 0 -12px 36px -18px rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+  /* A slight lean, pivoted on the buried bottom edge so it reads as propped
+     against it rather than floating at an angle. `rotate` is its own property,
+     which leaves `transform` free to carry the rise. */
+  rotate: 4deg;
+  transform-origin: bottom center;
+  /* transform, not translate: the slide's arrival writes `translate` on every
+     direct child and would wipe this. A hand-set nudge from the editor rides
+     along in the same declaration for the same reason. */
+  transform: translate(var(--nudge-x, 0px), calc(52% + var(--nudge-y, 0px)));
+  transition:
+    opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The arrival rule writes opacity onto every direct child and outranks a single
+   class, so the waiting state has to be stated at its specificity. */
+.slide.is-current > .slide-book:not(.is-revealed) {
+  opacity: 0;
+}
+
+.slide-book.is-revealed {
+  transform: translate(var(--nudge-x, 0px), calc(30% + var(--nudge-y, 0px)));
+}
+
+/* The part hanging past the bottom edge has to be clipped by the slide, or it
+   just makes the slide scrollable. */
+.slide:has(.slide-book) {
+  overflow: hidden;
 }
