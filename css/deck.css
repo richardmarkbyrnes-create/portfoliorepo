@@ -1455,11 +1455,11 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   margin-top: 18px;
 }
 
+/* Each project fact is its own column now, rather than the pair stacking in
+   one. Still shrink-to-fit, so the row is team | timeline | type with the gap
+   between them rather than spread across the slide. */
 .slide-meta {
   flex: 0 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 26px;
 }
 
 /* Set smaller than a career line — these are facts about the project, not the
@@ -1762,3 +1762,80 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   left: 34%;
   rotate: 3deg;
 }
+
+/* Successive states of one interface, shown one at a time in the same place —
+   each replaces the last rather than piling up, so the frame reads as a single
+   screen changing. No cast shadow; a wide flat frame in the page colour instead,
+   which holds the white UI shots away from the near-white page. */
+.slide-step-stack {
+  position: absolute;
+  top: 50%;
+  right: -5%;
+  transform: translateY(-50%);
+  z-index: -1;
+  width: 470px;
+  height: 420px;
+  pointer-events: none;
+}
+
+.slide-step-stack img {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  border: 14px solid #fff;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-step-stack img.is-revealed {
+  opacity: 1;
+}
+
+/* Two columns rather than three, for a slide comparing a pair of outcomes. */
+.slide-triptych--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 72px;
+  /* Two columns don't need the negative inset three do — and without it the
+     first column starts on the slide's own left edge, level with the kicker
+     above rather than 52px outside it. */
+  width: 100%;
+  margin-left: 0;
+}
+
+/* Artwork heading a column. Boxed to a common height so two drawings of
+   different proportions still sit on the same baseline as each other, with the
+   copy beneath starting level. */
+.slide-panel-art {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 132px;
+  object-fit: contain;
+  object-position: left bottom;
+  margin-bottom: 22px;
+}
+
+[data-theme="dark"] .slide-panel-art {
+  filter: invert(1);
+}
+
+.slide-panel-text {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(15px, 1.5vw, 18px);
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--text-muted);
+}
+
+/* A kicker ranged centre rather than sitting on the copy's left edge — for a
+   slide whose content sits in columns beneath it rather than a single block. */
+.slide-kicker--centre {
+  text-align: center;
+}
+

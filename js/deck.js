@@ -148,6 +148,12 @@
     const heading = slides[index].querySelector('.slide-heading');
     if (!heading) return;
     const handedOver = step > 0;
+    // Set inline for the same reason the values are: `.slide.is-current > *`
+    // gives every direct child the entry stagger's 0.6s delay, which would hold
+    // the heading on screen for half a second after the first column had already
+    // arrived. Matching .step's timing exactly makes the two read as one move.
+    heading.style.transition =
+      'opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), translate 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
     heading.style.opacity = handedOver ? '0' : '';
     heading.style.translate = handedOver ? '0 -6px' : '';
     heading.style.pointerEvents = handedOver ? 'none' : '';
@@ -159,8 +165,14 @@
   // line it belongs to and they arrive together. Index 0 is on screen from the
   // start, matching the first line, which is never a step.
   function paintPairedArt() {
+    // data-step accumulates: everything up to the current line stays on screen.
     slides[index].querySelectorAll('[data-step]').forEach((el) => {
       el.classList.toggle('is-revealed', step >= Number(el.dataset.step));
+    });
+    // data-step-only replaces: just the one belonging to the current line shows,
+    // for artwork that is successive states of the same thing rather than a pile.
+    slides[index].querySelectorAll('[data-step-only]').forEach((el) => {
+      el.classList.toggle('is-revealed', step === Number(el.dataset.stepOnly));
     });
   }
 
