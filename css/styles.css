@@ -74,9 +74,6 @@
   --content-resume: 480px;
   --resume-paper: #ffffff;
   --resume-paper-border: rgba(0, 0, 0, 0.1);
-  /* The same outward arrow the contact links use, as a mask so it can take
-     `currentColor` from whatever link it sits on. */
-  --external-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M8 7h9v9'/%3E%3C/svg%3E");
   --resume-paper-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
     0 6px 16px rgba(0, 0, 0, 0.05),
@@ -1606,7 +1603,6 @@ body[data-page="about"] {
 }
 
 .about-link {
-  position: relative;
   color: inherit;
   text-decoration: underline;
   text-decoration-style: dotted;
@@ -1619,42 +1615,6 @@ body[data-page="about"] {
 .about-link:hover {
   color: var(--text);
   text-decoration-color: var(--text);
-}
-
-/* Same hover arrow as .contact-external, but positioned out of flow: these links
-   sit inside justified prose, so reserving space for the arrow would both open a
-   gap before the following punctuation and drag the dotted underline out past the
-   word. Raised towards the ascender so it clears any comma it lands next to. */
-.about-link::after {
-  content: "";
-  position: absolute;
-  left: calc(100% + 2px);
-  bottom: 0.35em;
-  width: 10px;
-  height: 10px;
-  background-color: currentColor;
-  -webkit-mask: var(--external-arrow) no-repeat center / 10px 10px;
-  mask: var(--external-arrow) no-repeat center / 10px 10px;
-  opacity: 0;
-  transform: translate(-3px, 3px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  pointer-events: none;
-}
-
-.about-link:hover::after {
-  opacity: 0.55;
-  transform: translate(0, 0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .about-link::after {
-    transition: opacity 0.25s ease;
-    transform: none;
-  }
-
-  .about-link:hover::after {
-    transform: none;
-  }
 }
 
 .contact-link {

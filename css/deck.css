@@ -1341,3 +1341,148 @@ body.deck-is-resizing {
 [data-theme="dark"] .slide-side-art[src*="unplugged"] {
   filter: invert(1);
 }
+
+/* Centres a content slide on the screen while its lines stay ranged left.
+   Every child shares one measure and one left edge: centring the flex items
+   individually instead would size each to its own content and leave the kicker
+   floating out of line with the copy beneath it. The measure is in px, not em —
+   30em against a 12px kicker and a 20px lede are two different widths. */
+.slide--centred > * {
+  width: 100%;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+/* A smaller side artwork — for a gif that's an aside rather than the evidence,
+   and to leave the copy beside it more than the usual half a slide. Full-size
+   side art deliberately bleeds past the slide's right edge; at this size that
+   just strands it far from the copy, so it pulls back inside the edge instead.
+   Rounded like .slide-gif, since it reads as a picture rather than as artwork
+   dissolving into the page. */
+.slide-side-art--small {
+  width: clamp(200px, 23vw, 300px);
+  right: 0;
+  /* Full-size side art sits at 58%, weighted low to balance a large image
+     against copy that starts high. Something this small just reads as
+     off-centre, so it takes the true middle of the slide. */
+  top: 50%;
+  border-radius: 12px;
+}
+
+/* Blank slides carry empty fields, which collapse to nothing and can't be
+   clicked into. While editing they get a height and show what they're for; on
+   the slide itself they stay invisible, so an unfilled deck presents clean
+   rather than reading "Headline" nineteen times. */
+body.deck-is-editing [contenteditable="true"]:empty {
+  min-height: 1em;
+  min-width: 6em;
+}
+
+body.deck-is-editing [contenteditable="true"]:empty::before {
+  content: attr(data-placeholder);
+  color: color-mix(in srgb, var(--text) 25%, transparent);
+}
+
+/* Two research boards shown as one stack: the synthesis map sits to the left of
+   the interview board and in front of it. The default pair overlaps by a third,
+   which buries the smaller board — a tenth is enough to read as a stack. The
+   first child needs the z-index because later siblings paint on top by default,
+   and here the front one comes first in the markup. */
+.slide-side-pair--overlap img + img {
+  margin-left: -10%;
+}
+
+/* Keep the ring in the page colour, which is what separates the two boards
+   where they meet, but drop the cast shadow — the default pair's second layer
+   is the border, the first is the shadow. */
+.slide-side-pair--overlap img {
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+.slide-side-pair--overlap img:first-child {
+  position: relative;
+  z-index: 1;
+  /* Nudged right off its flow position rather than by widening the overlap:
+     the pair is a flex row anchored at its right edge, so a bigger negative
+     margin drags the board behind it leftwards instead of moving this one. */
+  left: 70px;
+}
+
+/* Brittney's portrait sitting on the research boards rather than inline in the
+   headline. Absolutely placed inside the pair, so it rides with the artwork at
+   any size, and above both boards. It needs the explicit width/height and
+   margin because `.slide-side-pair img` sizes every image in the group and
+   `img + img` would otherwise pull this one sideways. */
+.slide-side-pair .slide-pair-face {
+  position: absolute;
+  /* Straddling the bottom-right corner of the front board, so it bridges the two
+     boards. Both offsets are percentages of the pair's own box so the portrait
+     holds its corner at any size — note that box starts at the front board's
+     flow position, before the 70px nudge applied to the board itself. */
+  left: 54%;
+  top: 58%;
+  z-index: 2;
+  width: 64px;
+  height: 64px;
+  margin: 0;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 0 0 4px var(--bg);
+}
+
+/* Team on the left, project facts on the right. Carries .slide-split-main's
+   negative inset so the left column starts on the same line as the copy on
+   neighbouring slides. */
+.slide-columns {
+  display: flex;
+  align-items: flex-start;
+  gap: 56px;
+  width: 112%;
+  margin-left: -6%;
+}
+
+/* Shrink to the longest name rather than filling the row — stretched, it pushed
+   the facts column out to the slide's far edge and left a gulf between them. */
+.slide-columns .slide-column {
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+/* The kicker sat almost on top of the first name. */
+.slide-columns .career-lines {
+  margin-top: 18px;
+}
+
+.slide-meta {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+/* Set smaller than a career line — these are facts about the project, not the
+   list the slide is actually about. */
+.slide-meta-value {
+  margin: 5px 0 0;
+  font-family: var(--serif);
+  font-size: clamp(18px, 2.1vw, 26px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--text-body);
+}
+
+/* Project intro: the title holds the left, the hero fills the right. Built on
+   .slide--side-art, which already ranges the copy left and drops the artwork
+   beneath the grain — this only restores the spacing the centred title layout
+   was providing. */
+.slide--intro .slide-note {
+  margin-top: 24px;
+}
+
+/* Side art normally sits at 58%, weighted low to balance copy that starts high.
+   An intro slide's title is centred in the frame, so the hero takes the true
+   middle to sit level with it. */
+.slide--intro .slide-side-art {
+  top: 50%;
+}

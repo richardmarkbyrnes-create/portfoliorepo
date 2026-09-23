@@ -207,11 +207,14 @@
   function tidy(host) {
     if (!host) return;
 
-    // Bare spans nested inside a run are the browser's leavings. A bare span at
-    // the top level is the deck's own — `.slide-list li span` carries the grey
-    // trailing half of a list item — so it has to survive untouched.
-    host.querySelectorAll('span.muted span:not([class]), span.solid span:not([class])')
-      .forEach((el) => el.replaceWith(...el.childNodes));
+    // Bare spans are the browser's leavings, with one exception: inside a list
+    // item `.slide-list li span` carries the grey trailing half, so those are
+    // structural and stay. Anywhere else — a lede, a title — they do nothing but
+    // fragment the markup a little more with every edit.
+    host.querySelectorAll('span:not([class])').forEach((el) => {
+      const structural = el.closest('li') && !el.closest('span.muted, span.solid');
+      if (!structural || !el.textContent.trim()) el.replaceWith(...el.childNodes);
+    });
 
     // A run nested directly inside the same tone is redundant.
     host.querySelectorAll('span.muted span.muted, span.solid span.solid').forEach((el) => {
@@ -232,6 +235,14 @@
         while (dead.firstChild) el.appendChild(dead.firstChild);
         dead.remove();
       }
+    });
+
+    // A paste can still bring blocks with it. Flatten them to line breaks rather
+    // than letting the save unwrap them and run the lines together.
+    host.querySelectorAll('div, p, h1, h2, h3, li').forEach((el) => {
+      const bits = Array.from(el.childNodes);
+      if (el.previousSibling) el.before(document.createElement('br'));
+      el.replaceWith(...bits);
     });
 
     host.normalize();
@@ -389,6 +400,16 @@
     if (event.metaKey || event.ctrlKey || event.altKey) return;
 
     if (editing) {
+      // Enter in a contenteditable splits the field into <div> blocks, which the
+      // save path unwraps — the text survives but the break doesn't, and the two
+      // lines end up run together. Every editable here is a single block, so a
+      // line break is what Enter should have meant anyway.
+      if (event.key === 'Enter' && !event.shiftKey
+          && document.activeElement && document.activeElement.isContentEditable) {
+        event.preventDefault();
+        document.execCommand('insertLineBreak');
+        return;
+      }
       if (event.key === 'Escape') {
         event.preventDefault();
         if (event.shiftKey) discard();
