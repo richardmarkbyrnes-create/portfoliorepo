@@ -69,9 +69,21 @@
   }
   applyTheme(dark);
 
+  // A few slides are written for the dark surface whatever the deck is set to —
+  // the thank-you cards. They flip the page theme for as long as they're up and
+  // hand it back on the way out, so the chrome travels with them instead of
+  // sitting in the wrong palette over a dark slide.
+  function wantsDark(slide) {
+    return !!slide && slide.dataset.slideTheme === 'dark';
+  }
+
+  function paintTheme() {
+    applyTheme(dark || wantsDark(slides[index]));
+  }
+
   function toggleTheme() {
     dark = !dark;
-    applyTheme(dark);
+    paintTheme();
     try {
       localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
     } catch (error) {
@@ -196,6 +208,7 @@
       // Keep the off-screen slides out of the reading order entirely.
       slide.setAttribute('aria-hidden', current ? 'false' : 'true');
     });
+    paintTheme();
     paintDots();
     if (countEl) countEl.textContent = `${index + 1} / ${slides.length}`;
     document.body.dataset.deckSlide = String(index + 1);
