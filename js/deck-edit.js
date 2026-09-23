@@ -50,7 +50,8 @@
   function enter() {
     const slide = currentSlide();
     const els = fields(slide);
-    if (!els.length) {
+    const art = artFields(slide);
+    if (!els.length && !art.length) {
       say('Nothing editable on this slide');
       return;
     }
@@ -58,13 +59,16 @@
     editing = true;
     widths = {};
     sizes = {};
+    nudges = {};
+    originalNudges = art.map(readNudge);
     originals = els.map((el) => el.innerHTML);
     els.forEach((el) => {
       el.setAttribute('contenteditable', 'true');
       el.setAttribute('spellcheck', 'true');
     });
     document.body.classList.add('deck-is-editing');
-    say('Editing slide ' + slideNumber(slide) + ' — select text to set its tone · esc to save and exit');
+    say('Editing slide ' + slideNumber(slide)
+        + ' — select text to set its tone · drag art to move it · esc to save and exit');
 
     const first = els[0];
     if (first) {
@@ -87,6 +91,7 @@
     });
     document.body.classList.remove('deck-is-editing');
     editing = false;
+    releaseArt();
     hideMenu();
     hideGrip();
   }
@@ -112,11 +117,13 @@
 
     const pendingWidths = widths;
     const pendingSizes = sizes;
-    if (exit) { widths = {}; sizes = {}; }
+    const pendingNudges = nudges;
+    if (exit) { widths = {}; sizes = {}; nudges = {}; }
 
     const count = Object.keys(edits).length
       + Object.keys(pendingWidths).length
-      + Object.keys(pendingSizes).length;
+      + Object.keys(pendingSizes).length
+      + Object.keys(pendingNudges).length;
     if (!count) {
       say(exit ? 'No changes' : 'Nothing to save');
       return;
@@ -132,6 +139,10 @@
         edits,
         widths: pendingWidths,
         sizes: pendingSizes,
+        nudges: pendingNudges,
+        // A cheap guard against saving into a file that has moved on: the
+        // server refuses the write if its image count disagrees.
+        imgCount: artFields(slide).length,
       }),
     })
       .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
@@ -140,7 +151,8 @@
         // The saved markup is the sanitised copy, so re-baseline against what is
         // now on disk — otherwise the next save would resend unchanged fields.
         originals = fields(slide).map((el) => el.innerHTML);
-        if (!exit) { widths = {}; sizes = {}; }
+        originalNudges = artFields(slide).map(readNudge);
+        if (!exit) { widths = {}; sizes = {}; nudges = {}; }
         say('Saved ' + data.written + ' edit' + (data.written === 1 ? '' : 's') + ' → ' + data.file);
       })
       .catch((err) => say('Save failed: ' + err.message, 'error'));
@@ -150,6 +162,9 @@
     const slide = currentSlide();
     fields(slide).forEach((el, i) => {
       if (originals[i] !== undefined) el.innerHTML = originals[i];
+    });
+    artFields(slide).forEach((el, i) => {
+      if (originalNudges[i]) setNudge(el, originalNudges[i].x, originalNudges[i].y);
     });
     teardown(slide);
     say('Discarded');
@@ -419,12 +434,154 @@
   document.addEventListener('focusin', (event) => {
     if (!editing) return;
     const el = event.target.closest('[contenteditable="true"]');
-    if (el) placeGrip(el);
+    if (el) {
+      releaseArt();
+      placeGrip(el);
+    }
   });
 
   window.addEventListener('resize', () => {
     if (editing && gripTarget) placeGrip(gripTarget);
   });
+
+  /* ── Art nudge ─────────────────────────────────────────────────
+     Drag any image on the slide to place it by hand. The offset is written as
+     two custom properties, which deck.css folds into whatever transform the art
+     already carries — setting `transform` from here would wipe the centring most
+     of the art depends on, and `translate` belongs to the slide's entry reveal.
+
+     Pixels, deliberately. A percentage would be the responsive choice, but this
+     is a nudge against a piece of art whose own size is already clamped, and a
+     px offset is the one thing that reads the same at every window width. */
+  const NUDGE_LIMIT = 2000;
+  const ARROW = {
+    ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1],
+  };
+  let nudges = {};
+  let originalNudges = [];
+  let held = null;
+
+  // Must stay in step with IMG_TAG_RE in serve.py — same order, same index.
+  function artFields(slide) {
+    return Array.from(slide.querySelectorAll('img'));
+  }
+
+  function readNudge(el) {
+    return {
+      x: parseFloat(el.style.getPropertyValue('--nudge-x')) || 0,
+      y: parseFloat(el.style.getPropertyValue('--nudge-y')) || 0,
+    };
+  }
+
+  function setNudge(el, x, y) {
+    const clamp = (n) => Math.max(-NUDGE_LIMIT, Math.min(NUDGE_LIMIT, Math.round(n)));
+    const nx = clamp(x);
+    const ny = clamp(y);
+    const index = artFields(currentSlide()).indexOf(el);
+
+    // An offset of zero is the absence of one: drop the properties rather than
+    // leaving `--nudge-x: 0px` sitting in the markup.
+    if (!nx && !ny) {
+      el.style.removeProperty('--nudge-x');
+      el.style.removeProperty('--nudge-y');
+      if (index >= 0) nudges[index] = null;
+      return { x: 0, y: 0 };
+    }
+    el.style.setProperty('--nudge-x', nx + 'px');
+    el.style.setProperty('--nudge-y', ny + 'px');
+    if (index >= 0) nudges[index] = { x: nx + 'px', y: ny + 'px' };
+    return { x: nx, y: ny };
+  }
+
+  /* The individual `rotate` property is applied before `transform`, so a nudge
+     written into the transform runs along the tilt rather than along the screen
+     — on the drifting photo stacks a drag would slide away from the cursor.
+     Turn the screen-space delta back into the element's own axes first. */
+  function localDelta(el, dx, dy) {
+    const spin = window.getComputedStyle(el).rotate;
+    const deg = spin && spin !== 'none' ? parseFloat(spin) : 0;
+    if (!deg) return [dx, dy];
+    const r = (deg * Math.PI) / 180;
+    const cos = Math.cos(r);
+    const sin = Math.sin(r);
+    return [dx * cos + dy * sin, dy * cos - dx * sin];
+  }
+
+  function sayNudge(at) {
+    say('Moved ' + at.x + ', ' + at.y
+        + ' — arrows to fine-tune · double-click to reset · esc to save and exit');
+  }
+
+  function holdArt(el) {
+    if (held && held !== el) held.classList.remove('is-art-held');
+    held = el;
+    if (!el) return;
+    el.classList.add('is-art-held');
+    // Arrow keys have to mean "move the art" rather than "walk the caret", so
+    // the text field gives up focus for as long as a piece of art is held.
+    if (document.activeElement && document.activeElement.isContentEditable) {
+      document.activeElement.blur();
+    }
+    hideMenu();
+    hideGrip();
+  }
+
+  function releaseArt() {
+    if (held) held.classList.remove('is-art-held');
+    held = null;
+  }
+
+  document.addEventListener('pointerdown', (event) => {
+    if (!editing) return;
+    const img = event.target.closest('img');
+    if (!img || !currentSlide().contains(img)) {
+      // Clicking the chrome shouldn't drop the selection out from under a
+      // button that is about to act on it.
+      if (!event.target.closest('.deck-edit-menu, .deck-edit-grip')) releaseArt();
+      return;
+    }
+
+    event.preventDefault();
+    holdArt(img);
+
+    const from = readNudge(img);
+    const startX = event.clientX;
+    const startY = event.clientY;
+    document.body.classList.add('deck-is-dragging');
+    // Capture keeps the move events coming when the pointer outruns the image.
+    // It throws if the pointer isn't live, which a synthetic event won't be.
+    try { img.setPointerCapture(event.pointerId); } catch (err) { /* not fatal */ }
+
+    function onMove(move) {
+      let dx = move.clientX - startX;
+      let dy = move.clientY - startY;
+      // Shift locks to whichever axis the drag committed to first.
+      if (move.shiftKey) {
+        if (Math.abs(dx) >= Math.abs(dy)) dy = 0;
+        else dx = 0;
+      }
+      const [lx, ly] = localDelta(img, dx, dy);
+      sayNudge(setNudge(img, from.x + lx, from.y + ly));
+    }
+    function onUp() {
+      img.removeEventListener('pointermove', onMove);
+      img.removeEventListener('pointerup', onUp);
+      img.removeEventListener('pointercancel', onUp);
+      document.body.classList.remove('deck-is-dragging');
+    }
+    img.addEventListener('pointermove', onMove);
+    img.addEventListener('pointerup', onUp);
+    img.addEventListener('pointercancel', onUp);
+  }, true);
+
+  document.addEventListener('dblclick', (event) => {
+    if (!editing) return;
+    const img = event.target.closest('img');
+    if (!img || !currentSlide().contains(img)) return;
+    event.preventDefault();
+    setNudge(img, 0, 0);
+    say('Position reset — esc to save and exit');
+  }, true);
 
   // Capture phase, so this settles what a keypress means before deck.js sees it
   // and tries to page the deck with it.
@@ -447,7 +604,23 @@
 
     if (event.metaKey || event.ctrlKey || event.altKey) return;
 
+    if (editing && held && ARROW[event.key]) {
+      event.preventDefault();
+      event.stopPropagation();
+      const [ux, uy] = ARROW[event.key];
+      const step = event.shiftKey ? 10 : 1;
+      const from = readNudge(held);
+      const [lx, ly] = localDelta(held, ux * step, uy * step);
+      sayNudge(setNudge(held, from.x + lx, from.y + ly));
+      return;
+    }
+
     if (editing) {
+      // deck.js pages on arrows, space and the rest. It steps aside for a focused
+      // contenteditable, but holding a piece of art deliberately blurs that — so
+      // while the editor is open nothing else gets a look at the keyboard.
+      event.stopPropagation();
+
       // Enter in a contenteditable splits the field into <div> blocks, which the
       // save path unwraps — the text survives but the break doesn't, and the two
       // lines end up run together. Every editable here is a single block, so a
@@ -474,7 +647,10 @@
 
   // Leaving mid-edit would silently drop the changes.
   window.addEventListener('beforeunload', (event) => {
-    if (!editing || !Object.keys(collect(currentSlide())).length) return;
+    if (!editing) return;
+    const dirty = Object.keys(collect(currentSlide())).length
+      + Object.keys(widths).length + Object.keys(sizes).length + Object.keys(nudges).length;
+    if (!dirty) return;
     event.preventDefault();
     event.returnValue = '';
   });

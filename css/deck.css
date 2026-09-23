@@ -430,7 +430,7 @@ html:has(body[data-page="deck"]) {
   position: absolute;
   top: 58%;
   right: min(-40px, calc((940px - 100vw) / 2 + 40px));
-  transform: translateY(-50%);
+  transform: translate(var(--nudge-x, 0px), calc(-50% + var(--nudge-y, 0px)));
   z-index: -1;
   width: clamp(380px, 52vw, 860px);
   height: auto;
@@ -896,7 +896,7 @@ html[data-theme="dark"] .cradle-mark--mono {
   /* Lighter than the 0.75 the colour lockups carry: flat black reads heavier at
      the same opacity than Cradle's blues and greens do, so it needs to sit back
      further to stay a stamp rather than a logo. */
-  opacity: 0.4;
+  opacity: 0.15;
 }
 
 html[data-theme="dark"] .cradle-mark--corner.cradle-mark--bw {
@@ -1349,7 +1349,7 @@ body.deck-is-resizing {
    30em against a 12px kicker and a 20px lede are two different widths. */
 /* Artwork is absolutely positioned and sized on its own terms — pulling it into
    the reading column would shrink it and drag it to the middle. */
-.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero) {
+.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero):not(.slide-photo-row):not(.slide-portrait):not(.slide-gif) {
   width: 100%;
   max-width: 600px;
   margin-inline: auto;
@@ -1702,7 +1702,7 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
   bottom: 0;
   /* transform, not translate: the slide's reveal writes `translate` on every
      direct child and would wipe this, the same trap .slide-photos documents. */
-  transform: translate(-50%, 50%);
+  transform: translate(calc(-50% + var(--nudge-x, 0px)), calc(50% + var(--nudge-y, 0px)));
   z-index: -1;
   width: clamp(420px, 58vw, 780px);
   height: auto;
@@ -1865,4 +1865,131 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
    Kept separate so the thinking-Pooh gif on the earlier slide stays as it was. */
 .slide-side-art--medium {
   width: clamp(240px, 29vw, 380px);
+  /* Self-sufficient, so it can be worn without --small: something this size
+     reads as off-centre at the full-size art's low 58%, and it's a picture
+     rather than artwork dissolving into the page, so it keeps a radius. */
+  top: 50%;
+  border-radius: 12px;
+}
+
+/* Art held just off the slide's right edge rather than bled toward the screen's.
+   A percentage of the slide, like --close, so the gap to the copy stays the
+   same at every window width instead of opening up on a wide screen. */
+.slide-side-art--near {
+  right: -5%;
+}
+
+/* Held a constant distance from the copy rather than ranged against the screen
+   edge. The offset is a percentage of the slide, so the gap is the same at
+   every window width; max() clamps it so the art still never pushes past the
+   window on a narrow one. */
+.slide-side-art--held {
+  right: max(-34%, calc((940px - 100vw) / 2));
+  top: 50%;
+}
+
+/* ── Hand-placed art ──────────────────────────────────────────────────────
+   Every image on a slide can be dragged in the editor; the offset is written
+   back as these two custom properties. It rides on `transform` rather than
+   `translate` because the slide's entry reveal owns `translate` on every direct
+   child and would wipe it.
+
+   :where() holds this at zero specificity, so the two pieces of art that carry
+   a transform of their own — .slide-side-art and .slide-riser, both of which
+   fold the same two properties into their centring — still win outright. The
+   attribute test keeps it off every other image: an untouched one should carry
+   no transform at all rather than an identity one that promotes it to its own
+   layer and softens the rendering. */
+:where(.slide img[style*="--nudge"]) {
+  transform: translate(var(--nudge-x, 0px), var(--nudge-y, 0px));
+}
+
+/* Art is inert and usually layered under the copy. While the editor is open it
+   takes pointer events back so it can be grabbed. */
+body.deck-is-editing .slide.is-current img {
+  pointer-events: auto;
+  cursor: grab;
+}
+
+body.deck-is-editing .slide.is-current img:hover {
+  outline: 1px dashed color-mix(in srgb, var(--text-body) 32%, transparent);
+  outline-offset: 5px;
+}
+
+body.deck-is-editing .slide.is-current img.is-art-held {
+  outline: 1px solid color-mix(in srgb, var(--text-body) 55%, transparent);
+  outline-offset: 5px;
+}
+
+/* Held on the body so the cursor doesn't flicker when the pointer runs off the
+   image mid-drag, and so a drag across the copy can't start selecting it. */
+body.deck-is-dragging,
+body.deck-is-dragging .slide.is-current img {
+  cursor: grabbing;
+  user-select: none;
+}
+
+/* A band of event photography above the copy. The row owns the height so two
+   shots taken at different crops line up top and bottom; each width then falls
+   out of its own ratio. Capped at 205px because these two are 1.87:1 and 2.21:1
+   — together that is 849px against the slide's 860px column, and the object-fit
+   is the guard for anything wider ever landing here: it crops rather than
+   squashing them. */
+.slide-photo-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  height: clamp(150px, 24vh, 205px);
+}
+
+.slide-photo-row img {
+  height: 100%;
+  width: auto;
+  min-width: 0;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.4);
+}
+
+/* Side by side there is no room for either on a phone, so they stack. */
+@media (max-width: 700px) {
+  .slide-photo-row {
+    flex-direction: column;
+    height: auto;
+    gap: 10px;
+  }
+
+  .slide-photo-row img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+/* A face above the words on a quote slide, centred over centred copy. Round and
+   small, like the team portraits — an avatar attributing the quote rather than a
+   picture competing with it. */
+.slide-portrait {
+  width: 88px;
+  height: 88px;
+  margin-inline: auto;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* A little more air between the stats columns. Scoped rather than widened on
+   .slide-triptych itself: the stepped learnings slide shares that grid and its
+   columns carry far more copy, so they want the tighter gap and the measure. */
+.slide-triptych--airy {
+  gap: 64px;
+}
+
+/* The role under a quote's attribution — smaller than the name it hangs from.
+   Relative, not px: the lede it lives in gets resized from the editor, and a
+   fixed size would drift out of proportion the first time that happens. It is a
+   class rather than an inline style for the same reason the tones are — the
+   editor's sanitiser keeps classes on a span and drops style attributes. */
+.slide-attrib {
+  font-size: 0.7em;
 }
