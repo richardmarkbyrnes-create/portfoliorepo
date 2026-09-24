@@ -1830,6 +1830,9 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
    copy beneath starting level. */
 .slide-panel-art {
   display: block;
+  /* Held back from full strength: the drawing heads the column, the copy under
+     it is what's being read. */
+  opacity: 0.6;
   width: auto;
   max-width: 100%;
   height: 132px;
