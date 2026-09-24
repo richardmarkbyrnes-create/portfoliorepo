@@ -1632,9 +1632,12 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
    same negative inset .slide-split-main uses, so the columns start on the line
    the copy does elsewhere and get a little more room than the slide's measure. */
 .slide-triptych {
+  /* Held as a property so the rule between columns can sit exactly half of it
+     from the edge without the two numbers drifting apart. */
+  --triptych-gap: 64px;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 64px;
+  gap: var(--triptych-gap);
   width: 112%;
   margin-left: -6%;
   margin-top: 10px;
@@ -1813,8 +1816,8 @@ body.deck-is-editing [contenteditable="true"]:empty::before {
 
 /* Two columns rather than three, for a slide comparing a pair of outcomes. */
 .slide-triptych--two {
+  --triptych-gap: 72px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 72px;
   /* Two columns don't need the negative inset three do — and without it the
      first column starts on the slide's own left edge, level with the kicker
      above rather than 52px outside it. */
@@ -1997,6 +2000,12 @@ body.deck-is-dragging .slide.is-current img {
   margin-inline: auto;
   border-radius: 50%;
   object-fit: cover;
+  /* A white ring and a soft shadow, the same treatment the event photos and the
+     print pile carry. border-box so the frame comes out of the 88px rather than
+     growing the circle. */
+  box-sizing: border-box;
+  border: 5px solid #fff;
+  box-shadow: 0 8px 22px -10px rgba(0, 0, 0, 0.32);
 }
 
 /* The role under a quote's attribution — smaller than the name it hangs from.
@@ -2005,7 +2014,8 @@ body.deck-is-dragging .slide.is-current img {
    class rather than an inline style for the same reason the tones are — the
    editor's sanitiser keeps classes on a span and drops style attributes. */
 .slide-attrib {
-  font-size: 0.7em;
+  display: block;
+  font-size: 0.66em;
 }
 
 /* The contextual-prompt mock beside the next-steps copy. Narrower than --forum:
@@ -2060,4 +2070,43 @@ body.deck-is-dragging .slide.is-current img {
    just makes the slide scrollable. */
 .slide:has(.slide-book) {
   overflow: hidden;
+}
+
+/* A hairline between the columns on the results slides. Drawn as a pseudo
+   element sitting half a gap out from the column's edge, rather than a border
+   on the panel — a border would either sit hard against the copy or push it
+   off the measure the other slides share. Panels stretch to the row height, so
+   the rules come out the same length as each other. */
+/* More room than the plain three-up: the copy needs to stand clear of the rule
+   on both sides, not just of the next column. */
+.slide-triptych--ruled {
+  --triptych-gap: 108px;
+}
+
+.slide-triptych--ruled .slide-panel {
+  position: relative;
+}
+
+.slide-triptych--ruled .slide-panel + .slide-panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--triptych-gap) / -2);
+  width: 1px;
+  background: color-mix(in srgb, var(--text) 14%, transparent);
+}
+
+/* Side by side is what the rules divide; stacked, they'd run through the copy. */
+@media (max-width: 700px) {
+  .slide-triptych--ruled .slide-panel + .slide-panel::before {
+    display: none;
+  }
+}
+
+/* A notch under the full-size side art, for a diagram that only has to sit
+   beside the copy rather than carry the slide. Same clamp shape as the default,
+   scaled down so it behaves the same way at every width. */
+.slide-side-art--reduced {
+  width: clamp(320px, 44vw, 720px);
 }
