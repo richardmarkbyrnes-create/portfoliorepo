@@ -440,7 +440,7 @@ html:has(body[data-page="deck"]) {
 }
 
 /* The copy gives up the right-hand half. */
-.slide--side-art > *:not(.slide-side-art):not(.slide-side-pair):not(.slide-side-stack) {
+.slide--side-art > *:not(.slide-side-art):not(.slide-side-pair):not(.slide-side-stack):not(.slide-step-slot):not(.slide-video-stack) {
   max-width: 56%;
   margin-left: -20%;
 }
@@ -1351,7 +1351,7 @@ body.deck-is-resizing {
    30em against a 12px kicker and a 20px lede are two different widths. */
 /* Artwork is absolutely positioned and sized on its own terms — pulling it into
    the reading column would shrink it and drag it to the middle. */
-.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero):not(.slide-photo-row):not(.slide-portrait):not(.slide-gif):not(.slide-book) {
+.slide--centred > *:not(.slide-riser):not(.slide-side-art):not(.slide-hero):not(.slide-photo-row):not(.slide-portrait):not(.slide-gif):not(.slide-book):not(.slide-floor) {
   width: 100%;
   max-width: 600px;
   margin-inline: auto;
@@ -2088,6 +2088,7 @@ body.deck-is-dragging .slide.is-current img {
 
 .slide-triptych--ruled .slide-panel {
   position: relative;
+  text-align: center;
 }
 
 .slide-triptych--ruled .slide-panel + .slide-panel::before {
@@ -2112,4 +2113,132 @@ body.deck-is-dragging .slide.is-current img {
    scaled down so it behaves the same way at every width. */
 .slide-side-art--reduced {
   width: clamp(320px, 44vw, 720px);
+}
+
+/* A board screenshot carried under a slide's heading and run off the bottom of
+   the screen. Left in flow rather than absolutely placed like .slide-riser: the
+   space under the title is then the slide's own gap, the same at any window
+   height, and nothing has to be clipped by the slide — which is capped at 940px
+   and would cut the sides off. The deck crops what hangs past the bottom. */
+.slide-board {
+  width: min(1160px, 84vw);
+  /* styles.css caps every image at 100% of its box, which here is the slide's
+     860px content column — without this the board never reaches the width
+     above. align-self, not margin, because it is wider than that column and
+     auto margins have nothing left to share. */
+  max-width: none;
+  height: auto;
+  flex: none;
+  align-self: center;
+}
+
+/* Heading held at the top so the artwork under it gets the rest of the slide,
+   rather than both fighting over the middle. */
+.slide--title-top {
+  justify-content: flex-start;
+}
+
+/* One slot on the right holding successive screens of the same flow: each press
+   swaps the frame rather than adding to a pile. Unlike .slide-step-stack these
+   screenshots carry their own frame and shadow, so nothing is drawn around
+   them. Sized against the slide, not the window, so the gap to the copy holds
+   at any width. */
+.slide-step-slot {
+  position: absolute;
+  top: 50%;
+  /* Anchored to the screen's right edge, not the slide's: the slide is capped at
+     940px and centred, so this cancels the gutter either side of it. A slide can
+     push past that edge with --slot-bleed, for a frame whose outer margin is
+     empty canvas worth losing. */
+  right: calc((940px - 100vw) / 2 - var(--slot-bleed, 0px));
+  /* transform, not translate: the slide's reveal writes `translate` on every
+     direct child and would wipe the centring. */
+  transform: translateY(-50%);
+  z-index: -1;
+  /* The box is the exact shape of what's in it, so the screenshot really does
+     sit flush rather than being letterboxed inside a wider slot. Which
+     dimension drives that is per-slide: a portrait flow is bounded by the height
+     of the window, a landscape one by how much room the copy leaves. */
+  aspect-ratio: var(--slot-ratio, 900 / 969);
+  width: var(--slot-width, auto);
+  height: var(--slot-height, min(88vh, 800px));
+  max-width: var(--slot-max, 70vw);
+  pointer-events: none;
+}
+
+.slide-step-slot img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.slide-step-slot img.is-revealed {
+  opacity: 1;
+}
+
+/* A screen recording carried beside the copy, placed like the still side art.
+   Held a fixed fraction of the slide off its right edge so the gap to the text
+   is the same at any width, clamped by max() so it never runs past a narrow
+   window. The wrapper is what's positioned, so anything layered over the
+   recording can be placed against it rather than against the slide. */
+.slide-video-stack {
+  position: absolute;
+  /* A little above centre: what has to sit inside the slide is the recording
+     plus the panel hanging under it, and centring the recording alone would
+     push that panel off the bottom. */
+  top: 44%;
+  /* Anchored to the screen's right edge rather than the slide's, which is
+     capped at 940px and centred — this cancels the gutter either side. */
+  right: calc((940px - 100vw) / 2);
+  /* transform, not translate: the slide's reveal writes `translate` on every
+     direct child and would wipe the centring. */
+  transform: translateY(-50%);
+  z-index: -1;
+  width: min(680px, 48vw);
+  pointer-events: none;
+}
+
+.slide-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* The sticker-sheet panel tucked over the foot of the recording — mostly below
+   it, just enough across to read as sitting in front. `translate` rather than
+   `transform` for the centring: this is not a direct child of the slide, so the
+   reveal doesn't own it, and it leaves transform free for an editor nudge. */
+.slide-video-overlay {
+  position: absolute;
+  left: 50%;
+  bottom: -34%;
+  translate: -50% 0;
+  width: 42%;
+  height: auto;
+  max-width: none;
+}
+
+/* A wide composition standing on the bottom of the slide with the copy above it.
+   Pushed down by the flex column rather than absolutely placed, so the copy
+   keeps the top and this takes what's left. Sized by height, since what decides
+   whether it fits is the room under the text, not the width of the window. */
+.slide-floor {
+  width: auto;
+  height: min(62vh, 560px);
+  /* styles.css caps every image at 100% of its box — here the slide's 860px
+     column, which this is meant to run past. */
+  max-width: 92vw;
+  object-fit: contain;
+  align-self: center;
+  margin-top: auto;
+  /* Cancels the slide's bottom padding so the picture stands on the screen's
+     edge rather than on the slide's. Under the chrome, like the other art. */
+  margin-bottom: -120px;
+  z-index: -1;
 }

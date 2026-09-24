@@ -141,7 +141,14 @@
   let step = 0;
 
   function stepsFor(slide) {
-    return Array.from(slide.querySelectorAll('.step'));
+    const lines = Array.from(slide.querySelectorAll('.step'));
+    if (lines.length) return lines;
+    // A slide can build on artwork alone — a slot cycling through screens of one
+    // flow, with no copy stepping beside it. The first frame is up on arrival,
+    // so the rest are what the presses are for. These only stand in as the
+    // counter: paintPairedArt runs after paintSteps and settles which frame is
+    // actually showing.
+    return Array.from(slide.querySelectorAll('[data-step-only]')).slice(1);
   }
 
   function paintSteps() {
@@ -215,6 +222,14 @@
     if (prevBtn) prevBtn.disabled = index === 0;
     if (nextBtn) nextBtn.disabled = index === slides.length - 1;
     window.location.hash = index === 0 ? '' : `#${index + 1}`;
+
+    // A looping recording would otherwise be picked up wherever it happened to
+    // be when the slide came round. Rewind so it always opens on frame one.
+    slides[index].querySelectorAll('video[autoplay]').forEach((video) => {
+      video.currentTime = 0;
+      const playing = video.play();
+      if (playing) playing.catch(() => { /* blocked until a gesture — fine */ });
+    });
 
     steps = stepsFor(slides[index]);
     // Nothing pre-revealed: a slide decides what's visible on arrival by which
