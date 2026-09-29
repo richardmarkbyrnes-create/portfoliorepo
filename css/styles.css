@@ -6879,3 +6879,79 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
   outline-offset: 2px;
 }
+
+/* ── Home page, one notch down ────────────────────────────────────────────
+   Type and the vertical rhythm at 90%. Hairlines, radii and icons are left
+   where they are — shrinking those makes them worse rather than smaller,
+   which is the difference between scaling a design and zooming out of it.
+
+   Declarations rather than `zoom` or a transform on purpose: both of those
+   scale what is drawn without scaling the layout box, so the page stops short
+   of the window edge and the full-bleed ascii stops with it, and every script
+   measuring with getBoundingClientRect then has to know the factor.
+
+   Desktop only. Below 768px the hero and the about title are already tuned to
+   hold their line breaks, and these selectors would out-specify that tuning.
+   Scoped to the home page too, since the project pages share the classes. */
+@media (min-width: 769px) {
+  body[data-page="home"] {
+    /* Drives the gaps either side of the work dividers. */
+    --work-divider-space: 50px;
+    --home-content-padding-x: 22px;
+    /* Everything that inherits rather than setting its own size. */
+    font-size: 13.5px;
+  }
+
+  /* .hero-title sets the block's measure; .hero-name inside it is what
+     actually renders, with a clamp of its own — scaling only the outer one
+     changes nothing you can see. */
+  body[data-page="home"] .hero-title {
+    font-size: 43px;
+  }
+
+  body[data-page="home"] .hero-name {
+    font-size: clamp(26px, 3.25vw, 35px);
+  }
+
+  body[data-page="home"] .home-hero {
+    gap: 9px;
+  }
+
+  body[data-page="home"] .home-hero .hero-title-wrap {
+    padding-top: 45px;
+  }
+
+  body[data-page="home"] .hero-head {
+    gap: 14px;
+  }
+
+  body[data-page="home"] .hero-bio {
+    font-size: clamp(13px, 1.4vw, 14.5px);
+  }
+
+  body[data-page="home"] .hero-bio + .hero-bio {
+    margin-top: 18px;
+  }
+
+  /* 44px at source. Named at this depth to clear the .home-about-intro rule
+     it belongs to — a bare .about-hero-title loses to it, and an em value
+     here would resolve against the reduced base above and land near 12px. */
+  body[data-page="home"] .home-about-intro .about-hero-title {
+    font-size: 40px;
+  }
+
+  body[data-page="home"] .work-row {
+    column-gap: 65px;
+  }
+
+  body[data-page="home"] .work-col--company,
+  body[data-page="home"] .work-col--project,
+  body[data-page="home"] .work-col--year {
+    font-size: 13px;
+  }
+
+  body[data-page="home"] .about-intro {
+    gap: 18px;
+    margin-bottom: 43px;
+  }
+}
