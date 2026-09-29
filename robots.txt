@@ -1,0 +1,13 @@
+# This site is deliberately kept out of search results.
+#
+# The mechanism is <meta name="robots" content="noindex, follow"> on every page,
+# not a Disallow here — and that distinction matters. Disallow stops crawlers
+# fetching the page, which means they never see the noindex, and Google will
+# still list a bare URL if it finds a link from anywhere else. Blocking the
+# crawl is what keeps a page indexed.
+#
+# So: crawling stays open on purpose. Let them read the pages and find the
+# noindex. Do not add "Disallow: /" here.
+
+User-agent: *
+Allow: /
