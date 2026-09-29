@@ -1,9 +1,9 @@
 (function () {
   const PROJECT_TRANSITION_MS = 320;
   const LEAVE_KEY = 'portfolio-project-leave';
-  // Read in the head by theme-init.js on the next page, which is what lets it
-  // start blurred rather than flash in sharp. Keep the name in step there.
-  const TRANSITION_KEY = 'portfolio-page-transition';
+  // Which way the next page should arrive from. Read and cleared by
+  // theme-init.js in the head — keep the name in step there.
+  const DIRECTION_KEY = 'portfolio-nav-direction';
 
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -35,17 +35,8 @@
       return;
     }
     document.body.classList.add('page-is-leaving');
-    armEntrance();
     if (leaveProject) sessionStorage.setItem(LEAVE_KEY, '1');
     window.setTimeout(() => { window.location.href = href; }, PROJECT_TRANSITION_MS);
-  }
-
-  function armEntrance() {
-    try {
-      sessionStorage.setItem(TRANSITION_KEY, '1');
-    } catch (err) {
-      // storage blocked — the next page just skips its entrance
-    }
   }
 
   // Everything that isn't a work row or the project pill: nav links, the back
@@ -96,15 +87,18 @@
       return;
     }
 
-    const done = () => root.classList.remove('page-entering');
+    const done = () => root.classList.remove('page-entering', 'page-returning');
+    // Either entrance: the plain rise, or the slide a project page comes in on.
+    const ENTRANCES = ['pageBlurIn', 'pageSlideInRight'];
     page.addEventListener('animationend', (event) => {
-      if (event.animationName === 'pageBlurIn') done();
+      if (ENTRANCES.includes(event.animationName)) done();
     }, { once: true });
     // This script runs after the animation has already started, and on a fast
     // paint it can have finished before the listener lands — in which case
-    // animationend never comes. The timeout is the backstop, comfortably past the
-    // 0.52s the keyframes take.
-    window.setTimeout(done, 700);
+    // animationend never comes. The timeout is the backstop, and it has to
+    // outlast the longest entrance: the project slide, at 0.8s. Strip the class
+    // early and the page snaps mid-move.
+    window.setTimeout(done, 1100);
   }
 
   function initWorkLinks() {
@@ -580,12 +574,16 @@
 
     // Shared nav actions for the arrow keys and the bottom pill.
     const goBack = () => {
+      try {
+        sessionStorage.setItem(DIRECTION_KEY, 'back');
+      } catch (err) {
+        // storage blocked — the page just arrives the forward way
+      }
       if (window.history.length > 1) {
         if (prefersReducedMotion()) {
           window.history.back();
         } else {
           document.body.classList.add('page-is-leaving');
-          armEntrance();
           window.setTimeout(() => window.history.back(), PROJECT_TRANSITION_MS);
         }
       } else {
@@ -814,22 +812,26 @@
   window.addEventListener('pageshow', (event) => {
     document.body.classList.remove('page-is-leaving');
 
-    // Restored pages skip the head script, so the entrance flag would otherwise
-    // sit unread and fire on whatever navigation came next.
-    if (event.persisted) {
-      document.documentElement.classList.remove('page-entering');
+    // Restored from bfcache: the head script doesn't run again, so the page
+    // would come back with its entrance already spent. Replay it, and the
+    // in-page reveals with it, so coming back reads the same as arriving.
+    if (event.persisted && !prefersReducedMotion()) {
+      const root = document.documentElement;
+      root.classList.remove('page-entering', 'page-returning');
+      void document.body.offsetWidth; // reflow, so re-adding restarts it
+      // A restore is always a history traversal, so this page is being come
+      // back to — it arrives from the left whether or not the flag survived.
+      root.classList.add('page-entering', 'page-returning');
       try {
-        sessionStorage.removeItem(TRANSITION_KEY);
+        sessionStorage.removeItem(DIRECTION_KEY);
       } catch (err) {
-        // storage blocked — nothing was set to begin with
+        // storage blocked — nothing was set
       }
-    }
+      clearEntrance();
 
-    // Restored from bfcache: entrance animations already finished, so replay them.
-    if (event.persisted) {
       document.querySelectorAll('.animate-in').forEach((el) => {
         el.style.animation = 'none';
-        void el.offsetWidth; // reflow
+        void el.offsetWidth;
         el.style.animation = '';
       });
     }

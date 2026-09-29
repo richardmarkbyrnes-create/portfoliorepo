@@ -5257,6 +5257,53 @@ html.page-entering .page {
   animation: pageBlurIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
+/* Entering a project, the page arrives from the right rather than rising into
+   place — the move reads as going forward into the work, and returning to the
+   home page keeps the plain rise so the two directions don't feel the same.
+   Same blur and duration as pageBlurIn; only the axis changes. */
+@keyframes pageSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(9%);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+/* The same move mirrored, for arriving backwards. */
+@keyframes pageSlideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-9%);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+html.page-entering body[data-page="project"] .page {
+  animation-name: pageSlideInRight;
+  /* Longer and softer than the rise: a sideways move over the same 0.52s read
+     as a snap. The easing is a gentler out-curve, so it carries most of the
+     distance early and settles rather than arriving. */
+  animation-duration: 0.8s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Coming back — ← , the back pill, or the browser's own back button. Needs the
+   extra class to out-specify the forward rule above; matching it on
+   .page-entering alone would tie and lose to source order. */
+html.page-entering.page-returning body[data-page="project"] .page {
+  animation-name: pageSlideInLeft;
+}
+
 body.page-is-leaving .nav-primary,
 body.page-is-leaving .pc-back,
 body.page-is-leaving .pc-close {
@@ -6427,7 +6474,11 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     transition: none;
   }
 
-  html.page-entering .page {
+  /* Each of the entrance rules out-specifies the plain one, so every variant
+     has to be named here to be turned off. */
+  html.page-entering .page,
+  html.page-entering body[data-page="project"] .page,
+  html.page-entering.page-returning body[data-page="project"] .page {
     animation: none;
   }
 
