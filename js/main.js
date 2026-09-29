@@ -429,25 +429,41 @@ function initProjectPreview() {
 
   // Park the frame above the hovered title, overlapping it slightly, and flip below
   // when the top of the viewport is too close to fit.
+  /* getBoundingClientRect reports where something actually is on screen. The
+     style properties set below are CSS pixels, which the page's own zoom then
+     scales on the way to the screen. Mixing the two puts the frame adrift by
+     the difference — so the sums are done in screen pixels and only converted
+     back at the point of assignment. Returns 1 on an unscaled page, where all
+     of this is a no-op. */
+  function pageScale() {
+    return parseFloat(getComputedStyle(document.documentElement).zoom) || 1;
+  }
+
   function position(row) {
     const title = row.querySelector('.work-col--project') || row;
     const rect = title.getBoundingClientRect();
+    const scale = pageScale();
     // offsetWidth/Height, not the rect — the rect is inflated by the rotation.
-    const width = preview.offsetWidth || preview.getBoundingClientRect().width;
-    const height = preview.offsetHeight || preview.getBoundingClientRect().height;
+    // They are CSS pixels, so scale them up into the rect's space.
+    const width = (preview.offsetWidth || preview.getBoundingClientRect().width) * scale;
+    const height = (preview.offsetHeight || preview.getBoundingClientRect().height) * scale;
     const fitsAbove = rect.top + OVERLAP - height >= 8;
 
-    const left = Math.min(rect.left + SHIFT_X, window.innerWidth - width - 16);
-    preview.style.left = `${Math.max(16, left)}px`;
+    // clientWidth/Height rather than window.inner*: they exclude the scrollbar.
+    const viewportWidth = document.documentElement.clientWidth;
+    const viewportHeight = document.documentElement.clientHeight;
+
+    const left = Math.min(rect.left + SHIFT_X, viewportWidth - width - 16);
+    preview.style.left = `${Math.max(16, left) / scale}px`;
 
     if (fitsAbove) {
       preview.classList.remove('is-below');
       preview.style.top = 'auto';
-      preview.style.bottom = `${window.innerHeight - rect.top - OVERLAP}px`;
+      preview.style.bottom = `${(viewportHeight - rect.top - OVERLAP) / scale}px`;
     } else {
       preview.classList.add('is-below');
       preview.style.bottom = 'auto';
-      preview.style.top = `${rect.bottom - OVERLAP}px`;
+      preview.style.top = `${(rect.bottom - OVERLAP) / scale}px`;
     }
   }
 
