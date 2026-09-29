@@ -50,24 +50,43 @@
 
   markHeroIntro();
 
-  // The arriving half of the page transition. project-nav.js sets this flag as a
-  // page fades out; reading it here — in the head, before first paint — is what
-  // lets the next page start blurred instead of flashing in sharp and then
-  // animating. One-shot: cleared on read, so a reload or a direct visit gets no
-  // entrance, only a navigation that actually faded out does.
-  var TRANSITION_KEY = 'portfolio-page-transition';
+  // The arriving half of the page transition. Set here, in the head before first
+  // paint, or the page flashes in sharp and then animates.
+  //
+  // Every load gets it. It used to be gated on a flag written as a page faded
+  // out, which meant the entrance only played if you arrived by a link the
+  // script had intercepted — a reload, a pasted URL, a back button or any link
+  // that slipped past it all cut straight in, and the site felt inconsistent
+  // depending on how you got somewhere.
+  var DIRECTION_KEY = 'portfolio-nav-direction';
 
   function markPageEntering() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+    // Going back, the page comes in from the left instead — the same move in
+    // reverse, so the two directions don't read the same. Set by project-nav.js
+    // on the way out, and one-shot: it describes this arrival only.
+    var back = false;
     try {
-      if (!sessionStorage.getItem(TRANSITION_KEY)) return;
-      sessionStorage.removeItem(TRANSITION_KEY);
+      back = sessionStorage.getItem(DIRECTION_KEY) === 'back';
+      if (back) sessionStorage.removeItem(DIRECTION_KEY);
     } catch (err) {
-      return; // storage blocked — skip the entrance rather than run it every load
+      // storage blocked — fall through as a forward arrival
+    }
+
+    // The browser's own back button doesn't go through our shortcut, so ask the
+    // navigation entry as well.
+    if (!back) {
+      try {
+        var nav = performance.getEntriesByType('navigation')[0];
+        back = !!nav && nav.type === 'back_forward';
+      } catch (err) {
+        // no navigation timing — treat it as forward
+      }
     }
 
     document.documentElement.classList.add('page-entering');
+    if (back) document.documentElement.classList.add('page-returning');
   }
 
   markPageEntering();
