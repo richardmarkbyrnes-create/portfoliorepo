@@ -150,6 +150,9 @@
       return CHARSET[Math.floor(Math.random() * CHARSET.length)];
     }
 
+    let viewWidth = 0;
+    let viewHeight = 0;
+
     function readTextColor() {
       textColor = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#3b3b3b';
     }
@@ -158,6 +161,15 @@
       const width = section.clientWidth;
       const height = section.clientHeight;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      // Remembered for draw(), which used to re-measure with
+      // getBoundingClientRect. Those two agree on a whole-number layout and
+      // disagree once anything scales the page: clientWidth is rounded, the
+      // rect is fractional, and when the rect comes out the smaller of the two
+      // the clear misses a sliver down the right-hand edge — so the last frame
+      // stays there and smears while the pattern moves.
+      viewWidth = width;
+      viewHeight = height;
 
       canvas.width = Math.floor(width * dpr);
       canvas.height = Math.floor(height * dpr);
@@ -280,7 +292,8 @@
     }
 
     function draw() {
-      const { width, height } = section.getBoundingClientRect();
+      const width = viewWidth;
+      const height = viewHeight;
       ctx.clearRect(0, 0, width, height);
       ctx.font = `500 ${FONT_SIZE}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
       ctx.textAlign = 'center';
