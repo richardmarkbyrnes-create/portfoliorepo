@@ -151,28 +151,6 @@ function playTapAnimation(el, cls) {
   el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
 }
 
-function initVolumeToggle() {
-  const button = document.getElementById('nav-volume');
-  if (!button) return;
-
-  let muted = isSoundMuted();
-
-  function updateVolumeUI() {
-    button.classList.toggle('is-muted', muted);
-    button.setAttribute('aria-pressed', muted ? 'true' : 'false');
-    button.setAttribute('aria-label', muted ? 'Unmute sound' : 'Mute sound');
-  }
-
-  button.addEventListener('click', () => {
-    muted = !muted;
-    localStorage.setItem(VOLUME_STORAGE_KEY, muted ? 'true' : 'false');
-    updateVolumeUI();
-    playTapAnimation(button.querySelector('.nav-icon-stack'), 'is-tapped');
-  });
-
-  updateVolumeUI();
-}
-
 function initExperienceHoverSound() {
   const rows = document.querySelectorAll('.work-column--interactive .work-row-main');
   if (!rows.length) return;
@@ -960,7 +938,6 @@ function initHeroWeather() {
 }
 
 initThemeSwitcher();
-initVolumeToggle();
 initExperienceHoverSound();
 initSmoothScroll();
 initSmoothWheel();
