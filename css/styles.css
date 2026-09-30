@@ -6977,6 +6977,15 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     font-size: 40px;
   }
 
+  /* The measure has to come down with the type. .pc-lead-block is a fixed
+     680px, so leaving it alone put smaller text in the same box — the lines
+     broke at the same words but sat loose in it, which reads as the title
+     having got wider rather than the type having got smaller. The summary
+     under it is already in em and scaled itself. */
+  body[data-page="project"] .pc-lead-block {
+    max-width: 612px;
+  }
+
   body[data-page="project"] .pc-lead-muted,
   body[data-page="project"] .pc-quote-text,
   body[data-page="project"] .pc-sketch-caption {
