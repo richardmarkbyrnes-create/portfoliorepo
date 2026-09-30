@@ -417,7 +417,10 @@ body::before {
 html:not([data-theme]) body::before,
 [data-theme="normal"] body::before {
   mix-blend-mode: multiply;
-  opacity: 0.05;
+  /* Multiply over pure white, so this opacity is the whole difference between
+     --bg and what you actually see: at 0.05 the page landed around #f3f3f3.
+     Light enough now to read as white, with the paper still there. */
+  opacity: 0.03;
 }
 
 [data-theme="pastel-blue"] body::before,
