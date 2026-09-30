@@ -6483,7 +6483,8 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
      has to be named here to be turned off. */
   html.page-entering .page,
   html.page-entering body[data-page="project"] .page,
-  html.page-entering.page-returning body[data-page="project"] .page {
+  html.page-entering.page-returning body[data-page="project"] .page,
+  html.page-entering body[data-page="project"] .pc-back {
     animation: none;
   }
 
@@ -7053,8 +7054,35 @@ body[data-page="project"] .pc-close {
 }
 
 body[data-page="project"].page-is-leaving .nav-primary,
-body[data-page="project"].page-is-leaving .pc-back,
 body[data-page="project"].page-is-leaving .pc-close {
   opacity: 1;
   transform: none;
+}
+
+/* The breadcrumb is the exception: its text is the one part of the top row
+   that actually changes from one project to the next, so it crosses over
+   rather than sitting still. Blur and fade, matching the page underneath it —
+   no vertical move, which is what made the old drop-in read as a rebuild. */
+@keyframes pcBackBlurIn {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    filter: none;
+  }
+}
+
+html.page-entering body[data-page="project"] .pc-back {
+  animation: pcBackBlurIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+body[data-page="project"].page-is-leaving .pc-back {
+  opacity: 0;
+  filter: blur(6px);
+  transform: none;
+  transition:
+    opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
