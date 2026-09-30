@@ -7036,3 +7036,24 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     gap: 22px;
   }
 }
+
+/* ── Project chrome stays put ─────────────────────────────────────────────
+   Moving between projects, the top row used to drop in on arrival (navDropIn)
+   and fade up and out on the way to the next one. That reads as the page
+   furniture being rebuilt each time rather than the content changing under
+   it — and with both halves running you get a fade out followed by a drop in
+   for something that never actually moved.
+
+   Both are cancelled here. The exit fade is left alone on the home page,
+   where the nav genuinely is leaving the screen. */
+body[data-page="project"] .pc-back,
+body[data-page="project"] .pc-close {
+  animation: none;
+}
+
+body[data-page="project"].page-is-leaving .nav-primary,
+body[data-page="project"].page-is-leaving .pc-back,
+body[data-page="project"].page-is-leaving .pc-close {
+  opacity: 1;
+  transform: none;
+}
