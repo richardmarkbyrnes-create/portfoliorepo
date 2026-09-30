@@ -6955,3 +6955,70 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     margin-bottom: 43px;
   }
 }
+
+/* ── Project pages, one notch down ────────────────────────────────────────
+   The same treatment as the home page above, and for the same reasons: type
+   and vertical rhythm at 90%, hairlines and avatars left where they are, and
+   declarations rather than a page-level scale so nothing that measures with
+   getBoundingClientRect has to know about it.
+
+   Desktop only, so the mobile tuning further down the sheet keeps its say. */
+@media (min-width: 769px) {
+  body[data-page="project"] {
+    /* Anything inheriting rather than setting its own size. */
+    font-size: 13.5px;
+  }
+
+  body[data-page="project"] .pc-page {
+    padding-top: 72px;
+  }
+
+  body[data-page="project"] .pc-lead {
+    font-size: 40px;
+  }
+
+  body[data-page="project"] .pc-lead-muted,
+  body[data-page="project"] .pc-quote-text,
+  body[data-page="project"] .pc-sketch-caption {
+    font-size: 21px;
+  }
+
+  body[data-page="project"] .pc-lead-summary,
+  body[data-page="project"] .pc-desc {
+    font-size: 13px;
+  }
+
+  body[data-page="project"] .pc-eyebrow {
+    font-size: 10px;
+    margin-bottom: 13px;
+  }
+
+  body[data-page="project"] .pc-quote-by,
+  body[data-page="project"] .pc-team-label,
+  body[data-page="project"] .pc-team-name {
+    font-size: 11px;
+  }
+
+  /* The rhythm between sections, which is what carries most of the scale. */
+  body[data-page="project"] .pc-lead-block,
+  body[data-page="project"] .pc-detail {
+    margin-bottom: 65px;
+  }
+
+  body[data-page="project"] .pc-image {
+    margin-bottom: 20px;
+  }
+
+  body[data-page="project"] .pc-sketch,
+  body[data-page="project"] .pc-desc {
+    margin-bottom: 14px;
+  }
+
+  body[data-page="project"] .pc-quote-text {
+    margin-bottom: 13px;
+  }
+
+  body[data-page="project"] .pc-team {
+    gap: 22px;
+  }
+}
