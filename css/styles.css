@@ -1107,7 +1107,6 @@ html[data-theme="dark"] .theme-swatch {
     display: none;
   }
 
-  .nav-primary .nav-volume-btn,
   .nav-primary .theme-switcher-inner {
     width: var(--nav-toolbar-height);
     height: var(--nav-toolbar-height);
@@ -1286,16 +1285,6 @@ html[data-theme="dark"] .theme-toggle-moon {
   position: absolute;
   inset: 0;
   transition: opacity 0.15s ease;
-}
-
-.nav-volume-btn.is-muted .nav-icon--volume-on {
-  opacity: 0;
-  visibility: hidden;
-}
-
-.nav-volume-btn:not(.is-muted) .nav-icon--volume-off {
-  opacity: 0;
-  visibility: hidden;
 }
 
 .nav-link {
