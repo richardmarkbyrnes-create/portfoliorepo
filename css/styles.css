@@ -5490,7 +5490,9 @@ body.page-is-leaving .top-blur {
 
 .about-line-art-image {
   display: block;
-  width: min(180px, 42vw);
+  /* The dog rule below derives its width from this same expression — keep the
+     two in step or the pair stops matching the figure between them. */
+  width: min(160px, 42vw);
   /* Matches the padded artwork. Both drawings carry a 12px transparent margin so
      the ink never sits on the box edge — with mask-size: contain, the fractional
      height that min(180px, 42vw) produces used to shave the last row off. */
@@ -5509,7 +5511,7 @@ body.page-is-leaving .top-blur {
 }
 
 .about-line-art-dog {
-  width: calc(min(180px, 42vw) * 0.5);
+  width: calc(min(160px, 42vw) * 0.5);
   flex-shrink: 0;
   background-color: var(--line-art-stroke);
   -webkit-mask-size: contain;
