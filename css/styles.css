@@ -7046,6 +7046,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
    Both are cancelled here. The exit fade is left alone on the home page,
    where the nav genuinely is leaving the screen. */
+body[data-page="project"] .nav-primary,
 body[data-page="project"] .pc-back,
 body[data-page="project"] .pc-close {
   animation: none;
