@@ -58,67 +58,6 @@
     `;
   }
 
-  // Mobile hamburger menu (home) — collapses the theme button into a dropdown,
-  // mirroring the project pages.
-  function renderMobileMenu() {
-    return `
-      <div class="pc-menu-wrap nav-mobile-menu-wrap">
-        <button class="pc-menu-btn" id="nav-menu-btn" type="button" aria-label="Menu" aria-expanded="false">
-          <span class="pc-menu-bars" aria-hidden="true">
-            <span class="pc-menu-bar"></span>
-            <span class="pc-menu-bar"></span>
-            <span class="pc-menu-bar"></span>
-          </span>
-        </button>
-        <div class="pc-menu" id="nav-menu">
-          <button class="pc-menu-item" id="nav-menu-theme" type="button">
-            <span class="theme-toggle-icons pc-menu-toggle-icons" aria-hidden="true">${SUN_ICON}${MOON_ICON}</span>
-            <span id="nav-menu-theme-label">Light</span>
-          </button>
-        </div>
-      </div>
-    `;
-  }
-
-  function initMobileMenu() {
-    if (document.body.dataset.page !== 'home') return;
-
-    const holder = document.createElement('div');
-    holder.innerHTML = renderMobileMenu().trim();
-    const menuWrap = holder.firstElementChild;
-    document.body.appendChild(menuWrap);
-
-    const btn = document.getElementById('nav-menu-btn');
-    const menu = document.getElementById('nav-menu');
-    const themeLabel = document.getElementById('nav-menu-theme-label');
-    if (!btn || !menu) return;
-
-    const setOpen = (open) => {
-      menu.classList.toggle('is-open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    };
-
-    btn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      setOpen(!menu.classList.contains('is-open'));
-    });
-    document.addEventListener('click', (event) => {
-      if (!menuWrap.contains(event.target)) setOpen(false);
-    });
-
-    const updateThemeLabel = () => {
-      if (themeLabel) themeLabel.textContent = getStoredTheme() === 'dark' ? 'Dark' : 'Light';
-    };
-    updateThemeLabel();
-
-    document.getElementById('nav-menu-theme').addEventListener('click', (event) => {
-      event.stopPropagation();
-      const real = document.getElementById('theme-toggle');
-      if (real) real.click();
-      updateThemeLabel();
-    });
-  }
-
   window.SiteNav = {
     THEMES,
     THEME_STORAGE_KEY,
@@ -127,6 +66,5 @@
   };
 
   renderNav();
-  initMobileMenu();
   initNavIntro();
 })();
