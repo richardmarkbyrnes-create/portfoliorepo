@@ -3468,6 +3468,45 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: none;
 }
 
+/* On a pointer device the chevron joins on hover, sliding out from behind the
+   label to sit on its left. It is absolutely positioned so the label itself
+   never moves — the arrow arrives in the margin beside it instead of pushing it
+   along. With no top/bottom set it still takes its vertical static position
+   from the flex container's align-items, which centres it.
+
+   Scoped away from the 640px breakpoint, where .pc-back is an icon-only button
+   and the chevron is the whole control, and behind hover so a tap cannot latch
+   the reveal half-open on a touch screen. */
+@media (hover: hover) and (min-width: 641px) {
+  /* Selector carries two classes on purpose: `.pc-back svg` already declares a
+     transition, and at one class this one lost to it and the reveal snapped. */
+  .pc-back .pc-back-chevron {
+    display: block;
+    position: absolute;
+    right: 100%;
+    margin-right: 1px;
+    opacity: 0;
+    /* Tucked to the right at rest, so the reveal travels leftward — the same
+       direction the link goes. The existing nudge on .pc-back svg adds its 3px
+       to that travel rather than cancelling it, since `translate` composes
+       before `transform`; it is restated here because overriding the shorthand
+       would otherwise drop it. */
+    translate: 5px 0;
+    transition:
+      opacity 0.22s ease,
+      translate 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.2s ease;
+  }
+
+  /* 0.5 is what .pc-back-title sits at, so the arrow reads as part of the same
+     label rather than louder than it. */
+  .pc-back:hover .pc-back-chevron,
+  .pc-back:focus-visible .pc-back-chevron {
+    opacity: 0.5;
+    translate: 0 0;
+  }
+}
+
 .pc-page {
   width: 100%;
   max-width: var(--home-content-width);
@@ -6574,14 +6613,17 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     left: 16px;
   }
 
-  /* Half the screen on narrow viewports, rather than hugging its copy. The pill is
-     fixed, so the 50% resolves against the viewport; `left: 50%` and the -50%
-     translate that the dock animation drives both still apply, so it stays centred
-     and the slide-in is untouched. */
+  /* Hug the copy rather than taking half the screen: at 50% the longer pairings
+     — "Miro / Custom Stickers", "SAP / Developer Tools" — had nowhere to go but
+     a second line.
+
+     `max-content` rather than `auto`, because auto would shrink-to-fit the space
+     left over after `left: 50%` — which is half the viewport, the very width
+     that was wrapping them. Centring is unaffected: the -50% translate the dock
+     animation drives works at any width. The cap keeps the pill off the edge. */
   body[data-page="project"] .pc-next-pill {
-    width: 50%;
-    display: flex;
-    justify-content: center;
+    width: max-content;
+    max-width: calc(100% - 32px);
   }
 
   .project-hero-media {
