@@ -1070,13 +1070,18 @@ html[data-theme="dark"] .theme-swatch {
   color: var(--nav-text-inactive);
 }
 
-.nav-primary .nav-icon-btn:hover,
-.nav-primary .theme-switcher-inner:hover {
-  background: var(--nav-hover-bg);
-  color: var(--nav-text-active);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
+/* Guarded on (hover: hover): a tap latches :hover on a touch screen and never
+   releases it, so the button kept the flat fill and the backdrop-filter stayed
+   switched off — the glass looked broken from the first tap onwards. */
+@media (hover: hover) {
+  .nav-primary .nav-icon-btn:hover,
+  .nav-primary .theme-switcher-inner:hover {
+    background: var(--nav-hover-bg);
+    color: var(--nav-text-active);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
 }
 
 /* Mobile: split toolbar — audio top-left, theme top-right */
@@ -1168,12 +1173,14 @@ html[data-theme="dark"] .theme-swatch {
   flex-shrink: 0;
 }
 
-.nav-icon-btn:hover {
-  background: var(--nav-hover-bg);
-  color: var(--nav-text-active);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  box-shadow: none;
+@media (hover: hover) {
+  .nav-icon-btn:hover {
+    background: var(--nav-hover-bg);
+    color: var(--nav-text-active);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
 }
 
 .nav-icon,
