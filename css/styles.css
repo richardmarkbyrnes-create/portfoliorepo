@@ -1081,14 +1081,31 @@ html[data-theme="dark"] .theme-swatch {
 
 /* Mobile: split toolbar — audio top-left, theme top-right */
 @media (max-width: 640px) {
-  /* Home collapses the nav buttons into the hamburger menu instead */
-  body[data-page="home"] .nav-primary {
-    display: none;
-  }
-
   .nav-primary {
     left: 16px;
     right: 16px;
+  }
+
+  /* Home has a single control in the bar now — the theme toggle — so it keeps
+     the right-hand corner the hamburger used to sit in rather than stretching
+     the full width and leaving it stranded on the left. */
+  body[data-page="home"] .nav-primary {
+    left: auto;
+    right: 16px;
+  }
+
+  /* And it wears the hamburger's button, since it has taken its place: the same
+     48px glass pill the project pages still show. Matched to .pc-menu-btn —
+     keep the two in step if that one changes. */
+  body[data-page="home"] .theme-toggle {
+    width: var(--nav-toolbar-height);
+    height: var(--nav-toolbar-height);
+    border-radius: 16px;
+    background: var(--nav-bg);
+    border: var(--nav-border-width) solid var(--nav-glass-border);
+    box-shadow: var(--nav-shadow);
+    backdrop-filter: blur(18px) saturate(1.25);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
   }
 
   .nav-primary .nav-inner {
