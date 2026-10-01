@@ -7075,3 +7075,59 @@ body[data-page="project"].page-is-leaving .pc-back {
     opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+/* ── Theme toggle: two squircles ──────────────────────────────────────────
+   Two translucent rounded squares offset on the diagonal. Both are drawn in
+   currentColor, so the mark inverts with the theme on its own — dark on the
+   light palette, light on the dark one — and the overlap reads denser than
+   either because the two alphas compose.
+
+   Hovering slides them together: each moves half the offset so the merged
+   shape lands in the middle of the box rather than in one corner. */
+.theme-toggle .theme-squircle {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 11px;
+  height: 11px;
+  /* Not a true superellipse, but at this size a generous percentage radius
+     reads as one — and it stays round at any box size. */
+  border-radius: 34%;
+  /* --text rather than currentColor: the nav's own colour is a muted grey, and
+     two translucent layers of it came out far too faint to read as a mark. */
+  background: var(--text);
+  transition: translate 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.theme-toggle .theme-squircle--back {
+  opacity: 0.72;
+}
+
+.theme-toggle .theme-squircle--front {
+  opacity: 0.46;
+  translate: 6px 6px;
+}
+
+/* Each moves half the offset, so the merged shape lands in the middle of the
+   box. Whole pixels — a half-pixel translate left a soft fringe where the two
+   should have been exactly coincident. */
+.theme-toggle:hover .theme-squircle,
+.theme-toggle:focus-visible .theme-squircle {
+  translate: 3px 3px;
+}
+
+/* The same alphas carry further as light-on-dark than dark-on-light, so the
+   mark is dialled back to sit at a matching weight. */
+[data-theme="dark"] .theme-toggle .theme-squircle--back {
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .theme-toggle .theme-squircle--front {
+  opacity: 0.32;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle .theme-squircle {
+    transition: none;
+  }
+}
