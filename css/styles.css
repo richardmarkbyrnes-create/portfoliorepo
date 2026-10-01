@@ -2257,7 +2257,7 @@ body[data-page="home"] .page {
   min-height: 30px;
   padding: 3px 10px;
   margin: -1px -10px;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 1px solid transparent;
   box-sizing: border-box;
   transition:
@@ -4359,8 +4359,9 @@ body.next-pill-hover .pc-next-hover-glow {
   height: auto;
   align-self: center;
   /* Extra air below: the divider that used to separate this from the quote is
-     gone, so the gap has to do that work on its own. */
-  margin: 8px 0 72px;
+     gone, so the gap has to do that work on its own. Above, enough room that the
+     shot reads as its own beat rather than as part of the paragraph it follows. */
+  margin: 40px 0 72px;
   border: 2px solid var(--frame-border);
   border-radius: 10px;
   overflow: hidden;
@@ -6926,6 +6927,9 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     /* Drives the gaps either side of the work dividers. */
     --work-divider-space: 50px;
     --home-content-padding-x: 22px;
+    /* Every content container on the page is capped by this one token, so the
+       measure comes in together: the hero, the work rows and the about block. */
+    --home-content-width: calc(var(--content-mid) * 0.8);
     /* Everything that inherits rather than setting its own size. */
     font-size: 13.5px;
   }
@@ -6995,6 +6999,10 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   body[data-page="project"] {
     /* Anything inheriting rather than setting its own size. */
     font-size: 13.5px;
+    /* Same token the home page uses, despite the name — it caps .pc-page and
+       everything measured as a percentage of it: the copy, the captions, the
+       quote and the team row all come in together. */
+    --home-content-width: calc(var(--content-mid) * 0.8);
   }
 
   body[data-page="project"] .pc-page {
@@ -7011,7 +7019,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
      having got wider rather than the type having got smaller. The summary
      under it is already in em and scaled itself. */
   body[data-page="project"] .pc-lead-block {
-    max-width: 612px;
+    max-width: 575px;
   }
 
   body[data-page="project"] .pc-lead-muted,
