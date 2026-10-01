@@ -1091,28 +1091,6 @@ html[data-theme="dark"] .theme-swatch {
     right: 16px;
   }
 
-  /* Home has a single control in the bar now — the theme toggle — so it keeps
-     the right-hand corner the hamburger used to sit in rather than stretching
-     the full width and leaving it stranded on the left. */
-  body[data-page="home"] .nav-primary {
-    left: auto;
-    right: 16px;
-  }
-
-  /* And it wears the hamburger's button, since it has taken its place: the same
-     48px glass pill the project pages still show. Matched to .pc-menu-btn —
-     keep the two in step if that one changes. */
-  body[data-page="home"] .theme-toggle {
-    width: var(--nav-toolbar-height);
-    height: var(--nav-toolbar-height);
-    border-radius: 16px;
-    background: var(--nav-bg);
-    border: var(--nav-border-width) solid var(--nav-glass-border);
-    box-shadow: var(--nav-shadow);
-    backdrop-filter: blur(18px) saturate(1.25);
-    -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  }
-
   .nav-primary .nav-inner {
     width: 100%;
     justify-content: space-between;
@@ -3293,8 +3271,39 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 @media (max-width: 640px) {
+  /* Both page types now carry a single control in the bar — the theme toggle —
+     so it keeps the right-hand corner the hamburger used to sit in rather than
+     stretching the full width and leaving it stranded on the left.
+
+     This has to sit below the rule that shifts the project toolbar left to
+     clear the home button: same specificity, so it comes down to order. That
+     button is hidden at this width anyway, and the breadcrumb top-left does
+     the same job. */
+  body[data-page="home"] .nav-primary,
   body[data-page="project"] .nav-primary {
-    display: none;
+    left: auto;
+    right: 16px;
+  }
+
+  /* Project pages only: the bar hangs off #site-nav at --nav-offset, which
+     left it 11px below the breadcrumb it now sits opposite. Home already
+     carries its own lift, so applying this there would double it. */
+  body[data-page="project"] .nav-primary {
+    top: calc(16px - var(--nav-offset));
+  }
+
+  /* It wears the button the hamburger had, since it has taken its place: the
+     same 48px glass pill, matched to what .pc-menu-btn was. */
+  body[data-page="home"] .theme-toggle,
+  body[data-page="project"] .theme-toggle {
+    width: var(--nav-toolbar-height);
+    height: var(--nav-toolbar-height);
+    border-radius: 16px;
+    background: var(--nav-bg);
+    border: var(--nav-border-width) solid var(--nav-glass-border);
+    box-shadow: var(--nav-shadow);
+    backdrop-filter: blur(18px) saturate(1.25);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
   }
 
   .top-blur {
@@ -7134,8 +7143,17 @@ body[data-page="project"].page-is-leaving .pc-back {
 
 /* Each moves half the offset, so the merged shape lands in the middle of the
    box. Whole pixels — a half-pixel translate left a soft fringe where the two
-   should have been exactly coincident. */
-.theme-toggle:hover .theme-squircle,
+   should have been exactly coincident.
+
+   Behind (hover: hover) for the same reason the nav button's fill is: a tap
+   latches :hover on a touch screen, which would leave the squircles merged
+   from the first tap onwards instead of settling back apart. */
+@media (hover: hover) {
+  .theme-toggle:hover .theme-squircle {
+    translate: 3px 3px;
+  }
+}
+
 .theme-toggle:focus-visible .theme-squircle {
   translate: 3px 3px;
 }
