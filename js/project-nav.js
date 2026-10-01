@@ -347,8 +347,6 @@
       });
     }
 
-    initProjectMobileMenu();
-
     const pool = (project.paragraphs && project.paragraphs.length)
       ? project.paragraphs
       : [project.intro || ''];
@@ -738,71 +736,6 @@
     wrap.appendChild(panel);
     wrap.appendChild(button);
     document.body.appendChild(wrap);
-  }
-
-  function initProjectMobileMenu() {
-    const btn = document.getElementById('pc-menu-btn');
-    const menu = document.getElementById('pc-menu');
-    if (!btn || !menu) return;
-
-    const getStoredTheme = window.SiteNav?.getStoredTheme || (() => 'normal');
-
-    // Sound toggle
-    const soundBtn = document.getElementById('pc-menu-sound');
-    const soundLabel = document.getElementById('pc-menu-sound-label');
-    const updateSound = () => {
-      const muted = localStorage.getItem('portfolio-volume-muted') === 'true';
-      if (soundLabel) soundLabel.textContent = muted ? 'Sound off' : 'Sound on';
-      if (soundBtn) soundBtn.classList.toggle('is-muted', muted);
-    };
-    if (soundBtn) {
-      updateSound();
-      soundBtn.addEventListener('click', () => {
-        const muted = localStorage.getItem('portfolio-volume-muted') === 'true';
-        localStorage.setItem('portfolio-volume-muted', muted ? 'false' : 'true');
-        updateSound();
-      });
-    }
-
-    // Theme toggle (sun/moon), same behaviour as the desktop switcher
-    const themeToggle = document.getElementById('pc-menu-theme-btn');
-    const themeLabel = document.getElementById('pc-menu-theme-label');
-    const updateThemeLabel = () => {
-      if (themeLabel) themeLabel.textContent = getStoredTheme() === 'dark' ? 'Dark' : 'Light';
-    };
-    updateThemeLabel();
-    if (themeToggle) {
-      themeToggle.addEventListener('click', (event) => {
-        event.stopPropagation();
-        if (typeof window.cycleTheme === 'function') {
-          window.cycleTheme();
-        } else if (typeof window.applyTheme === 'function') {
-          window.applyTheme(getStoredTheme() === 'dark' ? 'normal' : 'dark');
-        }
-        updateThemeLabel();
-      });
-    }
-
-    // Home
-    const homeItem = document.getElementById('pc-menu-home');
-    if (homeItem) {
-      homeItem.addEventListener('click', (event) => {
-        event.preventDefault();
-        navigateWithFade(homeItem.getAttribute('href') || '/', { leaveProject: true });
-      });
-    }
-
-    function setOpen(open) {
-      menu.classList.toggle('is-open', open);
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    }
-    btn.addEventListener('click', (event) => {
-      event.stopPropagation();
-      setOpen(!menu.classList.contains('is-open'));
-    });
-    document.addEventListener('click', (event) => {
-      if (!menu.contains(event.target) && event.target !== btn) setOpen(false);
-    });
   }
 
   window.ProjectNav = { navigateWithFade, initWorkLinks, initHomeReturn, initProjectPage };
