@@ -29,8 +29,8 @@
     return `
       <button class="nav-icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Toggle light or dark theme">
         <span class="theme-toggle-icons" aria-hidden="true">
-          ${SUN_ICON}
-          ${MOON_ICON}
+          <span class="theme-squircle theme-squircle--back"></span>
+          <span class="theme-squircle theme-squircle--front"></span>
         </span>
       </button>
     `;
