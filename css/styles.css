@@ -4386,17 +4386,77 @@ body[data-page="project"] .pc-next-pill.is-docked {
   margin: 16px auto 80px;
 }
 
+/* Same treatment as the About hobby photos: white frame, polaroid grade, the
+   page grain laid on the photo, and the playing-card hover (main.js feeds
+   --rx/--ry/--gx/--gy). The resting tilt is the standalone `rotate` and the
+   entrance runs on scale/opacity with a backwards fill, so `transform` stays
+   free for the 3D tilt. */
 .pc-polaroid {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
   position: relative;
   width: 250px;
   max-width: 46%;
   padding: 0;
-  border: 0;
-  background: none;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
   cursor: zoom-in;
-  transform: rotate(var(--r, 0deg));
+  rotate: var(--r, 0deg);
+  transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+  animation: polaroidPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0ms) backwards;
+}
+
+[data-theme="dark"] .pc-polaroid { border-color: var(--surface); }
+
+.pc-polaroid.is-tilting {
+  scale: 1.04;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.18);
+  transition:
+    transform 0.12s ease-out,
+    scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+/* Shine that follows the cursor. */
+.pc-polaroid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    circle at var(--gx) var(--gy),
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  mix-blend-mode: soft-light;
   opacity: 0;
-  animation: polaroidPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) var(--d, 0ms) forwards;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.pc-polaroid.is-tilting::before { opacity: 1; }
+
+/* The page grain, laid on the photo itself. */
+.pc-polaroid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../images/bg-texture.png') repeat;
+  background-size: 128px auto;
+  image-rendering: pixelated;
+  mix-blend-mode: screen;
+  opacity: 0.12;
+  pointer-events: none;
 }
 
 .pc-polaroid + .pc-polaroid {
@@ -4412,36 +4472,30 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: block;
   width: 100%;
   height: auto;
-  border: 8px solid var(--frame-border);
-  border-radius: 12px;
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.18);
-  transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease;
+  /* Polaroid-style film: warmed, slightly faded, blacks lifted. */
+  filter: sepia(0.22) saturate(1.15) contrast(0.88) brightness(1.06) hue-rotate(-6deg);
 }
 
-.pc-polaroid:hover img,
-.pc-polaroid:focus-visible img {
-  transform: scale(1.03);
-  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.24);
-}
-
-/* Press feedback: dips in quickly under the finger, then eases back out on release
-   via the slower transition on the image itself. */
-.pc-polaroid:active img {
-  transform: scale(0.95);
-  transition-duration: 0.1s;
+/* Press feedback: dips in quickly under the finger, then eases back out. */
+.pc-polaroid:active {
+  scale: 0.96;
+  transition-duration: 0.12s, 0.1s, 0.4s;
 }
 
 @keyframes polaroidPop {
-  from { opacity: 0; transform: rotate(var(--r, 0deg)) scale(0.8); }
-  to { opacity: 1; transform: rotate(var(--r, 0deg)) scale(1); }
+  from { opacity: 0; scale: 0.8; }
+  to { opacity: 1; scale: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pc-sticker,
-  .pc-photo {
+  .pc-photo,
+  .pc-polaroid {
     animation: none;
     opacity: 1;
   }
+
+  .pc-polaroid { transition: none; }
 }
 
 .pc-divider {
@@ -7301,6 +7355,11 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   .work-column--interactive .work-row {
     grid-template-columns: 88px 1fr;
+  }
+
+  /* Project years drop to two digits on small screens ("26" for 2026). */
+  .work-col--year-century {
+    display: none;
   }
 
   /* Stack the label over its copy — an 88px gutter leaves too little room for

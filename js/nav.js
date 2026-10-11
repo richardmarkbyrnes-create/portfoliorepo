@@ -52,6 +52,9 @@
     navRoot.innerHTML = `
       <div class="nav-primary">
         <div class="nav-inner">
+          <a class="nav-icon-btn nav-linkedin" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">
+            ${LINKEDIN_ICON}
+          </a>
           ${renderThemeSwitcher()}
         </div>
       </div>
