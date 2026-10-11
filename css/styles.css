@@ -1643,6 +1643,16 @@ body[data-page="about"] {
   text-decoration-color: var(--text);
 }
 
+/* In the About copy the links read as plain text until hovered, when the
+   dotted underline fades in. (The footer's links keep theirs showing.) */
+.work-column--about .about-link {
+  text-decoration-color: transparent;
+}
+
+.work-column--about .about-link:hover {
+  text-decoration-color: var(--text);
+}
+
 /* Hobby tabs: all panels share one grid cell so the block keeps the tallest
    panel's height and switching never jumps the page. The outgoing panel blurs
    out while the incoming one blurs in; its photos then rise in one by one. */
@@ -1694,6 +1704,12 @@ body[data-page="about"] {
   outline: 1px solid var(--text-light);
   outline-offset: 3px;
   border-radius: 2px;
+}
+
+/* Tab descriptions sit ragged-right; the intro paragraph above stays
+   justified. */
+.work-column--about .hobby-panel .work-col--about-text {
+  text-align: left;
 }
 
 .hobby-panels {
