@@ -2150,20 +2150,6 @@ body[data-page="about"] {
   .hobby-record-vinyl { transition: none; }
 }
 
-/* On desktop the tray spans both columns: it reaches back under the label
-   (108px column + 72px gap) to the left edge of the section. */
-@media (min-width: 769px) {
-  .work-column--about .hobby-photos,
-  .work-column--about .hobby-books,
-  .work-column--about .hobby-records {
-    width: calc(100% + 180px);
-    margin-left: -180px;
-    /* Wider side padding scales the cards inside down ~10%. */
-    padding-left: 48px;
-    padding-right: 48px;
-  }
-}
-
 /* Each tab's media sits in a very light grey tray. */
 .hobby-photos,
 .hobby-books,
