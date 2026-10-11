@@ -541,7 +541,8 @@
       const nextProject = window.PROJECTS?.[nextSlug];
       const label = document.getElementById('pc-next-title');
       if (nextProject) {
-        if (label) label.textContent = nextProject.title;
+        if (label) label.textContent = 'Jump to next project';
+        nextBtn.setAttribute('aria-label', `Jump to next project: ${nextProject.title}`);
         nextBtn.setAttribute('href', projectHref(nextSlug));
         nextBtn.addEventListener('click', (event) => {
           event.preventDefault();
@@ -598,21 +599,15 @@
       if (nextSlug) {
         nextPill.setAttribute('href', projectHref(nextSlug));
 
-        // Name the project the pill leads to.
+        // The pill reads the same on every page; the project it leads to is
+        // named for screen readers only.
         const next = window.PROJECTS?.[nextSlug];
         const nameEl = document.getElementById('pc-next-name');
-        const companyEl = document.getElementById('pc-next-company');
-        const sepEl = nextPill.querySelector('.pc-next-sep');
+        if (nameEl) nameEl.textContent = 'Jump to next project';
+        document.getElementById('pc-next-company')?.remove();
+        nextPill.querySelector('.pc-next-sep')?.remove();
         if (next) {
-          if (nameEl) nameEl.textContent = next.title;
-          // No company on a project, no dangling separator either.
-          if (next.company) {
-            if (companyEl) companyEl.textContent = next.company;
-          } else {
-            companyEl?.remove();
-            sepEl?.remove();
-          }
-          nextPill.setAttribute('aria-label', `Next project: ${next.title}`);
+          nextPill.setAttribute('aria-label', `Jump to next project: ${next.title}`);
           // Lets CSS tint the bottom wash in the colour of the project the pill
           // leads to.
           document.body.dataset.nextProject = nextSlug;

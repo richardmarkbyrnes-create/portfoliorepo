@@ -1023,13 +1023,17 @@ function initHobbyTabs() {
   });
 }
 
-// Playing-card tilt on the hobby photos: the card leans toward the cursor and
-// a soft shine follows it. Mouse only — a tap has nothing to track.
+// Playing-card tilt on the hobby photos and the project pages' polaroids: the
+// card leans toward the cursor and a soft shine follows it. Mouse only — a tap
+// has nothing to track. Delegated, since project-nav.js builds the polaroids
+// after load; each card is wired up the first time the pointer reaches it.
 function initHobbyCardTilt() {
   if (prefersReducedMotion()) return;
   const MAX_TILT = 10; // degrees at the card's edge
+  const CARDS = '.hobby-photo, .pc-polaroid';
 
-  document.querySelectorAll('.hobby-photo').forEach((card) => {
+  const wire = (card) => {
+    card.dataset.tilt = '1';
     card.addEventListener('pointermove', (event) => {
       if (event.pointerType !== 'mouse') return;
       const rect = card.getBoundingClientRect();
@@ -1046,6 +1050,11 @@ function initHobbyCardTilt() {
       card.style.setProperty('--rx', '0deg');
       card.style.setProperty('--ry', '0deg');
     });
+  };
+
+  document.addEventListener('pointerover', (event) => {
+    const card = event.target.closest && event.target.closest(CARDS);
+    if (card && !card.dataset.tilt) wire(card);
   });
 }
 
