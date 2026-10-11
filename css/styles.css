@@ -1564,7 +1564,9 @@ body[data-page="about"] {
 }
 
 .home-about-intro + .work-column--about {
-  margin-top: var(--work-divider-space);
+  /* Tighter than the usual divider space: the headline above already brings
+     43px of its own bottom margin. */
+  margin-top: 16px;
 }
 
 .home-about-intro + .work-column--about .work-column-inner {
