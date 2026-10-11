@@ -1668,15 +1668,13 @@ body[data-page="about"] {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: -2px;
-  height: 4px;
-  /* A gentle squiggle (8px period) used as a mask over currentColor, so it
-     takes the tab's colour like the old straight line did. One continuous
-     160px path rather than a repeated 8px tile: tiles left hairline seams at
-     fractional zoom. 160px is wider than any tab label. */
-  background: currentColor;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='4' viewBox='0 0 160 4'%3E%3Cpath d='M0 2 Q2 0.6 4 2 T8 2 T12 2 T16 2 T20 2 T24 2 T28 2 T32 2 T36 2 T40 2 T44 2 T48 2 T52 2 T56 2 T60 2 T64 2 T68 2 T72 2 T76 2 T80 2 T84 2 T88 2 T92 2 T96 2 T100 2 T104 2 T108 2 T112 2 T116 2 T120 2 T124 2 T128 2 T132 2 T136 2 T140 2 T144 2 T148 2 T152 2 T156 2 T160 2' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") no-repeat 0 0 / 160px 4px;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='4' viewBox='0 0 160 4'%3E%3Cpath d='M0 2 Q2 0.6 4 2 T8 2 T12 2 T16 2 T20 2 T24 2 T28 2 T32 2 T36 2 T40 2 T44 2 T48 2 T52 2 T56 2 T60 2 T64 2 T68 2 T72 2 T76 2 T80 2 T84 2 T88 2 T92 2 T96 2 T100 2 T104 2 T108 2 T112 2 T116 2 T120 2 T124 2 T128 2 T132 2 T136 2 T140 2 T144 2 T148 2 T152 2 T156 2 T160 2' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") no-repeat 0 0 / 160px 4px;
+  bottom: -3px;
+  height: 1px;
+  /* Dashed like the project titles' underline (.work-col--project): 1px in
+     --text-light. Drawn as a gradient so it can still scale in from 0. */
+  background-image: repeating-linear-gradient(to right,
+    var(--text-light) 0 3px,
+    transparent 3px 6px);
   transform: scaleX(0);
   transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -6100,6 +6098,20 @@ body.page-is-leaving .top-blur {
   scale: 0.78;
 }
 
+/* The portrait shrinks a little on hover too, as the dogs do, while its
+   polaroid is up. */
+.about-line-art-image {
+  transform-origin: center bottom;
+  scale: 1;
+  transition:
+    background-color 0.3s ease,
+    scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-line-art-image:hover {
+  scale: 0.9;
+}
+
 .about-line-art-dog--berner {
   aspect-ratio: 338 / 386;
   cursor: none;
@@ -6216,25 +6228,36 @@ body.page-is-leaving .top-blur {
   left: 0;
   z-index: 400;
   pointer-events: none;
-  opacity: 0;
   visibility: hidden;
   transform: translate(-50%, -50%) scale(0.78);
   transform-origin: center center;
-  /* Defocused on the way in, resolving as it settles — the photo reads as coming
-     into focus rather than simply appearing. */
-  filter: blur(8px);
   transition:
-    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
     visibility 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+    transform 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .dog-photo-popover.is-visible {
-  opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
-  filter: blur(0);
+}
+
+/* The fade and the defocus live on the polaroid itself, not the popover. An
+   ancestor with opacity below 1 or any filter cuts the frame's backdrop blur
+   off from the page, so with them up here the glass only switched on once
+   the fade finished — the page showed through clear for a beat first. */
+.dog-photo-popover .dog-photo-polaroid {
+  opacity: 0;
+  /* Defocused on the way in, resolving as it settles — the photo reads as
+     coming into focus rather than simply appearing. */
+  filter: blur(8px);
+  transition:
+    opacity 0.34s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.dog-photo-popover.is-visible .dog-photo-polaroid {
+  opacity: 1;
+  filter: none;
 }
 
 #eddie-photo-popover {
@@ -6257,7 +6280,12 @@ body.page-is-leaving .top-blur {
   width: min(126px, 30vw);
   margin: 0;
   padding: 8px 8px 12px;
-  background: var(--dog-polaroid-bg, #ffffff);
+  /* Frosted glass: the frame at 60% with the page blurred behind it. Keep the
+     blur modest — a heavy one smears what's behind into the same white as
+     the frame, and the glass stops reading at all. */
+  background: color-mix(in srgb, var(--dog-polaroid-bg, #ffffff) 60%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border-radius: 2px;
   box-shadow: var(--dog-polaroid-shadow, 0 10px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06));
 }
@@ -6287,7 +6315,8 @@ body.page-is-leaving .top-blur {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .dog-photo-popover {
+  .dog-photo-popover,
+  .dog-photo-popover .dog-photo-polaroid {
     transition: none;
     filter: none;
   }
