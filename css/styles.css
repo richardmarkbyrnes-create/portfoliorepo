@@ -1577,6 +1577,13 @@ body[data-page="about"] {
   margin-inline: auto;
 }
 
+/* The divider above About matches the text column, not the full width. */
+.work-column--about .work-column-rule {
+  max-width: 340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* Single centred column: each label sits over its copy. */
 .work-column--about .work-row--about {
   grid-template-columns: minmax(0, 1fr);
@@ -1949,7 +1956,9 @@ body[data-page="about"] {
 .hobby-book:nth-child(2) { rotate: 1.5deg; }
 .hobby-book:nth-child(3) { rotate: -1deg; }
 
-.hobby-book:hover { translate: 0 -6px; }
+/* The hovered book comes to the front, so its opening cover and sliding
+   pages pass over the neighbouring book rather than under it. */
+.hobby-book:hover { translate: 0 -6px; z-index: 2; }
 
 .hobby-book:hover .hobby-book-cover {
   transform: perspective(1000px) rotateY(-18deg);
@@ -2134,6 +2143,16 @@ body[data-page="about"] {
   .hobby-record:hover .hobby-record-vinyl { animation: none; }
   .hobby-record-sleeve,
   .hobby-record-vinyl { transition: none; }
+}
+
+/* Each tab's media sits in a very light grey tray. */
+.hobby-photos,
+.hobby-books,
+.hobby-records {
+  box-sizing: border-box;
+  padding: 28px 22px 22px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
 }
 
 /* Hold the first stagger until the section scrolls into view. */
