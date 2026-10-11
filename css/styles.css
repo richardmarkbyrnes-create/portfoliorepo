@@ -6141,7 +6141,9 @@ body.page-is-leaving .top-blur {
 }
 
 .about-line-art-image:hover {
-  scale: 0.9;
+  /* Same as the dogs. Anything gentler hides under the polaroid, which pops
+     up centred on the cursor right over the portrait. */
+  scale: 0.78;
 }
 
 .about-line-art-dog--berner {
