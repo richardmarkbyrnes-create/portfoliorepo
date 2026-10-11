@@ -1951,11 +1951,6 @@ body[data-page="about"] {
   pointer-events: none;
 }
 
-/* A very slight, uneven lean, like books propped on a shelf. */
-.hobby-book { rotate: -2deg; }
-.hobby-book:nth-child(2) { rotate: 1.5deg; }
-.hobby-book:nth-child(3) { rotate: -1deg; }
-
 /* The hovered book comes to the front, so its opening cover and sliding
    pages pass over the neighbouring book rather than under it. */
 .hobby-book:hover { translate: 0 -6px; z-index: 2; }
