@@ -360,6 +360,32 @@ html {
   background-color: var(--bg);
 }
 
+/* Theme switch (main.js cycleThemeWithReveal): no crossfade — the new theme
+   is revealed by a circle clip growing from the toggle. Colour transitions are
+   held off so the revealed page is already fully in the new theme — except the
+   sun/moon swap, which is the toggle's own animation and should still play. */
+html.is-theme-reveal::view-transition-old(root),
+html.is-theme-reveal::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* The soft circle's shape; main.js animates its size and position. */
+html.is-theme-reveal::view-transition-new(root) {
+  -webkit-mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 0 0;
+  mask-size: 0 0;
+}
+
+html.is-theme-reveal *:not(.theme-toggle-sun, .theme-toggle-moon),
+html.is-theme-reveal *::before,
+html.is-theme-reveal *::after {
+  transition: none !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -1406,14 +1432,10 @@ html[data-theme="dark"] .theme-toggle-moon {
   font-variant-numeric: tabular-nums;
 }
 
+/* No leader any more: label and value sit side by side. */
 .site-footer-leader {
-  flex: 1 1 auto;
-  min-width: 24px;
-  margin: 0 12px;
-  align-self: flex-end;
-  transform: translateY(-4px);
-  border-bottom: 1px dotted var(--text-light);
-  opacity: 0.55;
+  flex: none;
+  width: 8px;
 }
 
 .site-footer-copy {
@@ -1551,11 +1573,14 @@ body[data-page="about"] {
 
 .work-column--about .work-group {
   width: 100%;
+  max-width: 380px;
+  margin-inline: auto;
 }
 
+/* Single centred column: each label sits over its copy. */
 .work-column--about .work-row--about {
-  grid-template-columns: 108px minmax(0, 1fr);
-  column-gap: 72px;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 10px;
   align-items: start;
 }
 
@@ -1578,7 +1603,7 @@ body[data-page="about"] {
   margin: 0;
   min-width: 0;
   width: 100%;
-  max-width: none;
+  max-width: 420px;
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 400;
@@ -1609,6 +1634,523 @@ body[data-page="about"] {
 .about-link:hover {
   color: var(--text);
   text-decoration-color: var(--text);
+}
+
+/* Hobby tabs: all panels share one grid cell so the block keeps the tallest
+   panel's height and switching never jumps the page. The outgoing panel blurs
+   out while the incoming one blurs in; its photos then rise in one by one. */
+.hobby-tabs {
+  margin-top: 4em;
+}
+
+.hobby-tablist {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 1.25em;
+}
+
+.hobby-tab {
+  position: relative;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+
+.hobby-tab::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 4px;
+  /* A gentle squiggle (8px period) used as a mask over currentColor, so it
+     takes the tab's colour like the old straight line did. One continuous
+     160px path rather than a repeated 8px tile: tiles left hairline seams at
+     fractional zoom. 160px is wider than any tab label. */
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='4' viewBox='0 0 160 4'%3E%3Cpath d='M0 2 Q2 0.6 4 2 T8 2 T12 2 T16 2 T20 2 T24 2 T28 2 T32 2 T36 2 T40 2 T44 2 T48 2 T52 2 T56 2 T60 2 T64 2 T68 2 T72 2 T76 2 T80 2 T84 2 T88 2 T92 2 T96 2 T100 2 T104 2 T108 2 T112 2 T116 2 T120 2 T124 2 T128 2 T132 2 T136 2 T140 2 T144 2 T148 2 T152 2 T156 2 T160 2' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") no-repeat 0 0 / 160px 4px;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='4' viewBox='0 0 160 4'%3E%3Cpath d='M0 2 Q2 0.6 4 2 T8 2 T12 2 T16 2 T20 2 T24 2 T28 2 T32 2 T36 2 T40 2 T44 2 T48 2 T52 2 T56 2 T60 2 T64 2 T68 2 T72 2 T76 2 T80 2 T84 2 T88 2 T92 2 T96 2 T100 2 T104 2 T108 2 T112 2 T116 2 T120 2 T124 2 T128 2 T132 2 T136 2 T140 2 T144 2 T148 2 T152 2 T156 2 T160 2' fill='none' stroke='%23000' stroke-width='1'/%3E%3C/svg%3E") no-repeat 0 0 / 160px 4px;
+  transform: scaleX(0);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hobby-tab:hover { color: var(--text-muted); }
+.hobby-tab[aria-selected="true"] { color: var(--text); }
+.hobby-tab[aria-selected="true"]::after { transform: scaleX(1); }
+
+.hobby-tab:focus-visible {
+  outline: 1px solid var(--text-light);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.hobby-panels {
+  display: grid;
+}
+
+.hobby-panel {
+  grid-area: 1 / 1;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.hobby-panel.is-active {
+  visibility: visible;
+  opacity: 1;
+  animation: hobby-blur-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards;
+}
+
+.hobby-panel.is-leaving {
+  visibility: visible;
+  animation: hobby-blur-out 0.22s ease-in both;
+  pointer-events: none;
+}
+
+@keyframes hobby-blur-in {
+  from { opacity: 0; filter: blur(16px); translate: 0 4px; }
+  to { opacity: 1; filter: blur(0); translate: 0 0; }
+}
+
+@keyframes hobby-blur-out {
+  from { opacity: 1; filter: blur(0); }
+  to { opacity: 0; filter: blur(16px); }
+}
+
+/* Wider than the 380px text column (~469px), overhanging both sides
+   equally; the cards overlap rather than leaving gaps. */
+.hobby-photos {
+  display: flex;
+  align-items: center;
+  width: 123.5%;
+  margin: 3em -11.75% 2em;
+}
+
+@media (max-width: 768px) {
+  .hobby-photos {
+    width: 115%;
+    margin-inline: -7.5%;
+  }
+}
+
+.hobby-photo {
+  flex: 1 1 0;
+  min-width: 0;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+  --tilt: -3deg;
+  rotate: var(--tilt);
+  transition: rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-theme="dark"] .hobby-photo { border-color: var(--surface); }
+
+.hobby-photo + .hobby-photo { margin-left: -4px; }
+.hobby-photo:nth-child(2) { --tilt: 2deg; }
+.hobby-photo:nth-child(3) { --tilt: -1.5deg; }
+
+/* The page grain already sits above the cards, but at the light theme's 3%
+   multiply it vanishes over a photo. Lay the same texture on the photos
+   themselves, strong enough to read. */
+.hobby-photo {
+  position: relative;
+}
+
+.hobby-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('../images/bg-texture.png') repeat;
+  background-size: 128px auto;
+  image-rendering: pixelated;
+  mix-blend-mode: screen;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+/* Hover nudges each card a touch further round from its resting tilt. */
+.hobby-photo:hover { rotate: calc(var(--tilt) + 2deg); }
+
+/* Playing-card hover: main.js feeds the pointer position in as --rx/--ry
+   (3D tilt toward the cursor) and --gx/--gy (where the shine sits). The card
+   lifts above its neighbours while held; on leave it eases back flat. */
+.hobby-photo {
+  --rx: 0deg;
+  --ry: 0deg;
+  --gx: 50%;
+  --gy: 50%;
+  transform: perspective(700px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+.hobby-photo.is-tilting {
+  z-index: 3;
+  scale: 1.04;
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.14);
+  transition:
+    rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.12s ease-out,
+    scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s ease;
+}
+
+.hobby-photo::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(
+    circle at var(--gx) var(--gy),
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.12) 30%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.hobby-photo.is-tilting::before { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-photo { transition: none; }
+}
+
+.hobby-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* Polaroid-style film: warmed, slightly faded, blacks lifted. */
+  filter: sepia(0.22) saturate(1.15) contrast(0.88) brightness(1.06) hue-rotate(-6deg);
+}
+
+
+.hobby-panel.is-active .hobby-photo {
+  animation: hobby-photo-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.18s + var(--i, 0) * 0.07s);
+}
+
+@keyframes hobby-photo-in {
+  from { opacity: 0; filter: blur(12px); translate: 0 14px; scale: 0.96; }
+  to { opacity: 1; filter: blur(0); translate: 0 0; scale: 1; }
+}
+
+/* Reading tab: books instead of photos. Each is a cover over a block of
+   pages; on hover the cover swings open on its spine and the book lifts,
+   showing the page edges behind. */
+/* Same overhang as .hobby-photos, so three books fit side by side. */
+.hobby-books {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  width: 123.5%;
+  margin: 3em -11.75% 2em;
+}
+
+@media (max-width: 768px) {
+  .hobby-books {
+    width: 115%;
+    margin-inline: -7.5%;
+    gap: 10px;
+  }
+}
+
+.hobby-book {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 150px;
+  aspect-ratio: 300 / 424;
+  margin: 0;
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hobby-book-pages {
+  position: absolute;
+  inset: 3px 0 3px 6px;
+  border-radius: 2px 5px 5px 2px;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.05) 2px 3px) right / 10px 100% no-repeat,
+    #f6f4ef;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05), 0 4px 10px rgba(0, 0, 0, 0.06);
+  transition: translate 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hobby-book-cover {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 7px 4px 4px 7px;
+  background: #fff;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transform-origin: left center;
+  transform: perspective(1000px) rotateY(0deg);
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* The artwork starts just right of the spine and is fitted whole, never
+   cropped, so every book is the same size whatever the cover's proportions.
+   The spine and any leftover band take the cover's own background colour
+   (--cover-bg, set per book in the markup). */
+.hobby-book-cover {
+  background: var(--cover-bg, #fff);
+}
+
+.hobby-book-cover img {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 11%;
+  display: block;
+  width: 89%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* The spine: a pale strip down the left edge ending in a shallow groove,
+   plus a faint sheen across the cover. */
+.hobby-book-cover::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.75) 0%,
+    rgba(255, 255, 255, 0.55) 8%,
+    rgba(0, 0, 0, 0.16) 9%,
+    rgba(0, 0, 0, 0.04) 10.5%,
+    rgba(255, 255, 255, 0.2) 11.5%,
+    rgba(255, 255, 255, 0) 15%,
+    rgba(255, 255, 255, 0) 70%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  pointer-events: none;
+}
+
+/* A very slight, uneven lean, like books propped on a shelf. */
+.hobby-book { rotate: -2deg; }
+.hobby-book:nth-child(2) { rotate: 1.5deg; }
+.hobby-book:nth-child(3) { rotate: -1deg; }
+
+.hobby-book:hover { translate: 0 -6px; }
+
+.hobby-book:hover .hobby-book-cover {
+  transform: perspective(1000px) rotateY(-18deg);
+  box-shadow: 14px 18px 30px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* The page block slides out from under the cover, so its edge shows to the
+   right and below as the cover lifts away from it. */
+.hobby-book:hover .hobby-book-pages { translate: 12px 6px; }
+
+.hobby-panel.is-active .hobby-book {
+  animation: hobby-photo-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.18s + var(--i, 0) * 0.07s);
+}
+
+.animate-on-scroll-root:not(.is-in-view) .hobby-panel.is-active .hobby-book {
+  animation: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-panel.is-active .hobby-book { animation: none; }
+  .hobby-book,
+  .hobby-book-pages,
+  .hobby-book-cover { transition: none; }
+}
+
+/* Music tab: records. A square sleeve with the vinyl tucked behind it; on
+   hover the sleeve tips slightly and the disc slides out to the right,
+   spinning, with the album art on its centre label (--record-art, set per
+   record in the markup). */
+.hobby-records {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 123.5%;
+  margin: 3em -11.75% 2em;
+}
+
+@media (max-width: 768px) {
+  .hobby-records {
+    width: 115%;
+    margin-inline: -7.5%;
+    gap: 12px;
+  }
+}
+
+/* The hovered record comes to the front, so its sliding disc passes over
+   the neighbouring sleeve rather than under it. */
+.hobby-record {
+  position: relative;
+  flex: 0 1 150px;
+  min-width: 0;
+  margin: 0;
+}
+
+.hobby-record:hover { z-index: 2; }
+
+.hobby-record-stage {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.hobby-record-sleeve {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 12px;
+  background: var(--surface);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  transition:
+    rotate 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s ease;
+}
+
+[data-theme="dark"] .hobby-record-sleeve { border-color: var(--surface); }
+
+.hobby-record-sleeve img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The disc: concentric grooves, a soft highlight sweep, and the album art as
+   the centre label with a spindle hole. Sits behind the sleeve, a touch
+   smaller, until hover slides it out. */
+.hobby-record-vinyl {
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  width: 92%;
+  height: 92%;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle, var(--bg) 0 2.2%, rgba(0, 0, 0, 0) 2.4%),
+    radial-gradient(circle, rgba(0, 0, 0, 0) 0 31%, rgba(0, 0, 0, 0.55) 31.5%, rgba(0, 0, 0, 0) 33%),
+    conic-gradient(
+      from 30deg,
+      rgba(255, 255, 255, 0) 0deg,
+      rgba(255, 255, 255, 0.14) 40deg,
+      rgba(255, 255, 255, 0) 80deg,
+      rgba(255, 255, 255, 0) 180deg,
+      rgba(255, 255, 255, 0.1) 220deg,
+      rgba(255, 255, 255, 0) 260deg
+    ),
+    repeating-radial-gradient(circle, #141414 0 1.5px, #1e1e1e 1.5px 3px),
+    #111;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+  translate: 0 0;
+  transition: translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Centre label: the album art, clipped to a circle. The markup gives
+   --record-art a root-relative URL — a relative one would resolve against
+   this stylesheet (css/) rather than the page. */
+.hobby-record-vinyl::before {
+  content: "";
+  position: absolute;
+  inset: 33%;
+  border-radius: 50%;
+  background: var(--record-art) center / cover;
+}
+
+/* Spindle hole above the label. */
+.hobby-record-vinyl::after {
+  content: "";
+  position: absolute;
+  inset: 48.5%;
+  border-radius: 50%;
+  background: var(--bg);
+}
+
+.hobby-record:hover .hobby-record-vinyl {
+  translate: 60% 0;
+  animation: hobby-record-spin 4s linear infinite;
+}
+
+.hobby-record:hover .hobby-record-sleeve {
+  rotate: -3deg;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.16), 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* The first record opens to the left, away from its neighbour, with the
+   sleeve tipping the other way to match. */
+.hobby-record:first-child:hover .hobby-record-vinyl { translate: -60% 0; }
+.hobby-record:first-child:hover .hobby-record-sleeve { rotate: 3deg; }
+
+@keyframes hobby-record-spin {
+  to { rotate: 360deg; }
+}
+
+.hobby-record-caption {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 18px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.hobby-record-artist { color: var(--text); }
+.hobby-record-album { color: var(--text-light); }
+
+.hobby-panel.is-active .hobby-record {
+  animation: hobby-photo-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.18s + var(--i, 0) * 0.07s);
+}
+
+.animate-on-scroll-root:not(.is-in-view) .hobby-panel.is-active .hobby-record {
+  animation: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-panel.is-active .hobby-record,
+  .hobby-record:hover .hobby-record-vinyl { animation: none; }
+  .hobby-record-sleeve,
+  .hobby-record-vinyl { transition: none; }
+}
+
+/* Hold the first stagger until the section scrolls into view. */
+.animate-on-scroll-root:not(.is-in-view) .hobby-panel.is-active .hobby-photo {
+  animation: none;
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-panel.is-active,
+  .hobby-panel.is-active .hobby-photo,
+  .hobby-panel.is-leaving {
+    animation: none;
+  }
+  .hobby-panel.is-leaving { visibility: hidden; }
 }
 
 .contact-link {

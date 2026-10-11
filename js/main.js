@@ -23,6 +23,46 @@ function cycleTheme() {
   applyTheme(THEMES[nextIndex].id);
 }
 
+// The new theme blooms out as a circle from `origin` (the toggle), the same
+// reveal the hobby photos used for their colour. A view transition snapshots
+// the old page; the live new page is clipped to a growing circle over it.
+function cycleThemeWithReveal(origin) {
+  if (!document.startViewTransition || !origin || prefersReducedMotion()) {
+    cycleTheme();
+    return;
+  }
+
+  const rect = origin.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  // Far enough to reach the farthest corner of the viewport.
+  const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+
+  const root = document.documentElement;
+  root.classList.add('is-theme-reveal');
+  const transition = document.startViewTransition(cycleTheme);
+  transition.ready.then(() => {
+    // A soft-edged circle: a radial-gradient mask, solid to 60% of its radius
+    // then fading out, grown by animating mask-size around the toggle. Sized so
+    // the solid core alone covers the farthest corner by the end.
+    const SOLID = 0.6;
+    const size = (2 * radius) / SOLID;
+    const at = (s) => ({
+      maskSize: `${s}px ${s}px`,
+      maskPosition: `${x - s / 2}px ${y - s / 2}px`,
+      webkitMaskSize: `${s}px ${s}px`,
+      webkitMaskPosition: `${x - s / 2}px ${y - s / 2}px`,
+    });
+    root.animate([at(0), at(size)], {
+      duration: 900,
+      fill: 'forwards',
+      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      pseudoElement: '::view-transition-new(root)',
+    });
+  });
+  transition.finished.finally(() => root.classList.remove('is-theme-reveal'));
+}
+
 function initThemeSwitcher() {
   applyTheme(getStoredTheme());
 
@@ -31,7 +71,7 @@ function initThemeSwitcher() {
 
   toggle.addEventListener('click', (event) => {
     event.preventDefault();
-    cycleTheme();
+    cycleThemeWithReveal(toggle);
     playThemeTransitionSound();
     playTapAnimation(toggle.querySelector('.theme-toggle-icons'), 'is-tapped');
   });
@@ -302,7 +342,7 @@ function initKeyboardNav() {
 
     if (event.key === 't' || event.key === 'T') {
       event.preventDefault();
-      cycleTheme();
+      cycleThemeWithReveal(document.getElementById('theme-toggle'));
       playThemeTransitionSound();
       playTapAnimation(document.querySelector('.theme-toggle-icons'), 'is-tapped');
     }
@@ -937,7 +977,79 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
+// About hobby tabs. The CSS does the motion: the outgoing panel gets
+// .is-leaving (blur out) until its animation ends, the incoming one
+// .is-active (blur in, then the staggered photos).
+function initHobbyTabs() {
+  document.querySelectorAll('[data-hobby-tabs]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+
+    const select = (tab) => {
+      if (tab.getAttribute('aria-selected') === 'true') return;
+      tabs.forEach((t) => {
+        const selected = t === tab;
+        t.setAttribute('aria-selected', String(selected));
+        t.tabIndex = selected ? 0 : -1;
+        const panel = document.getElementById(t.getAttribute('aria-controls'));
+        if (selected) {
+          panel.classList.remove('is-leaving');
+          panel.classList.add('is-active');
+        } else if (panel.classList.contains('is-active')) {
+          panel.classList.remove('is-active');
+          panel.classList.add('is-leaving');
+          const done = () => panel.classList.remove('is-leaving');
+          panel.addEventListener('animationend', done, { once: true });
+          if (prefersReducedMotion()) done();
+        }
+      });
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(tab));
+      tab.addEventListener('keydown', (event) => {
+        let next = null;
+        if (event.key === 'ArrowRight') next = tabs[(i + 1) % tabs.length];
+        else if (event.key === 'ArrowLeft') next = tabs[(i - 1 + tabs.length) % tabs.length];
+        else if (event.key === 'Home') next = tabs[0];
+        else if (event.key === 'End') next = tabs[tabs.length - 1];
+        if (!next) return;
+        event.preventDefault();
+        next.focus();
+        select(next);
+      });
+    });
+  });
+}
+
+// Playing-card tilt on the hobby photos: the card leans toward the cursor and
+// a soft shine follows it. Mouse only — a tap has nothing to track.
+function initHobbyCardTilt() {
+  if (prefersReducedMotion()) return;
+  const MAX_TILT = 10; // degrees at the card's edge
+
+  document.querySelectorAll('.hobby-photo').forEach((card) => {
+    card.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      card.classList.add('is-tilting');
+      card.style.setProperty('--ry', `${(x - 0.5) * 2 * MAX_TILT}deg`);
+      card.style.setProperty('--rx', `${(0.5 - y) * 2 * MAX_TILT}deg`);
+      card.style.setProperty('--gx', `${x * 100}%`);
+      card.style.setProperty('--gy', `${y * 100}%`);
+    });
+    card.addEventListener('pointerleave', () => {
+      card.classList.remove('is-tilting');
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+    });
+  });
+}
+
 initThemeSwitcher();
+initHobbyTabs();
+initHobbyCardTilt();
 initExperienceHoverSound();
 initSmoothScroll();
 initSmoothWheel();
