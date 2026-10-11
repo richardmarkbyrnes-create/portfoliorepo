@@ -6100,6 +6100,20 @@ body.page-is-leaving .top-blur {
   scale: 0.78;
 }
 
+/* The portrait shrinks a little on hover too, as the dogs do, while its
+   polaroid is up. */
+.about-line-art-image {
+  transform-origin: center bottom;
+  scale: 1;
+  transition:
+    background-color 0.3s ease,
+    scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.about-line-art-image:hover {
+  scale: 0.9;
+}
+
 .about-line-art-dog--berner {
   aspect-ratio: 338 / 386;
   cursor: none;
@@ -6234,7 +6248,9 @@ body.page-is-leaving .top-blur {
   opacity: 1;
   visibility: visible;
   transform: translate(-50%, -50%) scale(1);
-  filter: blur(0);
+  /* none, not blur(0): any filter makes this a backdrop root, and the frame's
+     backdrop blur below would then have nothing behind it to sample. */
+  filter: none;
 }
 
 #eddie-photo-popover {
@@ -6257,7 +6273,12 @@ body.page-is-leaving .top-blur {
   width: min(126px, 30vw);
   margin: 0;
   padding: 8px 8px 12px;
-  background: var(--dog-polaroid-bg, #ffffff);
+  /* Frosted glass: the frame at 60% with the page blurred behind it. Keep the
+     blur modest — a heavy one smears what's behind into the same white as
+     the frame, and the glass stops reading at all. */
+  background: color-mix(in srgb, var(--dog-polaroid-bg, #ffffff) 60%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   border-radius: 2px;
   box-shadow: var(--dog-polaroid-shadow, 0 10px 28px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06));
 }

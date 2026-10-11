@@ -402,6 +402,8 @@ function initDogPhotoPopovers() {
     initDogPhotoPopover('.about-line-art-dog--setter', 'eddie-photo-popover'),
     initDogPhotoPopover('.about-line-art-dog--berner', 'berner-photo-popover'),
   ].filter(Boolean);
+  // The portrait between them gets the same polaroid, with a still photo.
+  initDogPhotoPopover('.about-line-art-image', 'richard-photo-popover');
   if (!videos.length) return;
 
   // preload="metadata" keeps the clips off the initial page load. Fetch them in full
