@@ -1573,7 +1573,7 @@ body[data-page="about"] {
 
 .work-column--about .work-group {
   width: 100%;
-  max-width: 380px;
+  max-width: 340px;
   margin-inline: auto;
 }
 
@@ -1721,13 +1721,13 @@ body[data-page="about"] {
   to { opacity: 0; filter: blur(16px); }
 }
 
-/* Wider than the 380px text column (~469px), overhanging both sides
+/* Wider than the 340px text column (~469px), overhanging both sides
    equally; the cards overlap rather than leaving gaps. */
 .hobby-photos {
   display: flex;
   align-items: center;
-  width: 123.5%;
-  margin: 3em -11.75% 2em;
+  width: 138%;
+  margin: 3em -19% 2em;
 }
 
 @media (max-width: 768px) {
@@ -1858,8 +1858,8 @@ body[data-page="about"] {
   display: flex;
   justify-content: center;
   gap: 14px;
-  width: 123.5%;
-  margin: 3em -11.75% 2em;
+  width: 138%;
+  margin: 3em -19% 2em;
 }
 
 @media (max-width: 768px) {
@@ -1985,8 +1985,8 @@ body[data-page="about"] {
   display: flex;
   justify-content: center;
   gap: 20px;
-  width: 123.5%;
-  margin: 3em -11.75% 2em;
+  width: 138%;
+  margin: 3em -19% 2em;
 }
 
 @media (max-width: 768px) {
