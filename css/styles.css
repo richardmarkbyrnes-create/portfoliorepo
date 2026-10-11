@@ -1575,21 +1575,13 @@ body[data-page="about"] {
 
 .work-column--about .work-group {
   width: 100%;
-  max-width: 340px;
-  margin-inline: auto;
 }
 
-/* The divider above About matches the text column, not the full width. */
-.work-column--about .work-column-rule {
-  max-width: 340px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Single centred column: each label sits over its copy. */
+/* Two columns at the project list's width: the label (About, Interests) on
+   the left, its copy on the right. Stacks at 768px and below. */
 .work-column--about .work-row--about {
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 10px;
+  grid-template-columns: 108px minmax(0, 1fr);
+  column-gap: 72px;
   align-items: start;
 }
 
@@ -1659,7 +1651,7 @@ body[data-page="about"] {
    panel's height and switching never jumps the page. The outgoing panel blurs
    out while the incoming one blurs in; its photos then rise in one by one. */
 .hobby-tabs {
-  margin-top: 4em;
+  margin-top: 0;
 }
 
 .hobby-tablist {
@@ -1746,13 +1738,13 @@ body[data-page="about"] {
   to { opacity: 0; filter: blur(16px); }
 }
 
-/* Wider than the 340px text column (~469px), overhanging both sides
-   equally; the cards overlap rather than leaving gaps. */
+/* The full width of the copy column; the cards overlap rather than leaving
+   gaps. */
 .hobby-photos {
   display: flex;
   align-items: center;
-  width: 138%;
-  margin: 3em -19% 2em;
+  width: 100%;
+  margin: 2em 0 0;
 }
 
 @media (max-width: 768px) {
@@ -1883,8 +1875,8 @@ body[data-page="about"] {
   display: flex;
   justify-content: center;
   gap: 14px;
-  width: 138%;
-  margin: 3em -19% 2em;
+  width: 100%;
+  margin: 2em 0 0;
 }
 
 @media (max-width: 768px) {
@@ -2007,8 +1999,8 @@ body[data-page="about"] {
   display: flex;
   justify-content: center;
   gap: 20px;
-  width: 138%;
-  margin: 3em -19% 2em;
+  width: 100%;
+  margin: 2em 0 0;
 }
 
 @media (max-width: 768px) {
@@ -2156,6 +2148,20 @@ body[data-page="about"] {
   .hobby-record:hover .hobby-record-vinyl { animation: none; }
   .hobby-record-sleeve,
   .hobby-record-vinyl { transition: none; }
+}
+
+/* On desktop the tray spans both columns: it reaches back under the label
+   (108px column + 72px gap) to the left edge of the section. */
+@media (min-width: 769px) {
+  .work-column--about .hobby-photos,
+  .work-column--about .hobby-books,
+  .work-column--about .hobby-records {
+    width: calc(100% + 180px);
+    margin-left: -180px;
+    /* Wider side padding scales the cards inside down ~10%. */
+    padding-left: 48px;
+    padding-right: 48px;
+  }
 }
 
 /* Each tab's media sits in a very light grey tray. */
