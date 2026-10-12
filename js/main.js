@@ -1038,6 +1038,29 @@ function initHobbyTabs() {
 // card leans toward the cursor and a soft shine follows it. Mouse only — a tap
 // has nothing to track. Delegated, since project-nav.js builds the polaroids
 // after load; each card is wired up the first time the pointer reaches it.
+// Music notes that drift off each record's disc while it's hovered, three
+// above and three below (CSS does the motion), staggered so they never move
+// in step.
+function initRecordNotes() {
+  const GLYPHS = ['\u266A', '\u266B', '\u266A'];
+  document.querySelectorAll('.hobby-record-stage').forEach((stage) => {
+    // One cluster rises off the top of the disc, one sinks off the bottom.
+    ['top', 'bottom'].forEach((side) => {
+      const notes = document.createElement('span');
+      notes.className = `hobby-record-notes hobby-record-notes--${side}`;
+      notes.setAttribute('aria-hidden', 'true');
+      GLYPHS.forEach((glyph, i) => {
+        const note = document.createElement('span');
+        note.className = 'hobby-record-note';
+        note.style.setProperty('--n', i);
+        note.textContent = glyph;
+        notes.append(note);
+      });
+      stage.append(notes);
+    });
+  });
+}
+
 function initHobbyCardTilt() {
   if (prefersReducedMotion()) return;
   const MAX_TILT = 10; // degrees at the card's edge
@@ -1072,6 +1095,7 @@ function initHobbyCardTilt() {
 initThemeSwitcher();
 initHobbyTabs();
 initHobbyCardTilt();
+initRecordNotes();
 initExperienceHoverSound();
 initSmoothScroll();
 initSmoothWheel();
