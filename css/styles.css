@@ -1195,6 +1195,22 @@ html[data-theme="dark"] .theme-swatch {
   flex-shrink: 0;
 }
 
+/* Hairline between the corner icons (LinkedIn | theme). Hidden on phones,
+   where each icon sits in its own pill. */
+.nav-divider {
+  width: 1px;
+  height: 16px;
+  margin: 0 2px;
+  background: currentColor;
+  color: var(--nav-text-inactive);
+  opacity: 0.35;
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .nav-divider { display: none; }
+}
+
 @keyframes navTapPop {
   0% { transform: scale(1); }
   40% { transform: scale(1.28); }
@@ -3929,7 +3945,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
   .pc-back-company,
   .pc-back-sep,
-  .pc-back-title {
+  .pc-back-title,
+  .pc-back-logo {
     display: none;
   }
 
