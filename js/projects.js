@@ -225,3 +225,11 @@ window.PROJECTS['design-systems'].teamMembers = SAP_TEAM;
 Object.values(window.PROJECTS).forEach((project) => {
   if (!project.teamMembers) project.teamMembers = CORE_TEAM;
 });
+
+// Company marks, shown on the home page's hover preview and in the project
+// pages' top-left breadcrumb. Root-relative so they resolve from any page.
+window.COMPANY_LOGOS = {
+  Miro: '/images/miro-icon.png',
+  Cashbook: '/images/cashbook-icon.png',
+  SAP: '/images/sap-icon.png?v=2',
+};
