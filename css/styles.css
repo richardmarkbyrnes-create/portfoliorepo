@@ -6577,6 +6577,13 @@ body.page-is-leaving .top-blur {
   clip-path: inset(0 0 calc(1.76% + 2px) 0);
 }
 
+/* The rule above outranks the plain hover shrink (same specificity, later in
+   the file), so the dark portrait needs its own: the 0.78 shrink on top of
+   the 1.03 horizontal correction. */
+[data-theme="dark"] .about-line-art-image:hover {
+  scale: calc(1.03 * 0.78) 0.78;
+}
+
 [data-theme="dark"] .about-line-art-dog--berner {
   -webkit-mask-image: url('../images/dog-line-art-dark.png?v=3');
   mask-image: url('../images/dog-line-art-dark.png?v=3');
