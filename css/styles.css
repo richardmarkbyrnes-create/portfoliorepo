@@ -3408,6 +3408,17 @@ body[data-project="design-systems"] {
   opacity: 0.5;
 }
 
+/* On the dark canvas 0.3 is too faint to read, so the company matches the
+   project title. */
+[data-theme="dark"] .pc-back-company {
+  opacity: 0.5;
+}
+
+/* The next-project pill reads as text alone; its chevron is hidden. */
+.pc-next-pill > svg {
+  display: none;
+}
+
 .pc-next {
   position: fixed;
   bottom: var(--nav-offset);
@@ -3716,6 +3727,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-shortcuts-row {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -3723,7 +3735,9 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 22px;
+  /* One width for every key, so the labels before them line up. */
+  min-width: 30px;
+  box-sizing: border-box;
   height: 20px;
   padding: 0 5px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
@@ -3738,7 +3752,6 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Keys stay in a column on the left; the label is pushed over so the wording
    finishes flush with the panel's right edge. */
 .pc-shortcuts-label {
-  margin-left: auto;
   font-family: var(--sans);
   text-align: right;
   font-size: 11px;

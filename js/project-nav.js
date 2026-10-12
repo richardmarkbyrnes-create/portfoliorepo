@@ -718,18 +718,19 @@
     SHORTCUTS.forEach((shortcut) => {
       // The last project has nowhere to go next, so don't advertise it.
       if (shortcut.label === 'Next project' && !hasNext) return;
+      // Label first, then its key, so the keys line up down the right edge.
       const row = document.createElement('span');
       row.className = 'pc-shortcuts-row';
+      const label = document.createElement('span');
+      label.className = 'pc-shortcuts-label';
+      label.textContent = shortcut.label;
+      row.appendChild(label);
       shortcut.keys.forEach((key) => {
         const kbd = document.createElement('kbd');
         kbd.className = 'pc-shortcuts-key';
         kbd.textContent = key;
         row.appendChild(kbd);
       });
-      const label = document.createElement('span');
-      label.className = 'pc-shortcuts-label';
-      label.textContent = shortcut.label;
-      row.appendChild(label);
       panel.appendChild(row);
     });
 
