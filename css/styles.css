@@ -2279,6 +2279,21 @@ body[data-page="about"] {
   border-radius: 6px;
 }
 
+/* Themed cursors over each tab's photos: a plane for Travel, a football for
+   Football, a paw print for Animals. Emoji drawn into a 32px SVG, hotspot in
+   the centre; falls back to the pointer where custom cursors aren't drawn. */
+#hobby-panel-travel .hobby-photo {
+  cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%3E%3Ctext%20x='16'%20y='25'%20font-size='24'%20text-anchor='middle'%3E%E2%9C%88%EF%B8%8F%3C/text%3E%3C/svg%3E") 16 16, pointer;
+}
+
+#hobby-panel-football .hobby-photo {
+  cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%3E%3Ctext%20x='16'%20y='25'%20font-size='24'%20text-anchor='middle'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E") 16 16, pointer;
+}
+
+#hobby-panel-animals .hobby-photo {
+  cursor: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='32'%20height='32'%20viewBox='0%200%2032%2032'%3E%3Ctext%20x='16'%20y='25'%20font-size='24'%20text-anchor='middle'%3E%F0%9F%90%BE%3C/text%3E%3C/svg%3E") 16 16, pointer;
+}
+
 /* Each tab's media sits in a very light grey tray. */
 .hobby-photos,
 .hobby-books,
