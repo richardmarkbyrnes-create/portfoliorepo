@@ -6508,6 +6508,11 @@ body.page-is-leaving .top-blur {
   filter: none;
 }
 
+/* Little Richard's polaroid runs a size up from the dogs'. */
+#richard-photo-popover .dog-photo-polaroid {
+  width: min(160px, 38vw);
+}
+
 #eddie-photo-popover {
   transform: translate(-50%, -50%) scale(0.78) rotate(-15deg);
 }
