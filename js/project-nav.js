@@ -170,6 +170,18 @@
     if (backTitle) backTitle.textContent = project.title;
     const backCompany = document.getElementById('pc-back-company');
     if (backCompany) backCompany.textContent = project.company;
+    // The company's logo leads the breadcrumb, just after the chevron.
+    const logoSrc = window.COMPANY_LOGOS?.[project.company];
+    const backLink = document.getElementById('project-back');
+    if (logoSrc && backLink && !backLink.querySelector('.pc-back-logo')) {
+      const logo = document.createElement('img');
+      logo.className = 'company-logo pc-back-logo';
+      logo.src = logoSrc;
+      logo.alt = '';
+      logo.width = 160;
+      logo.height = 160;
+      backLink.insertBefore(logo, backCompany || backLink.firstChild);
+    }
     const centerTitle = document.getElementById('pc-title-center');
     if (centerTitle) centerTitle.textContent = project.title;
 
