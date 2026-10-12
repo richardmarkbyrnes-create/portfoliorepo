@@ -1,3 +1,51 @@
+// Quote reveal: the quote's words start light grey and darken one by one as
+// it scrolls up through the screen, all dark by the time it reaches the upper
+// third (or the end of the page, whichever comes first). Reduced motion shows it fully dark from the start.
+function initQuoteReveal(el) {
+  const words = el.textContent.split(/(\s+)/);
+  el.textContent = '';
+  const spans = [];
+  words.forEach((part) => {
+    if (/^\s+$/.test(part)) {
+      el.append(part);
+    } else if (part) {
+      const span = document.createElement('span');
+      span.className = 'pc-quote-word';
+      span.textContent = part;
+      el.append(span);
+      spans.push(span);
+    }
+  });
+  el.classList.add('is-revealing');
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    spans.forEach((s) => s.classList.add('is-lit'));
+    return;
+  }
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const rect = el.getBoundingClientRect();
+    const vh = window.innerHeight;
+    const y = window.scrollY;
+    const top = rect.top + y;
+    const maxScroll = document.documentElement.scrollHeight - vh;
+    // Starts as the quote's top enters 85% down the screen; finishes when its
+    // bottom reaches 35% down — or at the end of the page, if it's too near
+    // the bottom to ever get that high.
+    const startY = top - vh * 0.85;
+    const endY = Math.min(top + rect.height - vh * 0.35, maxScroll);
+    const progress = endY <= startY ? 1 : Math.min(1, Math.max(0, (y - startY) / (endY - startY)));
+    const lit = Math.round(progress * spans.length);
+    spans.forEach((s, i) => s.classList.toggle('is-lit', i < lit));
+  };
+  const onScroll = () => {
+    if (!queued) { queued = true; requestAnimationFrame(update); }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
 (function () {
   const PROJECT_TRANSITION_MS = 320;
   const LEAVE_KEY = 'portfolio-project-leave';
@@ -390,7 +438,10 @@
     const quoteText = document.getElementById('pc-quote-text');
     const quoteBy = document.getElementById('pc-quote-by');
     if (project.quote) {
-      if (quoteText) quoteText.textContent = `“${project.quote}”`;
+      if (quoteText) {
+        quoteText.textContent = `“${project.quote}”`;
+        initQuoteReveal(quoteText);
+      }
       if (quoteBy && project.quoteBy) quoteBy.textContent = `— ${project.quoteBy}`;
     } else {
       // No quote for this project — hide the quote block and the rules that bracket
@@ -652,9 +703,12 @@
         // Dock the pill to the bottom of the screen once the user scrolls into the
         // last 20% of the page (CSS handles the magnetic slide-in).
         const updatePillDock = () => {
-          const reached = window.scrollY + window.innerHeight
-            >= document.documentElement.scrollHeight * 0.8;
-          nextPill.classList.toggle('is-docked', reached);
+          const bottom = window.scrollY + window.innerHeight;
+          const height = document.documentElement.scrollHeight;
+          nextPill.classList.toggle('is-docked', bottom >= height * 0.8);
+          // At the very end of the page a gradient sweeps once round its border
+          // (CSS). Leaving the end resets it, so arriving again replays it.
+          nextPill.classList.toggle('is-at-end', bottom >= height - 4);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });
         window.addEventListener('resize', updatePillDock);
