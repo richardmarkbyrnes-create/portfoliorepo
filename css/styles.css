@@ -4519,6 +4519,110 @@ body[data-page="project"] .pc-next-pill.is-docked {
   to { opacity: 1; transform: translate(-50%, -50%) rotate(var(--r, 0deg)) scale(1); }
 }
 
+/* A looping screen recording above the event photos: a muted, autoplaying
+   video standing in for a gif (a fraction of the bytes). Rounder than the
+   detail shot above it, framed the same way, and masked out toward the
+   bottom so the whole frame, border included, dissolves into the page in
+   either theme. */
+.pc-loop {
+  width: 100%;
+  max-width: calc(100vw - 64px);
+  align-self: center;
+  margin: 0 0 48px;
+  overflow: hidden;
+  border: 2px solid var(--frame-border);
+  border-radius: 24px;
+  background: var(--surface);
+  line-height: 0;
+  -webkit-mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 66%, transparent 100%);
+}
+
+/* On the dark theme the bright recording faded into a grey band, so it keeps
+   its full frame there instead. */
+[data-theme="dark"] .pc-loop {
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+
+.pc-loop video {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Quote reveal (project-nav.js initQuoteReveal): each word starts faint and
+   darkens as the quote scrolls up the screen. */
+.pc-quote-text.is-revealing .pc-quote-word {
+  color: color-mix(in srgb, var(--text-body) 22%, transparent);
+  transition: color 0.35s ease;
+}
+
+.pc-quote-text.is-revealing .pc-quote-word.is-lit {
+  color: var(--text-body);
+}
+
+/* End-of-page swoop on the next-project pill: a gradient arc glides round its
+   border when the reader reaches the very bottom. A ring-masked
+   pseudo-element carries a conic gradient whose angle is animated. */
+@property --swoop {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+body[data-page="project"] .pc-next-pill::before {
+  content: "";
+  position: absolute;
+  inset: -1.5px;
+  padding: 1.5px;
+  border-radius: inherit;
+  /* In the next project's ink, the same colour its bottom hover glow uses:
+     a long soft tail building to a bright head. */
+  background: conic-gradient(
+    from var(--swoop),
+    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 0deg,
+    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 150deg,
+    color-mix(in srgb, var(--next-ink, var(--text)) 35%, transparent) 260deg,
+    var(--next-ink, var(--text)) 340deg,
+    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Light theme: the ink is lifted toward white for a pastel arc. Dark keeps
+   the full-strength ink, which already reads softly against the dark page. */
+html:not([data-theme="dark"]) body[data-page="project"] .pc-next-pill::before {
+  --swoop-ink: color-mix(in srgb, var(--next-ink, var(--text)) 50%, #ffffff);
+  background: conic-gradient(
+    from var(--swoop),
+    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 0deg,
+    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 150deg,
+    color-mix(in srgb, var(--swoop-ink) 45%, transparent) 260deg,
+    var(--swoop-ink) 340deg,
+    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 360deg
+  );
+}
+
+body[data-page="project"] .pc-next-pill.is-at-end::before {
+  animation: pc-next-swoop 2.8s cubic-bezier(0.37, 0, 0.18, 1) both;
+}
+
+@keyframes pc-next-swoop {
+  0% { --swoop: 0deg; opacity: 0; }
+  20% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { --swoop: 420deg; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="project"] .pc-next-pill.is-at-end::before { animation: none; }
+}
+
 /* Standalone polaroid photos above the quote divider */
 .pc-polaroids {
   align-self: center;
