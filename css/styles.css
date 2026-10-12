@@ -2254,6 +2254,17 @@ body[data-page="about"] {
   width: 20px;
   height: 20px;
   border-radius: 6px;
+  transition: scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Hovering the breadcrumb settles the logo a touch smaller. */
+.pc-back:hover .pc-back-logo,
+.pc-back:focus-visible .pc-back-logo {
+  scale: 0.9;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-back-logo { transition: none; }
 }
 
 /* Themed cursors over each tab's photos: a plane for Travel, a football for
@@ -4594,10 +4605,15 @@ body[data-page="project"] .pc-next-pill::before {
   pointer-events: none;
 }
 
-/* Light theme: the ink is lifted toward white for a pastel arc. Dark keeps
+/* Light theme: the ink becomes a pastel of itself for a softer arc. Dark keeps
    the full-strength ink, which already reads softly against the dark page. */
 html:not([data-theme="dark"]) body[data-page="project"] .pc-next-pill::before {
-  --swoop-ink: color-mix(in srgb, var(--next-ink, var(--text)) 50%, #ffffff);
+  /* Mixing with white in sRGB greyed the inks (dusty, not pastel), so the
+     pastel is built in OKLCH: the ink's own hue, pushed light with a little
+     chroma kept. The color-mix line is the fallback where relative colour
+     isn't supported. */
+  --swoop-ink: color-mix(in oklch, var(--next-ink, var(--text)) 40%, #ffffff);
+  --swoop-ink: oklch(from var(--next-ink, var(--text)) 0.84 0.11 h);
   background: conic-gradient(
     from var(--swoop),
     color-mix(in srgb, var(--swoop-ink) 0%, transparent) 0deg,
