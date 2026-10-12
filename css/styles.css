@@ -2238,39 +2238,16 @@ body[data-page="about"] {
   .hobby-record-vinyl { transition: none; }
 }
 
-/* Company logos: framed in white with a soft shadow, like the hobby cards.
-   One hangs off the corner of the home page's hover preview, one leads the
-   project pages' breadcrumb. */
-.company-logo,
-.project-preview-logo {
+/* Company logo: framed in white with a soft shadow, like the hobby cards.
+   It leads the project pages' breadcrumb. */
+.company-logo {
   display: block;
   border: 2px solid #fff;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07), 0 1px 1px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
 }
 
-[data-theme="dark"] .company-logo,
-[data-theme="dark"] .project-preview-logo { border-color: var(--surface); }
-
-/* Compound selector on purpose: the frame's own rule further down sets
-   overflow: hidden, and a single class here would lose to it. */
-.project-preview .project-preview-frame {
-  position: relative;
-  overflow: visible;
-}
-
-/* Hangs off the frame's top-left corner, half in and half out. */
-.project-preview-logo {
-  position: absolute;
-  top: -11px;
-  left: -11px;
-  z-index: 1;
-  width: 26px;
-  height: 26px;
-  border-radius: 8px;
-}
-
-.project-preview-logo[hidden] { display: none; }
+[data-theme="dark"] .company-logo { border-color: var(--surface); }
 
 .pc-back-logo {
   flex-shrink: 0;
@@ -2595,7 +2572,7 @@ body[data-page="home"] .page {
   display: block;
   /* Fills the hero column rather than measuring itself — the shell above already
      caps the line length. */
-  max-width: 100%;
+  max-width: 450px;
   /* Paragraphs now, so the UA's bottom margin has to go. */
   margin-bottom: 0;
   font-family: var(--sans);

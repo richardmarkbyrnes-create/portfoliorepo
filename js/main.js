@@ -487,18 +487,7 @@ function initProjectPreview() {
     }
   }
 
-  // The company's logo, pinned in a corner of the frame.
-  const logo = preview.querySelector('.project-preview-logo');
-  function showLogo(row) {
-    if (!logo) return;
-    const company = projects[row.dataset.project]?.company;
-    const src = window.COMPANY_LOGOS?.[company];
-    logo.hidden = !src;
-    if (src && logo.getAttribute('src') !== src) logo.src = src;
-  }
-
   function show(row, src) {
-    showLogo(row);
     if (src !== shown) {
       shown = src;
       image.src = src;
