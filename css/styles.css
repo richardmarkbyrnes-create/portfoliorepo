@@ -3857,9 +3857,17 @@ body[data-page="project"] .pc-next-pill.is-docked {
   }
 
   /* It wears the button the hamburger had, since it has taken its place: the
-     same 48px glass pill, matched to what .pc-menu-btn was. */
+     same 48px glass pill, matched to what .pc-menu-btn was. The LinkedIn link
+     beside it wears the same pill, a little apart. */
+  body[data-page="home"] .nav-primary .nav-inner,
+  body[data-page="project"] .nav-primary .nav-inner {
+    gap: 8px;
+  }
+
   body[data-page="home"] .theme-toggle,
-  body[data-page="project"] .theme-toggle {
+  body[data-page="project"] .theme-toggle,
+  body[data-page="home"] .nav-linkedin,
+  body[data-page="project"] .nav-linkedin {
     width: var(--nav-toolbar-height);
     height: var(--nav-toolbar-height);
     border-radius: 16px;
