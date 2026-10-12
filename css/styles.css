@@ -2130,6 +2130,78 @@ body[data-page="about"] {
 .hobby-record:first-child:hover .hobby-record-vinyl { translate: -60% 0; }
 .hobby-record:first-child:hover .hobby-record-sleeve { rotate: 3deg; }
 
+/* Music notes beside the slid-out disc on hover: one cluster rises off its
+   top, one sinks off its bottom (--dir flips the travel). They sit just past
+   the disc's far edge (mirrored for the first record, whose disc opens left),
+   and each loops: fades in, drifts away with a slight sway, and dissolves.
+   Staggered by --n, the bottom cluster offset from the top. */
+.hobby-record-notes {
+  --dir: 1;
+  position: absolute;
+  top: 4%;
+  left: calc(100% + 54%);
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.hobby-record-notes--bottom {
+  --dir: -1;
+  --offset: 0.53s;
+  top: auto;
+  bottom: 4%;
+}
+
+.hobby-record:first-child .hobby-record-notes {
+  left: auto;
+  right: calc(100% + 54%);
+}
+
+.hobby-record-note {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--sans);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+}
+
+.hobby-record-notes--bottom .hobby-record-note { top: auto; bottom: 0; }
+.hobby-record:first-child .hobby-record-note { left: auto; right: 0; }
+
+.hobby-record:hover .hobby-record-note {
+  animation: hobby-record-note 3.2s cubic-bezier(0.33, 0, 0.2, 1) infinite;
+  animation-delay: calc(0.25s + var(--offset, 0s) + var(--n) * 1.07s);
+}
+
+.hobby-record-note:nth-child(2) { font-size: 15px; }
+.hobby-record-note:nth-child(3) { font-size: 13px; }
+
+@keyframes hobby-record-note {
+  0% { opacity: 0; translate: 0 calc(var(--dir) * 18px); rotate: -12deg; scale: 0.7; filter: blur(2px); }
+  18% { opacity: 1; filter: blur(0); }
+  50% { translate: 8px calc(var(--dir) * -8px); rotate: 8deg; }
+  100% { opacity: 0; translate: -2px calc(var(--dir) * -40px); rotate: -6deg; scale: 1.05; filter: blur(3px); }
+}
+
+.hobby-record:first-child:hover .hobby-record-note {
+  animation-name: hobby-record-note-left;
+}
+
+@keyframes hobby-record-note-left {
+  0% { opacity: 0; translate: 0 calc(var(--dir) * 18px); rotate: 12deg; scale: 0.7; filter: blur(2px); }
+  18% { opacity: 1; filter: blur(0); }
+  50% { translate: -8px calc(var(--dir) * -8px); rotate: -8deg; }
+  100% { opacity: 0; translate: 2px calc(var(--dir) * -40px); rotate: 6deg; scale: 1.05; filter: blur(3px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-record:hover .hobby-record-note { animation: none; }
+}
+
 @keyframes hobby-record-spin {
   to { rotate: 360deg; }
 }
