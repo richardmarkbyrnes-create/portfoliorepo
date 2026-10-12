@@ -23,7 +23,7 @@ function cycleTheme() {
   applyTheme(THEMES[nextIndex].id);
 }
 
-// The new theme blooms out as a circle from `origin` (the toggle), the same
+// The new theme blooms down as a circle from the top centre of the screen, the same
 // reveal the hobby photos used for their colour. A view transition snapshots
 // the old page; the live new page is clipped to a growing circle over it.
 function cycleThemeWithReveal(origin) {
@@ -32,9 +32,9 @@ function cycleThemeWithReveal(origin) {
     return;
   }
 
-  const rect = origin.getBoundingClientRect();
-  const x = rect.left + rect.width / 2;
-  const y = rect.top + rect.height / 2;
+  // Blooms from the top centre of the screen, whichever control triggered it.
+  const x = innerWidth / 2;
+  const y = 0;
   // Far enough to reach the farthest corner of the viewport.
   const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 
@@ -43,7 +43,7 @@ function cycleThemeWithReveal(origin) {
   const transition = document.startViewTransition(cycleTheme);
   transition.ready.then(() => {
     // A soft-edged circle: a radial-gradient mask, solid to 60% of its radius
-    // then fading out, grown by animating mask-size around the toggle. Sized so
+    // then fading out, grown by animating mask-size around its origin. Sized so
     // the solid core alone covers the farthest corner by the end.
     const SOLID = 0.6;
     const size = (2 * radius) / SOLID;
