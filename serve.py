@@ -261,9 +261,27 @@ class DeckHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(body)
 
+    def _same_origin(self):
+        """Only this server's own pages may write. Without this, any site open
+        in the browser while the dev server runs could POST here: a JSON body
+        sent as text/plain is a "simple" cross-origin request with no preflight.
+        The Host check also defeats DNS rebinding, where a hostile domain is
+        re-pointed at 127.0.0.1 so its requests look same-origin."""
+        port = self.server.server_address[1]
+        allowed = {f'localhost:{port}', f'127.0.0.1:{port}'}
+        host = self.headers.get('Host', '')
+        origin = self.headers.get('Origin', '')
+        content_type = self.headers.get('Content-Type', '').split(';')[0].strip()
+        return (host in allowed
+                and origin in {f'http://{h}' for h in allowed}
+                and content_type == 'application/json')
+
     def do_POST(self):
         if self.path.split('?')[0] != '/__edit':
             self._json(404, {'ok': False, 'error': 'unknown endpoint'})
+            return
+        if not self._same_origin():
+            self._json(403, {'ok': False, 'error': 'edits are only accepted from this dev server'})
             return
         try:
             length = int(self.headers.get('Content-Length') or 0)
