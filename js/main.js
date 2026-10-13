@@ -629,16 +629,31 @@ function initScrollAnimations() {
         const reveal = () => entry.target.classList.add('is-in-view');
         if (cascadeDone) reveal();
         else afterCascade.push(reveal);
-        // Spend the illustration's once-per-session flag at the moment it plays,
-        // not on page load — it lives below the fold, and someone who never
-        // scrolls this far hasn't seen it yet.
+        // Spend the illustration's once-per-session flag at the moment it plays.
         if (entry.target.classList.contains('home-about-intro')) markLineArtPlayed();
       });
     },
     { threshold: 0.18, rootMargin: '0px 0px -6% 0px' }
   );
 
-  roots.forEach((root) => observer.observe(root));
+  // The about illustration is part of the home page's load sequence rather
+  // than a scroll reveal: it plays as soon as the project list has finished
+  // arriving, whether or not it's on screen yet.
+  const aboutIntro = lastGroup ? document.querySelector('.home-about-intro') : null;
+  if (aboutIntro) {
+    // The headline inside it is its own reveal root; it plays with the section.
+    const aboutRoots = [aboutIntro, ...aboutIntro.querySelectorAll('.animate-on-scroll-root')];
+    const play = () => {
+      aboutRoots.forEach((root) => root.classList.add('is-in-view'));
+      markLineArtPlayed();
+    };
+    if (cascadeDone) play();
+    else afterCascade.push(play);
+  }
+
+  roots.forEach((root) => {
+    if (!aboutIntro || !aboutIntro.contains(root)) observer.observe(root);
+  });
 }
 
 function initBottomBlurVisibility() {
