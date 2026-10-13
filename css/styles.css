@@ -4907,7 +4907,18 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
 
 .pc-lead-stickers img:hover {
   rotate: calc(var(--r, 0deg) + 8deg);
-  z-index: 1;
+  z-index: 3;
+}
+
+/* The middle sticker leads: it sits over its neighbours, which are a
+   touch smaller (60px against its 72px). */
+.pc-lead-stickers img:nth-child(2) {
+  z-index: 2;
+}
+
+.pc-lead-stickers img:nth-child(1),
+.pc-lead-stickers img:nth-child(3) {
+  width: 60px;
 }
 
 @media (prefers-reduced-motion: reduce) {
