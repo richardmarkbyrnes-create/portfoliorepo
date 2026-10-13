@@ -4802,6 +4802,76 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
   br.br-desktop { display: none; }
 }
 
+/* Learning section under the quote: a sketched gif, the "Learning" eyebrow
+   over a serif title, and a short paragraph. The gif is drawn in blue on
+   white; it's turned to grey-black line work and multiplied onto the page so
+   its white ground disappears. On dark it's inverted to white lines and
+   screened on, so the black ground vanishes the same way. */
+.pc-learning-rule {
+  margin: 80px 0 56px;
+}
+
+.pc-learning {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pc-learning-media {
+  width: min(360px, 80%);
+  line-height: 0;
+}
+
+/* The gif keeps its own blue line work. Light mode lifts its off-white ground
+   to pure white so it sits flush on the page. Dark mode inverts it (blue
+   lines on a dark ground), hue-rotates back to blue, and eases contrast so
+   the ground lands on the page's near-black rather than pure black. The
+   fade-up lives on the wrapper, since .animate-in's animation fills
+   `forwards` and would own the gif's `filter`. */
+.pc-learning-gif {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: brightness(1.06);
+}
+
+[data-theme="dark"] .pc-learning-gif {
+  filter: brightness(1.06) invert(1) hue-rotate(180deg) contrast(0.835);
+}
+
+/* The full-colour gif runs 30% smaller than the line-art one (360px). */
+.pc-learning-media--photo {
+  width: min(252px, 70%);
+}
+
+/* A full-colour gif (a scene, not line work on white) shows as-is, framed
+   like the site's other images: white border, rounded corners. The frame is
+   on the img itself, since the .animate-in wrapper forces overflow: visible
+   and so can't clip rounded corners. */
+.pc-learning-photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  box-sizing: border-box;
+  border: 4px solid #fff;
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+}
+
+[data-theme="dark"] .pc-learning-photo { border-color: var(--surface); }
+
+/* Compound selector on purpose: .pc-sketch-caption, further down the file,
+   sets its own margin and would win a single-class tie. */
+.pc-sketch-caption.pc-learning-title {
+  margin-top: 36px;
+}
+
+.pc-learning-desc {
+  margin-bottom: 0;
+  text-align: center;
+}
+
 /* Standalone polaroid photos above the quote divider */
 .pc-polaroids {
   align-self: center;
