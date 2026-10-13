@@ -4807,8 +4807,10 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
    white; it's turned to grey-black line work and multiplied onto the page so
    its white ground disappears. On dark it's inverted to white lines and
    screened on, so the black ground vanishes the same way. */
-.pc-learning-rule {
-  margin: 80px 0 56px;
+/* Compound selector on purpose: .pc-rule, further down the file, sets
+   margin: 0 0 80px and would win a single-class tie. */
+.pc-rule.pc-learning-rule {
+  margin: 80px 0 28px;
 }
 
 .pc-learning {
