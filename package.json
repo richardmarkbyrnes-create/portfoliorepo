@@ -1,7 +1,0 @@
-{
-  "name": "portfolio",
-  "private": true,
-  "scripts": {
-    "dev": "python3 serve.py"
-  }
-}
