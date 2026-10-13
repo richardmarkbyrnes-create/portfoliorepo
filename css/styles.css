@@ -7769,6 +7769,28 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog 
   opacity: 1;
 }
 
+/* Still waits its turn, though: until the section is revealed (which on load
+   waits for the project list's cascade) the finished drawing stays hidden,
+   then fades straight in rather than drawing itself again. */
+html.line-art-seen .home-about-intro.animate-on-scroll-root:not(.is-in-view) .about-line-art-image,
+html.line-art-seen .home-about-intro.animate-on-scroll-root:not(.is-in-view) .about-line-art-dog {
+  opacity: 0;
+}
+
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-image {
+  transition:
+    background-color 0.3s ease,
+    opacity 0.6s ease,
+    scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog {
+  transition:
+    background-color 0.3s ease,
+    opacity 0.6s ease,
+    scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-image {
   transform: none;
   filter: none;
