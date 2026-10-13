@@ -14,6 +14,10 @@
 
   const LINKEDIN_URL = 'https://www.linkedin.com/in/richard-byrnes-/';
 
+  const EMAIL = 'richardmarkbyrnes@gmail.com';
+
+  const MAIL_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"></path></svg>`;
+
   const NAV_INTRO_KEY = 'portfolio-nav-intro-played';
 
   function getStoredTheme() {
@@ -45,6 +49,59 @@
     if (primary) primary.classList.add('nav-intro');
   }
 
+  // Contact: an envelope that opens a small glass menu with LinkedIn and
+  // email. Hover opens it on a pointer; a click or tap toggles it everywhere
+  // else (and for keyboards), closing on Escape or a click outside.
+  function renderContact() {
+    return `
+      <div class="nav-contact" id="nav-contact">
+        <button class="nav-icon-btn nav-contact-btn" id="nav-contact-btn" type="button" aria-label="Contact" aria-haspopup="true" aria-expanded="false" aria-controls="nav-contact-menu">
+          ${MAIL_ICON}
+        </button>
+        <div class="nav-contact-menu" id="nav-contact-menu">
+          <div class="nav-contact-panel">
+            <a class="nav-contact-item" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
+              ${LINKEDIN_ICON}<span>LinkedIn</span>
+            </a>
+            <a class="nav-contact-item" href="mailto:${EMAIL}" aria-label="Email me at ${EMAIL}">
+              ${MAIL_ICON}<span>Email me</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  function initContact() {
+    const wrap = document.getElementById('nav-contact');
+    const btn = document.getElementById('nav-contact-btn');
+    if (!wrap || !btn) return;
+    const setOpen = (open) => {
+      wrap.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', (event) => {
+      event.stopPropagation();
+      setOpen(!wrap.classList.contains('is-open'));
+    });
+    document.addEventListener('click', (event) => {
+      if (!wrap.contains(event.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && wrap.classList.contains('is-open')) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+    // Hover state mirrors into aria-expanded for assistive tech.
+    if (window.matchMedia('(hover: hover)').matches) {
+      wrap.addEventListener('pointerenter', () => btn.setAttribute('aria-expanded', 'true'));
+      wrap.addEventListener('pointerleave', () => {
+        if (!wrap.classList.contains('is-open')) btn.setAttribute('aria-expanded', 'false');
+      });
+    }
+  }
+
   function renderNav() {
     const navRoot = document.getElementById('site-nav');
     if (!navRoot) return;
@@ -52,9 +109,7 @@
     navRoot.innerHTML = `
       <div class="nav-primary">
         <div class="nav-inner">
-          <a class="nav-icon-btn nav-linkedin" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn (opens in a new tab)">
-            ${LINKEDIN_ICON}
-          </a>
+          ${renderContact()}
           <span class="nav-divider" aria-hidden="true"></span>
           ${renderThemeSwitcher()}
         </div>
@@ -70,5 +125,6 @@
   };
 
   renderNav();
+  initContact();
   initNavIntro();
 })();
