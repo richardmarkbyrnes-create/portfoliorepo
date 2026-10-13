@@ -4807,8 +4807,10 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
    white; it's turned to grey-black line work and multiplied onto the page so
    its white ground disappears. On dark it's inverted to white lines and
    screened on, so the black ground vanishes the same way. */
-.pc-learning-rule {
-  margin: 80px 0 56px;
+/* Compound selector on purpose: .pc-rule, further down the file, sets
+   margin: 0 0 80px and would win a single-class tie. */
+.pc-rule.pc-learning-rule {
+  margin: 80px 0 28px;
 }
 
 .pc-learning {
@@ -4870,6 +4872,55 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
 .pc-learning-desc {
   margin-bottom: 0;
   text-align: center;
+}
+
+/* Generated stickers in a small overlapping cluster above the Custom
+   Stickers title: each tilted a touch and lifted with a soft drop shadow,
+   blur-fading in one after another as the title lands. */
+.pc-lead-stickers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.pc-lead-stickers img {
+  display: block;
+  width: 72px;
+  height: auto;
+  rotate: var(--r, 0deg);
+  filter: drop-shadow(0 4px 9px rgba(0, 0, 0, 0.18));
+  animation: pc-lead-sticker-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.14s);
+}
+
+.pc-lead-stickers img + img {
+  margin-left: -16px;
+}
+
+/* Hover tips a sticker a little further round, easing back on leave. The
+   entrance animation never touches `rotate`, so it's free to transition. */
+.pc-lead-stickers img {
+  position: relative;
+  transition: rotate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.pc-lead-stickers img:hover {
+  rotate: calc(var(--r, 0deg) + 8deg);
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-lead-stickers img { transition: none; }
+}
+
+@keyframes pc-lead-sticker-in {
+  from { opacity: 0; translate: 0 8px; scale: 0.9; filter: blur(8px) drop-shadow(0 4px 9px rgba(0, 0, 0, 0)); }
+  to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0) drop-shadow(0 4px 9px rgba(0, 0, 0, 0.18)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-lead-stickers img { animation: none; }
 }
 
 /* Standalone polaroid photos above the quote divider */
@@ -7798,6 +7849,14 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   body[data-page="project"] .pc-next-pill {
     width: max-content;
     max-width: calc(100% - 32px);
+    /* 20% bigger on phones: padding 10/20 -> 12/24, corners to match. */
+    padding: 12px 24px;
+    border-radius: 17px;
+  }
+
+  /* The label carries its own 13px, so it scales here: 13 -> 15.6px. */
+  body[data-page="project"] .pc-next-pill .pc-next-name {
+    font-size: 15.6px;
   }
 
   .project-hero-media {
