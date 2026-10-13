@@ -3590,6 +3590,12 @@ body[data-project="design-systems"] {
   opacity: 0.5;
 }
 
+/* Dark: the project's name reads in full white; the company stays dimmed. */
+[data-theme="dark"] .pc-back-title {
+  color: #ffffff;
+  opacity: 1;
+}
+
 /* The next-project pill reads as text alone; its chevron is hidden. */
 .pc-next-pill > svg {
   display: none;
