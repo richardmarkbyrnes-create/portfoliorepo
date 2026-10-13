@@ -36,11 +36,11 @@
         </div>
       </section>
 
-      <section class="work-column work-column--experience work-column--interactive animate-in animate-in-delay-4" aria-labelledby="work-heading">
+      <section class="work-column work-column--experience work-column--interactive" aria-labelledby="work-heading">
         <div class="work-column-inner">
           <h2 class="visually-hidden" id="work-heading">Selected work</h2>
-          <hr class="work-column-rule" aria-hidden="true">
-          <div class="work-group">
+          <hr class="work-column-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0" aria-hidden="true">
+          <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0">
             <div class="work-row">
               <h3 class="work-col work-col--company">Miro</h3>
               <a class="work-row-main" data-project="custom-stickers" href="/custom-stickers/">
@@ -71,7 +71,7 @@
             </div>
           </div>
 
-          <div class="work-group">
+          <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 6); opacity: 0">
             <div class="work-row">
               <h3 class="work-col work-col--company">Cashbook</h3>
               <a class="work-row-main" data-project="navigation" href="/navigation/">
@@ -88,7 +88,7 @@
             </div>
           </div>
 
-          <div class="work-group">
+          <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 8); opacity: 0">
             <div class="work-row">
               <h3 class="work-col work-col--company">SAP</h3>
               <a class="work-row-main" data-project="developer-tools" href="/developer-tools/">
@@ -104,7 +104,7 @@
               </a>
             </div>
           </div>
-          <hr class="work-column-rule work-column-rule--trailing" aria-hidden="true">
+          <hr class="work-column-rule work-column-rule--trailing animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 9); opacity: 0" aria-hidden="true">
         </div>
       </section>
 
@@ -268,7 +268,7 @@
   <script src="js/ascii-text-scramble.js?v=5"></script>
   <script src="js/projects.js?v=48"></script>
   <script src="js/project-nav.js?v=53"></script>
-  <script src="js/main.js?v=110"></script>
+  <script src="js/main.js?v=112"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>
