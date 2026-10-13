@@ -632,9 +632,14 @@ function initBottomBlurVisibility() {
     // project page the blur switched off hundreds of pixels before the team
     // shoutout at the foot of it had even scrolled into view, so it could never
     // pass under the blur. Roughly the blur's own visible height.
+    //
+    // Only the home page fades it out at the bottom. Project pages keep it on to
+    // the very end, under the docked next-project pill.
     const atTop = window.scrollY < 40;
-    const atBottom = maxScroll <= 0 || maxScroll - window.scrollY < 160;
-    document.body.classList.toggle('bottom-blur-visible', !atTop && !atBottom);
+    const tooShort = maxScroll <= 0;
+    const isHome = document.body.dataset.page === 'home';
+    const atBottom = isHome && maxScroll - window.scrollY < 160;
+    document.body.classList.toggle('bottom-blur-visible', !atTop && !tooShort && !atBottom);
     ticking = false;
   }
 
