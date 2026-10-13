@@ -4794,6 +4794,11 @@ body[data-page="project"] .pc-next-pill.is-at-end::before {
   body[data-page="project"] .pc-next-pill.is-at-end::before { animation: none; }
 }
 
+/* Line breaks that only hold on wider screens; phones wrap naturally. */
+@media (max-width: 640px) {
+  br.br-desktop { display: none; }
+}
+
 /* Standalone polaroid photos above the quote divider */
 .pc-polaroids {
   align-self: center;
