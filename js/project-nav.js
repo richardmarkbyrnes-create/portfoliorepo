@@ -534,7 +534,8 @@ function initQuoteReveal(el) {
       teamDivider.setAttribute('aria-hidden', 'true');
 
       // Hang the team off whichever element actually ends the section.
-      const teamAnchor = document.querySelector('.pc-stat') || teamAnchorQuote;
+      // A learning section, where a page has one, stays directly under the quote.
+      const teamAnchor = document.querySelector('.pc-learning') || document.querySelector('.pc-stat') || teamAnchorQuote;
       teamAnchor.insertAdjacentElement('afterend', teamDivider);
       teamDivider.insertAdjacentElement('afterend', team);
     }
