@@ -1305,7 +1305,6 @@ html[data-theme="dark"] .theme-swatch {
   white-space: nowrap;
   color: var(--nav-text-inactive);
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .nav-contact-item .nav-icon {
@@ -1320,8 +1319,54 @@ html[data-theme="dark"] .theme-swatch {
   outline: none;
 }
 
+/* Items inside blur-fade in one after the other as the menu opens, and
+   drop back together as it closes. */
+.nav-contact-item {
+  opacity: 0;
+  translate: 0 -4px;
+  filter: blur(4px);
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.18s ease,
+    translate 0.18s ease,
+    filter 0.18s ease;
+}
+
+.nav-contact.is-open .nav-contact-item {
+  opacity: 1;
+  translate: 0 0;
+  filter: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+    translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+    filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
+}
+
+@media (hover: hover) {
+  .nav-contact:hover .nav-contact-item,
+  .nav-contact:focus-within .nav-contact-item {
+    opacity: 1;
+    translate: 0 0;
+    filter: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+      translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+      filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
+  }
+}
+
+.nav-contact-item:nth-child(1) { --item-delay: 0.06s; }
+.nav-contact-item:nth-child(2) { --item-delay: 0.14s; }
+
 @media (prefers-reduced-motion: reduce) {
   .nav-contact-menu { transition: none; filter: none; }
+  .nav-contact-item,
+  .nav-contact.is-open .nav-contact-item { transition: background-color 0.2s ease, color 0.2s ease; filter: none; translate: none; }
 }
 
 @keyframes navTapPop {
