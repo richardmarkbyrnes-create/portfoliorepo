@@ -4639,7 +4639,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
    bottom so the whole frame, border included, dissolves into the page in
    either theme. */
 .pc-loop {
-  width: 100%;
+  /* Same width as the detail shot above it (.pc-detail). */
+  width: 115.5%;
   max-width: calc(100vw - 64px);
   align-self: center;
   margin: 0 0 48px;
@@ -5455,7 +5456,7 @@ html:not([data-theme]) .pc-divider,
 }
 
 .pc-quote {
-  max-width: 86%;
+  max-width: 76%;
   align-self: center;
   margin: 0;
   text-align: center;
@@ -5487,8 +5488,11 @@ html:not([data-theme]) .pc-divider,
   flex-direction: column;
   align-items: center;
   gap: 24px;
+  /* A definite width: shrink-wrapped, the card grid collapsed to one column. */
+  width: 100%;
+  max-width: 640px;
   margin: 0 auto;
-  max-width: 92%;
+  align-self: center;
 }
 
 .pc-team-divider {
@@ -5508,65 +5512,91 @@ html:not([data-theme]) .pc-divider,
   color: var(--text-light);
 }
 
-.pc-team-pills {
+/* The team as a row of photo cards, after the Music tab's records: each
+   card a framed square photo over the person's name
+   and, in grey beneath it, their role. All five fit on one row on desktop;
+   narrower screens wrap, with any short last row centred. */
+.pc-team-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  /* Roomier row gap than column gap — the rows read as separate lines of names */
-  gap: 14px 12px;
+  gap: 22px 20px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 0 0;
 }
 
-.pc-team-break {
-  flex-basis: 100%;
-  height: 0;
+.pc-team-card {
+  /* As wide as its photo, or its name if that's longer: names never wrap. */
+  flex: 0 0 auto;
+  min-width: 72px;
+  margin: 0;
 }
 
-/* Each member is separated from the last by a hairline. The 12px column gap plus
-   12px of left padding puts the rule midway between them. */
-.pc-team-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding-left: 12px;
-  border-left: 1px solid color-mix(in srgb, var(--text) 14%, transparent);
-  font-family: var(--sans);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-body);
-  white-space: nowrap;
+.pc-team-photo {
+  display: block;
+  width: 72px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 4px solid #fff;
+  /* Squircle: a generous radius reads as a superellipse at this size. */
+  border-radius: 34%;
+  background: var(--surface);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
-/* Nothing to divide from at the start of a row. The first two cases are static;
-   is-row-start is set by JS for rows created by a natural flex wrap. */
-.pc-team-pill:first-child,
-.pc-team-break + .pc-team-pill,
-.pc-team-pill.is-row-start {
-  padding-left: 0;
-  border-left: 0;
+[data-theme="dark"] .pc-team-photo { border-color: var(--surface); }
+
+.pc-team-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.pc-team-avatar {
-  display: inline-flex;
+/* No photo: initials on a colour of their own. */
+.pc-team-photo--initials {
+  display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  font-size: 8px;
+  font-family: var(--sans);
+  font-size: 22px;
   font-weight: 600;
-  letter-spacing: 0;
   color: #fff;
   background: hsl(var(--avatar-hue, 220), 55%, 58%);
 }
 
-.pc-team-avatar-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.pc-team-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 2px;
+  margin-top: 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.35;
+}
+
+.pc-team-name,
+.pc-team-role {
+  white-space: nowrap;
+}
+
+.pc-team-name { color: var(--text); }
+.pc-team-role { color: var(--text-light); }
+
+/* Desktop: the row reaches 20px past the text column each side, so five
+   still fit when one name runs longer than its photo. */
+@media (min-width: 769px) {
+  .pc-team-grid {
+    width: calc(100% + 40px);
+    margin: 0 -20px;
+  }
 }
 
 /* Project detail page — alternating image + description sections */
@@ -8106,7 +8136,8 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   body[data-page="project"] .pc-quote-by,
   body[data-page="project"] .pc-team-label,
-  body[data-page="project"] .pc-team-name {
+  body[data-page="project"] .pc-team-name,
+  body[data-page="project"] .pc-team-role {
     font-size: 11px;
   }
 
