@@ -2068,7 +2068,10 @@ body[data-page="about"] {
   max-width: 150px;
   aspect-ratio: 300 / 424;
   margin: 0;
-  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  /* The hover lift rides on `transform`, not `translate`: the entrance
+     animation (hobby-photo-in) owns `translate`, so a hover during it was
+     held back and then snapped up 6px the moment the entrance ended. */
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .hobby-book-pages {
@@ -2137,7 +2140,7 @@ body[data-page="about"] {
 
 /* The hovered book comes to the front, so its opening cover and sliding
    pages pass over the neighbouring book rather than under it. */
-.hobby-book:hover { translate: 0 -6px; z-index: 2; }
+.hobby-book:hover { transform: translateY(-6px); z-index: 2; }
 
 .hobby-book:hover .hobby-book-cover {
   transform: perspective(1000px) rotateY(-18deg);
