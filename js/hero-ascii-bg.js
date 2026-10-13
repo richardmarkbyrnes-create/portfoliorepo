@@ -270,9 +270,20 @@
 
     // `y` is the pre-flip grid coordinate; for the flipped section the drawn
     // distance from the visual top of the block is height - y.
-    function topFadeFactor(y, height) {
+    //
+    // The flipped band's top edge is a curve rather than a straight line: the
+    // fade starts lower toward the middle (a parabola, deepest at the centre,
+    // nothing at the edges), so the field dips like a smile.
+    function topSag(x, width) {
+      if (!flipY || !width) return 0;
+      const n = (x - width / 2) / (width / 2);
+      const depth = Math.min(viewHeight * 0.7, 150);
+      return depth * Math.max(0, 1 - n * n);
+    }
+
+    function topFadeFactor(y, height, x, width) {
       const span = TOP_FADE_ROWS * CELL;
-      const fromTop = flipY ? height - y : y;
+      const fromTop = (flipY ? height - y : y) - topSag(x, width);
       if (fromTop >= span) return 1;
       return Math.max(0, fromTop / span);
     }
@@ -356,7 +367,7 @@
         }
 
         opacity *= titleVisibilityFactor(cell.x, y, titleMask);
-        if (flipY) opacity *= topFadeFactor(y, height);
+        if (flipY) opacity *= topFadeFactor(y, height, cell.x, width);
 
         ctx.fillStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
         ctx.fillText(char, cell.x, y);
