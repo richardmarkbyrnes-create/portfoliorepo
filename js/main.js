@@ -601,12 +601,34 @@ function initScrollAnimations() {
     return;
   }
 
+  // On the home page the project list staggers in on load. A section already
+  // on screen at load (the about illustration, on a tall window) holds until
+  // the last company block has finished arriving, so the cascade carries on
+  // down the page instead of everything starting at once. Anything revealed
+  // by scrolling later plays straight away.
+  const groups = document.querySelectorAll('.work-column--experience .work-group.animate-in');
+  const lastGroup = groups[groups.length - 1];
+  let cascadeDone = !lastGroup;
+  const afterCascade = [];
+  if (lastGroup) {
+    const finish = () => {
+      if (cascadeDone) return;
+      cascadeDone = true;
+      afterCascade.splice(0).forEach((fn) => fn());
+    };
+    lastGroup.addEventListener('animationend', finish, { once: true });
+    // Fallback in case the animation never runs (hidden tab, overridden CSS).
+    window.setTimeout(finish, 4000);
+  }
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (!entry.isIntersecting) return;
-        entry.target.classList.add('is-in-view');
         observer.unobserve(entry.target);
+        const reveal = () => entry.target.classList.add('is-in-view');
+        if (cascadeDone) reveal();
+        else afterCascade.push(reveal);
         // Spend the illustration's once-per-session flag at the moment it plays,
         // not on page load — it lives below the fold, and someone who never
         // scrolls this far hasn't seen it yet.
