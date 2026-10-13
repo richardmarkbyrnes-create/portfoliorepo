@@ -4711,6 +4711,10 @@ body[data-page="project"] .pc-next-pill::before {
 /* Light theme: the ink becomes a pastel of itself for a softer arc. Dark keeps
    the full-strength ink, which already reads softly against the dark page. */
 html:not([data-theme="dark"]) body[data-page="project"] .pc-next-pill::before {
+  /* An inset of -1.5px only reaches over the pill's own border (absolute
+     insets measure from the padding edge), so on light the arc sat on the
+     white border and read as an inner line. Here it rings fully outside it. */
+  inset: calc(-1 * (var(--nav-border-width) + 1.5px));
   /* Mixing with white in sRGB greyed the inks (dusty, not pastel), so the
      pastel is built in OKLCH: the ink's own hue, pushed light with a little
      chroma kept. The color-mix line is the fallback where relative colour
