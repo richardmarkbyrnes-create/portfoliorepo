@@ -3502,9 +3502,9 @@ body[data-project="design-systems"] {
 }
 
 .pc-close:hover {
-  /* The project's own ink mixed into the glass border, so the edge firms up on
-     hover in the same colour the project's row hovers in on the home page. */
-  border-color: color-mix(in srgb, var(--project-ink, #000) 45%, var(--nav-glass-border));
+  /* The border turns solid white on hover; the icon takes the project's ink,
+     the same colour the project's row hovers in on the home page. */
+  border-color: #ffffff;
   color: var(--project-ink, var(--nav-text-active));
   transform: translateY(-1px);
   scale: 0.95;
@@ -3512,9 +3512,11 @@ body[data-project="design-systems"] {
 
 /* On the dark canvas the ink is too deep to read against the background, so it's
    lifted toward white before it's mixed into the border and the icon. */
+/* Dark: pure white would glare against the dark glass, so the border lifts
+   to a soft white instead. */
 [data-theme="dark"] .pc-close:hover {
   --project-ink-lifted: color-mix(in srgb, var(--project-ink, #fff) 45%, #ffffff);
-  border-color: color-mix(in srgb, var(--project-ink-lifted) 40%, var(--nav-glass-border));
+  border-color: rgba(255, 255, 255, 0.55);
   color: var(--project-ink-lifted);
 }
 
@@ -5529,13 +5531,13 @@ html:not([data-theme]) .pc-divider,
 .pc-team-card {
   /* As wide as its photo, or its name if that's longer: names never wrap. */
   flex: 0 0 auto;
-  min-width: 72px;
+  min-width: 62px;
   margin: 0;
 }
 
 .pc-team-photo {
   display: block;
-  width: 72px;
+  width: 62px;
   margin: 0 auto;
   aspect-ratio: 1;
   overflow: hidden;
