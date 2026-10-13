@@ -57,11 +57,11 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
-      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
-      { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg' },
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Design' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png', role: 'Engineering' },
+      { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg', role: 'Engineering' },
     ],
     images: [
       'images/automations-hero.png',
@@ -83,11 +83,11 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png' },
-      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png' },
-      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Design' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
+      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
+      { name: 'Cody Mathison', photo: 'images/team-cody.png', role: 'Engineering' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineering' },
     ],
     images: [
       'images/ask-ai-hero.png',
@@ -109,12 +109,11 @@ window.PROJECTS = {
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
     teamMembers: [
-      { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-      { name: 'Wiz', photo: 'images/team-wiz.jpg' },
-      { name: 'Frak Lopez', photo: 'images/team-frank.jpg' },
-      { break: true },
-      { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg' },
-      { name: 'Mor Sela', photo: 'images/team-mor.jpg' },
+      { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Design' },
+      { name: 'Wiz', photo: 'images/team-wiz.jpg', role: 'Product' },
+      { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineering' },
+            { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
+      { name: 'Mor Sela', photo: 'images/team-mor.jpg', role: 'Engineering' },
     ],
     images: [
       'images/canvas-insights-hero.png?v=2',
@@ -203,20 +202,20 @@ window.PROJECTS = {
 
 // Core team credited on every project page (shown as pills under the quote).
 const CORE_TEAM = [
-  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-  { name: 'Mehdi Ghaeini', photo: 'images/team-mehdi.jpg' },
-  { name: 'Ben Shih', photo: 'images/team-ben.jpg' },
-  { name: 'Iuliia Dutchak', photo: 'images/team-iuliia.jpg' },
-  { name: 'Cyan Xiao', photo: 'images/team-cyan.jpg' },
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Design' },
+  { name: 'Mehdi Ghaeini', photo: 'images/team-mehdi.jpg', role: 'Engineering' },
+  { name: 'Ben Shih', photo: 'images/team-ben.jpg', role: 'Design' },
+  { name: 'Iuliia Dutchak', photo: 'images/team-iuliia.jpg', role: 'Engineering' },
+  { name: 'Cyan Xiao', photo: 'images/team-cyan.jpg', role: 'Engineering' },
 ];
 
 // SAP (Fiori) team, shared across the two SAP projects.
 const SAP_TEAM = [
-  { name: 'Richard Byrnes', photo: 'images/team-richard.webp' },
-  { name: 'Goran Peuc', photo: 'images/team-goran.jpg' },
-  { name: 'Colin Doherty', photo: 'images/team-colin.jpg' },
-  { name: 'Christine McCarthy', photo: 'images/team-christine.png' },
-  { name: 'Aisling Noone', photo: 'images/team-aisling.jpg' },
+  { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Design' },
+  { name: 'Goran Peuc', photo: 'images/team-goran.jpg', role: 'Design' },
+  { name: 'Colin Doherty', photo: 'images/team-colin.jpg', role: 'Design' },
+  { name: 'Christine McCarthy', photo: 'images/team-christine.png', role: 'Design' },
+  { name: 'Aisling Noone', photo: 'images/team-aisling.jpg', role: 'Design' },
 ];
 
 window.PROJECTS['developer-tools'].teamMembers = SAP_TEAM;

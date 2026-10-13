@@ -29,11 +29,11 @@ function initQuoteReveal(el) {
     const y = window.scrollY;
     const top = rect.top + y;
     const maxScroll = document.documentElement.scrollHeight - vh;
-    // Starts as the quote's top enters 85% down the screen; finishes when its
-    // bottom reaches 35% down — or at the end of the page, if it's too near
+    // Starts as soon as the quote's top enters the screen; finishes when its
+    // bottom reaches halfway up — or at the end of the page, if it's too near
     // the bottom to ever get that high.
-    const startY = top - vh * 0.85;
-    const endY = Math.min(top + rect.height - vh * 0.35, maxScroll);
+    const startY = top - vh * 1.0;
+    const endY = Math.min(top + rect.height - vh * 0.5, maxScroll);
     const progress = endY <= startY ? 1 : Math.min(1, Math.max(0, (y - startY) / (endY - startY)));
     const lit = Math.round(progress * spans.length);
     spans.forEach((s, i) => s.classList.toggle('is-lit', i < lit));
@@ -456,9 +456,11 @@ function initQuoteReveal(el) {
       }
     }
 
-    // Team credit, hairline-separated, at the end of the page under the quote.
+    // Team credit at the end of the page under the quote: a grey tray of photo
+    // cards, styled like the Music tab's records — photo, then name, then role.
     const teamAnchorQuote = document.querySelector('.pc-quote-reveal');
-    if (teamAnchorQuote && Array.isArray(project.teamMembers) && project.teamMembers.length) {
+    const members = (project.teamMembers || []).filter((m) => m && !m.break);
+    if (teamAnchorQuote && members.length) {
       const initials = (name) => name
         .split(/\s+/)
         .filter(Boolean)
@@ -475,60 +477,52 @@ function initQuoteReveal(el) {
       label.textContent = 'Shoutout to the team';
       team.appendChild(label);
 
-      const pills = document.createElement('div');
-      pills.className = 'pc-team-pills';
+      const grid = document.createElement('div');
+      grid.className = 'pc-team-grid';
 
-      const addBreak = () => {
-        const br = document.createElement('span');
-        br.className = 'pc-team-break';
-        br.setAttribute('aria-hidden', 'true');
-        pills.appendChild(br);
-      };
-
-      // Three to a row. An explicit { break: true } can end a row early, and resets
-      // the count so the next row gets a full three.
-      const PER_ROW = 3;
-      let inRow = 0;
-
-      project.teamMembers.forEach((member, i) => {
-        // A { break: true } entry forces the following names onto a new line.
-        if (member && member.break) {
-          if (inRow > 0) {
-            addBreak();
-            inRow = 0;
-          }
-          return;
-        }
-        if (inRow === PER_ROW) {
-          addBreak();
-          inRow = 0;
-        }
-        inRow += 1;
+      members.forEach((member, i) => {
         const name = typeof member === 'string' ? member : member.name;
         const photo = typeof member === 'string' ? null : member.photo;
-        const pill = document.createElement('span');
-        pill.className = 'pc-team-pill';
-        const avatar = document.createElement('span');
-        avatar.className = 'pc-team-avatar';
+        const role = typeof member === 'string' ? null : member.role;
+
+        const card = document.createElement('figure');
+        card.className = 'pc-team-card';
+
+        const frame = document.createElement('span');
+        frame.className = 'pc-team-photo';
         if (photo) {
           const img = document.createElement('img');
-          img.className = 'pc-team-avatar-img';
           img.src = photo;
           img.alt = '';
           img.loading = 'lazy';
-          avatar.appendChild(img);
+          img.decoding = 'async';
+          frame.appendChild(img);
         } else {
-          avatar.style.setProperty('--avatar-hue', `${(i * 67) % 360}`);
-          avatar.textContent = initials(name);
+          frame.classList.add('pc-team-photo--initials');
+          frame.style.setProperty('--avatar-hue', `${(i * 67) % 360}`);
+          frame.textContent = initials(name);
         }
+
+        const caption = document.createElement('figcaption');
+        caption.className = 'pc-team-caption';
+        // First names only; the full name stays on the card for screen readers.
         const nm = document.createElement('span');
         nm.className = 'pc-team-name';
-        nm.textContent = name;
-        pill.appendChild(avatar);
-        pill.appendChild(nm);
-        pills.appendChild(pill);
+        nm.textContent = name.split(/\s+/)[0];
+        card.setAttribute('aria-label', role ? `${name}, ${role}` : name);
+        caption.appendChild(nm);
+        if (role) {
+          const rl = document.createElement('span');
+          rl.className = 'pc-team-role';
+          rl.textContent = role;
+          caption.appendChild(rl);
+        }
+
+        card.appendChild(frame);
+        card.appendChild(caption);
+        grid.appendChild(card);
       });
-      team.appendChild(pills);
+      team.appendChild(grid);
 
       // Dashed divider between the quote and the team shoutout. Without a quote the
       // divider sits straight under the last paragraph, so it drops its top margin to
@@ -543,24 +537,6 @@ function initQuoteReveal(el) {
       const teamAnchor = document.querySelector('.pc-stat') || teamAnchorQuote;
       teamAnchor.insertAdjacentElement('afterend', teamDivider);
       teamDivider.insertAdjacentElement('afterend', team);
-
-      // The hairline before each member is a border-left, so whoever begins a row
-      // has to drop it. CSS covers the first member and the ones after an explicit
-      // { break: true }, but not a natural flex wrap — that needs measuring.
-      const markRowStarts = () => {
-        let rowTop = null;
-        pills.querySelectorAll('.pc-team-pill').forEach((pill) => {
-          const top = pill.offsetTop;
-          const startsRow = rowTop === null || top > rowTop + 2;
-          pill.classList.toggle('is-row-start', startsRow);
-          if (startsRow) rowTop = top;
-        });
-      };
-
-      markRowStarts();
-      window.addEventListener('resize', markRowStarts);
-      // Names shift when the webfont swaps in, which can change where rows break.
-      if (document.fonts?.ready) document.fonts.ready.then(markRowStarts);
     }
 
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
