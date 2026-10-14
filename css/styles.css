@@ -1830,43 +1830,66 @@ body[data-page="about"] {
 
 .hobby-tablist {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;
+  gap: 4px;
   margin-bottom: 1.25em;
+  /* Pull the first pill's padding out to the column edge, so its label
+     still lines up with the copy below. */
+  margin-left: -10px;
 }
 
+/* The selected tab sits in a light grey rounded tile; the others are plain labels
+   that tint faintly on hover. */
 .hobby-tab {
   position: relative;
-  padding: 4px 0;
-  border: 0;
-  background: none;
+  /* A transparent border holds the space, so the selected tile's white rim
+     doesn't shift the labels. */
+  padding: 4px 9px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--text-light);
   cursor: pointer;
-  transition: color 0.25s ease;
+  transition:
+    color 0.25s ease,
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    scale 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.hobby-tab::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -3px;
-  height: 1px;
-  /* Dashed like the project titles' underline (.work-col--project): 1px in
-     --text-light. Drawn as a gradient so it can still scale in from 0. */
-  background-image: repeating-linear-gradient(to right,
-    var(--text-light) 0 3px,
-    transparent 3px 6px);
-  transform: scaleX(0);
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+/* Press: the tab dips in quickly under the click, then springs back. */
+.hobby-tab:active {
+  scale: 0.94;
+  transition-duration: 0.25s, 0.25s, 0.25s, 0.25s, 0.1s;
 }
 
-.hobby-tab:hover { color: var(--text-muted); }
-.hobby-tab[aria-selected="true"] { color: var(--text); }
-.hobby-tab[aria-selected="true"]::after { transform: scaleX(1); }
+@media (prefers-reduced-motion: reduce) {
+  .hobby-tab:active { scale: 1; }
+}
+
+.hobby-tab:hover {
+  color: var(--text-muted);
+  background: color-mix(in srgb, var(--text) 2%, var(--bg));
+}
+
+/* The same grey as the media tray below it. */
+.hobby-tab[aria-selected="true"] {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  border-color: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Dark: a faint light rim rather than pure white. */
+[data-theme="dark"] .hobby-tab[aria-selected="true"] {
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
 
 .hobby-tab:focus-visible {
   outline: 1px solid var(--text-light);
