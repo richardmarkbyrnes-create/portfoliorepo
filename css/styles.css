@@ -2633,6 +2633,23 @@ body[data-page="home"] .home-bottom-ascii.ascii-bg-section {
   overflow: visible;
 }
 
+/* The same squiggle band closes every project page: full-bleed, curved along
+   its top edge, running to the very bottom (the page drops its bottom padding
+   when it has one, so the band meets the screen edge). */
+body[data-page="project"] .pc-bottom-ascii.ascii-bg-section {
+  position: relative;
+  width: 100vw;
+  max-width: 100vw;
+  height: 240px;
+  margin: 72px calc(50% - 50vw) 0;
+  overflow: visible;
+  flex-shrink: 0;
+}
+
+body[data-page="project"] .page:has(.pc-bottom-ascii) {
+  padding-bottom: 0;
+}
+
 /* The footer's own top/bottom margin is the gap between the ASCII pattern and the
    footer text. .page adds bottom padding to clear the fixed bottom-pinned nav of
    the project pages — nothing is pinned there on home, and it would stack under
