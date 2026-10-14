@@ -1,5 +1,171 @@
 (function () {
   const CHARSET = ['·', '.', ':', '-', '+', '*', '=', '#', '@'];
+
+  // The field is drawn as little hand-drawn squiggles rather than glyphs. Each
+  // CHARSET entry is a "density level" (its index), and each level gets eight
+  // pre-built variants drawn from a mix of shape families (dots and ticks,
+  // waves, zigzags, arcs, hooks, S-curves, curls, loops, figure-eights and
+  // spirals), lightest to busiest, so the hover swap from light
+  // to dense characters still reads as the marks getting busier. Built once as
+  // Path2D, centred on 0,0, with a little jitter and tilt baked in so no two
+  // look machine-made.
+  const SQUIGGLE_VARIANTS = 8;
+  const LEVEL_OF = Object.fromEntries(CHARSET.map((c, i) => [c, i]));
+  const SQUIGGLES = (() => {
+    let seed = 7;
+    const rand = () => {
+      seed = (seed * 16807) % 2147483647;
+      return (seed - 1) / 2147483646;
+    };
+    const j = (amt) => (rand() - 0.5) * amt;
+    const pick = (list) => list[Math.floor(rand() * list.length)];
+    const flip = () => (rand() < 0.5 ? -1 : 1);
+
+    // Shape families. Each pushes points for one mark; `size` (0-1) grows with
+    // the density level so marks get bigger and busier as they get denser.
+    const SHAPES = {
+      dot: (pts) => {
+        pts.push([-0.6 + j(0.3), 0.2 + j(0.3)], [0.6 + j(0.3), -0.2 + j(0.3)]);
+      },
+      tick: (pts, size) => {
+        const l = 1.5 + size * 3;
+        pts.push([-l / 2, j(0.6)], [0, l * 0.35 * flip()], [l / 2, j(0.6)]);
+      },
+      wave: (pts, size) => {
+        const len = 3 + size * 9;
+        const amp = 0.5 + size * 2.2;
+        const turns = 0.6 + size * 1.4;
+        const n = 14 + Math.round(size * 12);
+        for (let i = 0; i <= n; i += 1) {
+          const t = i / n;
+          pts.push([(t - 0.5) * len + j(0.5), Math.sin(t * Math.PI * 2 * turns) * amp + j(0.5)]);
+        }
+      },
+      zigzag: (pts, size) => {
+        const peaks = 2 + Math.round(size * 3);
+        const len = 4 + size * 8;
+        const amp = 0.8 + size * 2;
+        for (let i = 0; i <= peaks; i += 1) {
+          pts.push([(i / peaks - 0.5) * len + j(0.4), (i % 2 ? amp : -amp) + j(0.5)]);
+        }
+      },
+      arc: (pts, size) => {
+        const r = 2 + size * 4;
+        const sweep = Math.PI * (0.7 + rand() * 0.6);
+        const start = rand() * Math.PI * 2;
+        for (let i = 0; i <= 14; i += 1) {
+          const t = start + (i / 14) * sweep;
+          pts.push([Math.cos(t) * r + j(0.3), Math.sin(t) * r * 0.8 + j(0.3)]);
+        }
+      },
+      hook: (pts, size) => {
+        const len = 3 + size * 6;
+        for (let i = 0; i <= 8; i += 1) pts.push([(i / 8 - 0.5) * len + j(0.3), j(0.4)]);
+        const [ex, ey] = pts[pts.length - 1];
+        const r = 1.2 + size * 1.6;
+        for (let i = 1; i <= 10; i += 1) {
+          const t = -Math.PI / 2 + (i / 10) * Math.PI * 1.4;
+          pts.push([ex + Math.cos(t) * r, ey + r + Math.sin(t) * r]);
+        }
+      },
+      sCurve: (pts, size) => {
+        const r = 1.6 + size * 2.4;
+        for (let i = 0; i <= 12; i += 1) {
+          const t = Math.PI * (i / 12);
+          pts.push([-Math.cos(t) * r * 0.9 - r * 0.45 + j(0.3), -Math.sin(t) * r * 0.7 + j(0.3)]);
+        }
+        for (let i = 1; i <= 12; i += 1) {
+          const t = Math.PI * (i / 12);
+          pts.push([-Math.cos(t) * r * 0.9 + r * 0.45 + j(0.3), Math.sin(t) * r * 0.7 + j(0.3)]);
+        }
+      },
+      loop: (pts, size) => {
+        const a = 1.6;
+        const b = 2.4 + size;
+        const span = Math.PI * 2;
+        const n = 26;
+        for (let i = 0; i <= n; i += 1) {
+          const t = (i / n) * span;
+          pts.push([a * t - b * Math.sin(t) - (a * span) / 2 + j(0.4), -b * Math.cos(t) * 0.8 + j(0.4)]);
+        }
+      },
+      figureEight: (pts, size) => {
+        const w = 3 + size * 3;
+        const h = 1.8 + size * 1.5;
+        for (let i = 0; i <= 34; i += 1) {
+          const t = (i / 34) * Math.PI * 2;
+          pts.push([Math.sin(t) * w + j(0.3), Math.sin(t * 2) * h + j(0.3)]);
+        }
+      },
+      spiral: (pts, size) => {
+        const turns = 1.1 + size * 1.3;
+        const n = 28 + Math.round(size * 18);
+        const end = turns * Math.PI * 2;
+        const dir = flip();
+        for (let i = 0; i <= n; i += 1) {
+          const t = (i / n) * end;
+          const r = 0.4 + (t / end) * 5.2;
+          pts.push([Math.cos(t) * r + j(0.35), Math.sin(t) * dir * r * 0.9 + j(0.35)]);
+        }
+        const [lx, ly] = pts[pts.length - 1];
+        pts.push([lx + 1.6, ly + 0.8 * dir + j(1)], [lx + 3, ly + 1.2 * dir]);
+      },
+      curl: (pts, size) => {
+        // A wave that ends in a little curl.
+        const len = 3 + size * 5;
+        for (let i = 0; i <= 10; i += 1) {
+          const t = i / 10;
+          pts.push([(t - 0.5) * len + j(0.3), Math.sin(t * Math.PI) * -1.2 + j(0.3)]);
+        }
+        const [ex, ey] = pts[pts.length - 1];
+        const r = 1 + size * 1.4;
+        for (let i = 1; i <= 16; i += 1) {
+          const t = Math.PI + (i / 16) * Math.PI * 1.8;
+          pts.push([ex + r + Math.cos(t) * r, ey + Math.sin(t) * r]);
+        }
+      },
+    };
+
+    // Which families each density level draws from, lightest to densest.
+    const LEVEL_SHAPES = [
+      ['dot'],
+      ['dot', 'tick'],
+      ['tick', 'wave', 'arc'],
+      ['wave', 'arc', 'hook', 'zigzag'],
+      ['wave', 'zigzag', 'sCurve', 'hook', 'curl'],
+      ['loop', 'sCurve', 'curl', 'figureEight'],
+      ['spiral', 'loop', 'figureEight', 'curl'],
+      ['spiral', 'figureEight', 'loop'],
+      ['spiral', 'spiral', 'figureEight'],
+    ];
+
+    const build = (level) => {
+      const pts = [];
+      const size = level / (CHARSET.length - 1);
+      SHAPES[pick(LEVEL_SHAPES[level])](pts, size);
+      // Tilt the whole mark a little and trace it with smooth curves.
+      const tilt = (rand() - 0.5) * 1.1;
+      const cos = Math.cos(tilt);
+      const sin = Math.sin(tilt);
+      let rot = pts.map(([x, y]) => [x * cos - y * sin, x * sin + y * cos]);
+      // Keep every mark inside its cell (about 16px across), or the loopier
+      // ones run into their neighbours and join up into long chains.
+      const extent = Math.max(...rot.map(([x, y]) => Math.max(Math.abs(x), Math.abs(y))));
+      const fit = Math.min(1, 8 / extent);
+      rot = rot.map(([x, y]) => [x * fit, y * fit]);
+      const path = new Path2D();
+      path.moveTo(rot[0][0], rot[0][1]);
+      for (let i = 1; i < rot.length - 1; i += 1) {
+        const mx = (rot[i][0] + rot[i + 1][0]) / 2;
+        const my = (rot[i][1] + rot[i + 1][1]) / 2;
+        path.quadraticCurveTo(rot[i][0], rot[i][1], mx, my);
+      }
+      const last = rot[rot.length - 1];
+      path.lineTo(last[0], last[1]);
+      return path;
+    };
+    return CHARSET.map((_, level) => Array.from({ length: SQUIGGLE_VARIANTS }, () => build(level)));
+  })();
   const CELL = 26;
   const FONT_SIZE = 15;
   const HOVER_RADIUS = 160;
@@ -195,6 +361,7 @@
             speed: speeds[col],
             char: pickChar(),
             baseChar: pickChar(),
+            variant: Math.floor(Math.random() * SQUIGGLE_VARIANTS),
           });
         }
       }
@@ -306,9 +473,9 @@
       const width = viewWidth;
       const height = viewHeight;
       ctx.clearRect(0, 0, width, height);
-      ctx.font = `500 ${FONT_SIZE}px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
+      ctx.lineWidth = 1.3;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
 
       const baseRgb = hexToRgb(textColor);
       const interact = canHoverInteract() && !prefersReducedMotion();
@@ -369,8 +536,10 @@
         opacity *= titleVisibilityFactor(cell.x, y, titleMask);
         if (flipY) opacity *= topFadeFactor(y, height, cell.x, width);
 
-        ctx.fillStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
-        ctx.fillText(char, cell.x, y);
+        ctx.strokeStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
+        ctx.translate(cell.x, y);
+        ctx.stroke(SQUIGGLES[LEVEL_OF[char] || 0][cell.variant]);
+        ctx.translate(-cell.x, -y);
       });
 
       if (flipY) {
