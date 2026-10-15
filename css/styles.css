@@ -4959,6 +4959,9 @@ body[data-page="project"] .pc-next-pill.has-bubble {
   --bubble-swoop: color-mix(in oklch, var(--next-ink, var(--text)) 40%, #ffffff);
   --bubble-swoop: oklch(from var(--next-ink, var(--text)) 0.84 0.11 h);
   background: none;
+  /* A fixed 1px (the nav border is 2px on light, 1px on dark): the glass
+     layer and the SVG both offset by exactly 1px to reach the outer edge. */
+  border-width: 1px;
   border-color: transparent;
   box-shadow: none;
   -webkit-backdrop-filter: none;
