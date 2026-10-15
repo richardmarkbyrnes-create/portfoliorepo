@@ -487,9 +487,22 @@ function initProjectPreview() {
     }
   }
 
+  // Moving from one row to the next passes through hide() for a moment, so
+  // "still up" means visible now or hidden within the last few frames.
+  let lastSrc = null;
+  let hiddenAt = 0;
+
   function show(row, src) {
     if (src !== shown) {
+      const stillUp = preview.classList.contains('is-visible') || performance.now() - hiddenAt < 250;
+      if (lastSrc && src !== lastSrc && stillUp) {
+        // Swapping straight to another project: blur-fade the new image in.
+        image.classList.remove('is-swapping');
+        void image.offsetWidth;
+        image.classList.add('is-swapping');
+      }
       shown = src;
+      lastSrc = src;
       image.src = src;
     } else {
       // Same preview as last time — replay it from the first frame if it's a gif.
@@ -502,6 +515,7 @@ function initProjectPreview() {
   }
 
   function hide() {
+    if (preview.classList.contains('is-visible')) hiddenAt = performance.now();
     shown = null;
     activeRow = null;
     drift(0, 0);
