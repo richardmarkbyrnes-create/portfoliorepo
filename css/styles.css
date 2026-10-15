@@ -4517,6 +4517,17 @@ body[data-page="project"] .pc-next-pill.is-docked {
   opacity: 0.5;
 }
 
+/* Year and status above the project title, in the summary's light grey. */
+.pc-lead-meta {
+  margin: 0 0 14px;
+  font-family: var(--sans);
+  font-size: clamp(12px, 1.55vw, 14px);
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+}
+
 /* Two-line summary under the project title — same font/size as the home hero subtext */
 .pc-lead-summary {
   max-width: 24em;
