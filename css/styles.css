@@ -1298,9 +1298,7 @@ html[data-theme="dark"] .theme-swatch {
   /* Same gap and padding as .nav-contact-item, so the name lines up with
      "LinkedIn" and "Email me" below it. */
   gap: 10px;
-  padding: 6px 10px 10px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  padding: 6px 10px 8px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -1355,9 +1353,20 @@ html[data-theme="dark"] .theme-swatch {
   outline: none;
 }
 
-/* Items inside blur-fade in one after the other as the menu opens, and
-   drop back together as it closes. */
-.nav-contact-item {
+/* Everything inside staggers in as the menu opens: the name line, the
+   divider (drawing out from the left), then LinkedIn and Email me, each
+   blur-fading down a few pixels. On close they all drop back together. */
+.nav-contact-divider {
+  display: block;
+  height: 1px;
+  margin: 2px 10px 6px;
+  background: color-mix(in srgb, var(--text) 9%, transparent);
+  transform-origin: left center;
+}
+
+.nav-contact-header,
+.nav-contact-item,
+.nav-contact-divider {
   opacity: 0;
   translate: 0 -4px;
   filter: blur(4px);
@@ -1366,43 +1375,67 @@ html[data-theme="dark"] .theme-swatch {
     color 0.2s ease,
     opacity 0.18s ease,
     translate 0.18s ease,
+    scale 0.18s ease,
     filter 0.18s ease;
 }
 
-.nav-contact.is-open .nav-contact-item {
+.nav-contact-divider {
+  translate: none;
+  filter: none;
+  scale: 0.2 1;
+}
+
+.nav-contact.is-open .nav-contact-header,
+.nav-contact.is-open .nav-contact-item,
+.nav-contact.is-open .nav-contact-divider {
   opacity: 1;
   translate: 0 0;
+  scale: 1;
   filter: none;
   transition:
     background-color 0.2s ease,
     color 0.2s ease,
     opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
     translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+    scale 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
     filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
 }
 
 @media (hover: hover) {
+  .nav-contact:hover .nav-contact-header,
   .nav-contact:hover .nav-contact-item,
-  .nav-contact:focus-within .nav-contact-item {
+  .nav-contact:hover .nav-contact-divider,
+  .nav-contact:focus-within .nav-contact-header,
+  .nav-contact:focus-within .nav-contact-item,
+  .nav-contact:focus-within .nav-contact-divider {
     opacity: 1;
     translate: 0 0;
+    scale: 1;
     filter: none;
     transition:
       background-color 0.2s ease,
       color 0.2s ease,
       opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
       translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+      scale 0.45s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
       filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
   }
 }
 
-.nav-contact-item:nth-child(1) { --item-delay: 0.06s; }
-.nav-contact-item:nth-child(2) { --item-delay: 0.14s; }
+/* Children in order: header, divider, LinkedIn, Email me. */
+.nav-contact-panel > :nth-child(1) { --item-delay: 0.05s; }
+.nav-contact-panel > :nth-child(2) { --item-delay: 0.11s; }
+.nav-contact-panel > :nth-child(3) { --item-delay: 0.17s; }
+.nav-contact-panel > :nth-child(4) { --item-delay: 0.23s; }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-contact-menu { transition: none; filter: none; }
+  .nav-contact-header,
   .nav-contact-item,
-  .nav-contact.is-open .nav-contact-item { transition: background-color 0.2s ease, color 0.2s ease; filter: none; translate: none; }
+  .nav-contact-divider,
+  .nav-contact.is-open .nav-contact-header,
+  .nav-contact.is-open .nav-contact-item,
+  .nav-contact.is-open .nav-contact-divider { transition: background-color 0.2s ease, color 0.2s ease; filter: none; translate: none; scale: none; }
 }
 
 @keyframes navTapPop {
