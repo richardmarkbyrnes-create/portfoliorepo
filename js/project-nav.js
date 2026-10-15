@@ -1,3 +1,77 @@
+// The next-project pill drawn as a speech bubble: rounded body plus a small
+// pointer under its middle, as one path. A glass layer is clipped to it (fill
+// and blur); an SVG traces it for the shadow (masked to the outside, so it
+// never darkens the glass), the hairline border and the end-of-page swoop.
+// Rebuilt whenever the pill changes size.
+function buildBubble(pill) {
+  const NS = 'http://www.w3.org/2000/svg';
+  const PAD = 24;
+  const R = 18;
+  const PW = 12;
+  const PH = 6;
+  const glass = document.createElement('span');
+  glass.className = 'pc-bubble-glass';
+  glass.setAttribute('aria-hidden', 'true');
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('class', 'pc-bubble-svg');
+  svg.setAttribute('aria-hidden', 'true');
+  const uid = `bubble-${Math.random().toString(36).slice(2, 8)}`;
+  svg.innerHTML = `
+    <defs><mask id="${uid}"><rect x="0" y="0" width="100%" height="100%" fill="#fff"/><path class="m" fill="#000"/></mask></defs>
+    <path class="pc-bubble-shadow" mask="url(#${uid})"/>
+    <path class="pc-bubble-line"/>
+    <path class="pc-bubble-swoop pc-bubble-swoop--tail"/>
+    <path class="pc-bubble-swoop"/>`;
+  pill.prepend(svg);
+  pill.prepend(glass);
+  pill.classList.add('has-bubble');
+
+  const shapeAt = (ox, oy, w, h) => {
+    const r = Math.min(R, h / 2);
+    const cx = ox + w / 2;
+    return [
+      `M${ox + r},${oy}`, `H${ox + w - r}`, `A${r},${r} 0 0 1 ${ox + w},${oy + r}`,
+      `V${oy + h - r}`, `A${r},${r} 0 0 1 ${ox + w - r},${oy + h}`,
+      `H${cx + PW / 2}`, `Q${cx + 1.5},${oy + h + PH - 0.5} ${cx},${oy + h + PH}`,
+      `Q${cx - 1.5},${oy + h + PH - 0.5} ${cx - PW / 2},${oy + h}`,
+      `H${ox + r}`, `A${r},${r} 0 0 1 ${ox},${oy + h - r}`,
+      `V${oy + r}`, `A${r},${r} 0 0 1 ${ox + r},${oy}`, 'Z',
+    ].join(' ');
+  };
+
+  const layout = () => {
+    const w = pill.offsetWidth;
+    const h = pill.offsetHeight;
+    if (!w || !h) return;
+    // The pill's 1px border sits outside its padding box, where absolute
+    // children are measured from.
+    svg.style.left = `${-PAD - 1}px`;
+    svg.style.top = `${-PAD - 1}px`;
+    svg.setAttribute('width', w + PAD * 2);
+    svg.setAttribute('height', h + PH + PAD * 2);
+    const outer = shapeAt(PAD, PAD, w, h);
+    svg.querySelector('.m').setAttribute('d', outer);
+    const shadow = svg.querySelector('.pc-bubble-shadow');
+    shadow.setAttribute('d', shapeAt(PAD, PAD + 4, w, h));
+    const line = shapeAt(PAD + 0.5, PAD + 0.5, w - 1, h - 1);
+    svg.querySelector('.pc-bubble-line').setAttribute('d', line);
+    const ring = shapeAt(PAD - 1, PAD - 1, w + 2, h + 2);
+    svg.querySelectorAll('.pc-bubble-swoop').forEach((path, i) => {
+      path.setAttribute('d', ring);
+      const len = path.getTotalLength();
+      const seg = i === 0 ? len * 0.28 : len * 0.12;
+      path.setAttribute('stroke-dasharray', `${seg} ${len}`);
+      path.style.setProperty('--len', `${len}px`);
+      // The tail starts a little ahead so it trails the head round.
+      path.setAttribute('stroke-dashoffset', '0');
+    });
+    glass.style.clipPath = `path('${shapeAt(0, 0, w, h)}')`;
+  };
+  layout();
+  if ('ResizeObserver' in window) new ResizeObserver(layout).observe(pill);
+  if (document.fonts?.ready) document.fonts.ready.then(layout);
+}
+
 // Quote reveal: the quote's words start light grey and darken one by one as
 // it scrolls up through the screen, all dark by the time it reaches the upper
 // third (or the end of the page, whichever comes first). Reduced motion shows it fully dark from the start.
@@ -676,6 +750,7 @@ function initQuoteReveal(el) {
         // <body> so it isn't trapped in the `.page` stacking context (which sits
         // below the bottom blur).
         if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
+        buildBubble(nextPill);
 
         // Dock the pill to the bottom of the screen once the user scrolls into the
         // last 20% of the page (CSS handles the magnetic slide-in).
