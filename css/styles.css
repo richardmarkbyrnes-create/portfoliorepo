@@ -6913,11 +6913,27 @@ body.page-is-leaving .top-blur {
   opacity: 1;
   visibility: visible;
   filter: blur(0);
+  /* Long enough that the blur visibly resolves as the preview comes in. */
   transition:
-    opacity 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.2s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.16s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.08s linear;
+}
+
+/* Moving between rows while the preview is up swaps its image; the new one
+   blur-fades in rather than snapping (main.js restarts this per swap). */
+.project-preview-img.is-swapping {
+  animation: project-preview-swap 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes project-preview-swap {
+  from { opacity: 0.35; filter: blur(8px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview-img.is-swapping { animation: none; }
 }
 
 /* Matches the framing of .pc-image--main on the project pages */
