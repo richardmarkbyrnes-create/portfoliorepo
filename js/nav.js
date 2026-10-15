@@ -61,7 +61,7 @@
         <div class="nav-contact-menu" id="nav-contact-menu">
           <div class="nav-contact-panel">
             <div class="nav-contact-header">
-              <img class="nav-contact-avatar" src="/images/favicon-little-richard.png?v=3" width="96" height="96" alt="">
+              <img class="nav-contact-avatar" src="/images/avatar-little-richard.png?v=1" width="96" height="96" alt="">
               <span>Richard Byrnes</span>
             </div>
             <span class="nav-contact-divider" aria-hidden="true"></span>
