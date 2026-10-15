@@ -2368,8 +2368,9 @@ body[data-page="about"] {
   background: var(--bg);
 }
 
-/* A peek when the records first come into view: each disc eases part way
-   out of its sleeve and back, slowly, hinting that they open on hover.
+/* A peek when the records first come into view: the first disc eases most
+   of the way out of its sleeve and back, slowly, hinting that they open on
+   hover.
    .is-peek holds it out; .is-peeking keeps the slow easing for the return.
    Declared before the hover rules so a hover mid-peek takes over. */
 .hobby-record.is-peeking .hobby-record-vinyl {
@@ -2378,10 +2379,8 @@ body[data-page="about"] {
 .hobby-record.is-peeking .hobby-record-sleeve {
   transition: rotate 1.1s cubic-bezier(0.45, 0, 0.25, 1), box-shadow 1.1s ease;
 }
-.hobby-record.is-peek .hobby-record-vinyl { translate: 32% 0; rotate: 40deg; }
-.hobby-record.is-peek .hobby-record-sleeve { rotate: -1.5deg; }
-.hobby-record:first-child.is-peek .hobby-record-vinyl { translate: -32% 0; rotate: -40deg; }
-.hobby-record:first-child.is-peek .hobby-record-sleeve { rotate: 1.5deg; }
+.hobby-record:first-child.is-peek .hobby-record-vinyl { translate: -52% 0; rotate: -60deg; }
+.hobby-record:first-child.is-peek .hobby-record-sleeve { rotate: 2deg; }
 
 .hobby-record:hover .hobby-record-vinyl {
   translate: 60% 0;
