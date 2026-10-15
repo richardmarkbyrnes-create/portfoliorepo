@@ -1106,10 +1106,10 @@ function initRecordNotes() {
   });
 }
 
-// A one-off peek at the records when the Music tab is showing and they
-// scroll into view: each disc slides part way out and back (CSS does the
-// motion), staggered, so it's clear they respond to hover. Re-arms once the
-// records leave view or the tab is switched away.
+// A one-off peek at the records the first time they're seen on this page
+// load (Music tab showing and scrolled into view): each disc slides part way
+// out and back (CSS does the motion), staggered, so it's clear they respond
+// to hover. Never repeats until the page is reloaded.
 function initRecordPeek() {
   if (prefersReducedMotion() || !('IntersectionObserver' in window)) return;
   document.querySelectorAll('.hobby-records').forEach((group) => {
@@ -1117,41 +1117,30 @@ function initRecordPeek() {
     const root = group.closest('.animate-on-scroll-root');
     const records = Array.from(group.querySelectorAll('.hobby-record'));
     let inView = false;
-    let armed = true;
-    let timers = [];
-
-    const clear = () => {
-      timers.forEach(clearTimeout);
-      timers = [];
-      records.forEach((r) => r.classList.remove('is-peek', 'is-peeking'));
-    };
-    const showing = () => inView && (!panel || panel.classList.contains('is-active'))
-      && (!root || root.classList.contains('is-in-view'));
 
     const check = () => {
-      if (!showing()) {
-        if (!inView || (panel && !panel.classList.contains('is-active'))) { armed = true; clear(); }
-        return;
-      }
-      if (!armed) return;
-      armed = false;
+      if (!inView || (panel && !panel.classList.contains('is-active'))
+        || (root && !root.classList.contains('is-in-view'))) return;
+      io.disconnect();
+      watch.disconnect();
       // Wait for the records' own entrance to settle before peeking.
       records.forEach((record, i) => {
         const start = 900 + i * 180;
-        timers.push(setTimeout(() => {
+        setTimeout(() => {
           if (record.matches(':hover')) return;
           record.classList.add('is-peeking', 'is-peek');
-        }, start));
-        timers.push(setTimeout(() => record.classList.remove('is-peek'), start + 1300));
-        timers.push(setTimeout(() => record.classList.remove('is-peeking'), start + 2500));
+          setTimeout(() => record.classList.remove('is-peek'), 1300);
+          setTimeout(() => record.classList.remove('is-peeking'), 2500);
+        }, start);
       });
     };
 
-    new IntersectionObserver(([entry]) => {
+    const io = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
       check();
-    }, { threshold: 0.6 }).observe(group);
+    }, { threshold: 0.6 });
     const watch = new MutationObserver(check);
+    io.observe(group);
     if (panel) watch.observe(panel, { attributes: true, attributeFilter: ['class'] });
     if (root) watch.observe(root, { attributes: true, attributeFilter: ['class'] });
   });
