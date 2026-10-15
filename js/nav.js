@@ -60,6 +60,10 @@
         </button>
         <div class="nav-contact-menu" id="nav-contact-menu">
           <div class="nav-contact-panel">
+            <div class="nav-contact-header">
+              <img class="nav-contact-avatar" src="/images/favicon-little-richard.png?v=3" width="96" height="96" alt="">
+              <span>Richard Byrnes</span>
+            </div>
             <a class="nav-contact-item" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
               ${LINKEDIN_ICON}<span>LinkedIn</span>
             </a>
