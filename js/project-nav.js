@@ -40,8 +40,13 @@ function buildBubble(pill) {
   };
 
   const layout = () => {
-    const w = pill.offsetWidth;
-    const h = pill.offsetHeight;
+    // Fractional size, not offsetWidth: that rounds to whole pixels, which
+    // left the bubble a sliver short of the pill's right edge. The pill is
+    // border-box, so its computed width/height are the full outer size,
+    // unaffected by its hover/dock transforms.
+    const cs = getComputedStyle(pill);
+    const w = parseFloat(cs.width);
+    const h = parseFloat(cs.height);
     if (!w || !h) return;
     // The pill's 1px border sits outside its padding box, where absolute
     // children are measured from.
