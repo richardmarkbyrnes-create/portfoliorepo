@@ -2,14 +2,14 @@
   const CHARSET = ['·', '.', ':', '-', '+', '*', '=', '#', '@'];
 
   // The field is drawn as little hand-drawn squiggles rather than glyphs. Each
-  // CHARSET entry is a "density level" (its index), and each level gets eight
-  // pre-built variants drawn from a mix of shape families (dots and ticks,
-  // waves, zigzags, arcs, hooks, S-curves, curls, loops, figure-eights and
-  // spirals), lightest to busiest, so the hover swap from light
+  // CHARSET entry is a "density level" (its index), and each level gets twelve
+  // pre-built variants drawn from a mix of over twenty shape families (dots,
+  // ticks, chevrons and brackets up through waves, rings, crosses, stars,
+  // clouds, hearts, springs, scribbles and spirals), lightest to busiest, so the hover swap from light
   // to dense characters still reads as the marks getting busier. Built once as
   // Path2D, centred on 0,0, with a little jitter and tilt baked in so no two
   // look machine-made.
-  const SQUIGGLE_VARIANTS = 8;
+  const SQUIGGLE_VARIANTS = 12;
   const LEVEL_OF = Object.fromEntries(CHARSET.map((c, i) => [c, i]));
   const SQUIGGLES = (() => {
     let seed = 7;
@@ -124,44 +124,164 @@
           pts.push([ex + r + Math.cos(t) * r, ey + Math.sin(t) * r]);
         }
       },
+      // ── More families ──────────────────────────────────────────────────
+      circle: (pts, size) => {
+        // A wobbly hand-drawn ring that doesn't quite close.
+        const r = 1.6 + size * 3.2;
+        const n = 22;
+        const gap = 0.25 + rand() * 0.4;
+        for (let i = 0; i <= n; i += 1) {
+          const t = (i / n) * (Math.PI * 2 - gap);
+          pts.push([Math.cos(t) * r + j(0.45), Math.sin(t) * r * (0.85 + rand() * 0.2) + j(0.45)]);
+        }
+      },
+      cross: (pts, size, more) => {
+        const l = 1.6 + size * 3;
+        pts.push([-l + j(0.4), j(0.5)], [j(0.3), j(0.3)], [l + j(0.4), j(0.5)]);
+        more().push([j(0.5), -l + j(0.4)], [j(0.3), j(0.3)], [j(0.5), l + j(0.4)]);
+      },
+      asterisk: (pts, size, more) => {
+        const l = 1.8 + size * 3;
+        const spokes = 3;
+        for (let k = 0; k < spokes; k += 1) {
+          const a = (k / spokes) * Math.PI + j(0.25);
+          const st = k === 0 ? pts : more();
+          st.push([Math.cos(a) * -l, Math.sin(a) * -l], [j(0.3), j(0.3)], [Math.cos(a) * l, Math.sin(a) * l]);
+        }
+      },
+      scribble: (pts, size) => {
+        // A tight back-and-forth scrawl, like shading in a small patch.
+        const passes = 4 + Math.round(size * 4);
+        const w = 2.5 + size * 4;
+        const h = 1.5 + size * 3;
+        for (let i = 0; i <= passes; i += 1) {
+          pts.push([(i % 2 ? w : -w) / 2 + j(0.8), (i / passes - 0.5) * h + j(0.4)]);
+        }
+      },
+      chevron: (pts, size) => {
+        const w = 2 + size * 3.5;
+        const h = 1.2 + size * 2.4;
+        pts.push([-w + j(0.4), h / 2 + j(0.4)], [j(0.4), -h / 2 + j(0.3)], [w + j(0.4), h / 2 + j(0.4)]);
+      },
+      triangle: (pts, size) => {
+        const r = 2 + size * 3;
+        for (let k = 0; k <= 3; k += 1) {
+          const a = -Math.PI / 2 + (k / 3) * Math.PI * 2;
+          pts.push([Math.cos(a) * r + j(0.6), Math.sin(a) * r + j(0.6)]);
+        }
+        pts.push([pts[1][0] * 0.3 + j(0.4), pts[1][1] * 0.3 + j(0.4)]);
+      },
+      star: (pts, size) => {
+        // A five-point star in one continuous stroke.
+        const r = 2.2 + size * 3.4;
+        for (let k = 0; k <= 5; k += 1) {
+          const a = -Math.PI / 2 + ((k * 2) % 5) * ((Math.PI * 2) / 5);
+          pts.push([Math.cos(a) * r + j(0.5), Math.sin(a) * r + j(0.5)]);
+        }
+      },
+      cloud: (pts, size) => {
+        // A scalloped arc of little bumps, like the top of a cloud.
+        const bumps = 3 + Math.round(size * 2);
+        const w = 4 + size * 6;
+        for (let k = 0; k < bumps; k += 1) {
+          for (let i = 0; i <= 8; i += 1) {
+            const t = Math.PI + (i / 8) * Math.PI;
+            const cx = (k + 0.5) / bumps - 0.5;
+            const r = w / bumps / 2;
+            pts.push([cx * w + Math.cos(t) * r + j(0.2), Math.sin(t) * r * 1.3 + j(0.2)]);
+          }
+        }
+      },
+      doubleWave: (pts, size, more) => {
+        const len = 4 + size * 6;
+        const amp = 0.6 + size * 1.2;
+        const gap = 1.6 + size * 1.4;
+        [pts, more()].forEach((st, k) => {
+          for (let i = 0; i <= 12; i += 1) {
+            const t = i / 12;
+            st.push([(t - 0.5) * len + j(0.3), Math.sin(t * Math.PI * 3) * amp + (k - 0.5) * gap + j(0.3)]);
+          }
+        });
+      },
+      spring: (pts, size) => {
+        // A coil stretched upward, loops stacked vertically.
+        const coils = 2 + Math.round(size * 2);
+        const r = 1.5 + size * 1.5;
+        const h = 4 + size * 6;
+        const n = coils * 12;
+        for (let i = 0; i <= n; i += 1) {
+          const t = (i / n) * coils * Math.PI * 2;
+          pts.push([Math.sin(t) * r + j(0.3), (i / n - 0.5) * h + Math.cos(t) * r * 0.5 + j(0.3)]);
+        }
+      },
+      heart: (pts, size) => {
+        const s2 = 0.18 + size * 0.22;
+        for (let i = 0; i <= 30; i += 1) {
+          const t = (i / 30) * Math.PI * 2;
+          const x = 16 * Math.sin(t) ** 3;
+          // Upside down: the point at the top, the lobes below.
+          const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
+          pts.push([x * s2 + j(0.3), y * s2 + j(0.3)]);
+        }
+      },
+      bracket: (pts, size) => {
+        const h = 3 + size * 5;
+        const d = 1 + size * 1.6;
+        const side = flip();
+        for (let i = 0; i <= 12; i += 1) {
+          const t = i / 12;
+          pts.push([Math.sin(t * Math.PI) * d * side + j(0.25), (t - 0.5) * h + j(0.25)]);
+        }
+      },
     };
 
     // Which families each density level draws from, lightest to densest.
     const LEVEL_SHAPES = [
-      ['dot'],
-      ['dot', 'tick'],
-      ['tick', 'wave', 'arc'],
-      ['wave', 'arc', 'hook', 'zigzag'],
-      ['wave', 'zigzag', 'sCurve', 'hook', 'curl'],
-      ['loop', 'sCurve', 'curl', 'figureEight'],
-      ['spiral', 'loop', 'figureEight', 'curl'],
-      ['spiral', 'figureEight', 'loop'],
-      ['spiral', 'spiral', 'figureEight'],
+      ['dot', 'dot', 'tick'],
+      ['dot', 'tick', 'chevron', 'bracket'],
+      ['tick', 'wave', 'arc', 'chevron', 'bracket', 'cross'],
+      ['wave', 'arc', 'hook', 'zigzag', 'circle', 'cross', 'doubleWave'],
+      ['wave', 'zigzag', 'sCurve', 'hook', 'curl', 'circle', 'triangle', 'asterisk', 'cloud'],
+      ['loop', 'sCurve', 'curl', 'figureEight', 'scribble', 'cloud', 'star', 'doubleWave'],
+      ['spiral', 'loop', 'figureEight', 'curl', 'spring', 'heart', 'star', 'asterisk'],
+      ['spiral', 'figureEight', 'loop', 'scribble', 'spring', 'heart'],
+      ['spiral', 'spiral', 'figureEight', 'scribble', 'spring', 'star'],
     ];
 
     const build = (level) => {
-      const pts = [];
+      // A mark is one or more strokes. Shapes draw into `pts` (the first
+      // stroke) and can call `more()` for extra strokes (crosses, asterisks).
+      const strokes = [[]];
+      const more = () => {
+        const next = [];
+        strokes.push(next);
+        return next;
+      };
       const size = level / (CHARSET.length - 1);
-      SHAPES[pick(LEVEL_SHAPES[level])](pts, size);
+      SHAPES[pick(LEVEL_SHAPES[level])](strokes[0], size, more);
       // Tilt the whole mark a little and trace it with smooth curves.
       const tilt = (rand() - 0.5) * 1.1;
       const cos = Math.cos(tilt);
       const sin = Math.sin(tilt);
-      let rot = pts.map(([x, y]) => [x * cos - y * sin, x * sin + y * cos]);
+      let rotated = strokes
+        .filter((st) => st.length > 1)
+        .map((st) => st.map(([x, y]) => [x * cos - y * sin, x * sin + y * cos]));
       // Keep every mark inside its cell (about 16px across), or the loopier
       // ones run into their neighbours and join up into long chains.
-      const extent = Math.max(...rot.map(([x, y]) => Math.max(Math.abs(x), Math.abs(y))));
+      const extent = Math.max(...rotated.flat().map(([x, y]) => Math.max(Math.abs(x), Math.abs(y))));
       const fit = Math.min(1, 8 / extent);
-      rot = rot.map(([x, y]) => [x * fit, y * fit]);
+      rotated = rotated.map((st) => st.map(([x, y]) => [x * fit, y * fit]));
       const path = new Path2D();
-      path.moveTo(rot[0][0], rot[0][1]);
-      for (let i = 1; i < rot.length - 1; i += 1) {
-        const mx = (rot[i][0] + rot[i + 1][0]) / 2;
-        const my = (rot[i][1] + rot[i + 1][1]) / 2;
-        path.quadraticCurveTo(rot[i][0], rot[i][1], mx, my);
-      }
-      const last = rot[rot.length - 1];
-      path.lineTo(last[0], last[1]);
+      rotated.forEach((rot) => {
+        path.moveTo(rot[0][0], rot[0][1]);
+        for (let i = 1; i < rot.length - 1; i += 1) {
+          const mx = (rot[i][0] + rot[i + 1][0]) / 2;
+          const my = (rot[i][1] + rot[i + 1][1]) / 2;
+          path.quadraticCurveTo(rot[i][0], rot[i][1], mx, my);
+        }
+        const last = rot[rot.length - 1];
+        path.lineTo(last[0], last[1]);
+      });
       return path;
     };
     return CHARSET.map((_, level) => Array.from({ length: SQUIGGLE_VARIANTS }, () => build(level)));
@@ -537,8 +657,12 @@
         if (flipY) opacity *= topFadeFactor(y, height, cell.x, width);
 
         ctx.strokeStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
+        // The flipped band mirrors the whole canvas; un-mirror each mark so
+        // the shapes read the same way up in both bands.
         ctx.translate(cell.x, y);
+        if (flipY) ctx.scale(1, -1);
         ctx.stroke(SQUIGGLES[LEVEL_OF[char] || 0][cell.variant]);
+        if (flipY) ctx.scale(1, -1);
         ctx.translate(-cell.x, -y);
       });
 
