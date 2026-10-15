@@ -1283,12 +1283,11 @@ html[data-theme="dark"] .theme-swatch {
   border-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Phones: the envelope sits left of the theme pill, so a menu anchored under
-   it would run off the left edge. Hang it from the nav's right edge instead,
-   under both pills (the theme pill plus the gap between them). */
+/* Phones: the envelope pill is the rightmost control, so the menu hangs
+   from its right edge, flush with the screen margin. */
 @media (max-width: 640px) {
   .nav-contact-menu {
-    right: calc(-1 * (var(--nav-toolbar-height) + 8px));
+    right: 0;
   }
 }
 

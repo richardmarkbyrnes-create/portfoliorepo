@@ -113,9 +113,9 @@
     navRoot.innerHTML = `
       <div class="nav-primary">
         <div class="nav-inner">
-          ${renderContact()}
-          <span class="nav-divider" aria-hidden="true"></span>
           ${renderThemeSwitcher()}
+          <span class="nav-divider" aria-hidden="true"></span>
+          ${renderContact()}
         </div>
       </div>
     `;
