@@ -132,7 +132,6 @@ function initQuoteReveal(el) {
   const FROM_HOME_KEY = 'portfolio-from-home';
   // Which way the next page should arrive from. Read and cleared by
   // theme-init.js in the head — keep the name in step there.
-  const DIRECTION_KEY = 'portfolio-nav-direction';
 
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -229,18 +228,16 @@ function initQuoteReveal(el) {
       return;
     }
 
-    const done = () => root.classList.remove('page-entering', 'page-returning');
-    // Either entrance: the plain rise, or the slide a project page comes in on.
-    const ENTRANCES = ['pageBlurIn', 'pageSlideInRight'];
+    const done = () => root.classList.remove('page-entering');
     page.addEventListener('animationend', (event) => {
-      if (ENTRANCES.includes(event.animationName)) done();
+      if (event.animationName === 'pageBlurIn') done();
     }, { once: true });
     // This script runs after the animation has already started, and on a fast
     // paint it can have finished before the listener lands — in which case
     // animationend never comes. The timeout is the backstop, and it has to
-    // outlast the longest entrance: the project slide, at 0.8s. Strip the class
-    // early and the page snaps mid-move.
-    window.setTimeout(done, 1100);
+    // outlast the entrance (0.52s). Strip the class early and the page snaps
+    // mid-move.
+    window.setTimeout(done, 800);
   }
 
   function initWorkLinks() {
@@ -707,11 +704,6 @@ function initQuoteReveal(el) {
 
     // Shared nav actions for the arrow keys and the bottom pill.
     const goBack = () => {
-      try {
-        sessionStorage.setItem(DIRECTION_KEY, 'back');
-      } catch (err) {
-        // storage blocked — the page just arrives the forward way
-      }
       if (window.history.length > 1) {
         if (prefersReducedMotion()) {
           window.history.back();
@@ -884,16 +876,9 @@ function initQuoteReveal(el) {
     // in-page reveals with it, so coming back reads the same as arriving.
     if (event.persisted && !prefersReducedMotion()) {
       const root = document.documentElement;
-      root.classList.remove('page-entering', 'page-returning');
+      root.classList.remove('page-entering');
       void document.body.offsetWidth; // reflow, so re-adding restarts it
-      // A restore is always a history traversal, so this page is being come
-      // back to — it arrives from the left whether or not the flag survived.
-      root.classList.add('page-entering', 'page-returning');
-      try {
-        sessionStorage.removeItem(DIRECTION_KEY);
-      } catch (err) {
-        // storage blocked — nothing was set
-      }
+      root.classList.add('page-entering');
       clearEntrance();
 
       document.querySelectorAll('.animate-in').forEach((el) => {

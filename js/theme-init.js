@@ -57,36 +57,11 @@
   // out, which meant the entrance only played if you arrived by a link the
   // script had intercepted — a reload, a pasted URL, a back button or any link
   // that slipped past it all cut straight in, and the site felt inconsistent
-  // depending on how you got somewhere.
-  var DIRECTION_KEY = 'portfolio-nav-direction';
-
+  // depending on how you got somewhere. Every page rises the same way,
+  // whichever direction you arrived from.
   function markPageEntering() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-    // Going back, the page comes in from the left instead — the same move in
-    // reverse, so the two directions don't read the same. Set by project-nav.js
-    // on the way out, and one-shot: it describes this arrival only.
-    var back = false;
-    try {
-      back = sessionStorage.getItem(DIRECTION_KEY) === 'back';
-      if (back) sessionStorage.removeItem(DIRECTION_KEY);
-    } catch (err) {
-      // storage blocked — fall through as a forward arrival
-    }
-
-    // The browser's own back button doesn't go through our shortcut, so ask the
-    // navigation entry as well.
-    if (!back) {
-      try {
-        var nav = performance.getEntriesByType('navigation')[0];
-        back = !!nav && nav.type === 'back_forward';
-      } catch (err) {
-        // no navigation timing — treat it as forward
-      }
-    }
-
     document.documentElement.classList.add('page-entering');
-    if (back) document.documentElement.classList.add('page-returning');
   }
 
   markPageEntering();
