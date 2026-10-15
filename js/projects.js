@@ -60,7 +60,7 @@ window.PROJECTS = {
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Designer' },
       { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
       { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png', role: 'Engineer' },
+      { name: 'Cody Mathisen', photo: 'images/team-cody.png', role: 'Engineer' },
       { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg', role: 'Engineer' },
     ],
     images: [
@@ -69,8 +69,8 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
-      'Product managers and researchers liked Insights but were tired of logging in every week to re-run the same handful of searches — feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it reducing monthly active usage metrics.',
-      'Automations turns those repeat searches into scheduled reports and delivers them wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent our time with engineering on making the scheduling and delivery reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too which increase Insights adoption overall.',
+      'Product managers and researchers liked Insights but were tired of logging in every week to re-run the same handful of searches — feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it, which reduced monthly active usage.',
+      'Automations turns those repeat searches into scheduled reports and delivers them wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent our time with engineering on making the scheduling and delivery reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too, which increased Insights adoption overall.',
     ],
     quote: 'Automations help keep our entire team updated on what our customers are saying, straight in our Slack channels.',
     quoteBy: 'Customer feedback',
@@ -86,7 +86,7 @@ window.PROJECTS = {
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Designer' },
       { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
       { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
-      { name: 'Cody Mathison', photo: 'images/team-cody.png', role: 'Engineer' },
+      { name: 'Cody Mathisen', photo: 'images/team-cody.png', role: 'Engineer' },
       { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineer' },
     ],
     // Hero is a looping video set in the page markup; hover preview needs a still.
@@ -192,7 +192,7 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
-      'As Fiori Tools grew, the design files struggled to follow. Designers were manually changing color values in mockups by hand to check how a feature held up in light, dark and high-contrast themes, and engineers couldn’t find the token that matched the mockup a designer handed them.',
+      'As Fiori Tools grew, the design files struggled to follow. Designers were changing colour values in mockups by hand to check how a feature held up in light, dark and high-contrast themes, and engineers couldn’t find the token that matched the mockup a designer handed them.',
       'We rebuilt the Figma library as one source of truth: over 200 components documented from plain buttons up to code-generator wizards, on a variable structure that retints the lot across ten-plus VS Code themes in a click. We mapped the naming to production CSS and JSON with the front-end team, which took the guesswork out of handoff. Design once, flip a theme to check contrast, hand it over — QA cycles shortened and the team got its time back for harder problems.',
     ],
   },
