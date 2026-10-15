@@ -5,7 +5,8 @@
 // Rebuilt whenever the pill changes size.
 function buildBubble(pill) {
   const NS = 'http://www.w3.org/2000/svg';
-  const PAD = 24;
+  // Room round the shape for the blurred shadow (7px blur, nudged 4px down).
+  const PAD = 32;
   const R = 18;
   const PW = 12;
   const PH = 6;
@@ -17,7 +18,7 @@ function buildBubble(pill) {
   svg.setAttribute('aria-hidden', 'true');
   const uid = `bubble-${Math.random().toString(36).slice(2, 8)}`;
   svg.innerHTML = `
-    <defs><mask id="${uid}"><rect x="0" y="0" width="100%" height="100%" fill="#fff"/><path class="m" fill="#000"/></mask></defs>
+    <defs><mask id="${uid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="#fff"/><path class="m" fill="#000"/></mask></defs>
     <path class="pc-bubble-shadow" mask="url(#${uid})"/>
     <path class="pc-bubble-line"/>
     <path class="pc-bubble-swoop pc-bubble-swoop--tail"/>
