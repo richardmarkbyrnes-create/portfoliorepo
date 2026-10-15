@@ -1292,6 +1292,43 @@ html[data-theme="dark"] .theme-swatch {
   }
 }
 
+/* A non-clickable name line at the top of the menu, divided from the links. */
+.nav-contact-header {
+  display: flex;
+  align-items: center;
+  /* Same gap and padding as .nav-contact-item, so the name lines up with
+     "LinkedIn" and "Email me" below it. */
+  gap: 10px;
+  padding: 6px 10px 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 9%, transparent);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--nav-text-active);
+  cursor: default;
+  user-select: none;
+}
+
+.nav-contact-avatar {
+  display: block;
+  /* The 16px of the icons below, framed in white with a soft shadow. */
+  width: 16px;
+  height: 16px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  border: 1.5px solid #fff;
+  border-radius: 5px;
+  object-fit: cover;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="dark"] .nav-contact-avatar {
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
 .nav-contact-item {
   display: flex;
   align-items: center;
@@ -4557,6 +4594,22 @@ body[data-page="project"] .pc-next-pill.is-docked {
   clip-path: inset(2px round 8px);
 }
 
+/* Very soft white fade along the bottom of the footage — white in both themes, as
+   it dissolves the recording's own UI rather than the page. */
+.pc-image--loop::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16%;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.7));
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  pointer-events: none;
+  z-index: 1;
+}
+
 .pc-hero-video {
   position: absolute;
   inset: 0;
@@ -5650,6 +5703,30 @@ body.next-pill-hover .pc-next-hover-glow {
 
 /* Stacked shots read as a pair: the big quote gap only goes after the last one. */
 .pc-detail:has(+ .pc-detail) {
+  margin-bottom: 0;
+}
+
+/* Light grey line under a detail shot — same voice as the polaroid caption
+   (.pc-subhead). The caption takes over the shot's bottom gap. */
+.pc-detail:has(+ .pc-detail-caption) {
+  margin-bottom: 0;
+}
+
+.pc-detail-caption {
+  width: 55%;
+  margin: 18px auto 72px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+  color: var(--text-body);
+  opacity: 0.5;
+  text-align: center;
+}
+
+.pc-detail-caption:has(+ .pc-detail) {
   margin-bottom: 0;
 }
 
@@ -8472,6 +8549,11 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   body[data-page="project"] .pc-lead-block,
   body[data-page="project"] .pc-detail {
     margin-bottom: 65px;
+  }
+
+  /* …except a shot with a caption under it: the caption takes the gap. */
+  body[data-page="project"] .pc-detail:has(+ .pc-detail-caption) {
+    margin-bottom: 0;
   }
 
   body[data-page="project"] .pc-image {
