@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <base href="/">
   <script src="/js/theme-init.js?v=17"></script>
-  <link rel="stylesheet" href="/css/styles.css?v=1080">
+  <link rel="stylesheet" href="/css/styles.css?v=1083">
 </head>
 <body data-page="project" data-project="ask-ai">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -51,7 +51,9 @@
       <header class="pc-lead-block animate-in" style="animation-delay:0ms">
         <h1 class="pc-lead" id="pc-lead"></h1>
       </header>
-      <div class="pc-image pc-image--main animate-in" style="animation-delay:90ms" aria-hidden="true"></div>
+      <div class="pc-image pc-image--main pc-image--loop animate-in" style="animation-delay:90ms" aria-hidden="true">
+        <video class="pc-hero-video" src="/images/ask-ai-hero.mp4?v=4" width="1920" height="1196" autoplay loop muted playsinline preload="auto"></video>
+      </div>
 
       <figure class="pc-sketch pc-sketch--textonly animate-in" style="animation-delay:250ms">
         <figcaption class="pc-sketch-caption"><span class="pc-eyebrow">Problem</span>Managing customer feedback was overwhelming and unsustainable.<span class="pc-lead-muted">There had to be a better way&hellip;</span></figcaption>
@@ -67,6 +69,8 @@
       <p class="pc-desc animate-in" id="pc-desc-2" style="animation-delay:470ms"></p>
 
       <div class="pc-polaroids" id="pc-polaroids" hidden></div>
+
+      <img class="pc-detail animate-in" src="images/ask-ai-landing.png" alt="The Ask Insights landing screen: a greeting, the prompt box, suggested prompts and recent chats." width="2842" height="1856" loading="lazy" decoding="async" style="animation-delay:490ms">
 
       <img class="pc-detail animate-in" src="images/ask-ai-detail.png" alt="A cited answer in Ask Insights: ranked feature requests with why each matters, a key takeaway, and the sources it drew on." width="2356" height="1666" loading="lazy" decoding="async" style="animation-delay:510ms">
 
@@ -94,7 +98,7 @@
   </main>
 
   <script src="/js/hero-ascii-bg.js?v=28"></script>
-  <script src="/js/projects.js?v=48"></script>
+  <script src="/js/projects.js?v=51"></script>
   <script src="/js/ascii-text-scramble.js?v=5"></script>
   <script src="/js/project-nav.js?v=53"></script>
   <script src="/js/main.js?v=116"></script>

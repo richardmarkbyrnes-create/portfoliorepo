@@ -4539,6 +4539,24 @@ body[data-page="project"] .pc-next-pill.is-docked {
   overflow: hidden;
 }
 
+/* Looping hero footage without the white bottom fade — the recording carries its
+   own frame and background, so it should show edge to edge. */
+.pc-image--loop {
+  position: relative;
+  width: 180%;
+  max-width: calc(100vw - 64px);
+}
+
+/* Trim 2px off every edge of the footage (the recording's own outer pixels), then
+   re-round the corners — clip-path survives compositing where overflow doesn't. */
+.pc-image--loop .pc-hero-video {
+  inset: -2px;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  border-radius: 0;
+  clip-path: inset(2px round 8px);
+}
+
 .pc-hero-video {
   position: absolute;
   inset: 0;
@@ -5630,8 +5648,19 @@ body.next-pill-hover .pc-next-hover-glow {
   overflow: hidden;
 }
 
+/* Stacked shots read as a pair: the big quote gap only goes after the last one. */
+.pc-detail:has(+ .pc-detail) {
+  margin-bottom: 0;
+}
+
+/* Ask Insights: larger UI shots to sit under the wider looping hero. */
+body[data-project="ask-ai"] .pc-detail {
+  width: 150%;
+}
+
 @media (max-width: 640px) {
-  .pc-detail {
+  .pc-detail,
+  body[data-project="ask-ai"] .pc-detail {
     width: 100%;
   }
 }
