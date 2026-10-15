@@ -129,6 +129,7 @@ function initQuoteReveal(el) {
 (function () {
   const PROJECT_TRANSITION_MS = 320;
   const LEAVE_KEY = 'portfolio-project-leave';
+  const FROM_HOME_KEY = 'portfolio-from-home';
   // Which way the next page should arrive from. Read and cleared by
   // theme-init.js in the head — keep the name in step there.
   const DIRECTION_KEY = 'portfolio-nav-direction';
@@ -163,7 +164,20 @@ function initQuoteReveal(el) {
       return;
     }
     document.body.classList.add('page-is-leaving');
-    if (leaveProject) sessionStorage.setItem(LEAVE_KEY, '1');
+    // Heading home: the close button slides out and the toolbar slides over
+    // into its home-page corner (CSS). Leaving home for a project, the
+    // toolbar slides left to where it sits on a project page, and the flag
+    // tells that page to slide the close button in beside it (theme-init.js).
+    if (leaveProject) {
+      sessionStorage.setItem(LEAVE_KEY, '1');
+      document.body.classList.add('is-leaving-home');
+    } else if (document.body.dataset.page === 'home') {
+      const target = new URL(href, window.location.href).pathname.split('/').filter(Boolean)[0];
+      if (target && window.PROJECTS?.[target]) {
+        sessionStorage.setItem(FROM_HOME_KEY, '1');
+        document.body.classList.add('is-leaving-to-project');
+      }
+    }
     window.setTimeout(() => { window.location.href = href; }, PROJECT_TRANSITION_MS);
   }
 

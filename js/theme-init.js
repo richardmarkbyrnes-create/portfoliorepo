@@ -91,6 +91,27 @@
 
   markPageEntering();
 
+  // The corner controls move between home and a project: the close button
+  // only exists on project pages, and the toolbar sits further left there to
+  // make room for it. Flagged by project-nav.js on the way out and read here,
+  // before first paint, so the arriving page can slide them across instead of
+  // dropping them in.
+  function markCornerHandoff() {
+    try {
+      var root = document.documentElement;
+      if (sessionStorage.getItem('portfolio-from-home')) {
+        sessionStorage.removeItem('portfolio-from-home');
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('from-home');
+      }
+      // project-nav.js spends this one itself (initHomeReturn); only read it.
+      if (sessionStorage.getItem('portfolio-project-leave')) root.classList.add('from-project');
+    } catch (err) {
+      // storage blocked — the controls just arrive the usual way
+    }
+  }
+
+  markCornerHandoff();
+
   // The line-art illustration draws itself in once per session. Unlike the hero
   // flourish this one sits below the fold, so the flag can't be spent here on
   // load — main.js writes it only when the illustration actually scrolls into

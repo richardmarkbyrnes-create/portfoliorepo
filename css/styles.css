@@ -8843,3 +8843,62 @@ body[data-page="project"].page-is-leaving .pc-back {
     transition: none;
   }
 }
+
+/* Corner hand-off between home and a project (desktop with a pointer; on
+   touch and narrow screens the close button is hidden and the toolbar
+   doesn't move). Opening a project from home, the toolbar slides left to
+   make room and the project page slides the close button in from the right
+   edge; heading home, both go back the other way. 60px is the toolbar's
+   right offset on a project page (84px) less home's (24px). The close
+   button's entrance animates translate with a backwards fill only, so once
+   it ends the leaving transitions (on transform and opacity) aren't held
+   off by it. */
+@media (hover: hover) and (min-width: 769px) {
+  html.from-home body[data-page="project"] .pc-close {
+    animation: pcCloseSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.06s backwards;
+  }
+
+  /* Already shifted by the home page on its way out, so it arrives in
+     place rather than dropping in. */
+  html.from-home body[data-page="project"] .nav-primary {
+    animation: none;
+  }
+
+  body[data-page="home"].page-is-leaving.is-leaving-to-project .nav-primary {
+    opacity: 1;
+    transform: translateX(-60px);
+    transition: transform 0.32s cubic-bezier(0.55, 0, 0.45, 1);
+  }
+
+  body[data-page="project"].page-is-leaving.is-leaving-home .pc-close {
+    opacity: 0;
+    transform: translateX(32px);
+    transition:
+      opacity 0.26s ease,
+      transform 0.32s cubic-bezier(0.55, 0, 0.45, 1);
+  }
+
+  body[data-page="project"].page-is-leaving.is-leaving-home .nav-primary {
+    transform: translateX(60px);
+    transition: transform 0.32s cubic-bezier(0.55, 0, 0.45, 1);
+  }
+
+  /* Back on home the toolbar is already where the project page left it, so
+     it doesn't drop in again. */
+  html.from-project body[data-page="home"] .nav-primary {
+    animation: none;
+  }
+}
+
+@keyframes pcCloseSlideIn {
+  from { opacity: 0; translate: 32px 0; }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="project"].page-is-leaving.is-leaving-home .pc-close,
+  body[data-page="project"].page-is-leaving.is-leaving-home .nav-primary ,
+  body[data-page="home"].page-is-leaving.is-leaving-to-project .nav-primary {
+    transition: none;
+  }
+}
