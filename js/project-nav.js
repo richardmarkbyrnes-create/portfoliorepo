@@ -369,6 +369,16 @@ function initQuoteReveal(el) {
       }
     }
 
+    // Year and status above the title, e.g. "2025 · Shipped". Projects that
+    // never went out carry their own status in projects.js.
+    if (lead && project.year && !document.getElementById('pc-lead-meta')) {
+      const meta = document.createElement('p');
+      meta.className = 'pc-lead-meta';
+      meta.id = 'pc-lead-meta';
+      meta.textContent = `${project.year} \u00b7 ${project.status || 'Shipped'}`;
+      lead.before(meta);
+    }
+
     // Two-line summary under the title, styled like the home hero subtext.
     if (lead && project.intro) {
       let summary = document.getElementById('pc-lead-summary');
