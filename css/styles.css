@@ -3257,9 +3257,17 @@ body[data-page="home"] .page {
   display: none;
 }
 
-/* What the project was, after the colon, in light grey. */
+/* What the project was, after the colon, in light grey; on hover it takes
+   the row's ink like the name, only lighter. */
 .work-title-desc {
   color: var(--text-light);
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.work-column--interactive .work-row-main:hover .work-title-desc,
+.work-column--interactive .work-row-main:focus-visible .work-title-desc {
+  color: inherit;
+  opacity: 0.6;
 }
 
 @media (max-width: 768px) {
