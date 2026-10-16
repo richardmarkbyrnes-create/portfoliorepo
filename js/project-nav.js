@@ -1,15 +1,12 @@
-// The next-project pill drawn as a speech bubble: rounded body plus a small
-// pointer under its middle, as one path. A glass layer is clipped to it (fill
-// and blur); an SVG traces it for the shadow (masked to the outside, so it
-// never darkens the glass), the hairline border and the end-of-page swoop.
-// Rebuilt whenever the pill changes size.
+// The next-project pill drawn as one rounded path. A glass layer is clipped to
+// it (fill and blur); an SVG traces it for the shadow (masked to the outside,
+// so it never darkens the glass), the hairline border and the end-of-page
+// swoop. Rebuilt whenever the pill changes size.
 function buildBubble(pill) {
   const NS = 'http://www.w3.org/2000/svg';
   // Room round the shape for the blurred shadow (7px blur, nudged 4px down).
   const PAD = 32;
   const R = 18;
-  const PW = 12;
-  const PH = 6;
   const glass = document.createElement('span');
   glass.className = 'pc-bubble-glass';
   glass.setAttribute('aria-hidden', 'true');
@@ -29,12 +26,9 @@ function buildBubble(pill) {
 
   const shapeAt = (ox, oy, w, h) => {
     const r = Math.min(R, h / 2);
-    const cx = ox + w / 2;
     return [
       `M${ox + r},${oy}`, `H${ox + w - r}`, `A${r},${r} 0 0 1 ${ox + w},${oy + r}`,
       `V${oy + h - r}`, `A${r},${r} 0 0 1 ${ox + w - r},${oy + h}`,
-      `H${cx + PW / 2}`, `Q${cx + 1.5},${oy + h + PH - 0.5} ${cx},${oy + h + PH}`,
-      `Q${cx - 1.5},${oy + h + PH - 0.5} ${cx - PW / 2},${oy + h}`,
       `H${ox + r}`, `A${r},${r} 0 0 1 ${ox},${oy + h - r}`,
       `V${oy + r}`, `A${r},${r} 0 0 1 ${ox + r},${oy}`, 'Z',
     ].join(' ');
@@ -54,7 +48,7 @@ function buildBubble(pill) {
     svg.style.left = `${-PAD - 1}px`;
     svg.style.top = `${-PAD - 1}px`;
     svg.setAttribute('width', w + PAD * 2);
-    svg.setAttribute('height', h + PH + PAD * 2);
+    svg.setAttribute('height', h + PAD * 2);
     const outer = shapeAt(PAD, PAD, w, h);
     svg.querySelector('.m').setAttribute('d', outer);
     const shadow = svg.querySelector('.pc-bubble-shadow');

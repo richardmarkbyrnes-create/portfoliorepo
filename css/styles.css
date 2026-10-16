@@ -3288,6 +3288,19 @@ body[data-page="home"] .page {
   margin-bottom: calc(var(--work-divider-space) * 0.6);
 }
 
+/* Only the active company's rows take up room: the others lie over them
+   (the leaving one blurs out on top), and the box eases to the new height
+   (main.js sets it), the sections below gliding with it. */
+.work-panels {
+  position: relative;
+  transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-panels .work-panel:not(.is-active) {
+  position: absolute;
+  inset: 0 0 auto;
+}
+
 .work-tabs.has-switched .work-panel.is-active .work-row {
   animation: hobby-photo-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: calc(0.1s + var(--i, 0) * 0.06s);
@@ -5095,9 +5108,7 @@ body[data-page="project"] .pc-next-pill.has-bubble::before {
 
 .pc-bubble-glass {
   position: absolute;
-  /* Down past the pill's bottom by the pointer's 6px, so the clip path has
-     room to draw it. */
-  inset: -1px -1px -7px;
+  inset: -1px;
   z-index: 0;
   background: var(--bubble-fill);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
