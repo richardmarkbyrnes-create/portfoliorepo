@@ -3236,6 +3236,17 @@ body[data-page="home"] .page {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Each row carries the project's page headline, and its short name for
+   phones, where the headlines wrap to two lines. */
+.work-title-short {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .work-title-long { display: none; }
+  .work-title-short { display: inline; }
+}
+
 /* Hovering a project, its company's logo slides in ahead of the title. The
    slot opens from nothing rather than the image growing, so the logo never
    squashes, and the title eases over to make room. */
@@ -8300,11 +8311,6 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   .work-column--interactive .work-row {
     grid-template-columns: 88px 1fr;
-  }
-
-  /* Project years drop to two digits on small screens ("26" for 2026). */
-  .work-col--year-century {
-    display: none;
   }
 
   /* Stack the label over its copy — an 88px gutter leaves too little room for
