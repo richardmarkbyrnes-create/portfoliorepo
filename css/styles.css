@@ -3249,6 +3249,63 @@ body[data-page="home"] .page {
   }
 }
 
+/* Hovering anywhere in a company's project column (the rows and the space
+   between them, not the company column itself), its logo slides in ahead of
+   the company name.
+   The slot opens from nothing rather than the image growing, so the logo
+   never squashes; the name eases over to make room. */
+.work-company-logo {
+  display: inline-block;
+  width: 0;
+  height: 14px;
+  overflow: hidden;
+  /* Clip the sliding slot, but leave room for the light theme's frame
+     shadow round the logo. */
+  overflow: clip;
+  overflow-clip-margin: 4px;
+  vertical-align: -2px;
+  opacity: 0;
+  translate: -6px 0;
+  transition:
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-company-logo img {
+  display: block;
+  width: 14px;
+  height: 14px;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+/* Light themes: framed in white with a faint shadow, like the hobby cards. */
+html:not([data-theme="dark"]) .work-company-logo img {
+  border: 1.5px solid #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+.work-list .work-group:has(.work-row:hover):not(:has(.work-col--company:hover)) .work-company-logo,
+.work-list .work-group:has(.work-row-main:focus-visible) .work-company-logo {
+  width: 20px; /* the logo plus a 6px gap before the name */
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* The company cell fills its whole grid cell, empty ones included, so the
+   pointer over the left column always lands on it and the rule above can
+   leave it out. */
+.work-list .work-col--company {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-company-logo { transition: none; }
+}
+
 .work-group-rule {
   display: block;
   height: 1px;

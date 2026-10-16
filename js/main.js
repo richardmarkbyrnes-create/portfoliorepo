@@ -23,8 +23,8 @@ function cycleTheme() {
   applyTheme(THEMES[nextIndex].id);
 }
 
-// The new theme blooms down as a circle from the top centre of the screen, the same
-// reveal the hobby photos used for their colour. A view transition snapshots
+// The new theme blooms out as a circle from the theme toggle in the top-right
+// corner, the same reveal the hobby photos used for their colour. A view transition snapshots
 // the old page; the live new page is clipped to a growing circle over it.
 function cycleThemeWithReveal(origin) {
   if (!document.startViewTransition || !origin || prefersReducedMotion()) {
@@ -32,9 +32,10 @@ function cycleThemeWithReveal(origin) {
     return;
   }
 
-  // Blooms from the top centre of the screen, whichever control triggered it.
-  const x = innerWidth / 2;
-  const y = 0;
+  // Blooms from the centre of the toggle that triggered it.
+  const rect = origin.getBoundingClientRect();
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
   // Far enough to reach the farthest corner of the viewport.
   const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 
