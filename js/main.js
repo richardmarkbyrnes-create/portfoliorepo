@@ -439,9 +439,11 @@ function initProjectPreview() {
     return images[0] || null;
   };
 
-  // Offset from the title's left edge, where the frame parks for keyboard focus.
-  // Plus how far the frame dips over the row.
-  const SHIFT_X = 176;
+  // The frame parks at the hovered row's right end, its left edge tucked a
+  // little over the year, beside the list rather than over the titles (on a
+  // narrow window it's held on screen, and overlaps more of the row instead).
+  // Plus how far it dips over the row.
+  const OVER_YEAR = 28;
   const OVERLAP = 10;
 
   let shown = null;
@@ -473,7 +475,8 @@ function initProjectPreview() {
     const viewportWidth = document.documentElement.clientWidth;
     const viewportHeight = document.documentElement.clientHeight;
 
-    const left = Math.min(rect.left + SHIFT_X, viewportWidth - width - 16);
+    const rowRect = row.getBoundingClientRect();
+    const left = Math.min(rowRect.right - OVER_YEAR, viewportWidth - width - 16);
     preview.style.left = `${Math.max(16, left) / scale}px`;
 
     if (fitsAbove) {
@@ -528,10 +531,10 @@ function initProjectPreview() {
     preview.style.setProperty('--py', `${y}px`);
   }
 
-  // Horizontally the frame rides just to the right of the cursor (the rows hold
-  // full headlines now, so a fixed spot along the title ended up under the
-  // pointer); vertically it keeps its parked spot and only leans a little.
-  const CURSOR_GAP_X = 28;
+  // The frame stays parked and only leans a little towards the cursor, so it
+  // never chases the pointer across the title.
+  const FOLLOW_X = 0.06;
+  const MAX_X = 14;
   const FOLLOW_Y = 0.4;
   const MAX_Y = 12;
   const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
@@ -545,14 +548,8 @@ function initProjectPreview() {
       queuedMove = false;
       if (activeRow !== row) return;
       const rect = row.getBoundingClientRect();
-      // Work in screen pixels like position(), converting back at the end.
-      const scale = pageScale();
-      const parkedLeft = parseFloat(preview.style.left) * scale;
-      const width = preview.offsetWidth * scale;
-      const maxLeft = document.documentElement.clientWidth - width - 16;
-      const left = Math.min(clientX + CURSOR_GAP_X, maxLeft);
       drift(
-        (left - parkedLeft) / scale,
+        clamp((clientX - (rect.left + rect.width / 2)) * FOLLOW_X, MAX_X),
         clamp((clientY - (rect.top + rect.height / 2)) * FOLLOW_Y, MAX_Y)
       );
     });
@@ -578,10 +575,7 @@ function initProjectPreview() {
     const src = heroFor(row.dataset.project);
     if (!src) return;
     withHero.push(src);
-    row.addEventListener('mouseenter', (event) => {
-      show(row, src);
-      follow(event, row);
-    });
+    row.addEventListener('mouseenter', () => show(row, src));
     row.addEventListener('mousemove', (event) => follow(event, row));
     row.addEventListener('mouseleave', hide);
     row.addEventListener('focus', () => show(row, src));
