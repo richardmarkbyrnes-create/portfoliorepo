@@ -3245,7 +3245,7 @@ body[data-page="home"] .page {
 @media (min-width: 769px) {
   body[data-page="home"] .work-column--interactive .work-list .work-row {
     grid-template-columns: 88px minmax(0, 1fr);
-    column-gap: 44px;
+    column-gap: 28px;
   }
 }
 
@@ -8627,7 +8627,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
      Interests line up with the companies and their copy with the titles. */
   body[data-page="home"] .work-column--about .work-row--about {
     grid-template-columns: 88px minmax(0, 1fr);
-    column-gap: 44px;
+    column-gap: 28px;
   }
 
   body[data-page="home"] .work-col--company,
