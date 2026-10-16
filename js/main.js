@@ -42,10 +42,12 @@ function cycleThemeWithReveal(origin) {
   root.classList.add('is-theme-reveal');
   const transition = document.startViewTransition(cycleTheme);
   transition.ready.then(() => {
-    // A soft-edged circle: a radial-gradient mask, solid to 60% of its radius
+    // A soft-edged circle: a radial-gradient mask, solid to half its radius
     // then fading out, grown by animating mask-size around its origin. Sized so
-    // the solid core alone covers the farthest corner by the end.
-    const SOLID = 0.6;
+    // the solid core alone covers the farthest corner by the end. A wide
+    // feather and an even ease (no burst at the start, no long crawl at the
+    // end) keep the bloom smooth.
+    const SOLID = 0.5;
     const size = (2 * radius) / SOLID;
     const at = (s) => ({
       maskSize: `${s}px ${s}px`,
@@ -54,9 +56,9 @@ function cycleThemeWithReveal(origin) {
       webkitMaskPosition: `${x - s / 2}px ${y - s / 2}px`,
     });
     root.animate([at(0), at(size)], {
-      duration: 900,
+      duration: 1100,
       fill: 'forwards',
-      easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      easing: 'cubic-bezier(0.45, 0.05, 0.25, 1)',
       pseudoElement: '::view-transition-new(root)',
     });
   });
