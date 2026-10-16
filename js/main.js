@@ -679,7 +679,7 @@ function initBottomBlurVisibility() {
     const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
     // Hidden at rest, fades in once the page starts moving, then fades out as the
     // page bottoms out so whatever ends it is read clean. Pages too short to
-    // scroll never show it.
+    // scroll never show it. Home shows it from the start, at rest too.
     //
     // A fixed distance rather than a fraction of the scroll: at 10% of a long
     // project page the blur switched off hundreds of pixels before the team
@@ -688,9 +688,9 @@ function initBottomBlurVisibility() {
     //
     // Only the home page fades it out at the bottom. Project pages keep it on to
     // the very end, under the docked next-project pill.
-    const atTop = window.scrollY < 40;
-    const tooShort = maxScroll <= 0;
     const isHome = document.body.dataset.page === 'home';
+    const atTop = !isHome && window.scrollY < 40;
+    const tooShort = maxScroll <= 0;
     const atBottom = isHome && maxScroll - window.scrollY < 160;
     document.body.classList.toggle('bottom-blur-visible', !atTop && !tooShort && !atBottom);
     ticking = false;
