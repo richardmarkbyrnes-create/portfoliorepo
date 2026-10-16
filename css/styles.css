@@ -3236,50 +3236,35 @@ body[data-page="home"] .page {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* The "Name: what it was" titles need nearly the full row, so the year
+   column shrinks to fit its digits and the gap before it tightens. Desktop
+   only — phones show the short names. */
+@media (min-width: 769px) {
+  .work-column--interactive .work-tabs .work-row-main {
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 12px;
+  }
+
+  /* Two-digit years on desktop ("26" for 2026); phones keep all four. */
+  .work-tabs .work-col--year-century {
+    display: none;
+  }
+}
+
 /* Each row carries the project's page headline, and its short name for
    phones, where the headlines wrap to two lines. */
 .work-title-short {
   display: none;
 }
 
+/* What the project was, after the colon, in light grey. */
+.work-title-desc {
+  color: var(--text-light);
+}
+
 @media (max-width: 768px) {
   .work-title-long { display: none; }
   .work-title-short { display: inline; }
-}
-
-/* Hovering a project, its company's logo slides in ahead of the title. The
-   slot opens from nothing rather than the image growing, so the logo never
-   squashes, and the title eases over to make room. */
-.work-row-logo {
-  display: inline-block;
-  width: 0;
-  height: 16px;
-  overflow: hidden;
-  vertical-align: -3px;
-  opacity: 0;
-  translate: -6px 0;
-  transition:
-    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.25s ease,
-    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.work-row-logo img {
-  display: block;
-  width: 16px;
-  height: 16px;
-  border-radius: 4px;
-}
-
-.work-row-main:hover .work-row-logo,
-.work-row-main:focus-visible .work-row-logo {
-  width: 23px; /* the logo plus a 7px gap before the title */
-  opacity: 1;
-  translate: 0 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .work-row-logo { transition: none; }
 }
 
 /* The tab pills carry their own padding, so the full divider space above
