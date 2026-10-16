@@ -3236,6 +3236,41 @@ body[data-page="home"] .page {
   grid-template-columns: minmax(0, 1fr);
 }
 
+/* Hovering a project, its company's logo slides in ahead of the title. The
+   slot opens from nothing rather than the image growing, so the logo never
+   squashes, and the title eases over to make room. */
+.work-row-logo {
+  display: inline-block;
+  width: 0;
+  height: 16px;
+  overflow: hidden;
+  vertical-align: -3px;
+  opacity: 0;
+  translate: -6px 0;
+  transition:
+    width 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.25s ease,
+    translate 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.work-row-logo img {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.work-row-main:hover .work-row-logo,
+.work-row-main:focus-visible .work-row-logo {
+  width: 23px; /* the logo plus a 7px gap before the title */
+  opacity: 1;
+  translate: 0 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-row-logo { transition: none; }
+}
+
 /* The tab pills carry their own padding, so the full divider space above
    them read as a gap: pull them up closer to the rule. */
 .work-column--experience .work-column-rule:not(.work-column-rule--trailing) {
