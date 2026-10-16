@@ -439,8 +439,8 @@ function initProjectPreview() {
     return images[0] || null;
   };
 
-  // Offset from the title's left edge — this is also the resting point the cursor
-  // drift leans out from. Plus how far the frame dips over the row.
+  // Offset from the title's left edge, where the frame parks for keyboard focus.
+  // Plus how far the frame dips over the row.
   const SHIFT_X = 176;
   const OVERLAP = 10;
 
@@ -528,11 +528,11 @@ function initProjectPreview() {
     preview.style.setProperty('--py', `${y}px`);
   }
 
-  // The frame keeps its parked spot and just leans towards the cursor — horizontally
-  // it tracks hard, since that's the axis the pointer actually travels along a row.
-  const FOLLOW_X = 0.32;
+  // Horizontally the frame rides just to the right of the cursor (the rows hold
+  // full headlines now, so a fixed spot along the title ended up under the
+  // pointer); vertically it keeps its parked spot and only leans a little.
+  const CURSOR_GAP_X = 28;
   const FOLLOW_Y = 0.4;
-  const MAX_X = 56;
   const MAX_Y = 12;
   const clamp = (value, limit) => Math.max(-limit, Math.min(limit, value));
 
@@ -545,8 +545,14 @@ function initProjectPreview() {
       queuedMove = false;
       if (activeRow !== row) return;
       const rect = row.getBoundingClientRect();
+      // Work in screen pixels like position(), converting back at the end.
+      const scale = pageScale();
+      const parkedLeft = parseFloat(preview.style.left) * scale;
+      const width = preview.offsetWidth * scale;
+      const maxLeft = document.documentElement.clientWidth - width - 16;
+      const left = Math.min(clientX + CURSOR_GAP_X, maxLeft);
       drift(
-        clamp((clientX - (rect.left + rect.width / 2)) * FOLLOW_X, MAX_X),
+        (left - parkedLeft) / scale,
         clamp((clientY - (rect.top + rect.height / 2)) * FOLLOW_Y, MAX_Y)
       );
     });
@@ -572,7 +578,10 @@ function initProjectPreview() {
     const src = heroFor(row.dataset.project);
     if (!src) return;
     withHero.push(src);
-    row.addEventListener('mouseenter', () => show(row, src));
+    row.addEventListener('mouseenter', (event) => {
+      show(row, src);
+      follow(event, row);
+    });
     row.addEventListener('mousemove', (event) => follow(event, row));
     row.addEventListener('mouseleave', hide);
     row.addEventListener('focus', () => show(row, src));
@@ -620,8 +629,7 @@ function initScrollAnimations() {
   // the last company block has finished arriving, so the cascade carries on
   // down the page instead of everything starting at once. Anything revealed
   // by scrolling later plays straight away.
-  const groups = document.querySelectorAll('.work-column--experience .work-group.animate-in');
-  const lastGroup = groups[groups.length - 1];
+  const lastGroup = document.querySelector('.work-column--experience .work-tabs.animate-in');
   let cascadeDone = !lastGroup;
   const afterCascade = [];
   if (lastGroup) {
@@ -1035,15 +1043,18 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
-// About hobby tabs. The CSS does the motion: the outgoing panel gets
-// .is-leaving (blur out) until its animation ends, the incoming one
-// .is-active (blur in, then the staggered photos).
+// Tabbed sections: the about hobbies, and the home page's projects by
+// company. The CSS does the motion: the outgoing panel gets .is-leaving
+// (blur out) until its animation ends, the incoming one .is-active (blur in,
+// then its staggered contents). .has-switched marks the first change, so
+// anything that should stagger only on a switch, not on load, can key off it.
 function initHobbyTabs() {
   document.querySelectorAll('[data-hobby-tabs]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
 
     const select = (tab) => {
       if (tab.getAttribute('aria-selected') === 'true') return;
+      root.classList.add('has-switched');
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute('aria-selected', String(selected));
