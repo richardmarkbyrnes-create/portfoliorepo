@@ -372,8 +372,9 @@ html.is-theme-reveal::view-transition-new(root) {
 
 /* The soft circle's shape; main.js animates its size and position. */
 html.is-theme-reveal::view-transition-new(root) {
-  -webkit-mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 60%, transparent 100%);
+  /* Solid to 50%: main.js sizes the circle by the same fraction (SOLID). */
+  -webkit-mask-image: radial-gradient(closest-side, #000 50%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 50%, transparent 100%);
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: 0 0;
@@ -3240,7 +3241,7 @@ body[data-page="home"] .page {
   display: none;
 }
 
-/* Desktop: a narrower company column and gap than the about rows use. */
+/* Desktop: a narrower company column and gap (the about rows below match). */
 @media (min-width: 769px) {
   body[data-page="home"] .work-column--interactive .work-list .work-row {
     grid-template-columns: 88px minmax(0, 1fr);
@@ -8565,10 +8566,11 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     column-gap: 65px;
   }
 
-  /* A touch narrower beside About and Interests, so the copy column holds
-     all five interest tabs on one line. */
+  /* The same label column and gap as the project list above, so About and
+     Interests line up with the companies and their copy with the titles. */
   body[data-page="home"] .work-column--about .work-row--about {
-    column-gap: 52px;
+    grid-template-columns: 88px minmax(0, 1fr);
+    column-gap: 44px;
   }
 
   body[data-page="home"] .work-col--company,
