@@ -1903,9 +1903,8 @@ body[data-page="about"] {
   flex-wrap: wrap;
   gap: 4px;
   margin-bottom: 1.25em;
-  /* Pull the first pill's padding out to the column edge, so its label
-     still lines up with the copy below. */
-  margin-left: -10px;
+  /* No outdent: the first pill's left edge, rather than its label, lines up
+     with the copy below. */
 }
 
 /* The selected tab sits in a light grey rounded tile; the others are plain labels
@@ -1959,6 +1958,13 @@ body[data-page="about"] {
 [data-theme="dark"] .hobby-tab[aria-selected="true"] {
   border-color: rgba(255, 255, 255, 0.1);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* On a phone the copy column is narrower than the five tabs: tighter pills
+   keep them on one line down to 360px. */
+@media (max-width: 430px) {
+  .hobby-tablist { gap: 2px; }
+  .hobby-tab { padding: 4px 6px; }
 }
 
 .hobby-tab:focus-visible {
@@ -3219,6 +3225,35 @@ body[data-page="home"] .page {
 
 .work-group + .work-group {
   margin-top: 52px;
+}
+
+/* Home projects, tabbed by company (the about hobbies' tabs and panels,
+   shared): one company's rows show at a time, so a row is the project and
+   its year alone, with no company column. Switching company, the incoming
+   rows rise in one by one — only once the tabs have been used, so the page
+   load keeps its single fade-in. */
+.work-column--interactive .work-tabs .work-row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+/* The tab pills carry their own padding, so the full divider space above
+   them read as a gap: pull them up closer to the rule. */
+.work-column--experience .work-column-rule:not(.work-column-rule--trailing) {
+  margin-bottom: calc(var(--work-divider-space) * 0.6);
+}
+
+.work-tabs.has-switched .work-panel.is-active .work-row {
+  animation: hobby-photo-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.06s);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-tabs.has-switched .work-panel.is-active .work-row { animation: none; }
+}
+
+/* The rows carry each project's full headline, plain: no dashed underline. */
+.work-column--interactive .work-tabs .work-col--project {
+  text-decoration: none;
 }
 
 .work-row {
@@ -8516,6 +8551,12 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   body[data-page="home"] .work-row {
     column-gap: 65px;
+  }
+
+  /* A touch narrower beside About and Interests, so the copy column holds
+     all five interest tabs on one line. */
+  body[data-page="home"] .work-column--about .work-row--about {
+    column-gap: 52px;
   }
 
   body[data-page="home"] .work-col--company,
