@@ -3227,23 +3227,36 @@ body[data-page="home"] .page {
   margin-top: 52px;
 }
 
-/* Home projects, tabbed by company (the about hobbies' tabs and panels,
-   shared): one company's rows show at a time, so a row is the project and
-   its year alone, with no company column. Switching company, the incoming
-   rows rise in one by one — only once the tabs have been used, so the page
-   load keeps its single fade-in. */
-.work-column--interactive .work-tabs .work-row {
-  grid-template-columns: minmax(0, 1fr);
+/* Home projects: one list, a group per company split by a faint rule. The
+   company leads in the left column on its group's first row; each project
+   row is the line on what the project was, then its year as two digits
+   ("26"), the year column sized to fit them. */
+.work-column--interactive .work-list .work-row-main {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 16px;
 }
 
-/* The "Name: what it was" titles need nearly the full row, so the year
-   column shrinks to fit its digits and the gap before it tightens. Desktop
-   only — phones show the short names. */
+.work-list .work-col--year-century {
+  display: none;
+}
+
+/* Desktop: a narrower company column and gap than the about rows use. */
 @media (min-width: 769px) {
-  .work-column--interactive .work-tabs .work-row-main {
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 12px;
+  body[data-page="home"] .work-column--interactive .work-list .work-row {
+    grid-template-columns: 88px minmax(0, 1fr);
+    column-gap: 44px;
   }
+}
+
+.work-group-rule {
+  display: block;
+  height: 1px;
+  margin: 14px 0;
+  padding: 0;
+  border: none;
+  background-image: repeating-linear-gradient(to right,
+    color-mix(in srgb, var(--text) 5%, transparent) 0 3px,
+    transparent 3px 9px);
 }
 
 /* Each row carries a line on what the project was, and its short name for
@@ -3257,36 +3270,8 @@ body[data-page="home"] .page {
   .work-title-short { display: inline; }
 }
 
-/* The tab pills carry their own padding, so the full divider space above
-   them read as a gap: pull them up closer to the rule. */
-.work-column--experience .work-column-rule:not(.work-column-rule--trailing) {
-  margin-bottom: calc(var(--work-divider-space) * 0.6);
-}
-
-/* Only the active company's rows take up room: the others lie over them
-   (the leaving one blurs out on top), and the box eases to the new height
-   (main.js sets it), the sections below gliding with it. */
-.work-panels {
-  position: relative;
-  transition: height 0.45s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.work-panels .work-panel:not(.is-active) {
-  position: absolute;
-  inset: 0 0 auto;
-}
-
-.work-tabs.has-switched .work-panel.is-active .work-row {
-  animation: hobby-photo-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: calc(0.1s + var(--i, 0) * 0.06s);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .work-tabs.has-switched .work-panel.is-active .work-row { animation: none; }
-}
-
-/* The rows carry each project's full headline, plain: no dashed underline. */
-.work-column--interactive .work-tabs .work-col--project {
+/* The rows read plain: no dashed underline. */
+.work-column--interactive .work-list .work-col--project {
   text-decoration: none;
 }
 

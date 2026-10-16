@@ -623,7 +623,8 @@ function initScrollAnimations() {
   // the last company block has finished arriving, so the cascade carries on
   // down the page instead of everything starting at once. Anything revealed
   // by scrolling later plays straight away.
-  const lastGroup = document.querySelector('.work-column--experience .work-tabs.animate-in');
+  const groups = document.querySelectorAll('.work-column--experience .work-group.animate-in');
+  const lastGroup = groups[groups.length - 1];
   let cascadeDone = !lastGroup;
   const afterCascade = [];
   if (lastGroup) {
@@ -1037,23 +1038,15 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
-// Tabbed sections: the about hobbies, and the home page's projects by
-// company. The CSS does the motion: the outgoing panel gets .is-leaving
-// (blur out) until its animation ends, the incoming one .is-active (blur in,
-// then its staggered contents). .has-switched marks the first change, so
-// anything that should stagger only on a switch, not on load, can key off it.
+// About hobby tabs. The CSS does the motion: the outgoing panel gets
+// .is-leaving (blur out) until its animation ends, the incoming one
+// .is-active (blur in, then the staggered photos).
 function initHobbyTabs() {
   document.querySelectorAll('[data-hobby-tabs]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
 
-    // data-tabs-fit: the panels box takes the active panel's height rather
-    // than the tallest one's, easing between the two on a switch.
-    const fitBox = root.hasAttribute('data-tabs-fit') ? root.querySelector('.hobby-panels') : null;
-
     const select = (tab) => {
       if (tab.getAttribute('aria-selected') === 'true') return;
-      root.classList.add('has-switched');
-      const fromHeight = fitBox ? fitBox.offsetHeight : 0;
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute('aria-selected', String(selected));
@@ -1070,19 +1063,6 @@ function initHobbyTabs() {
           if (prefersReducedMotion()) done();
         }
       });
-      if (fitBox && !prefersReducedMotion()) {
-        fitBox.style.height = '';
-        const toHeight = fitBox.offsetHeight;
-        fitBox.style.height = `${fromHeight}px`;
-        void fitBox.offsetHeight; // reflow, so the change below transitions
-        fitBox.style.height = `${toHeight}px`;
-        const settle = (event) => {
-          if (event.target !== fitBox || event.propertyName !== 'height') return;
-          fitBox.style.height = '';
-          fitBox.removeEventListener('transitionend', settle);
-        };
-        fitBox.addEventListener('transitionend', settle);
-      }
     };
 
     tabs.forEach((tab, i) => {

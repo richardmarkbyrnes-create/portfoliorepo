@@ -13,7 +13,7 @@
   <link rel="icon" type="image/png" href="/images/favicon-little-richard.png?v=3">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <script src="js/theme-init.js?v=19"></script>
-  <link rel="stylesheet" href="css/styles.css?v=1133">
+  <link rel="stylesheet" href="css/styles.css?v=1136">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -40,70 +40,73 @@
         <div class="work-column-inner">
           <h2 class="visually-hidden" id="work-heading">Selected work</h2>
           <hr class="work-column-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0" aria-hidden="true">
-          <div class="work-tabs animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0" data-hobby-tabs data-tabs-fit>
-            <div class="hobby-tablist work-tablist" role="tablist" aria-label="Companies">
-              <button class="hobby-tab" type="button" role="tab" id="work-tab-miro" aria-controls="work-panel-miro" aria-selected="true">Miro</button>
-              <button class="hobby-tab" type="button" role="tab" id="work-tab-cashbook" aria-controls="work-panel-cashbook" aria-selected="false" tabindex="-1">Cashbook</button>
-              <button class="hobby-tab" type="button" role="tab" id="work-tab-sap" aria-controls="work-panel-sap" aria-selected="false" tabindex="-1">SAP</button>
+          <div class="work-list">
+            <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0">
+              <div class="work-row">
+                <h3 class="work-col work-col--company">Miro</h3>
+                <a class="work-row-main" data-project="custom-stickers" href="/custom-stickers/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Helping users express themselves with GenAI</span><span class="work-title-short">Custom Stickers</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>26</span>
+                </a>
+              </div>
+              <div class="work-row">
+                <span class="work-col work-col--company" aria-hidden="true"></span>
+                <a class="work-row-main" data-project="automations" href="/automations/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Designing automated insight workflows in Miro</span><span class="work-title-short">Automations</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>25</span>
+                </a>
+              </div>
+              <div class="work-row">
+                <span class="work-col work-col--company" aria-hidden="true"></span>
+                <a class="work-row-main" data-project="ask-ai" href="/ask-ai/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Delivering instant, synthesized customer feedback</span><span class="work-title-short">Ask Insights</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>25</span>
+                </a>
+              </div>
+              <div class="work-row">
+                <span class="work-col work-col--company" aria-hidden="true"></span>
+                <a class="work-row-main" data-project="customer-insights" href="/customer-insights/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Integrating live customer feedback onto the canvas</span><span class="work-title-short">Canvas Insights</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
+                </a>
+              </div>
             </div>
-            <div class="hobby-panels work-panels">
-              <div class="hobby-panel work-panel is-active" role="tabpanel" id="work-panel-miro" aria-labelledby="work-tab-miro">
-                <div class="work-row" style="--i: 0">
-                  <a class="work-row-main" data-project="custom-stickers" href="/custom-stickers/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Helping users express themselves with GenAI</span><span class="work-title-short">Custom Stickers</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>26</span>
-                  </a>
-                </div>
-                <div class="work-row" style="--i: 1">
-                  <a class="work-row-main" data-project="automations" href="/automations/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Designing automated insight workflows in Miro</span><span class="work-title-short">Automations</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>25</span>
-                  </a>
-                </div>
-                <div class="work-row" style="--i: 2">
-                  <a class="work-row-main" data-project="ask-ai" href="/ask-ai/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Delivering instant, synthesized customer feedback</span><span class="work-title-short">Ask Insights</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>25</span>
-                  </a>
-                </div>
-                <div class="work-row" style="--i: 3">
-                  <a class="work-row-main" data-project="customer-insights" href="/customer-insights/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Integrating live customer feedback onto the canvas</span><span class="work-title-short">Canvas Insights</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
-                  </a>
-                </div>
+            <hr class="work-group-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 5); opacity: 0" aria-hidden="true">
+            <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 6); opacity: 0">
+              <div class="work-row">
+                <h3 class="work-col work-col--company">Cashbook</h3>
+                <a class="work-row-main" data-project="navigation" href="/navigation/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Redesigning financial tools for cross-product scale</span><span class="work-title-short">IA Redesign</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
+                </a>
               </div>
-              <div class="hobby-panel work-panel" role="tabpanel" id="work-panel-cashbook" aria-labelledby="work-tab-cashbook">
-                <div class="work-row" style="--i: 0">
-                  <a class="work-row-main" data-project="navigation" href="/navigation/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Redesigning financial tools for cross-product scale</span><span class="work-title-short">IA Redesign</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
-                  </a>
-                </div>
-                <div class="work-row" style="--i: 1">
-                  <a class="work-row-main" data-project="visualisations" href="/visualisations/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Simplifying high-density transaction data</span><span class="work-title-short">Financial Visualisations</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
-                  </a>
-                </div>
+              <div class="work-row">
+                <span class="work-col work-col--company" aria-hidden="true"></span>
+                <a class="work-row-main" data-project="visualisations" href="/visualisations/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Simplifying high-density transaction data</span><span class="work-title-short">Financial Visualisations</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>24</span>
+                </a>
               </div>
-              <div class="hobby-panel work-panel" role="tabpanel" id="work-panel-sap" aria-labelledby="work-tab-sap">
-                <div class="work-row" style="--i: 0">
-                  <a class="work-row-main" data-project="developer-tools" href="/developer-tools/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Crafting native dev tooling for enterprise workflows</span><span class="work-title-short">Developer Platform</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>23</span>
-                  </a>
-                </div>
-                <div class="work-row" style="--i: 1">
-                  <a class="work-row-main" data-project="design-systems" href="/design-systems/">
-                    <span class="work-col work-col--project"><span class="work-title-long">Scaling a multi-theme component library across SAP</span><span class="work-title-short">Design Systems</span></span>
-                    <span class="work-col work-col--year"><span class="work-col--year-century">20</span>22</span>
-                  </a>
-                </div>
+            </div>
+            <hr class="work-group-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 7); opacity: 0" aria-hidden="true">
+            <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 8); opacity: 0">
+              <div class="work-row">
+                <h3 class="work-col work-col--company">SAP</h3>
+                <a class="work-row-main" data-project="developer-tools" href="/developer-tools/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Crafting native dev tooling for enterprise workflows</span><span class="work-title-short">Developer Platform</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>23</span>
+                </a>
+              </div>
+              <div class="work-row">
+                <span class="work-col work-col--company" aria-hidden="true"></span>
+                <a class="work-row-main" data-project="design-systems" href="/design-systems/">
+                  <span class="work-col work-col--project"><span class="work-title-long">Scaling a multi-theme component library across SAP</span><span class="work-title-short">Design Systems</span></span>
+                  <span class="work-col work-col--year"><span class="work-col--year-century">20</span>22</span>
+                </a>
               </div>
             </div>
           </div>
-          <hr class="work-column-rule work-column-rule--trailing animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 5); opacity: 0" aria-hidden="true">
+          <hr class="work-column-rule work-column-rule--trailing animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 9); opacity: 0" aria-hidden="true">
         </div>
       </section>
 
@@ -267,7 +270,7 @@
   <script src="js/ascii-text-scramble.js?v=5"></script>
   <script src="js/projects.js?v=53"></script>
   <script src="js/project-nav.js?v=63"></script>
-  <script src="js/main.js?v=126"></script>
+  <script src="js/main.js?v=128"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>
