@@ -2765,6 +2765,9 @@ body[data-page="home"] .page {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  /* Drawn at one pixel per CSS pixel and dithered (hero-ascii-bg.js): keep
+     the pixels hard-edged when a dense screen scales it up. */
+  image-rendering: pixelated;
   -webkit-mask-image: radial-gradient(
     140% 72% at 50% 0%,
     #000 0%,
