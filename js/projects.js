@@ -30,7 +30,7 @@ window.PROJECTS = {
     title: 'Custom Stickers',
     company: 'Miro',
     year: '2026',
-    headline: 'Unblocking personal\nexpression with Gen AI',
+    headline: 'Unblocking Personal\nExpression with Gen AI',
     team: 'Miro · Growth Adoption',
     images: [
       'images/custom-stickers-hero.webp',
@@ -53,7 +53,7 @@ window.PROJECTS = {
     title: 'Automations',
     company: 'Miro',
     year: '2025',
-    headline: 'Designing proactive\ninsights automations',
+    headline: 'Designing Proactive\nInsights Automations',
     team: 'Miro · Insights',
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     teamMembers: [
@@ -79,7 +79,7 @@ window.PROJECTS = {
     title: 'Ask Insights',
     company: 'Miro',
     year: '2025',
-    headline: 'Instant answers to complex\ncustomer questions',
+    headline: 'Instant Answers to Complex\nCustomer Questions',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     teamMembers: [
@@ -103,7 +103,7 @@ window.PROJECTS = {
     title: 'Canvas Insights',
     company: 'Miro',
     year: '2024',
-    headline: 'Bringing rich customer\ndata to the canvas',
+    headline: 'Bringing Rich Customer\nData to the Canvas',
     team: 'Miro · Insights',
     intro: 'On-canvas insight cards that bring rich customer data into Miro boards.',
     teamMembers: [
@@ -130,7 +130,7 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     status: 'Vision work',
-    headline: 'Redesigning core navigation',
+    headline: 'Redesigning Core Navigation',
     team: 'Cashbook',
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     teamMembers: [],
@@ -149,7 +149,7 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     status: 'Vision work',
-    headline: 'Surfacing what matters\nin a sea of numbers',
+    headline: 'Surfacing What Matters\nin a Sea of Numbers',
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
@@ -168,7 +168,7 @@ window.PROJECTS = {
     title: 'Developer Tools',
     company: 'SAP',
     year: '2023',
-    headline: 'Designing native\ndeveloper experiences',
+    headline: 'Designing Native\nDeveloper Experiences',
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
@@ -185,7 +185,7 @@ window.PROJECTS = {
     title: 'Design Systems',
     company: 'SAP',
     year: '2022',
-    headline: 'Scaling a multi-theme\ncomponent library',
+    headline: 'Scaling a Multi-Theme\nComponent Library',
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
     images: [
