@@ -33,13 +33,13 @@ window.PROJECTS = {
     headline: 'Unblocking Personal\nExpression with Gen AI',
     team: 'Miro · Growth Adoption',
     images: [
-      'images/custom-stickers-hero.png',
+      'images/custom-stickers-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     polaroids: [
-      { src: 'images/sticker-photo-1.jpg', r: -5 },
-      { src: 'images/sticker-photo-2.jpg', r: 4 },
+      { src: 'images/sticker-photo-1.webp', r: -5 },
+      { src: 'images/sticker-photo-2.webp', r: 4 },
     ],
     intro: 'A text-to-sticker generative AI tool built into Miro’s stickers panel.',
     paragraphs: [
@@ -58,13 +58,13 @@ window.PROJECTS = {
     intro: 'Turning manual querying into scheduled, recurring insight workflows that come to you.',
     teamMembers: [
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Designer' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.webp', role: 'Product' },
       { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
-      { name: 'Cody Mathisen', photo: 'images/team-cody.png', role: 'Engineer' },
+      { name: 'Cody Mathisen', photo: 'images/team-cody.webp', role: 'Engineer' },
       { name: 'Ophir Horowitz', photo: 'images/team-ophir.jpg', role: 'Engineer' },
     ],
     images: [
-      'images/automations-hero.png',
+      'images/automations-hero.webp',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -84,13 +84,13 @@ window.PROJECTS = {
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     teamMembers: [
       { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Designer' },
-      { name: 'Kosta Bolgov', photo: 'images/team-kosta.png', role: 'Product' },
+      { name: 'Kosta Bolgov', photo: 'images/team-kosta.webp', role: 'Product' },
       { name: 'Brittney Reyes', photo: 'images/team-brittney.jpg', role: 'Research' },
-      { name: 'Cody Mathisen', photo: 'images/team-cody.png', role: 'Engineer' },
+      { name: 'Cody Mathisen', photo: 'images/team-cody.webp', role: 'Engineer' },
       { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineer' },
     ],
     // Hero is a looping video set in the page markup; hover preview needs a still.
-    previewImage: 'images/ask-ai-landing.png',
+    previewImage: 'images/ask-ai-landing.webp',
     heroAspect: '1920 / 1196',
     paragraphs: [
       'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
@@ -114,7 +114,7 @@ window.PROJECTS = {
       { name: 'Mor Sela', photo: 'images/team-mor.jpg', role: 'Engineer' },
     ],
     images: [
-      'images/canvas-insights-hero.png?v=2',
+      'images/canvas-insights-hero.webp?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -135,7 +135,7 @@ window.PROJECTS = {
     intro: 'Scalable navigation and information architecture for Cashbook’s accounting platform.',
     teamMembers: [],
     images: [
-      'images/navigation-hero.png?v=3',
+      'images/navigation-hero.webp?v=3',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -155,7 +155,7 @@ window.PROJECTS = {
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     teamMembers: [],
     images: [
-      'images/visualisations-hero.png?v=4',
+      'images/visualisations-hero.webp?v=4',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -172,7 +172,7 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
-      'images/developer-tools-hero.png?v=2',
+      'images/developer-tools-hero.webp?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -189,7 +189,7 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A 200+ component Figma system that dynamically supports 10+ VS Code themes.',
     images: [
-      'images/sap-fiori-hero.png?v=2',
+      'images/sap-fiori-hero.webp?v=2',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
@@ -214,7 +214,7 @@ const SAP_TEAM = [
   { name: 'Richard Byrnes', photo: 'images/team-richard.webp', role: 'Designer' },
   { name: 'Goran Peuc', photo: 'images/team-goran.jpg', role: 'Designer' },
   { name: 'Colin Doherty', photo: 'images/team-colin.jpg', role: 'Designer' },
-  { name: 'Christine McCarthy', photo: 'images/team-christine.png', role: 'Designer' },
+  { name: 'Christine McCarthy', photo: 'images/team-christine.webp', role: 'Designer' },
   { name: 'Aisling Noone', photo: 'images/team-aisling.jpg', role: 'Designer' },
 ];
 

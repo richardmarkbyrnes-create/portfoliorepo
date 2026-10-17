@@ -1044,6 +1044,24 @@ function initHeroWeather() {
 // About hobby tabs. The CSS does the motion: the outgoing panel gets
 // .is-leaving (blur out) until its animation ends, the incoming one
 // .is-active (blur in, then the staggered photos).
+// The about copy column takes the width of the interest tab row (see the CSS),
+// re-measured as fonts land and the window resizes.
+function initAboutCopyWidth() {
+  const column = document.querySelector('.work-column--about');
+  const tablist = column?.querySelector('.hobby-tablist');
+  if (!tablist) return;
+  const measure = () => {
+    const first = tablist.firstElementChild;
+    const last = tablist.lastElementChild;
+    if (!first || !last) return;
+    const width = last.getBoundingClientRect().right - first.getBoundingClientRect().left;
+    column.style.setProperty('--about-copy-width', `${Math.ceil(width)}px`);
+  };
+  measure();
+  window.addEventListener('resize', measure);
+  document.fonts?.ready.then(measure);
+}
+
 function initHobbyTabs() {
   document.querySelectorAll('[data-hobby-tabs]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
@@ -1188,6 +1206,7 @@ function initHobbyCardTilt() {
 
 initThemeSwitcher();
 initHobbyTabs();
+initAboutCopyWidth();
 initHobbyCardTilt();
 initRecordNotes();
 initRecordPeek();

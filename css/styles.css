@@ -7077,8 +7077,8 @@ body.page-is-leaving .top-blur {
   aspect-ratio: 541 / 682;
   flex-shrink: 0;
   background-color: var(--line-art-stroke);
-  -webkit-mask-image: url('../images/richard-line-art.png?v=2');
-  mask-image: url('../images/richard-line-art.png?v=2');
+  -webkit-mask-image: url('../images/richard-line-art.webp?v=2');
+  mask-image: url('../images/richard-line-art.webp?v=2');
   -webkit-mask-size: contain;
   mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -8628,6 +8628,17 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   body[data-page="home"] .work-column--about .work-row--about {
     grid-template-columns: 88px minmax(0, 1fr);
     column-gap: 28px;
+  }
+
+  /* The copy column is as wide as the interest tabs, Music to Animals, and
+     no wider (main.js measures the tab row into --about-copy-width), so
+     the About text and every panel end where the tabs do. */
+  body[data-page="home"] .work-column--about .work-col--about-copy {
+    max-width: var(--about-copy-width, none);
+  }
+
+  body[data-page="home"] .work-column--about .hobby-tablist {
+    flex-wrap: nowrap;
   }
 
   body[data-page="home"] .work-col--company,
