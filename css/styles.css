@@ -2649,8 +2649,10 @@ body[data-page="about"] {
   padding-bottom: 0;
 }
 
+/* Just the divider space after the interests: the band's own curved top
+   edge already leaves air above its marks. */
 .work-column--about + .home-bottom-ascii {
-  margin-top: calc(var(--work-divider-space) + 50px);
+  margin-top: calc(var(--work-divider-space) * 0.4);
 }
 
 .home-bottom-ascii .home-closing-inner {
@@ -7184,23 +7186,57 @@ body.page-is-leaving .top-blur {
     transform 0.08s linear;
 }
 
+/* Already up and moving to another row: glide there instead of jumping. */
+.project-preview.is-visible.is-gliding {
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1),
+    left 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    top 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    bottom 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.08s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview.is-visible.is-gliding {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+}
+
 /* Moving between rows while the preview is up swaps its image; the new one
    blur-fades in rather than snapping (main.js restarts this per swap). */
 .project-preview-img.is-swapping {
-  animation: project-preview-swap 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+  animation: project-preview-swap 0.55s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 @keyframes project-preview-swap {
-  from { opacity: 0.35; filter: blur(8px); }
+  from { opacity: 0; filter: blur(6px); }
   to { opacity: 1; filter: blur(0); }
+}
+
+/* The outgoing image, laid over the incoming one, blurring away (main.js adds
+   and removes it). */
+.project-preview-ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  animation: project-preview-ghost 0.5s cubic-bezier(0.33, 0, 0.2, 1) forwards;
+}
+
+@keyframes project-preview-ghost {
+  from { opacity: 1; filter: blur(0); }
+  to { opacity: 0; filter: blur(6px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .project-preview-img.is-swapping { animation: none; }
+  .project-preview-ghost { display: none; }
 }
 
 /* Matches the framing of .pc-image--main on the project pages */
 .project-preview-frame {
+  position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   transform: translateY(6px) scale(0.9) rotate(3deg);

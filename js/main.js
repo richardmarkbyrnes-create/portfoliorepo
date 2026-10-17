@@ -498,11 +498,34 @@ function initProjectPreview() {
   let lastSrc = null;
   let hiddenAt = 0;
 
+  // Leaving a row hides the frame only after a beat, so the pointer can cross
+  // to the next row and keep it up: the frame glides to the new row (CSS
+  // .is-gliding) and the image blur-fades to the new one, rather than the
+  // whole frame going out and coming back in.
+  const HIDE_DELAY = 140;
+  let hideTimer = 0;
+
+  function scheduleHide() {
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hide, HIDE_DELAY);
+  }
+
   function show(row, src) {
+    clearTimeout(hideTimer);
     if (src !== shown) {
       const stillUp = preview.classList.contains('is-visible') || performance.now() - hiddenAt < 250;
       if (lastSrc && src !== lastSrc && stillUp) {
-        // Swapping straight to another project: blur-fade the new image in.
+        // Swapping straight to another project: a crossfade. A copy of the
+        // outgoing image sits on top and blurs away while the new one
+        // resolves under it, so neither ever cuts.
+        image.parentNode.querySelectorAll('.project-preview-ghost').forEach((g) => g.remove());
+        if (!prefersReducedMotion() && image.getAttribute('src')) {
+          const ghost = image.cloneNode();
+          ghost.classList.remove('is-swapping');
+          ghost.classList.add('project-preview-ghost');
+          ghost.addEventListener('animationend', () => ghost.remove(), { once: true });
+          image.after(ghost);
+        }
         image.classList.remove('is-swapping');
         void image.offsetWidth;
         image.classList.add('is-swapping');
@@ -515,17 +538,19 @@ function initProjectPreview() {
       restartGif(image);
     }
     activeRow = row;
+    preview.classList.toggle('is-gliding', preview.classList.contains('is-visible'));
     position(row);
     preview.classList.add('is-visible');
     preview.setAttribute('aria-hidden', 'false');
   }
 
   function hide() {
+    clearTimeout(hideTimer);
     if (preview.classList.contains('is-visible')) hiddenAt = performance.now();
     shown = null;
     activeRow = null;
     drift(0, 0);
-    preview.classList.remove('is-visible');
+    preview.classList.remove('is-visible', 'is-gliding');
     preview.setAttribute('aria-hidden', 'true');
   }
 
@@ -580,9 +605,9 @@ function initProjectPreview() {
     withHero.push(src);
     row.addEventListener('mouseenter', () => show(row, src));
     row.addEventListener('mousemove', (event) => follow(event, row));
-    row.addEventListener('mouseleave', hide);
+    row.addEventListener('mouseleave', scheduleHide);
     row.addEventListener('focus', () => show(row, src));
-    row.addEventListener('blur', hide);
+    row.addEventListener('blur', scheduleHide);
     // Opening a project fades the page out, but the preview is fixed and the pointer
     // never leaves the row — so it would hang around over the transition.
     row.addEventListener('click', hide);
