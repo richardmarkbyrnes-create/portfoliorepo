@@ -175,6 +175,8 @@
   const FONT_SIZE = 15;
   const HOVER_RADIUS = 160;
   const BASE_OPACITY = 0.13;
+  // 4x4 Bayer order, for the dither over the marks (see ditherCanvas).
+  const BAYER_4 = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
   const PEAK_OPACITY = 0.75;
   const PASTEL_COLORS = [
     [96, 165, 250],
@@ -262,6 +264,32 @@
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+
+    // A slight ordered dither over the drawn marks: every pixel's alpha is
+    // snapped to one of a few steps, the step chosen by the pixel's place in a
+    // 4x4 Bayer matrix, then mixed halfway back with its smooth value — enough
+    // grain to read as dithered while the shapes keep their outline.
+    const DITHER_STEPS = 4;
+    const DITHER_MIX = 0.5;
+    function ditherCanvas() {
+      const w = canvas.width;
+      const h = canvas.height;
+      if (!w || !h) return;
+      const img = ctx.getImageData(0, 0, w, h);
+      const d = img.data;
+      for (let y = 0; y < h; y += 1) {
+        const rowOff = (y % 4) * 4;
+        for (let x = 0; x < w; x += 1) {
+          const i = (y * w + x) * 4 + 3;
+          const a = d[i];
+          if (!a) continue;
+          const t = (BAYER_4[rowOff + (x % 4)] + 0.5) / 16;
+          const q = Math.min(255, Math.floor((a / 255) * DITHER_STEPS + t) * (255 / DITHER_STEPS));
+          d[i] = a + (q - a) * DITHER_MIX;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
     if (!ctx) return;
 
     const flipY = section.classList.contains('ascii-bg-section--flip-y');
@@ -331,7 +359,10 @@
     function buildGrid() {
       const width = section.clientWidth;
       const height = section.clientHeight;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // One canvas pixel per CSS pixel, scaled up with hard edges (the CSS
+      // sets image-rendering), so the dither below reads as visible pixels
+      // rather than vanishing into a high-density screen.
+      const dpr = 1;
 
       // Remembered for draw(), which used to re-measure with
       // getBoundingClientRect. Those two agree on a whole-number layout and
@@ -574,6 +605,8 @@
       if (flipY) {
         ctx.restore();
       }
+
+      ditherCanvas();
     }
 
     function stopHoverAnimation() {
