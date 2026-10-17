@@ -1,12 +1,13 @@
 (function () {
   const CHARSET = ['·', '.', ':', '-', '+', '*', '=', '#', '@'];
 
-  // The field is drawn as little hand-drawn squiggles rather than glyphs. Each
-  // CHARSET entry is a "density level" (its index), and each level gets twelve
-  // pre-built variants drawn from a mix of over twenty shape families (dots,
-  // ticks, chevrons and brackets up through waves, rings, crosses, stars,
-  // clouds, hearts, springs, scribbles and spirals), lightest to busiest, so the hover swap from light
-  // to dense characters still reads as the marks getting busier. Built once as
+  // The field is drawn as little hand-drawn marks rather than glyphs: shamrocks
+  // and tulips, for an Irish-Dutch background. Each CHARSET entry is a
+  // "density level" (its index), and each level gets twelve pre-built variants,
+  // lightest to busiest — tiny shamrocks and tulip buds at the light end, through
+  // three-leaf shamrocks and tulip cups, to full stemmed shamrocks (the odd
+  // four-leaf one) and tulips with a leaf — so the hover swap from light to
+  // dense characters still reads as the marks getting busier. Built once as
   // Path2D, centred on 0,0, with a little jitter and tilt baked in so no two
   // look machine-made.
   const SQUIGGLE_VARIANTS = 12;
@@ -21,231 +22,112 @@
     const pick = (list) => list[Math.floor(rand() * list.length)];
     const flip = () => (rand() < 0.5 ? -1 : 1);
 
-    // Shape families. Each pushes points for one mark; `size` (0-1) grows with
-    // the density level so marks get bigger and busier as they get denser.
+    // A heart-shaped shamrock leaf as one closed stroke, its point at (cx, cy)
+    // and its lobes reaching out along `angle`, `len` long.
+    const leaf = (pts, cx, cy, angle, len) => {
+      const n = 26;
+      const cos = Math.cos(angle);
+      const sin = Math.sin(angle);
+      const k = len / 17;
+      for (let i = 0; i <= n; i += 1) {
+        const t = (i / n) * Math.PI * 2;
+        // The classic heart curve, lobes up, point at the origin (y grows up).
+        const hx = 16 * Math.sin(t) ** 3;
+        const hy = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t) + 17;
+        // Turn "up" to point along `angle` (canvas y grows down).
+        const ux = hx * k + j(0.2);
+        const uy = hy * k + j(0.2);
+        pts.push([cx + ux * sin + uy * cos, cy + uy * sin - ux * cos]);
+      }
+    };
+
+    // A tulip cup as one closed stroke: a bowl that bulges a little past its
+    // rim, from the left petal's tip down round to the right one's, then the
+    // rim dips between three petal points. Bowl bottom at (0, cy).
+    const cup = (pts, cy, w, h) => {
+      const n = 16;
+      for (let i = 0; i <= n; i += 1) {
+        const t = (i / n) * Math.PI;
+        const bulge = 1 + 0.18 * Math.sin(t);
+        pts.push([-Math.cos(t) * (w / 2) * bulge + j(0.15), cy - h + Math.sin(t) * h + j(0.15)]);
+      }
+      pts.push(
+        [w / 4 + j(0.2), cy - h * (0.62 + rand() * 0.1)],
+        [j(0.3), cy - h * 1.12],
+        [-w / 4 + j(0.2), cy - h * (0.62 + rand() * 0.1)],
+        [-w / 2 + j(0.15), cy - h],
+      );
+    };
+
+    // A stem curving gently down from (0, top) to (bend, bottom).
+    const stem = (pts, top, bottom, bend) => {
+      for (let i = 0; i <= 6; i += 1) {
+        const t = i / 6;
+        pts.push([Math.sin(t * Math.PI * 0.5) * bend + j(0.15), top + (bottom - top) * t]);
+      }
+    };
+
+    // Shape families. Each draws one mark into `pts`, calling `more()` for
+    // each extra stroke; `size` (0-1) grows with the density level.
     const SHAPES = {
-      dot: (pts) => {
-        pts.push([-0.6 + j(0.3), 0.2 + j(0.3)], [0.6 + j(0.3), -0.2 + j(0.3)]);
+      // The light end: small, stemless.
+      tinyShamrock: (pts, size, more) => {
+        const len = 2.4 + size * 3;
+        [-Math.PI / 2, Math.PI / 6, (5 * Math.PI) / 6]
+          .forEach((a, i) => leaf(i ? more() : pts, 0, 0.5, a + j(0.25), len));
       },
-      tick: (pts, size) => {
-        const l = 1.5 + size * 3;
-        pts.push([-l / 2, j(0.6)], [0, l * 0.35 * flip()], [l / 2, j(0.6)]);
+      tulipBud: (pts, size) => {
+        cup(pts, 2.5, 4 + size * 4, 4 + size * 3.5);
       },
-      wave: (pts, size) => {
-        const len = 3 + size * 9;
-        const amp = 0.5 + size * 2.2;
-        const turns = 0.6 + size * 1.4;
-        const n = 14 + Math.round(size * 12);
-        for (let i = 0; i <= n; i += 1) {
-          const t = i / n;
-          pts.push([(t - 0.5) * len + j(0.5), Math.sin(t * Math.PI * 2 * turns) * amp + j(0.5)]);
-        }
+      shamrock: (pts, size, more) => {
+        const len = 4 + size * 4;
+        leaf(pts, 0, 0, -Math.PI / 2 + j(0.2), len);
+        leaf(more(), 0, 0, -Math.PI / 2 + (Math.PI * 2) / 3 + j(0.2), len);
+        leaf(more(), 0, 0, -Math.PI / 2 - (Math.PI * 2) / 3 + j(0.2), len);
       },
-      zigzag: (pts, size) => {
-        const peaks = 2 + Math.round(size * 3);
-        const len = 4 + size * 8;
-        const amp = 0.8 + size * 2;
-        for (let i = 0; i <= peaks; i += 1) {
-          pts.push([(i / peaks - 0.5) * len + j(0.4), (i % 2 ? amp : -amp) + j(0.5)]);
-        }
+      shamrockStem: (pts, size, more) => {
+        const len = 4 + size * 4;
+        const four = size > 0.8 && rand() < 0.2;
+        const angles = four ? [-Math.PI / 4, Math.PI / 4, (3 * Math.PI) / 4, (-3 * Math.PI) / 4]
+          : [-Math.PI / 2, Math.PI / 6, (5 * Math.PI) / 6];
+        angles.forEach((a, i) => leaf(i ? more() : pts, 0, -2, a + j(0.2), len));
+        stem(more(), -2, len * 1.2, (1 + size * 2) * flip());
       },
-      arc: (pts, size) => {
-        const r = 2 + size * 4;
-        const sweep = Math.PI * (0.7 + rand() * 0.6);
-        const start = rand() * Math.PI * 2;
-        for (let i = 0; i <= 14; i += 1) {
-          const t = start + (i / 14) * sweep;
-          pts.push([Math.cos(t) * r + j(0.3), Math.sin(t) * r * 0.8 + j(0.3)]);
-        }
+      tulip: (pts, size, more) => {
+        const w = 5 + size * 3;
+        const h = 4.5 + size * 3;
+        cup(pts, 0, w, h);
+        stem(more(), 0, h * 0.6 + size * 2, (0.4 + size * 0.6) * flip());
       },
-      hook: (pts, size) => {
-        const len = 3 + size * 6;
-        for (let i = 0; i <= 8; i += 1) pts.push([(i / 8 - 0.5) * len + j(0.3), j(0.4)]);
-        const [ex, ey] = pts[pts.length - 1];
-        const r = 1.2 + size * 1.6;
-        for (let i = 1; i <= 10; i += 1) {
-          const t = -Math.PI / 2 + (i / 10) * Math.PI * 1.4;
-          pts.push([ex + Math.cos(t) * r, ey + r + Math.sin(t) * r]);
-        }
-      },
-      sCurve: (pts, size) => {
-        const r = 1.6 + size * 2.4;
-        for (let i = 0; i <= 12; i += 1) {
-          const t = Math.PI * (i / 12);
-          pts.push([-Math.cos(t) * r * 0.9 - r * 0.45 + j(0.3), -Math.sin(t) * r * 0.7 + j(0.3)]);
-        }
-        for (let i = 1; i <= 12; i += 1) {
-          const t = Math.PI * (i / 12);
-          pts.push([-Math.cos(t) * r * 0.9 + r * 0.45 + j(0.3), Math.sin(t) * r * 0.7 + j(0.3)]);
-        }
-      },
-      loop: (pts, size) => {
-        const a = 1.6;
-        const b = 2.4 + size;
-        const span = Math.PI * 2;
-        const n = 26;
-        for (let i = 0; i <= n; i += 1) {
-          const t = (i / n) * span;
-          pts.push([a * t - b * Math.sin(t) - (a * span) / 2 + j(0.4), -b * Math.cos(t) * 0.8 + j(0.4)]);
-        }
-      },
-      figureEight: (pts, size) => {
-        const w = 3 + size * 3;
-        const h = 1.8 + size * 1.5;
-        for (let i = 0; i <= 34; i += 1) {
-          const t = (i / 34) * Math.PI * 2;
-          pts.push([Math.sin(t) * w + j(0.3), Math.sin(t * 2) * h + j(0.3)]);
-        }
-      },
-      spiral: (pts, size) => {
-        const turns = 1.1 + size * 1.3;
-        const n = 28 + Math.round(size * 18);
-        const end = turns * Math.PI * 2;
-        const dir = flip();
-        for (let i = 0; i <= n; i += 1) {
-          const t = (i / n) * end;
-          const r = 0.4 + (t / end) * 5.2;
-          pts.push([Math.cos(t) * r + j(0.35), Math.sin(t) * dir * r * 0.9 + j(0.35)]);
-        }
-        const [lx, ly] = pts[pts.length - 1];
-        pts.push([lx + 1.6, ly + 0.8 * dir + j(1)], [lx + 3, ly + 1.2 * dir]);
-      },
-      curl: (pts, size) => {
-        // A wave that ends in a little curl.
-        const len = 3 + size * 5;
-        for (let i = 0; i <= 10; i += 1) {
-          const t = i / 10;
-          pts.push([(t - 0.5) * len + j(0.3), Math.sin(t * Math.PI) * -1.2 + j(0.3)]);
-        }
-        const [ex, ey] = pts[pts.length - 1];
-        const r = 1 + size * 1.4;
-        for (let i = 1; i <= 16; i += 1) {
-          const t = Math.PI + (i / 16) * Math.PI * 1.8;
-          pts.push([ex + r + Math.cos(t) * r, ey + Math.sin(t) * r]);
-        }
-      },
-      // ── More families ──────────────────────────────────────────────────
-      circle: (pts, size) => {
-        // A wobbly hand-drawn ring that doesn't quite close.
-        const r = 1.6 + size * 3.2;
-        const n = 22;
-        const gap = 0.25 + rand() * 0.4;
-        for (let i = 0; i <= n; i += 1) {
-          const t = (i / n) * (Math.PI * 2 - gap);
-          pts.push([Math.cos(t) * r + j(0.45), Math.sin(t) * r * (0.85 + rand() * 0.2) + j(0.45)]);
-        }
-      },
-      cross: (pts, size, more) => {
-        const l = 1.6 + size * 3;
-        pts.push([-l + j(0.4), j(0.5)], [j(0.3), j(0.3)], [l + j(0.4), j(0.5)]);
-        more().push([j(0.5), -l + j(0.4)], [j(0.3), j(0.3)], [j(0.5), l + j(0.4)]);
-      },
-      asterisk: (pts, size, more) => {
-        const l = 1.8 + size * 3;
-        const spokes = 3;
-        for (let k = 0; k < spokes; k += 1) {
-          const a = (k / spokes) * Math.PI + j(0.25);
-          const st = k === 0 ? pts : more();
-          st.push([Math.cos(a) * -l, Math.sin(a) * -l], [j(0.3), j(0.3)], [Math.cos(a) * l, Math.sin(a) * l]);
-        }
-      },
-      scribble: (pts, size) => {
-        // A tight back-and-forth scrawl, like shading in a small patch.
-        const passes = 4 + Math.round(size * 4);
-        const w = 2.5 + size * 4;
-        const h = 1.5 + size * 3;
-        for (let i = 0; i <= passes; i += 1) {
-          pts.push([(i % 2 ? w : -w) / 2 + j(0.8), (i / passes - 0.5) * h + j(0.4)]);
-        }
-      },
-      chevron: (pts, size) => {
-        const w = 2 + size * 3.5;
-        const h = 1.2 + size * 2.4;
-        pts.push([-w + j(0.4), h / 2 + j(0.4)], [j(0.4), -h / 2 + j(0.3)], [w + j(0.4), h / 2 + j(0.4)]);
-      },
-      triangle: (pts, size) => {
-        const r = 2 + size * 3;
-        for (let k = 0; k <= 3; k += 1) {
-          const a = -Math.PI / 2 + (k / 3) * Math.PI * 2;
-          pts.push([Math.cos(a) * r + j(0.6), Math.sin(a) * r + j(0.6)]);
-        }
-        pts.push([pts[1][0] * 0.3 + j(0.4), pts[1][1] * 0.3 + j(0.4)]);
-      },
-      star: (pts, size) => {
-        // A five-point star in one continuous stroke.
-        const r = 2.2 + size * 3.4;
-        for (let k = 0; k <= 5; k += 1) {
-          const a = -Math.PI / 2 + ((k * 2) % 5) * ((Math.PI * 2) / 5);
-          pts.push([Math.cos(a) * r + j(0.5), Math.sin(a) * r + j(0.5)]);
-        }
-      },
-      cloud: (pts, size) => {
-        // A scalloped arc of little bumps, like the top of a cloud.
-        const bumps = 3 + Math.round(size * 2);
-        const w = 4 + size * 6;
-        for (let k = 0; k < bumps; k += 1) {
-          for (let i = 0; i <= 8; i += 1) {
-            const t = Math.PI + (i / 8) * Math.PI;
-            const cx = (k + 0.5) / bumps - 0.5;
-            const r = w / bumps / 2;
-            pts.push([cx * w + Math.cos(t) * r + j(0.2), Math.sin(t) * r * 1.3 + j(0.2)]);
-          }
-        }
-      },
-      doubleWave: (pts, size, more) => {
-        const len = 4 + size * 6;
-        const amp = 0.6 + size * 1.2;
-        const gap = 1.6 + size * 1.4;
-        [pts, more()].forEach((st, k) => {
-          for (let i = 0; i <= 12; i += 1) {
-            const t = i / 12;
-            st.push([(t - 0.5) * len + j(0.3), Math.sin(t * Math.PI * 3) * amp + (k - 0.5) * gap + j(0.3)]);
-          }
-        });
-      },
-      spring: (pts, size) => {
-        // A coil stretched upward, loops stacked vertically.
-        const coils = 2 + Math.round(size * 2);
-        const r = 1.5 + size * 1.5;
-        const h = 4 + size * 6;
-        const n = coils * 12;
-        for (let i = 0; i <= n; i += 1) {
-          const t = (i / n) * coils * Math.PI * 2;
-          pts.push([Math.sin(t) * r + j(0.3), (i / n - 0.5) * h + Math.cos(t) * r * 0.5 + j(0.3)]);
-        }
-      },
-      heart: (pts, size) => {
-        const s2 = 0.18 + size * 0.22;
-        for (let i = 0; i <= 30; i += 1) {
-          const t = (i / 30) * Math.PI * 2;
-          const x = 16 * Math.sin(t) ** 3;
-          // Upside down: the point at the top, the lobes below.
-          const y = 13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t);
-          pts.push([x * s2 + j(0.3), y * s2 + j(0.3)]);
-        }
-      },
-      bracket: (pts, size) => {
-        const h = 3 + size * 5;
-        const d = 1 + size * 1.6;
+      tulipLeaf: (pts, size, more) => {
+        const w = 5 + size * 3;
+        const h = 4.5 + size * 3;
+        const bottom = h * 0.75 + size * 2.5;
+        cup(pts, 0, w, h);
+        stem(more(), 0, bottom, 0.6 * flip());
+        // A long pointed leaf rising from low on the stem.
         const side = flip();
-        for (let i = 0; i <= 12; i += 1) {
-          const t = i / 12;
-          pts.push([Math.sin(t * Math.PI) * d * side + j(0.25), (t - 0.5) * h + j(0.25)]);
+        const blade = more();
+        const base = bottom * 0.8;
+        for (let i = 0; i <= 8; i += 1) {
+          const t = i / 8;
+          blade.push([side * Math.sin(t * Math.PI) * (2 + size * 1.5) + j(0.15), base - t * bottom * 0.7]);
         }
       },
     };
 
-    // Which families each density level draws from, lightest to densest.
+    // Which families each density level draws from, lightest to densest:
+    // shamrocks and tulips in roughly equal measure at every level.
     const LEVEL_SHAPES = [
-      ['dot', 'dot', 'tick'],
-      ['dot', 'tick', 'chevron', 'bracket'],
-      ['tick', 'wave', 'arc', 'chevron', 'bracket', 'cross'],
-      ['wave', 'arc', 'hook', 'zigzag', 'circle', 'cross', 'doubleWave'],
-      ['wave', 'zigzag', 'sCurve', 'hook', 'curl', 'circle', 'triangle', 'asterisk', 'cloud'],
-      ['loop', 'sCurve', 'curl', 'figureEight', 'scribble', 'cloud', 'star', 'doubleWave'],
-      ['spiral', 'loop', 'figureEight', 'curl', 'spring', 'heart', 'star', 'asterisk'],
-      ['spiral', 'figureEight', 'loop', 'scribble', 'spring', 'heart'],
-      ['spiral', 'spiral', 'figureEight', 'scribble', 'spring', 'star'],
+      ['tinyShamrock', 'tulipBud'],
+      ['tinyShamrock', 'tulipBud'],
+      ['tinyShamrock', 'tulipBud', 'shamrock', 'tulip'],
+      ['shamrock', 'tulip', 'tinyShamrock', 'tulipBud'],
+      ['shamrock', 'tulip'],
+      ['shamrock', 'tulip', 'shamrockStem', 'tulipLeaf'],
+      ['shamrockStem', 'tulipLeaf', 'shamrock', 'tulip'],
+      ['shamrockStem', 'tulipLeaf'],
+      ['shamrockStem', 'tulipLeaf'],
     ];
 
     const build = (level) => {
@@ -260,7 +142,9 @@
       const size = level / (CHARSET.length - 1);
       SHAPES[pick(LEVEL_SHAPES[level])](strokes[0], size, more);
       // Tilt the whole mark a little and trace it with smooth curves.
-      const tilt = (rand() - 0.5) * 1.1;
+      // A gentler tilt than loose squiggles could take: these need to stay
+      // recognisably upright.
+      const tilt = (rand() - 0.5) * 0.6;
       const cos = Math.cos(tilt);
       const sin = Math.sin(tilt);
       let rotated = strokes
@@ -269,7 +153,8 @@
       // Keep every mark inside its cell (about 16px across), or the loopier
       // ones run into their neighbours and join up into long chains.
       const extent = Math.max(...rotated.flat().map(([x, y]) => Math.max(Math.abs(x), Math.abs(y))));
-      const fit = Math.min(1, 8 / extent);
+      // Then three quarters of that, so they sit small in the field.
+      const fit = Math.min(1, 8 / extent) * 0.75;
       rotated = rotated.map((st) => st.map(([x, y]) => [x * fit, y * fit]));
       const path = new Path2D();
       rotated.forEach((rot) => {
@@ -575,6 +460,22 @@
       return Math.max(0, fromTop / span);
     }
 
+    // The top band's lower edge mirrors the bottom band's curve: the field
+    // rises toward the middle (the same parabola), fading out over three rows
+    // above that edge. It only ever takes away — the canvas's CSS mask still
+    // does the overall fade — so the curve leaves the band lighter, never
+    // stronger. Sized to the band, which is only a few hundred pixels tall.
+    function bottomCurveFactor(y, height, x, width) {
+      if (flipY || !width) return 1;
+      const n = (x - width / 2) / (width / 2);
+      const span = 3 * CELL;
+      const sideEnd = height * 0.5;
+      const rise = height * 0.3 * Math.max(0, 1 - n * n);
+      const past = y - (sideEnd - rise - span);
+      if (past <= 0) return 1;
+      return Math.max(0, 1 - past / span);
+    }
+
     function titleVisibilityFactor(x, y, mask) {
       if (!mask) return 1;
 
@@ -602,6 +503,9 @@
       const titleMask = flipY ? null : getTitleMask();
       const now = performance.now();
       const burstAmt = burstFactor(now);
+      // The top band reads louder on the dark canvas than the light one, so it
+      // is dimmed a little there (the bottom band, already faded, is left be).
+      const themeDim = !flipY && document.documentElement.getAttribute('data-theme') === 'dark' ? 0.65 : 1;
 
       if (flipY) {
         ctx.save();
@@ -653,8 +557,9 @@
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * rippleAmt);
         }
 
-        opacity *= titleVisibilityFactor(cell.x, y, titleMask);
+        opacity *= titleVisibilityFactor(cell.x, y, titleMask) * themeDim;
         if (flipY) opacity *= topFadeFactor(y, height, cell.x, width);
+        else opacity *= bottomCurveFactor(y, height, cell.x, width);
 
         ctx.strokeStyle = `rgba(${cellRgb.r}, ${cellRgb.g}, ${cellRgb.b}, ${opacity})`;
         // The flipped band mirrors the whole canvas; un-mirror each mark so
