@@ -537,6 +537,9 @@
       // The top band reads louder on the dark canvas than the light one, so it
       // is dimmed a little there (the bottom band, already faded, is left be).
       const themeDim = !flipY && document.documentElement.getAttribute('data-theme') === 'dark' ? 0.65 : 1;
+      // The band closing each project page sits under the docked next-project
+      // pill, so it stays quieter than the home page's.
+      const sectionDim = section.classList.contains('pc-bottom-ascii') ? 0.6 : 1;
 
       if (flipY) {
         ctx.save();
@@ -588,7 +591,7 @@
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * rippleAmt);
         }
 
-        opacity *= titleVisibilityFactor(cell.x, y, titleMask) * themeDim;
+        opacity *= titleVisibilityFactor(cell.x, y, titleMask) * themeDim * sectionDim;
         if (flipY) opacity *= topFadeFactor(y, height, cell.x, width);
         else opacity *= bottomCurveFactor(y, height, cell.x, width);
 
