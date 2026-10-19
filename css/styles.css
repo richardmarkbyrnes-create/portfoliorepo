@@ -1355,6 +1355,48 @@ html[data-theme="dark"] .theme-swatch {
   outline: none;
 }
 
+/* Email me: the envelope and a tick share one slot. A successful copy swaps
+   the envelope out for the tick, which pops in; after a moment nav.js drops
+   .is-copied and the envelope eases back. */
+.nav-contact-email-icon {
+  display: grid;
+  flex: none;
+}
+
+.nav-contact-email-icon .nav-icon {
+  grid-area: 1 / 1;
+  transition:
+    opacity 0.25s ease,
+    scale 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.25s ease;
+}
+
+.nav-contact-email-icon .nav-icon + .nav-icon {
+  opacity: 0;
+  scale: 0.4;
+  filter: blur(3px);
+}
+
+.nav-contact-email.is-copied .nav-contact-email-icon .nav-icon:first-child {
+  opacity: 0;
+  scale: 0.6;
+  filter: blur(3px);
+}
+
+.nav-contact-email.is-copied .nav-contact-email-icon .nav-icon + .nav-icon {
+  opacity: 1;
+  scale: 1;
+  filter: none;
+  transition:
+    opacity 0.2s ease,
+    scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    filter 0.2s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-contact-email-icon .nav-icon { transition: opacity 0.2s ease; }
+}
+
 /* Everything inside staggers in as the menu opens: the name line, the
    divider (drawing out from the left), then LinkedIn and Email me, each
    blur-fading down a few pixels. On close they all drop back together. */

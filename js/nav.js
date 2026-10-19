@@ -17,6 +17,7 @@
   const EMAIL = 'richardmarkbyrnes@gmail.com';
 
   const MAIL_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"></path></svg>`;
+  const CHECK_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>`;
 
   const NAV_INTRO_KEY = 'portfolio-nav-intro-played';
 
@@ -68,8 +69,8 @@
             <a class="nav-contact-item" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
               ${LINKEDIN_ICON}<span>LinkedIn</span>
             </a>
-            <a class="nav-contact-item" href="mailto:${EMAIL}" aria-label="Email me at ${EMAIL}">
-              ${MAIL_ICON}<span>Email me</span>
+            <a class="nav-contact-item nav-contact-email" href="mailto:${EMAIL}" aria-label="Email me at ${EMAIL}">
+              <span class="nav-contact-email-icon">${MAIL_ICON}${CHECK_ICON}</span><span class="nav-contact-email-label" aria-live="polite">Email me</span>
             </a>
           </div>
         </div>
@@ -98,6 +99,30 @@
         btn.focus();
       }
     });
+    // "Email me" copies the address as well as following the mailto:, so it
+    // still does something for visitors with no mail app set up. The label
+    // and icon (envelope to tick, CSS does the swap) confirm the copy for a
+    // couple of seconds.
+    const email = wrap.querySelector('.nav-contact-email');
+    const emailLabel = email && email.querySelector('.nav-contact-email-label');
+    let labelTimer;
+    if (email && emailLabel) {
+      email.addEventListener('click', () => {
+        const copy = navigator.clipboard && navigator.clipboard.writeText
+          ? navigator.clipboard.writeText(EMAIL)
+          : Promise.reject();
+        copy.then(() => {
+          email.classList.add('is-copied');
+          emailLabel.textContent = 'Email copied';
+          clearTimeout(labelTimer);
+          labelTimer = setTimeout(() => {
+            email.classList.remove('is-copied');
+            emailLabel.textContent = 'Email me';
+          }, 2000);
+        }).catch(() => { /* clipboard blocked: the mailto: still runs */ });
+      });
+    }
+
     // Hover state mirrors into aria-expanded for assistive tech.
     if (window.matchMedia('(hover: hover)').matches) {
       wrap.addEventListener('pointerenter', () => btn.setAttribute('aria-expanded', 'true'));
