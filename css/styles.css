@@ -3357,15 +3357,10 @@ html:not([data-theme="dark"]) .work-company-logo img {
     transparent 3px 9px);
 }
 
-/* Each row carries a line on what the project was. Phones keep the full line
-   and drop the year instead, giving the title the room. (The short name in
-   the markup is unused for now.) */
+/* Each row carries a line on what the project was. (The short name in the
+   markup is unused for now.) */
 .work-title-short {
   display: none;
-}
-
-@media (max-width: 768px) {
-  .work-list .work-col--year { display: none; }
 }
 
 /* The rows read plain: no dashed underline. */
@@ -8462,6 +8457,21 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   .work-column--interactive .work-row {
     grid-template-columns: 88px 1fr;
+  }
+
+  /* Projects stack under their company: the name heads each group and the
+     rows run full width beneath it. The empty company cells on the later
+     rows only held the left column open, so they go. */
+  .work-column--interactive .work-list .work-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .work-list .work-col--company:empty {
+    display: none;
+  }
+
+  .work-list .work-col--company {
+    margin-bottom: 6px;
   }
 
   /* Stack the label over its copy — an 88px gutter leaves too little room for
