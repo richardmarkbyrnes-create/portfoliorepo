@@ -3363,6 +3363,38 @@ html:not([data-theme="dark"]) .work-company-logo img {
     transparent 3px 9px);
 }
 
+/* One gap all round the project list: the rules above and below it and the
+   ones between companies all sit the same distance from the text. The rows
+   carry ~9px of their own padding, so the margins are the target gap less
+   that (32px desktop, 24px phones). */
+body[data-page="home"] {
+  --work-rule-gap: 23px;
+}
+
+.work-column-rule:has(+ .work-list) {
+  margin-bottom: var(--work-rule-gap, var(--work-divider-space));
+}
+
+.work-list + .work-column-rule--trailing {
+  margin-top: var(--work-rule-gap, var(--work-divider-space));
+}
+
+.work-list .work-group-rule {
+  margin: var(--work-rule-gap, 14px) 0;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] {
+    --work-rule-gap: 16px;
+  }
+
+  /* The stacked company name sits tighter in its row than a project does;
+     top it up so the gap above a group matches the gap below one. */
+  .work-list h3.work-col--company {
+    padding-top: 5px;
+  }
+}
+
 /* Each row carries a line on what the project was. (The short name in the
    markup is unused for now.) */
 .work-title-short {
