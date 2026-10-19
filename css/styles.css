@@ -3357,15 +3357,15 @@ html:not([data-theme="dark"]) .work-company-logo img {
     transparent 3px 9px);
 }
 
-/* Each row carries a line on what the project was, and its short name for
-   phones, where that line would wrap. */
+/* Each row carries a line on what the project was. Phones keep the full line
+   and drop the year instead, giving the title the room. (The short name in
+   the markup is unused for now.) */
 .work-title-short {
   display: none;
 }
 
 @media (max-width: 768px) {
-  .work-title-long { display: none; }
-  .work-title-short { display: inline; }
+  .work-list .work-col--year { display: none; }
 }
 
 /* The rows read plain: no dashed underline. */
