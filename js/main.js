@@ -1110,10 +1110,6 @@ function initHobbyTabs() {
   });
 }
 
-// Playing-card tilt on the hobby photos and the project pages' polaroids: the
-// card leans toward the cursor and a soft shine follows it. Mouse only — a tap
-// has nothing to track. Delegated, since project-nav.js builds the polaroids
-// after load; each card is wired up the first time the pointer reaches it.
 // Music notes that drift off each record's disc while it's hovered, three
 // above and three below (CSS does the motion), staggered so they never move
 // in step.
@@ -1180,40 +1176,20 @@ function initRecordPeek() {
   });
 }
 
-function initHobbyCardTilt() {
-  if (prefersReducedMotion()) return;
-  const MAX_TILT = 10; // degrees at the card's edge
-  const CARDS = '.hobby-photo, .pc-polaroid';
-
-  const wire = (card) => {
-    card.dataset.tilt = '1';
-    card.addEventListener('pointermove', (event) => {
-      if (event.pointerType !== 'mouse') return;
-      const rect = card.getBoundingClientRect();
-      const x = (event.clientX - rect.left) / rect.width;
-      const y = (event.clientY - rect.top) / rect.height;
-      card.classList.add('is-tilting');
-      card.style.setProperty('--ry', `${(x - 0.5) * 2 * MAX_TILT}deg`);
-      card.style.setProperty('--rx', `${(0.5 - y) * 2 * MAX_TILT}deg`);
-      card.style.setProperty('--gx', `${x * 100}%`);
-      card.style.setProperty('--gy', `${y * 100}%`);
+// Interests photos flip over on click to a handwritten note on the back
+// (CSS does the motion).
+function initHobbyPhotoFlip() {
+  document.querySelectorAll('.hobby-photo-inner').forEach((card) => {
+    card.addEventListener('click', () => {
+      const flipped = card.classList.toggle('is-flipped');
+      card.setAttribute('aria-pressed', String(flipped));
     });
-    card.addEventListener('pointerleave', () => {
-      card.classList.remove('is-tilting');
-      card.style.setProperty('--rx', '0deg');
-      card.style.setProperty('--ry', '0deg');
-    });
-  };
-
-  document.addEventListener('pointerover', (event) => {
-    const card = event.target.closest && event.target.closest(CARDS);
-    if (card && !card.dataset.tilt) wire(card);
   });
 }
 
 initThemeSwitcher();
 initHobbyTabs();
-initHobbyCardTilt();
+initHobbyPhotoFlip();
 initRecordNotes();
 initRecordPeek();
 initExperienceHoverSound();

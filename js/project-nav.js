@@ -518,14 +518,32 @@ function initQuoteReveal(el) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'pc-polaroid';
-        btn.setAttribute('aria-label', 'View larger');
+        btn.setAttribute('aria-label', 'Flip photo');
+        btn.setAttribute('aria-pressed', 'false');
         btn.style.setProperty('--r', `${p.r || 0}deg`);
         btn.style.setProperty('--d', `${520 + i * 120}ms`);
+        // Two faces stacked in one flipper: the photo on the front, a
+        // handwritten note about it on the back.
+        const inner = document.createElement('span');
+        inner.className = 'pc-polaroid-inner';
+        const front = document.createElement('span');
+        front.className = 'pc-polaroid-face pc-polaroid-front';
         const img = document.createElement('img');
         img.src = p.src;
         img.alt = '';
-        btn.appendChild(img);
-        btn.addEventListener('click', () => openLightbox(p.src));
+        front.appendChild(img);
+        const back = document.createElement('span');
+        back.className = 'pc-polaroid-face pc-polaroid-back';
+        const note = document.createElement('span');
+        note.className = 'pc-polaroid-note';
+        note.textContent = p.note || '';
+        back.appendChild(note);
+        inner.append(front, back);
+        btn.appendChild(inner);
+        btn.addEventListener('click', () => {
+          const flipped = btn.classList.toggle('is-flipped');
+          btn.setAttribute('aria-pressed', String(flipped));
+        });
         polaroidsEl.appendChild(btn);
       });
     }
