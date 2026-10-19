@@ -2656,10 +2656,10 @@ body[data-page="about"] {
 .resume-doc {
   position: absolute;
   left: 50%;
-  top: 28px;
+  top: 50px;
   width: min(300px, 64%);
   /* Ends well inside the pocket, so no sliver of it shows at the bottom. */
-  height: calc(100% - 60px);
+  height: calc(100% - 94px);
   overflow: hidden;
   border-radius: 6px;
   background: #fff;
