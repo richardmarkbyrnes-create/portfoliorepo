@@ -44,6 +44,7 @@
   --ink-blue: #307187;
   --ink-violet: #864bb1;
   --ink-green: #3b7c68;
+  --ink-orange: #b0602a;
   --nav-shadow: 0 2px 12px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04);
   --nav-active-bg: rgba(251, 250, 247, 0.5);
   --nav-active-shadow: 0 2px 10px rgba(0, 0, 0, 0.076), 0 1px 6px rgba(0, 0, 0, 0.048);
@@ -2636,6 +2637,116 @@ body[data-page="about"] {
   cursor: pointer;
 }
 
+/* Resume: the same grey tray as the Interests tabs, worn as a pocket. The
+   first page of the resume sits behind its front panel with the top of the
+   sheet creeping out over the edge; hover draws it out a little further. */
+.resume-pocket {
+  position: relative;
+  display: block;
+  height: 250px;
+  margin-top: 0.4em;
+  border-radius: 18px;
+  /* The back of the pocket: a fainter grey than the front panel. */
+  background: color-mix(in srgb, var(--text) 2%, var(--bg));
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.resume-doc {
+  position: absolute;
+  left: 50%;
+  top: 28px;
+  width: min(300px, 64%);
+  /* Ends well inside the pocket, so no sliver of it shows at the bottom. */
+  height: calc(100% - 60px);
+  overflow: hidden;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
+  translate: -50% 0;
+  rotate: -2deg;
+  transition:
+    translate 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.resume-doc img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.resume-pocket:hover .resume-doc,
+.resume-pocket:focus-visible .resume-doc {
+  translate: -50% -14px;
+  rotate: 0deg;
+}
+
+/* The front panel: opaque so it hides the rest of the sheet. */
+.resume-pocket-front {
+  position: absolute;
+  inset: 156px 0 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 18px;
+  background: color-mix(in srgb, var(--text) 4%, var(--bg));
+  /* Mixed into the page colour, not transparent, so the sheet behind never
+     shows through the edge. */
+  box-shadow: 0 -1px 0 color-mix(in srgb, var(--text) 9%, var(--bg));
+}
+
+.resume-pocket-title {
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.resume-pocket-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--text-light);
+  transition: color 0.2s ease;
+}
+
+.resume-pocket-meta svg {
+  width: 0.85em;
+  height: 0.85em;
+  transition: translate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.resume-pocket:hover .resume-pocket-meta,
+.resume-pocket:focus-visible .resume-pocket-meta {
+  color: var(--text);
+}
+
+.resume-pocket:hover .resume-pocket-meta svg,
+.resume-pocket:focus-visible .resume-pocket-meta svg {
+  translate: 2px -2px;
+}
+
+.resume-pocket:focus-visible {
+  outline: none;
+}
+
+.resume-pocket:focus-visible .resume-pocket-front {
+  outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .resume-doc,
+  .resume-pocket-meta svg { transition: none; }
+}
+
 /* Each tab's media sits in a very light grey tray. */
 .hobby-photos,
 .hobby-books,
@@ -2961,7 +3072,7 @@ body[data-page="home"] .page {
   display: block;
   /* Fills the hero column rather than measuring itself — the shell above already
      caps the line length. */
-  max-width: 450px;
+  max-width: 480px;
   /* Paragraphs now, so the UA's bottom margin has to go. */
   margin-bottom: 0;
   font-family: var(--sans);
@@ -3489,16 +3600,21 @@ body[data-page="home"] {
   --row-ink: var(--text);
 }
 
-.work-column--interactive .work-row-main[data-project="custom-stickers"],
-.work-column--interactive .work-row-main[data-project="navigation"] {
+.work-column--interactive .work-row-main[data-project="custom-stickers"] {
   --row-wash: #fef8e0;
   --row-ink: var(--ink-amber);
 }
 
-.work-column--interactive .work-row-main[data-project="automations"],
-.work-column--interactive .work-row-main[data-project="visualisations"] {
+.work-column--interactive .work-row-main[data-project="automations"] {
   --row-wash: #effafc;
   --row-ink: var(--ink-teal);
+}
+
+/* Cashbook: a pastel orange. */
+.work-column--interactive .work-row-main[data-project="navigation"],
+.work-column--interactive .work-row-main[data-project="visualisations"] {
+  --row-wash: #fff3e8;
+  --row-ink: var(--ink-orange);
 }
 
 .work-column--interactive .work-row-main[data-project="developer-tools"] {
@@ -3851,14 +3967,17 @@ body[data-project] {
   --project-ink: var(--text);
 }
 
-body[data-project="custom-stickers"],
-body[data-project="navigation"] {
+body[data-project="custom-stickers"] {
   --project-ink: var(--ink-amber);
 }
 
-body[data-project="automations"],
-body[data-project="visualisations"] {
+body[data-project="automations"] {
   --project-ink: var(--ink-teal);
+}
+
+body[data-project="navigation"],
+body[data-project="visualisations"] {
+  --project-ink: var(--ink-orange);
 }
 
 body[data-project="developer-tools"] {
@@ -5938,14 +6057,17 @@ body.next-glow-visible .pc-next-glow {
 /* Hovering the pill blooms a second wash in the colour of the project it leads
    to, so the bottom of the screen previews where you're about to go. Same
    groupings as the badge and the home page's row hovers. */
-body[data-next-project="custom-stickers"],
-body[data-next-project="navigation"] {
+body[data-next-project="custom-stickers"] {
   --next-ink: var(--ink-amber);
 }
 
-body[data-next-project="automations"],
-body[data-next-project="visualisations"] {
+body[data-next-project="automations"] {
   --next-ink: var(--ink-teal);
+}
+
+body[data-next-project="navigation"],
+body[data-next-project="visualisations"] {
+  --next-ink: var(--ink-orange);
 }
 
 body[data-next-project="developer-tools"] {
@@ -7428,6 +7550,56 @@ body.page-is-leaving .top-blur {
 .project-preview.is-visible .project-preview-frame,
 .project-preview.is-below.is-visible .project-preview-frame {
   transform: translateY(0) scale(1) rotate(3deg);
+}
+
+/* Stack mode (the Archive row): two thumbnails, each framed like the single
+   preview, fanned out and overlapping. They gather in the middle while the
+   preview is hidden and spread as it comes in. */
+.project-preview-stack {
+  display: none;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.project-preview.is-stack .project-preview-frame { display: none; }
+.project-preview.is-stack .project-preview-stack { display: block; }
+
+.project-preview-stack img {
+  position: absolute;
+  top: 12%;
+  left: 21%;
+  width: 58%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  object-position: top center;
+  box-sizing: border-box;
+  border: 2px solid var(--preview-frame-border, #fff);
+  border-radius: 12px;
+  background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
+  box-shadow: var(--preview-frame-shadow, 0 6px 18px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06));
+  scale: 0.9;
+  transition:
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-preview.is-visible .project-preview-stack img { scale: 1; }
+
+.project-preview.is-visible .project-preview-stack img:nth-child(1) {
+  translate: -24% 4%;
+  rotate: -6deg;
+}
+
+.project-preview.is-visible .project-preview-stack img:nth-child(2) {
+  z-index: 1;
+  translate: 24% 0;
+  rotate: 6deg;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .project-preview-stack img { transition: none; }
 }
 
 /* No real hover, or too little room to float a preview — drop it entirely */

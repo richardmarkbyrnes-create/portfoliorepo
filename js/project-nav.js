@@ -677,8 +677,9 @@ function initQuoteReveal(el) {
     const order = window.PROJECT_ORDER || [];
     const index = order.indexOf(slug);
     const hasNext = index !== -1 && order.length > 1;
-    // Skip the in-progress project when cycling to the next one.
-    const SKIP_SLUGS = ['onboarding'];
+    // Skip the in-progress project, and the ones taken off the home page
+    // list, when cycling to the next one.
+    const SKIP_SLUGS = ['onboarding', 'navigation', 'design-systems'];
     let nextSlug = null;
     if (hasNext) {
       let n = (index + 1) % order.length;
