@@ -79,7 +79,7 @@ window.PROJECTS = {
     title: 'Ask Insights',
     company: 'Miro',
     year: '2025',
-    headline: 'Instant Answers to Complex\nCustomer Questions',
+    headline: 'Conversational Customer\nInsights Retrieval',
     team: 'Miro · Insights',
     intro: 'An AI chat companion that turns a repository of customer feedback into instant, cited answers.',
     teamMembers: [
@@ -149,7 +149,7 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     status: 'Vision work',
-    headline: 'Surfacing What Matters\nin a Sea of Numbers',
+    headline: 'Building High-Volume\nFinancial Dashboards',
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
