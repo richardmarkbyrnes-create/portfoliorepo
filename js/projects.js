@@ -155,7 +155,7 @@ window.PROJECTS = {
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
     teamMembers: [],
     images: [
-      'images/visualisations-hero.webp?v=4',
+      'images/visualisations-hero.webp?v=5',
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
