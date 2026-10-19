@@ -3246,6 +3246,12 @@ body[data-page="home"] .page {
   padding: 0 var(--home-content-padding-x) 88px;
 }
 
+/* The dashed dividers between project groups. Light mode needs a touch more
+   ink than dark to read at the same strength. */
+html:not([data-theme="dark"]) {
+  --work-rule-mix: 11%;
+}
+
 .work-column-rule {
   display: block;
   width: 100%;
@@ -3256,7 +3262,7 @@ body[data-page="home"] .page {
      over dash length or gap. */
   height: 1px;
   background-image: repeating-linear-gradient(to right,
-    color-mix(in srgb, var(--text) 5%, transparent) 0 3px,
+    color-mix(in srgb, var(--text) var(--work-rule-mix, 5%), transparent) 0 3px,
     transparent 3px 9px);
 }
 
@@ -3353,7 +3359,7 @@ html:not([data-theme="dark"]) .work-company-logo img {
   padding: 0;
   border: none;
   background-image: repeating-linear-gradient(to right,
-    color-mix(in srgb, var(--text) 5%, transparent) 0 3px,
+    color-mix(in srgb, var(--text) var(--work-rule-mix, 5%), transparent) 0 3px,
     transparent 3px 9px);
 }
 
