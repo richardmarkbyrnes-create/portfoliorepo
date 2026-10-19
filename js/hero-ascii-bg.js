@@ -140,7 +140,8 @@
         return next;
       };
       const size = level / (CHARSET.length - 1);
-      SHAPES[pick(LEVEL_SHAPES[level])](strokes[0], size, more);
+      const shape = pick(LEVEL_SHAPES[level]);
+      SHAPES[shape](strokes[0], size, more);
       // Tilt the whole mark a little and trace it with smooth curves.
       // A gentler tilt than loose squiggles could take: these need to stay
       // recognisably upright.
@@ -167,6 +168,9 @@
         const last = rot[rot.length - 1];
         path.lineTo(last[0], last[1]);
       });
+      // Which family the mark belongs to, so the dark theme can colour
+      // shamrocks and tulips apart.
+      path.kind = shape.startsWith('tulip') ? 'tulip' : 'shamrock';
       return path;
     };
     return CHARSET.map((_, level) => Array.from({ length: SQUIGGLE_VARIANTS }, () => build(level)));
@@ -245,6 +249,17 @@
     return PARALLAX_BASE + PARALLAX_AMP * wave;
   }
 
+  // Dark theme: no colour cycling. Each mark lights up in its own colour,
+  // shamrocks green and tulips orange.
+  const DARK_KIND_COLORS = {
+    shamrock: { r: 52, g: 211, b: 153 },
+    tulip: { r: 251, g: 146, b: 60 },
+  };
+
+  function kindColorsForTheme() {
+    return document.documentElement.getAttribute('data-theme') === 'dark' ? DARK_KIND_COLORS : null;
+  }
+
   function paletteForTheme() {
     const theme = document.documentElement.getAttribute('data-theme');
     if (!theme || theme === 'normal') return GRAY_PALETTE;
@@ -308,6 +323,7 @@
     let hoverAnimId = null;
     let textColor = '#3b3b3b';
     let activePalette = paletteForTheme();
+    let activeKindColors = kindColorsForTheme();
     let burst = { active: false, start: 0 };
     let burstAnimId = null;
     const BURST_MS = 1600;
@@ -432,7 +448,8 @@
       return a + (b - a) * t;
     }
 
-    function getPastelRgb(cell, time) {
+    function getPastelRgb(cell, time, kind) {
+      if (activeKindColors && kind) return activeKindColors[kind];
       const palette = activePalette;
       const cyclePos = time / PASTEL_CYCLE_MS + cell.x * 0.06 + cell.y * 0.04;
       const colorIndex = Math.floor(cyclePos) % palette.length;
@@ -554,6 +571,8 @@
         // Where this glyph actually lands this frame — hover, ripples and the title
         // mask all have to read the drawn position, not the grid slot.
         const y = parallaxY(cell);
+        // Read at each use: hover can swap the mark mid-frame.
+        const kind = () => SQUIGGLES[LEVEL_OF[char] || 0][cell.variant].kind;
 
         if (interact && pointer.active) {
           const dx = cell.x - pointer.x;
@@ -571,7 +590,7 @@
             }
 
             if (influence > 0.12) {
-              const pastelRgb = getPastelRgb(cell, now);
+              const pastelRgb = getPastelRgb(cell, now, kind());
               const colorMix = Math.min(1, influence * 0.55 + influence * influence * 0.65);
               cellRgb = blendRgb(baseRgb, pastelRgb, colorMix);
             }
@@ -579,14 +598,14 @@
         }
 
         if (burstAmt > 0) {
-          const pastelRgb = getPastelRgb(cell, now);
+          const pastelRgb = getPastelRgb(cell, now, kind());
           cellRgb = blendRgb(cellRgb, pastelRgb, burstAmt);
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * burstAmt);
         }
 
         const rippleAmt = rippleFactor(cell.x, y, now);
         if (rippleAmt > 0) {
-          const pastelRgb = getPastelRgb(cell, now);
+          const pastelRgb = getPastelRgb(cell, now, kind());
           cellRgb = blendRgb(cellRgb, pastelRgb, rippleAmt);
           opacity = Math.max(opacity, BASE_OPACITY + (PEAK_OPACITY - BASE_OPACITY) * rippleAmt);
         }
@@ -768,6 +787,7 @@
     const themeObserver = new MutationObserver(() => {
       readTextColor();
       activePalette = paletteForTheme();
+      activeKindColors = kindColorsForTheme();
       draw();
     });
 

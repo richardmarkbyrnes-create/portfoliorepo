@@ -428,7 +428,11 @@ function initProjectPreview() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   const image = preview.querySelector('.project-preview-img');
-  const rows = document.querySelectorAll('.work-column--interactive .work-row-main[data-project]');
+  // Rows with data-preview-stack (a comma-separated list of images) show
+  // overlapping thumbnails fanned out instead of a single framed hero (as many
+  // as there are img slots in .project-preview-stack).
+  const stackImages = [...preview.querySelectorAll('.project-preview-stack img')];
+  const rows = document.querySelectorAll('.work-column--interactive .work-row-main[data-project], .work-column--interactive .work-row-main[data-preview-stack]');
   if (!image || !rows.length) return;
 
   const projects = window.PROJECTS || {};
@@ -512,7 +516,15 @@ function initProjectPreview() {
 
   function show(row, src) {
     clearTimeout(hideTimer);
-    if (src !== shown) {
+    const isStack = Array.isArray(src);
+    preview.classList.toggle('is-stack', isStack);
+    if (isStack) {
+      stackImages.forEach((img, i) => {
+        if (src[i] && img.getAttribute('src') !== src[i]) img.src = src[i];
+      });
+      shown = src;
+      lastSrc = null;
+    } else if (src !== shown) {
       const stillUp = preview.classList.contains('is-visible') || performance.now() - hiddenAt < 250;
       if (lastSrc && src !== lastSrc && stillUp) {
         // Swapping straight to another project: a crossfade. A copy of the
@@ -600,9 +612,11 @@ function initProjectPreview() {
   const withHero = [];
   rows.forEach((row) => {
     // Projects without a hero image simply show nothing on hover.
-    const src = heroFor(row.dataset.project);
-    if (!src) return;
-    withHero.push(src);
+    const src = row.dataset.previewStack
+      ? row.dataset.previewStack.split(',').map((s) => s.trim()).filter(Boolean)
+      : heroFor(row.dataset.project);
+    if (!src || !src.length) return;
+    withHero.push(...[].concat(src));
     row.addEventListener('mouseenter', () => show(row, src));
     row.addEventListener('mousemove', (event) => follow(event, row));
     row.addEventListener('mouseleave', scheduleHide);
