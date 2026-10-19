@@ -2158,7 +2158,7 @@ body[data-page="about"] {
 
 .hobby-photo-note {
   font-family: var(--hand);
-  font-size: 22px;
+  font-size: 18px;
   line-height: 1.15;
   text-align: center;
   color: #3b3b3b;
@@ -5445,7 +5445,7 @@ body[data-page="project"] .pc-next-pill.has-bubble::before {
 
 .pc-polaroid-note {
   font-family: var(--hand);
-  font-size: 27px;
+  font-size: 22px;
   line-height: 1.15;
   text-align: center;
   color: #3b3b3b;
