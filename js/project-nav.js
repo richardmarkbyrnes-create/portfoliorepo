@@ -210,6 +210,52 @@ function initQuoteReveal(el) {
     });
   }
 
+  // Fetch a project ahead of the click: its page and its hero image, the
+  // moment the pointer reaches a link to it (or a finger touches down, or
+  // focus lands on it). The fade-out before navigating then covers the
+  // download, so the page arrives ready instead of building up in front of
+  // you. Each project is only fetched once.
+  const prefetched = new Set();
+
+  function projectSlugFor(link) {
+    let url;
+    try {
+      url = new URL(link.getAttribute('href'), window.location.href);
+    } catch (err) {
+      return null;
+    }
+    if (url.origin !== window.location.origin) return null;
+    const slug = url.pathname.split('/').filter(Boolean)[0];
+    return slug && window.PROJECTS?.[slug] && slug !== document.body.dataset.project ? slug : null;
+  }
+
+  function prefetchProject(slug) {
+    if (prefetched.has(slug)) return;
+    prefetched.add(slug);
+    const page = document.createElement('link');
+    page.rel = 'prefetch';
+    page.href = `/${slug}/`;
+    document.head.appendChild(page);
+    const project = window.PROJECTS[slug];
+    const hero = (project.images && project.images[0]) || project.heroImage || project.previewImage;
+    if (hero) {
+      const img = new Image();
+      img.src = `/${hero.replace(/^\//, '')}`;
+    }
+  }
+
+  function initPrefetch() {
+    const onIntent = (event) => {
+      const link = event.target.closest && event.target.closest('a[href]');
+      if (!link) return;
+      const slug = projectSlugFor(link);
+      if (slug) prefetchProject(slug);
+    };
+    document.addEventListener('pointerover', onIntent, { passive: true });
+    document.addEventListener('touchstart', onIntent, { passive: true });
+    document.addEventListener('focusin', onIntent);
+  }
+
   // The class only needs to survive the animation. Left on, it would replay the
   // entrance on anything that later re-runs the rule.
   function clearEntrance() {
@@ -226,12 +272,16 @@ function initQuoteReveal(el) {
     page.addEventListener('animationend', (event) => {
       if (event.animationName === 'pageBlurIn') done();
     }, { once: true });
-    // This script runs after the animation has already started, and on a fast
-    // paint it can have finished before the listener lands — in which case
-    // animationend never comes. The timeout is the backstop, and it has to
-    // outlast the entrance (0.52s). Strip the class early and the page snaps
-    // mid-move.
-    window.setTimeout(done, 800);
+    // The timeout is the backstop in case animationend never comes, and it has
+    // to outlast the entrance (0.52s). It only starts counting once the
+    // entrance is released (theme-init.js holds it until the page has
+    // painted); counted from here, it could strip the class mid-move.
+    const arm = () => window.setTimeout(done, 800);
+    if (root.classList.contains('page-entering-hold')) {
+      document.addEventListener('page-entering-go', arm, { once: true });
+    } else {
+      arm();
+    }
   }
 
   function initWorkLinks() {
@@ -529,6 +579,9 @@ function initQuoteReveal(el) {
         const front = document.createElement('span');
         front.className = 'pc-polaroid-face pc-polaroid-front';
         const img = document.createElement('img');
+        // Below the fold: leave the bandwidth to the hero first.
+        img.loading = 'lazy';
+        img.decoding = 'async';
         img.src = p.src;
         img.alt = '';
         front.appendChild(img);
@@ -914,6 +967,7 @@ function initQuoteReveal(el) {
 
   clearEntrance();
   initLinkTransitions();
+  initPrefetch();
   initWorkLinks();
   initHomeReturn();
   initProjectPage();
