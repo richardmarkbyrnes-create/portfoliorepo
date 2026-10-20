@@ -1,4 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap');
+/* Web fonts are linked from each page's <head> (with preconnects and a
+   preload for the serif), not @imported here: an @import is only found once
+   this whole sheet has downloaded, which held the type back a step. */
 
 @font-face {
   font-family: 'Bespoke Serif';
@@ -7177,6 +7179,14 @@ body.page-is-leaving .page {
 
 html.page-entering .page {
   animation: pageBlurIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Held at the starting pose until the page has painted (theme-init.js), the
+   in-page reveals with it, so none of them run down unseen. */
+html.page-entering-hold .page,
+html.page-entering-hold body[data-page="project"] .pc-back,
+html.page-entering-hold .animate-in {
+  animation-play-state: paused;
 }
 
 body.page-is-leaving .nav-primary,

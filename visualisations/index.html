@@ -13,8 +13,19 @@
   <link rel="icon" type="image/png" href="/images/favicon-little-richard.png?v=3">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <base href="/">
-  <script src="/js/theme-init.js?v=19"></script>
-  <link rel="stylesheet" href="/css/styles.css?v=1184">
+  <script src="/js/theme-init.js?v=20"></script>
+  <!-- The page colour before the stylesheet lands, so a dark or pastel theme
+       never flashes white between pages. -->
+  <style>[data-theme="dark"]{background:#151516}[data-theme="pastel-blue"]{background:#e8f4fc}[data-theme="pastel-green"]{background:#e8fbf0}[data-theme="pastel-pink"]{background:#fce8f0}[data-theme="pastel-yellow"]{background:#fcf6e8}</style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
+  <!-- The hero is set as a background by project-nav.js, which the browser
+       can't see until the scripts run; this starts it downloading straight
+       away. Keep in step with images[0] in projects.js. -->
+  <link rel="preload" href="/images/visualisations-hero.webp?v=5" as="image" fetchpriority="high">
+  <link rel="stylesheet" href="/css/styles.css?v=1186">
 </head>
 <body data-page="project" data-project="visualisations">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -94,9 +105,9 @@
   </main>
 
   <script src="/js/hero-ascii-bg.js?v=41"></script>
-  <script src="/js/projects.js?v=60"></script>
+  <script src="/js/projects.js?v=61"></script>
   <script src="/js/ascii-text-scramble.js?v=5"></script>
-  <script src="/js/project-nav.js?v=65"></script>
+  <script src="/js/project-nav.js?v=67"></script>
   <script src="/js/main.js?v=140"></script>
   <div class="pc-next-glow" aria-hidden="true"></div>
 

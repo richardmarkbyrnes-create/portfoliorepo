@@ -38,8 +38,8 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     polaroids: [
-      { src: 'images/sticker-photo-1.webp', r: -5, note: 'Canvas ’26 — people made their own stickers, then walked off with them printed!' },
-      { src: 'images/sticker-photo-2.webp', r: 4, note: 'The sticker booth. A queue all day long for AI-made versions of yourself :)' },
+      { src: 'images/sticker-photo-1.webp?v=2', r: -5, note: 'Canvas ’26 — people made their own stickers, then walked off with them printed!' },
+      { src: 'images/sticker-photo-2.webp?v=2', r: 4, note: 'The sticker booth. A queue all day long for AI-made versions of yourself :)' },
     ],
     intro: 'A text-to-sticker generative AI tool built into Miro’s stickers panel.',
     paragraphs: [

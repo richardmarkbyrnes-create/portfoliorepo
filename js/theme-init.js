@@ -59,9 +59,32 @@
   // that slipped past it all cut straight in, and the site felt inconsistent
   // depending on how you got somewhere. Every page rises the same way,
   // whichever direction you arrived from.
+  //
+  // The entrance starts paused (page-entering-hold) and is released once the
+  // page has really painted. A CSS animation's clock starts the moment styles
+  // are first worked out — before the scripts at the end of <body> have run,
+  // and while Chrome is still showing the previous page. Left running, most of
+  // the half-second rise had played out unseen by the time the page appeared,
+  // so arriving from another page read as a blank pause and then a snap.
   function markPageEntering() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.documentElement.classList.add('page-entering');
+    var root = document.documentElement;
+    root.classList.add('page-entering', 'page-entering-hold');
+
+    var released = false;
+    function release() {
+      if (released) return;
+      released = true;
+      root.classList.remove('page-entering-hold');
+      document.dispatchEvent(new Event('page-entering-go'));
+    }
+    // Two frames after the DOM is in: the first frame paints the page at its
+    // starting pose, the second starts the move from there.
+    document.addEventListener('DOMContentLoaded', function () {
+      requestAnimationFrame(function () { requestAnimationFrame(release); });
+    });
+    // Backstop, so the page can never be left waiting.
+    setTimeout(release, 1500);
   }
 
   markPageEntering();
