@@ -149,7 +149,7 @@ window.PROJECTS = {
     company: 'Cashbook',
     year: '2024',
     status: 'Vision work',
-    headline: 'Building High-Volume\nFinancial Dashboards',
+    headline: 'Building High-Volume\nAccounting Dashboards',
     headlineScramble: 'bers',
     team: 'Cashbook',
     intro: 'Visual dashboards that turn dense financial ledgers into at-a-glance insight.',
