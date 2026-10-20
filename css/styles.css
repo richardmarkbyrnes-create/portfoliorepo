@@ -8788,7 +8788,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   /* Shrink the about ("Sustained by my love for…") title so it fits on mobile */
   .home-about-intro .about-hero-title {
-    font-size: 30px;
+    font-size: 32px;
   }
 
   /* The three lines are hard-broken for desktop; at mobile widths each one is
@@ -9000,8 +9000,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
      it belongs to — a bare .about-hero-title loses to it, and an em value
      here would resolve against the reduced base above and land near 12px. */
   body[data-page="home"] .home-about-intro .about-hero-title {
-    /* Same size as the hero name at the top of the page. */
-    font-size: clamp(26px, 3.25vw, 35px);
+    font-size: 38px;
   }
 
   body[data-page="home"] .work-row {
