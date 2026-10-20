@@ -1,7 +1,7 @@
 // The next-project pill drawn as one rounded path. A glass layer is clipped to
 // it (fill and blur); an SVG traces it for the shadow (masked to the outside,
-// so it never darkens the glass), the hairline border and the end-of-page
-// swoop. Rebuilt whenever the pill changes size.
+// so it never darkens the glass) and the hairline border. Rebuilt whenever the
+// pill changes size.
 function buildBubble(pill) {
   const NS = 'http://www.w3.org/2000/svg';
   // Room round the shape for the blurred shadow (7px blur, nudged 4px down).
@@ -17,9 +17,7 @@ function buildBubble(pill) {
   svg.innerHTML = `
     <defs><mask id="${uid}" maskUnits="userSpaceOnUse" x="0" y="0" width="100%" height="100%"><rect x="0" y="0" width="100%" height="100%" fill="#fff"/><path class="m" fill="#000"/></mask></defs>
     <path class="pc-bubble-shadow" mask="url(#${uid})"/>
-    <path class="pc-bubble-line"/>
-    <path class="pc-bubble-swoop pc-bubble-swoop--tail"/>
-    <path class="pc-bubble-swoop"/>`;
+    <path class="pc-bubble-line"/>`;
   pill.prepend(svg);
   pill.prepend(glass);
   pill.classList.add('has-bubble');
@@ -55,16 +53,6 @@ function buildBubble(pill) {
     shadow.setAttribute('d', shapeAt(PAD, PAD + 4, w, h));
     const line = shapeAt(PAD + 0.5, PAD + 0.5, w - 1, h - 1);
     svg.querySelector('.pc-bubble-line').setAttribute('d', line);
-    const ring = shapeAt(PAD - 1, PAD - 1, w + 2, h + 2);
-    svg.querySelectorAll('.pc-bubble-swoop').forEach((path, i) => {
-      path.setAttribute('d', ring);
-      const len = path.getTotalLength();
-      const seg = i === 0 ? len * 0.28 : len * 0.12;
-      path.setAttribute('stroke-dasharray', `${seg} ${len}`);
-      path.style.setProperty('--len', `${len}px`);
-      // The tail starts a little ahead so it trails the head round.
-      path.setAttribute('stroke-dashoffset', '0');
-    });
     glass.style.clipPath = `path('${shapeAt(0, 0, w, h)}')`;
   };
   layout();
@@ -810,6 +798,18 @@ function initQuoteReveal(el) {
         nextPill.querySelector('.pc-next-sep')?.remove();
         if (next) {
           nextPill.setAttribute('aria-label', `Jump to next project: ${next.title}`);
+          // The project's name, revealed as a second line once the reader
+          // reaches the end of the page (.is-at-end, below).
+          const copy = nextPill.querySelector('.pc-next-copy');
+          if (copy && !copy.querySelector('.pc-next-sub')) {
+            const sub = document.createElement('span');
+            sub.className = 'pc-next-sub';
+            sub.setAttribute('aria-hidden', 'true');
+            const subText = document.createElement('span');
+            subText.textContent = next.title;
+            sub.appendChild(subText);
+            copy.appendChild(sub);
+          }
           // Lets CSS tint the bottom wash in the colour of the project the pill
           // leads to.
           document.body.dataset.nextProject = nextSlug;
@@ -846,9 +846,9 @@ function initQuoteReveal(el) {
           const bottom = window.scrollY + window.innerHeight;
           const height = document.documentElement.scrollHeight;
           nextPill.classList.toggle('is-docked', bottom >= height * 0.8);
-          // At the very end of the page a gradient sweeps once round its border
-          // (CSS). Leaving the end resets it, so arriving again replays it.
-          nextPill.classList.toggle('is-at-end', bottom >= height - 4);
+          // In the last 4% of the page the next project's name opens up
+          // under the label (CSS); scrolling back up folds it away again.
+          nextPill.classList.toggle('is-at-end', bottom >= height * 0.96);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });
         window.addEventListener('resize', updatePillDock);

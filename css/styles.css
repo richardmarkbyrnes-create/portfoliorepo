@@ -5261,87 +5261,14 @@ body[data-page="project"] .pc-next-pill.is-docked {
   color: var(--text-body);
 }
 
-/* End-of-page swoop on the next-project pill: a gradient arc glides round its
-   border when the reader reaches the very bottom. A ring-masked
-   pseudo-element carries a conic gradient whose angle is animated. */
-@property --swoop {
-  syntax: '<angle>';
-  inherits: false;
-  initial-value: 0deg;
-}
-
-body[data-page="project"] .pc-next-pill::before {
-  content: "";
-  position: absolute;
-  inset: -1.5px;
-  padding: 1.5px;
-  border-radius: inherit;
-  /* In the next project's ink, the same colour its bottom hover glow uses:
-     a long soft tail building to a bright head. */
-  background: conic-gradient(
-    from var(--swoop),
-    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 0deg,
-    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 150deg,
-    color-mix(in srgb, var(--next-ink, var(--text)) 35%, transparent) 260deg,
-    var(--next-ink, var(--text)) 340deg,
-    color-mix(in srgb, var(--next-ink, var(--text)) 0%, transparent) 360deg
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Light theme: the ink becomes a pastel of itself for a softer arc. Dark keeps
-   the full-strength ink, which already reads softly against the dark page. */
-html:not([data-theme="dark"]) body[data-page="project"] .pc-next-pill::before {
-  /* An inset of -1.5px only reaches over the pill's own border (absolute
-     insets measure from the padding edge), so on light the arc sat on the
-     white border and read as an inner line. Here it rings fully outside it. */
-  inset: calc(-1 * (var(--nav-border-width) + 1.5px));
-  /* Mixing with white in sRGB greyed the inks (dusty, not pastel), so the
-     pastel is built in OKLCH: the ink's own hue, pushed light with a little
-     chroma kept. The color-mix line is the fallback where relative colour
-     isn't supported. */
-  --swoop-ink: color-mix(in oklch, var(--next-ink, var(--text)) 40%, #ffffff);
-  --swoop-ink: oklch(from var(--next-ink, var(--text)) 0.84 0.11 h);
-  background: conic-gradient(
-    from var(--swoop),
-    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 0deg,
-    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 150deg,
-    color-mix(in srgb, var(--swoop-ink) 45%, transparent) 260deg,
-    var(--swoop-ink) 340deg,
-    color-mix(in srgb, var(--swoop-ink) 0%, transparent) 360deg
-  );
-}
-
-body[data-page="project"] .pc-next-pill.is-at-end::before {
-  animation: pc-next-swoop 2.8s cubic-bezier(0.37, 0, 0.18, 1) both;
-}
-
-@keyframes pc-next-swoop {
-  0% { --swoop: 0deg; opacity: 0; }
-  20% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { --swoop: 420deg; opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body[data-page="project"] .pc-next-pill.is-at-end::before { animation: none; }
-}
-
 /* Speech-bubble pill (project-nav.js buildBubble), after a native tooltip.
    The pill and its pointer are one shape: a glass layer clipped to the
    bubble path for the fill and blur, and an SVG drawing that same path for
-   the shadow, the hairline border and the end-of-page swoop, which now
-   travels the whole outline, pointer included. The pill's own background,
-   border, shadow and ring are switched off when the bubble is in place. */
+   the shadow and the hairline border. The pill's own background, border and
+   shadow are switched off when the bubble is in place. */
 body[data-page="project"] .pc-next-pill.has-bubble {
   --bubble-fill: rgba(255, 255, 255, 0.74);
   --bubble-line: var(--nav-glass-border);
-  --bubble-swoop: color-mix(in oklch, var(--next-ink, var(--text)) 40%, #ffffff);
-  --bubble-swoop: oklch(from var(--next-ink, var(--text)) 0.84 0.11 h);
   background: none;
   /* A fixed 1px (the nav border is 2px on light, 1px on dark): the glass
      layer and the SVG both offset by exactly 1px to reach the outer edge. */
@@ -5356,16 +5283,63 @@ body[data-page="project"] .pc-next-pill.has-bubble {
 [data-theme="dark"] body[data-page="project"] .pc-next-pill.has-bubble {
   --bubble-fill: rgba(20, 20, 22, 0.78);
   --bubble-line: rgba(255, 255, 255, 0.12);
-  --bubble-swoop: var(--next-ink, var(--text));
-}
-
-body[data-page="project"] .pc-next-pill.has-bubble::before {
-  display: none;
 }
 
 .pc-next-pill .pc-next-copy {
   position: relative;
   z-index: 2;
+}
+
+/* The next project's name: a second line that opens under the label when the
+   reader reaches the end of the page (.is-at-end, project-nav.js). A 0fr/1fr
+   grid row, so it grows from nothing rather than jumping in, and the pill and
+   its bubble grow with it. */
+.pc-next-pill .pc-next-copy {
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  text-align: center;
+}
+
+.pc-next-sub {
+  display: grid;
+  grid-template-rows: 0fr;
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(4px);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: color-mix(in srgb, var(--text) 45%, transparent);
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.35s ease,
+    filter 0.35s ease;
+}
+
+.pc-next-sub > span {
+  min-height: 0;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.pc-next-pill.is-at-end .pc-next-sub {
+  grid-template-rows: 1fr;
+  /* The gap under the label only exists while the name is showing, so the
+     single-line pill stays centred. */
+  padding-top: 4px;
+  opacity: 1;
+  filter: none;
+  transition:
+    grid-template-rows 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    padding-top 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 0.4s ease 0.1s,
+    filter 0.4s ease 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-next-sub { transition: opacity 0.2s ease; filter: none; }
 }
 
 .pc-bubble-glass {
@@ -5398,44 +5372,6 @@ body[data-page="project"] .pc-next-pill.has-bubble::before {
   fill: none;
   stroke: var(--bubble-line);
   stroke-width: 1;
-}
-
-.pc-bubble-swoop {
-  fill: none;
-  stroke: var(--bubble-swoop);
-  stroke-width: 1.6;
-  stroke-linecap: round;
-  opacity: 0;
-}
-
-.pc-bubble-swoop--tail {
-  stroke-width: 1.2;
-}
-
-.pc-next-pill.is-at-end .pc-bubble-swoop {
-  animation: pc-bubble-swoop 2.8s cubic-bezier(0.37, 0, 0.18, 1) both;
-}
-
-.pc-next-pill.is-at-end .pc-bubble-swoop--tail {
-  animation-name: pc-bubble-swoop-tail;
-}
-
-@keyframes pc-bubble-swoop {
-  0% { stroke-dashoffset: 0; opacity: 0; }
-  20% { opacity: 1; }
-  70% { opacity: 1; }
-  100% { stroke-dashoffset: calc(var(--len, 400px) * -1.17); opacity: 0; }
-}
-
-@keyframes pc-bubble-swoop-tail {
-  0% { stroke-dashoffset: 0; opacity: 0; }
-  20% { opacity: 0.4; }
-  70% { opacity: 0.4; }
-  100% { stroke-dashoffset: calc(var(--len, 400px) * -1.17); opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pc-next-pill.is-at-end .pc-bubble-swoop { animation: none; }
 }
 
 /* Line breaks that only hold on wider screens; phones wrap naturally. */
