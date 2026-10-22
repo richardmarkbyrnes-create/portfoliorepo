@@ -1469,11 +1469,12 @@ html[data-theme="dark"] .theme-swatch {
   }
 }
 
-/* Children in order: header, divider, LinkedIn, Email me. */
+/* Children in order: header, divider, LinkedIn, Resume, Email me. */
 .nav-contact-panel > :nth-child(1) { --item-delay: 0.05s; }
 .nav-contact-panel > :nth-child(2) { --item-delay: 0.11s; }
 .nav-contact-panel > :nth-child(3) { --item-delay: 0.17s; }
 .nav-contact-panel > :nth-child(4) { --item-delay: 0.23s; }
+.nav-contact-panel > :nth-child(5) { --item-delay: 0.29s; }
 
 @media (prefers-reduced-motion: reduce) {
   .nav-contact-menu { transition: none; filter: none; }
