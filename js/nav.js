@@ -18,6 +18,8 @@
 
   const MAIL_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M224,48H32a8,8,0,0,0-8,8V192a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A8,8,0,0,0,224,48ZM203.43,64,128,133.15,52.57,64ZM216,192H40V74.19l82.59,75.71a8,8,0,0,0,10.82,0L216,74.19V192Z"></path></svg>`;
   const CHECK_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></svg>`;
+  // Phosphor "file-text", same set and weight as the mail icon.
+  const RESUME_ICON = `<svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M213.66,82.34l-56-56A8,8,0,0,0,152,24H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V88A8,8,0,0,0,213.66,82.34ZM160,51.31,188.69,80H160ZM200,216H56V40h88V88a8,8,0,0,0,8,8h48V216Zm-32-80a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,136Zm0,32a8,8,0,0,1-8,8H96a8,8,0,0,1,0-16h64A8,8,0,0,1,168,168Z"/></svg>`;
 
   const NAV_INTRO_KEY = 'portfolio-nav-intro-played';
 
@@ -68,6 +70,9 @@
             <span class="nav-contact-divider" aria-hidden="true"></span>
             <a class="nav-contact-item" href="${LINKEDIN_URL}" target="_blank" rel="noopener noreferrer">
               ${LINKEDIN_ICON}<span>LinkedIn</span>
+            </a>
+            <a class="nav-contact-item" href="/Richard-Byrnes-Resume.pdf" target="_blank" rel="noopener" aria-label="Resume (PDF, opens in a new tab)">
+              ${RESUME_ICON}<span>Resume</span>
             </a>
             <a class="nav-contact-item nav-contact-email" href="mailto:${EMAIL}" aria-label="Email me at ${EMAIL}">
               <span class="nav-contact-email-icon">${MAIL_ICON}${CHECK_ICON}</span><span class="nav-contact-email-label" aria-live="polite">Email me</span>
