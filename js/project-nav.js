@@ -731,6 +731,17 @@ function initQuoteReveal(el) {
       }
       nextSlug = order[n];
     }
+    // And the one before, cycling the same way, for the back arrow.
+    let prevSlug = null;
+    if (hasNext) {
+      let n = (index - 1 + order.length) % order.length;
+      let guard = 0;
+      while (SKIP_SLUGS.includes(order[n]) && guard < order.length) {
+        n = (n - 1 + order.length) % order.length;
+        guard += 1;
+      }
+      prevSlug = order[n];
+    }
     const nextBtn = document.getElementById('project-next');
     if (nextBtn && hasNext) {
       const nextProject = window.PROJECTS?.[nextSlug];
@@ -782,6 +793,34 @@ function initQuoteReveal(el) {
     const goNext = () => {
       if (nextSlug) navigateWithFade(projectHref(nextSlug));
     };
+    const goPrev = () => {
+      if (prevSlug) navigateWithFade(projectHref(prevSlug));
+      else goBack();
+    };
+
+    // Previous / next arrows, fixed bottom right on every project page: the
+    // same quick way through the projects wherever you are on the page.
+    if (prevSlug && nextSlug && !document.getElementById('pc-arrows')) {
+      const arrows = document.createElement('nav');
+      arrows.className = 'pc-arrows';
+      arrows.id = 'pc-arrows';
+      arrows.setAttribute('aria-label', 'Projects');
+      const arrow = (dir, target, path) => {
+        const a = document.createElement('a');
+        a.className = `pc-arrow pc-arrow--${dir}`;
+        a.href = projectHref(target);
+        const title = window.PROJECTS?.[target]?.title || '';
+        a.setAttribute('aria-label', `${dir === 'prev' ? 'Previous' : 'Next'} project: ${title}`);
+        a.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
+        a.addEventListener('click', (event) => {
+          event.preventDefault();
+          if (dir === 'prev') goPrev(); else goNext();
+        });
+        return a;
+      };
+      arrows.append(arrow('prev', prevSlug, 'm15 18-6-6 6-6'), arrow('next', nextSlug, 'm9 18 6-6-6-6'));
+      document.body.appendChild(arrows);
+    }
 
     // Bottom "Next project" pill.
     const nextPill = document.getElementById('pc-next-pill');
@@ -875,7 +914,7 @@ function initQuoteReveal(el) {
 
       if (event.key === 'ArrowLeft') {
         event.preventDefault();
-        goBack();
+        goPrev();
       } else if (event.key === 'ArrowRight' && nextSlug) {
         event.preventDefault();
         goNext();
@@ -886,7 +925,7 @@ function initQuoteReveal(el) {
     });
   }
 
-  // Faded keyboard glyph in the bottom-right corner; hovering (or focusing) it lists
+  // Faded keyboard glyph in the bottom-left corner; hovering (or focusing) it lists
   // every shortcut the site listens for. Project pages only.
   const SHORTCUTS = [
     { keys: ['←'], label: 'Previous project' },
