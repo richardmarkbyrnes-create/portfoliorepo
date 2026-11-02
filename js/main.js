@@ -516,6 +516,18 @@ function initProjectPreview() {
 
   function show(row, src) {
     clearTimeout(hideTimer);
+    // A project can give its preview its own shape (previewAspect); the frame
+    // falls back to 16:9 otherwise. Portrait frames run narrower so they
+    // don't tower over the list.
+    const aspect = projects[row.dataset.project]?.previewAspect;
+    if (aspect) {
+      const [w, h] = aspect.split('/').map(Number);
+      preview.style.setProperty('--preview-aspect', aspect);
+      preview.classList.toggle('is-portrait', h > w);
+    } else {
+      preview.style.removeProperty('--preview-aspect');
+      preview.classList.remove('is-portrait');
+    }
     const isStack = Array.isArray(src);
     preview.classList.toggle('is-stack', isStack);
     if (isStack) {

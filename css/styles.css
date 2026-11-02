@@ -7479,6 +7479,12 @@ body.page-is-leaving .top-blur {
     transform 0.08s linear;
 }
 
+/* Portrait previews (main.js, from a project's previewAspect): narrower, so
+   the frame stays about as tall as the landscape ones are wide. */
+.project-preview.is-portrait {
+  width: min(230px, 30vw);
+}
+
 .project-preview.is-visible {
   opacity: 1;
   visibility: visible;
@@ -7543,7 +7549,7 @@ body.page-is-leaving .top-blur {
 .project-preview-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: var(--preview-aspect, 16 / 9);
   transform: translateY(6px) scale(0.9) rotate(3deg);
   transform-origin: bottom left;
   transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
@@ -9312,4 +9318,11 @@ body[data-page="project"].page-is-leaving .pc-back {
   body[data-page="home"].page-is-leaving.is-leaving-to-project .nav-primary {
     transition: none;
   }
+}
+
+/* The closing band used to end the home page; without it, the last section
+   needs room to breathe above the bottom edge. Last in the sheet so it wins
+   over the earlier padding resets. */
+body[data-page="home"] .page {
+  padding-bottom: 120px;
 }
