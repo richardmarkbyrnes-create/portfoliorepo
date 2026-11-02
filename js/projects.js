@@ -116,6 +116,9 @@ window.PROJECTS = {
     images: [
       'images/canvas-insights-hero.webp?v=2',
     ],
+    // Hover preview on the home page, in a frame its own shape.
+    previewImage: 'images/canvas-insights-preview.webp?v=3',
+    previewAspect: '2334 / 1474',
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
