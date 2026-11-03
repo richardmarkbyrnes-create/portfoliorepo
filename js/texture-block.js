@@ -196,10 +196,10 @@
     // sky, a peachy orange blush fading to pale apricot.
     spring: { label: 'Spring', colors: ['#97bd8f', '#c8e2b0', '#d2e2f4', '#f8fafc'], dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'] },
     // Summer's sky is a sunset in bands: yellow at the horizon, light
-    // orange, then pink, fading to a pale blush at the top.
+    // orange, then light blue, fading to a pale sky at the top.
     summer: {
       label: 'Summer',
-      colors: ['#adcfa9', '#d4ecc1', '#fbe6a8', '#f9d2b0', '#f5c8d3', '#fcf1f1'],
+      colors: ['#bddcb7', '#dcf1cb', '#fbe6a8', '#f9d2b0', '#c9dff3', '#f4f8fc'],
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
     autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
