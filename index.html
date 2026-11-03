@@ -12,30 +12,29 @@
   <link rel="icon" href="/favicon.ico?v=4" sizes="any">
   <link rel="icon" type="image/png" href="/images/favicon-little-richard.png?v=3">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
-  <script src="js/theme-init.js?v=20"></script>
+  <script src="js/theme-init.js?v=22"></script>
   <!-- The page colour before the stylesheet lands, so a dark or pastel theme
        never flashes white between pages. -->
-  <style>[data-theme="dark"]{background:#151516}[data-theme="pastel-blue"]{background:#e8f4fc}[data-theme="pastel-green"]{background:#e8fbf0}[data-theme="pastel-pink"]{background:#fce8f0}[data-theme="pastel-yellow"]{background:#fcf6e8}</style>
+  <style>[data-theme="dark"]{background:#151516}[data-theme="spring"]{background:#f8faf1}[data-theme="autumn"]{background:#fcf7ef}[data-theme="pastel-blue"]{background:#e8f4fc}[data-theme="pastel-green"]{background:#e8fbf0}[data-theme="pastel-pink"]{background:#fce8f0}[data-theme="pastel-yellow"]{background:#fcf6e8}</style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=1197">
+  <link rel="stylesheet" href="css/styles.css?v=1224">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
   <nav class="nav" id="site-nav" aria-label="Site navigation"></nav>
-  <script src="js/nav.js?v=75"></script>
+  <script src="js/nav.js?v=80"></script>
 
   <main class="page" id="main-content">
     <div class="home-main">
-      <section class="home-hero ascii-bg-section" data-ascii-title=".hero-title">
-        <canvas class="ascii-canvas" aria-hidden="true"></canvas>
+      <section class="home-hero ascii-bg-section">
         <div class="home-content-shell">
           <div class="hero-title-wrap">
             <div class="hero-title hero-title--home">
               <h1 class="hero-head animate-in">
-                <span class="hero-name">Richard Byrnes<br><span class="hero-title-muted">Product Designer at Miro</span></span>
+                <span class="hero-name">Heyo, I&rsquo;m Richard<br><span class="hero-title-muted">Product designer at Miro</span></span>
               </h1>
               <p class="hero-bio animate-in animate-in-delay-1">Irish-Dutch designer based in Amsterdam. Building a more equitable future for technology through accessible and intuitive design.</p>
             </div>
@@ -43,9 +42,14 @@
         </div>
       </section>
 
+      <!-- A slowly morphing, grainy gradient (texture-block.js draws it). -->
+      <div class="home-texture animate-in animate-in-delay-2" aria-hidden="true">
+        <canvas class="home-texture-canvas"></canvas>
+      </div>
+
       <section class="work-column work-column--experience work-column--interactive" aria-labelledby="work-heading">
         <div class="work-column-inner">
-          <h2 class="visually-hidden" id="work-heading">Selected work</h2>
+          <h2 class="work-section-label animate-in animate-in-delay-3" id="work-heading">Selected work</h2>
           <hr class="work-column-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0" aria-hidden="true">
           <div class="work-list">
             <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0">
@@ -269,11 +273,11 @@
     </figure>
   </div>
 
-  <script src="js/hero-ascii-bg.js?v=41"></script>
   <script src="js/ascii-text-scramble.js?v=5"></script>
   <script src="js/projects.js?v=65"></script>
   <script src="js/project-nav.js?v=71"></script>
-  <script src="js/main.js?v=141"></script>
+  <script src="js/main.js?v=144"></script>
+  <script src="js/texture-block.js?v=28"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>

@@ -8,11 +8,15 @@ function applyTheme(themeId) {
   }
   localStorage.setItem(THEME_STORAGE_KEY, themeId);
 
-  document.querySelectorAll('.theme-option, .pc-menu-swatch').forEach((button) => {
-    const isActive = button.dataset.theme === themeId;
+  document.querySelectorAll('.theme-option, .season-option, .pc-menu-swatch').forEach((button) => {
+    // Menu options carry data-theme-id: a bare data-theme would pick up that
+    // theme's colours from the CSS.
+    const isActive = (button.dataset.themeId || button.dataset.theme) === themeId;
     button.classList.toggle('is-active', isActive);
-    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    button.setAttribute(button.getAttribute('role') === 'menuitemradio' ? 'aria-checked' : 'aria-selected', isActive ? 'true' : 'false');
   });
+  // Light text scheme for the three light seasons, dark for winter.
+  document.documentElement.style.colorScheme = themeId === 'dark' ? 'dark' : 'light';
 
   updateFooterTheme();
 }
@@ -27,8 +31,16 @@ function cycleTheme() {
 // corner, the same reveal the hobby photos used for their colour. A view transition snapshots
 // the old page; the live new page is clipped to a growing circle over it.
 function cycleThemeWithReveal(origin) {
+  const currentIndex = THEMES.findIndex((theme) => theme.id === getStoredTheme());
+  const next = THEMES[currentIndex === -1 ? 0 : (currentIndex + 1) % THEMES.length].id;
+  setThemeWithReveal(next, origin);
+}
+
+function setThemeWithReveal(themeId, origin) {
+  if (themeId === getStoredTheme()) return;
+  const change = () => applyTheme(themeId);
   if (!document.startViewTransition || !origin || prefersReducedMotion()) {
-    cycleTheme();
+    change();
     return;
   }
 
@@ -41,7 +53,7 @@ function cycleThemeWithReveal(origin) {
 
   const root = document.documentElement;
   root.classList.add('is-theme-reveal');
-  const transition = document.startViewTransition(cycleTheme);
+  const transition = document.startViewTransition(change);
   transition.ready.then(() => {
     // A soft-edged circle: a radial-gradient mask, solid to half its radius
     // then fading out, grown by animating mask-size around its origin. Sized so
@@ -72,9 +84,11 @@ function initThemeSwitcher() {
   const toggle = document.getElementById('theme-toggle');
   if (!toggle) return;
 
-  toggle.addEventListener('click', (event) => {
-    event.preventDefault();
-    cycleThemeWithReveal(toggle);
+  // The toggle opens the season menu (nav.js); a pick arrives here.
+  document.addEventListener('site-theme-select', (event) => {
+    const { id, origin } = event.detail || {};
+    if (!id || id === getStoredTheme()) return;
+    setThemeWithReveal(id, origin || toggle);
     playThemeTransitionSound();
     playTapAnimation(toggle.querySelector('.theme-toggle-icons'), 'is-tapped');
   });
