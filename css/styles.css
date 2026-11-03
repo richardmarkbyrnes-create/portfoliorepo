@@ -9625,24 +9625,16 @@ body[data-page="home"] .work-list .work-col--year {
   position: relative;
   width: 100vw;
   max-width: 100vw;
-  height: 280px;
+  height: 140px;
+  overflow: hidden;
   margin: 80px calc(50% - 50vw) 0;
   pointer-events: none;
 }
 
-.season-footer-canvas {
-  display: block;
-  width: 100%;
-  height: 100%;
-  -webkit-mask:
-    linear-gradient(to bottom, transparent, #000 25%, #000 100%);
-  mask:
-    linear-gradient(to bottom, transparent, #000 25%, #000 100%);
-}
 
 @media (max-width: 768px) {
   .season-footer {
-    height: 220px;
+    height: 110px;
     margin-top: 48px;
   }
 }
@@ -9652,3 +9644,31 @@ body[data-page="home"] .work-list .work-col--year {
 body[data-page="home"] .page:has(.season-footer) {
   padding-bottom: 0;
 }
+
+/* The footer's texture: the same landscape as the block under the hero,
+   filling the whole width of the footer strip, fading in from its top edge.
+   The seasonal details draw on top of it. */
+.season-footer .home-texture--footer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  aspect-ratio: auto;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+/* Pinned to the strip: left to size itself, the canvas grew to the height of
+   its drawing buffer and spilled hundreds of pixels past the page's end. */
+.season-footer .home-texture--footer .home-texture-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  -webkit-mask: linear-gradient(to bottom, transparent, #000 45%, #000 100%);
+  mask: linear-gradient(to bottom, transparent, #000 45%, #000 100%);
+}
+
