@@ -9580,3 +9580,38 @@ body[data-page="home"] .work-column--experience + .home-about-intro {
     display: none;
   }
 }
+
+/* Project list: one column of project titles, with "Company · year" in the
+   right-hand column (the company names are kept as hidden headings for
+   screen readers). */
+body[data-page="home"] .work-column--interactive .work-list .work-row {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row-main {
+  grid-template-columns: minmax(0, 1fr) auto;
+  column-gap: 24px;
+}
+
+body[data-page="home"] .work-list .work-col--year {
+  white-space: nowrap;
+}
+
+/* Phones: the titles need the full width, so "Company · year" drops under
+   each one instead of sitting beside it. */
+@media (max-width: 640px) {
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 2px;
+  }
+
+  body[data-page="home"] .work-list .work-col--year {
+    justify-self: start;
+    text-align: left;
+  }
+}
+
+/* A little more room either side of the dot between company and year. */
+.work-meta-dot {
+  margin: 0 0.5em;
+}
