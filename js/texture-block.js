@@ -19,7 +19,7 @@
     precision highp float;
     uniform vec2 res;
     uniform float t;
-    uniform vec3 c0; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3;
+    uniform vec3 c0; uniform vec3 c1; uniform vec3 c2; uniform vec3 c3; uniform vec3 c4; uniform vec3 c5;
     uniform float grain;
     uniform vec2 mouse;
     uniform float pull;
@@ -27,7 +27,7 @@
     // Season sweep: the incoming palette (n0-n3) washes across the old one
     // (c0-c3) as prog runs 0 -> 1, in direction dir (1 left to right, -1
     // right to left).
-    uniform vec3 n0; uniform vec3 n1c; uniform vec3 n2c; uniform vec3 n3;
+    uniform vec3 n0; uniform vec3 n1c; uniform vec3 n2c; uniform vec3 n3; uniform vec3 n4c; uniform vec3 n5c;
     uniform float prog;
     uniform float dir;
 
@@ -48,12 +48,20 @@
       b2 = mod(b2, 4.0);
       return (b * 4.0 + b2 + 0.5) / 16.0;
     }
-    vec3 shade(float h, float body, vec3 a0, vec3 a1, vec3 a2, vec3 a3) {
+    // Six stops: deep ground, the bright rim, then four bands of sky from
+    // the horizon up (a2 just above the land, a5 at the top). Seasons that
+    // only have one sky colour fill the middle bands in between, so their
+    // gradient comes out as smooth as before; summer uses all four for a
+    // sunset.
+    vec3 shade(float h, float body, vec3 a0, vec3 a1, vec3 a2, vec3 a3, vec3 a4, vec3 a5) {
       vec3 col = a0;
       col = mix(col, a1, smoothstep(-0.14, -0.02, h) * (0.55 + 0.45 * body));
       col = mix(col, a1, smoothstep(-0.05, 0.0, h));
       col = mix(col, a2, smoothstep(0.0, 0.07, h));
-      col = mix(col, a3, smoothstep(0.08, 0.42, h + (body - 0.45) * 0.12));
+      float hs = h + (body - 0.45) * 0.12;
+      col = mix(col, a3, smoothstep(0.08, 0.18, hs));
+      col = mix(col, a4, smoothstep(0.17, 0.29, hs));
+      col = mix(col, a5, smoothstep(0.28, 0.46, hs));
       // Deeper ground towards the bottom and in the hollows.
       col *= 1.0 - 0.18 * smoothstep(0.0, -0.45, h) * (1.0 - body);
       return col;
@@ -110,8 +118,8 @@
 
       // Dark ground, a narrow bright rim at the edge, then sky going pale:
       // the old season behind the front, the new one where it has passed.
-      vec3 col = shade(h, body, c0, c1, c2, c3);
-      if (wipe > 0.0) col = mix(col, shade(h, body, n0, n1c, n2c, n3), wipe);
+      vec3 col = shade(h, body, c0, c1, c2, c3, c4, c5);
+      if (wipe > 0.0) col = mix(col, shade(h, body, n0, n1c, n2c, n3, n4c, n5c), wipe);
 
 
       // Film grain, re-seeded every frame so it fizzes like the reference.
@@ -162,8 +170,8 @@
   const uMouse = u('mouse');
   const uPull = u('pull');
   const uDither = u('ditherCell');
-  const uC = [u('c0'), u('c1'), u('c2'), u('c3')];
-  const uN = [u('n0'), u('n1c'), u('n2c'), u('n3')];
+  const uC = [u('c0'), u('c1'), u('c2'), u('c3'), u('c4'), u('c5')];
+  const uN = [u('n0'), u('n1c'), u('n2c'), u('n3'), u('n4c'), u('n5c')];
   const uProg = u('prog');
   const uDir = u('dir');
 
@@ -171,22 +179,36 @@
   // top of the sky. Summer is the default.
   const SEASONS = {
     // Pastel, light versions: each landscape in soft tints rather than full
-    // colour. Spring's sky is a light pink fading into pale butter yellow.
+    // colour. Summer's sky is a sunset: yellow, light orange and pink bands.
     //
     // Dark theme gets its own palettes rather than dimmed copies (which went
     // muddy grey, with a pale sky glowing like a lamp): the same landscape at
     // dusk. The ground keeps its colour, and the sky deepens from a dusky
     // tint up into something close to the page, so it sinks into the dark.
-    spring: { label: 'Spring', colors: ['#9cc79a', '#cbe8b5', '#f8d4de', '#fdf3cf'], dark: ['#4f7d55', '#94c482', '#7d5d76', '#2c2731'] },
-    summer: { label: 'Summer', colors: ['#97bd8f', '#c8e2b0', '#d2e2f4', '#f8fafc'], dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'] },
+    // Spring: fresh greens under a soft blue sky. Summer: greens under a warm
+    // sky, a peachy orange blush fading to pale apricot.
+    spring: { label: 'Spring', colors: ['#97bd8f', '#c8e2b0', '#d2e2f4', '#f8fafc'], dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'] },
+    // Summer's sky is a sunset in bands: yellow at the horizon, light
+    // orange, then pink, fading to a pale blush at the top.
+    summer: {
+      label: 'Summer',
+      colors: ['#adcfa9', '#d4ecc1', '#fbe6a8', '#f9d2b0', '#f5c8d3', '#fcf1f1'],
+      dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
+    },
     autumn: { label: 'Autumn', colors: ['#c98d68', '#ebb486', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
     winter: { label: 'Winter', colors: ['#97a9bd', '#c6d3df', '#e6edf4', '#fcfdfe'], dark: ['#4d6077', '#93abc2', '#3a4f68', '#1d2531'] },
   };
   const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
   const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+  // Always six stops: four-colour seasons get their two middle sky bands
+  // filled in between the horizon and top colours.
   function paletteFor(name) {
     const season = SEASONS[name] || SEASONS.summer;
-    return (isDark() ? season.dark : season.colors).map(hex);
+    const pal = (isDark() ? season.dark : season.colors).map(hex);
+    if (pal.length === 6) return pal;
+    const [g, rim, low, top] = pal;
+    const at = (k) => low.map((v, i) => v + (top[i] - v) * k);
+    return [g, rim, low, at(0.3), at(0.62), top];
   }
 
   // The season follows the site theme (the switcher in the nav): spring and
