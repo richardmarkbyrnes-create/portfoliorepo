@@ -4102,72 +4102,6 @@ body[data-project="design-systems"] {
   height: 20px;
 }
 
-/* Previous / next project arrows, bottom right. Same button as the close
-   button in the top corner: glass squircle, hairline border, white border
-   and the project's ink on hover, a small press. */
-.pc-arrows {
-  position: fixed;
-  right: 24px;
-  bottom: calc(env(safe-area-inset-bottom, 0px) + 24px);
-  z-index: 320;
-  display: flex;
-  gap: 8px;
-}
-
-.pc-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--nav-toolbar-height);
-  height: var(--nav-toolbar-height);
-  border-radius: 16px;
-  background: var(--nav-bg);
-  border: 1px solid var(--nav-glass-border);
-  box-shadow: var(--nav-shadow);
-  backdrop-filter: blur(18px) saturate(1.25);
-  -webkit-backdrop-filter: blur(18px) saturate(1.25);
-  color: var(--nav-text-inactive);
-  text-decoration: none;
-  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
-    transform 0.2s ease, scale 0.25s cubic-bezier(0.22, 1, 0.36, 1),
-    opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.pc-arrow svg {
-  width: 20px;
-  height: 20px;
-}
-
-.pc-arrow:hover,
-.pc-arrow:focus-visible {
-  border-color: #ffffff;
-  color: var(--project-ink, var(--nav-text-active));
-  transform: translateY(-1px);
-  scale: 0.95;
-}
-
-[data-theme="dark"] .pc-arrow:hover,
-[data-theme="dark"] .pc-arrow:focus-visible {
-  border-color: rgba(255, 255, 255, 0.55);
-  color: color-mix(in srgb, var(--project-ink, #fff) 45%, #ffffff);
-}
-
-.pc-arrow:focus-visible {
-  outline: none;
-}
-
-body.page-is-leaving .pc-arrows .pc-arrow {
-  opacity: 0;
-}
-
-/* Phones: the docked next-project pill fills the bottom of the screen, so
-   the arrows give it the room. */
-@media (max-width: 640px) {
-  .pc-arrows {
-    display: none;
-  }
-}
-
 .pc-back-company,
 .pc-back-sep {
   color: var(--text);
@@ -9616,5 +9550,33 @@ body[data-page="home"] .work-column--experience + .home-about-intro {
     translate: none;
     filter: none;
     transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+/* Toolbar buttons with a word beside the icon: season name, Contact. */
+.nav-icon-btn.nav-label-btn {
+  width: auto;
+  min-width: 0;
+  gap: 7px;
+  padding: 0 11px 0 9px;
+}
+
+.nav-btn-label {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* Phones: icons only, in their round pills. */
+@media (max-width: 640px) {
+  .nav-icon-btn.nav-label-btn {
+    width: var(--nav-toolbar-height);
+    padding: 0;
+  }
+
+  .nav-btn-label {
+    display: none;
   }
 }

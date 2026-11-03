@@ -67,13 +67,14 @@
             </button>`).join('');
     return `
       <div class="nav-theme" id="nav-theme">
-        <button class="nav-icon-btn theme-toggle" id="theme-toggle" type="button" aria-label="Season theme" aria-haspopup="true" aria-expanded="false" aria-controls="nav-theme-menu">
+        <button class="nav-icon-btn nav-label-btn theme-toggle" id="theme-toggle" type="button" aria-label="Season theme" aria-haspopup="true" aria-expanded="false" aria-controls="nav-theme-menu">
           <span class="theme-toggle-icons" aria-hidden="true">
             ${SPRING_ICON}
             ${SUN_LINE_ICON.replace('<svg ', '<svg class="theme-toggle-sun" ')}
             ${AUTUMN_ICON}
             ${SNOW_ICON.replace('<svg ', '<svg class="theme-toggle-moon" ')}
           </span>
+          <span class="nav-btn-label" id="theme-toggle-label">${(THEMES.find((t) => t.id === current) || THEMES[1]).label}</span>
         </button>
         <div class="nav-contact-menu nav-theme-menu" id="nav-theme-menu">
           <div class="nav-contact-panel" role="menu" aria-label="Season theme">${options}
@@ -133,8 +134,8 @@
   function renderContact() {
     return `
       <div class="nav-contact" id="nav-contact">
-        <button class="nav-icon-btn nav-contact-btn" id="nav-contact-btn" type="button" aria-label="Contact" aria-haspopup="true" aria-expanded="false" aria-controls="nav-contact-menu">
-          ${MAIL_ICON}
+        <button class="nav-icon-btn nav-label-btn nav-contact-btn" id="nav-contact-btn" type="button" aria-label="Contact" aria-haspopup="true" aria-expanded="false" aria-controls="nav-contact-menu">
+          ${MAIL_ICON}<span class="nav-btn-label">Contact</span>
         </button>
         <div class="nav-contact-menu" id="nav-contact-menu">
           <div class="nav-contact-panel">
