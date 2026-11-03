@@ -21,6 +21,10 @@ function applyTheme(themeId) {
   if (label && match) label.textContent = match.label;
   // Light text scheme for the three light seasons, dark for winter.
   document.documentElement.style.colorScheme = themeId === 'dark' ? 'dark' : 'light';
+  // The head script pins the page colour inline before first paint; keep it
+  // in step with the theme, or the old colour shows past the end of the page.
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg').trim();
+  if (bg) document.documentElement.style.backgroundColor = bg;
 
   updateFooterTheme();
 }
@@ -764,7 +768,10 @@ function initBottomBlurVisibility() {
     const isHome = document.body.dataset.page === 'home';
     const atTop = !isHome && window.scrollY < 40;
     const tooShort = maxScroll <= 0;
-    const atBottom = isHome && maxScroll - window.scrollY < 160;
+    // Off once the footer landscape comes up, so the blur's banding doesn't
+    // cut a line across it.
+    const footer = document.querySelector('.season-footer');
+    const atBottom = isHome && maxScroll - window.scrollY < 160 + (footer ? footer.offsetHeight : 0);
     document.body.classList.toggle('bottom-blur-visible', !atTop && !tooShort && !atBottom);
     ticking = false;
   }

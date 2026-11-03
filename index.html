@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=1232">
+  <link rel="stylesheet" href="css/styles.css?v=1236">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -229,11 +229,12 @@
         </div>
       </section>
 
-      <!-- Seasonal footer: a quiet strip of the current season (petals, light,
-           leaves or snow) that fades in as you reach the end of the page.
-           season-footer.js draws it. -->
+      <!-- Footer: the same morphing landscape as the block under the hero,
+           across the full width (texture-block.js draws it). -->
       <div class="season-footer" aria-hidden="true">
-        <canvas class="season-footer-canvas"></canvas>
+        <div class="home-texture home-texture--footer" data-no-details>
+          <canvas class="home-texture-canvas"></canvas>
+        </div>
       </div>
     </div>
   </main>
@@ -279,9 +280,8 @@
   <script src="js/ascii-text-scramble.js?v=5"></script>
   <script src="js/projects.js?v=65"></script>
   <script src="js/project-nav.js?v=72"></script>
-  <script src="js/main.js?v=145"></script>
-  <script src="js/texture-block.js?v=31"></script>
-  <script src="js/season-footer.js?v=4"></script>
+  <script src="js/main.js?v=147"></script>
+  <script src="js/texture-block.js?v=32"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>

@@ -4,10 +4,17 @@
 // cheap; it pauses when off screen or the tab is hidden, and holds a single
 // still frame for anyone who prefers reduced motion. No WebGL: the CSS
 // gradient behind the canvas shows instead.
+//
+// It runs once per .home-texture on the page: the block under the hero and
+// the full-width one in the footer (which carries data-no-details, since the
+// seasonal footer draws its own petals, leaves and snow over it).
 (function () {
-  const wrap = document.querySelector('.home-texture');
-  const canvas = wrap && wrap.querySelector('.home-texture-canvas');
+  document.querySelectorAll('.home-texture').forEach(initTexture);
+
+  function initTexture(wrap) {
+  const canvas = wrap.querySelector('.home-texture-canvas');
   if (!canvas) return;
+  const noDetails = wrap.hasAttribute('data-no-details');
   const gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false });
   if (!gl) return;
 
@@ -195,7 +202,7 @@
       colors: ['#adcfa9', '#d4ecc1', '#fbe6a8', '#f9d2b0', '#f5c8d3', '#fcf1f1'],
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
-    autumn: { label: 'Autumn', colors: ['#c98d68', '#ebb486', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
+    autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
     winter: { label: 'Winter', colors: ['#97a9bd', '#c6d3df', '#e6edf4', '#fcfdfe'], dark: ['#4d6077', '#93abc2', '#3a4f68', '#1d2531'] },
   };
   const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
@@ -373,6 +380,7 @@
   // Summer has none. Kept very quiet, masked to the same pill, and
   // left out entirely for reduced motion.
   const particles = (() => {
+    if (noDetails) return { step() {}, show() {} };
     const layer = document.createElement('canvas');
     layer.className = 'home-texture-details';
     layer.setAttribute('aria-hidden', 'true');
@@ -490,4 +498,5 @@
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) pause(); else if (onScreen) play();
   });
+  }
 })();
