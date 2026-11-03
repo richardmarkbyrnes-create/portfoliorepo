@@ -9627,7 +9627,7 @@ body[data-page="home"] .work-list .work-col--year {
   max-width: 100vw;
   height: 140px;
   overflow: hidden;
-  margin: 80px calc(50% - 50vw) 0;
+  margin: 176px calc(50% - 50vw) 0;
   pointer-events: none;
 }
 
@@ -9635,7 +9635,7 @@ body[data-page="home"] .work-list .work-col--year {
 @media (max-width: 768px) {
   .season-footer {
     height: 110px;
-    margin-top: 48px;
+    margin-top: 112px;
   }
 }
 
@@ -9672,3 +9672,27 @@ body[data-page="home"] .page:has(.season-footer) {
   mask: linear-gradient(to bottom, transparent, #000 45%, #000 100%);
 }
 
+
+/* Project row hovers follow the season rather than each project: one wash
+   and ink per theme, drawn from that season's landscape. Scoped through
+   html so they outrank the per-project rules above. Winter's ink drives
+   the dark-theme hover (a low tint behind, a light tint in front). */
+html[data-theme="spring"] .work-column--interactive .work-row-main[data-project] {
+  --row-wash: #edf5e8;
+  --row-ink: #4d7f50;
+}
+
+html:not([data-theme]) .work-column--interactive .work-row-main[data-project],
+html[data-theme="normal"] .work-column--interactive .work-row-main[data-project] {
+  --row-wash: #fce8eb;
+  --row-ink: #b5576e;
+}
+
+html[data-theme="autumn"] .work-column--interactive .work-row-main[data-project] {
+  --row-wash: #f7e5d3;
+  --row-ink: #a3582c;
+}
+
+html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
+  --row-ink: #6f9ad0;
+}
