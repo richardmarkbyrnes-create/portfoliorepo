@@ -3,6 +3,8 @@
   var BG = {
     normal: '#ffffff',
     dark: '#151516',
+    spring: '#f8faf1',
+    autumn: '#fcf7ef',
     'pastel-blue': '#e8f4fc',
     'pastel-pink': '#fce8f0',
     'pastel-yellow': '#fcf6e8',

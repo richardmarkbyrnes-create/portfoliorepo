@@ -106,6 +106,53 @@
   --location-polaroid-caption-limerick: #646e7a;
 }
 
+/* Spring and autumn: the light theme with a tint. The page takes a faint
+   wash of the season and the inks lean the same way (a green-slate for
+   spring, a warm brown for autumn), everything else as summer (light). */
+[data-theme="spring"] {
+  --bg: #f8faf1;
+  --note-halo: rgba(248, 250, 241, 0.95);
+  --text: #34463a;
+  --text-body: #2c3c31;
+  --text-muted: #566a5b;
+  --text-subtle: #3d5243;
+  --text-light: #7f9183;
+  --text-nav: #3d5243;
+  --text-resume-header: #435848;
+  --surface: #fbfcf6;
+  --surface-muted: #fbfcf6;
+  --nav-bg: rgba(248, 250, 241, 0.62);
+  --theme-popover-bg: rgba(248, 250, 241, 0.48);
+  --nav-active-bg: rgba(248, 250, 241, 0.5);
+  --nav-text-active: #16201a;
+  --nav-text-inactive: #758a7b;
+  --hero-glow: rgba(248, 250, 241, 0.5);
+  --switcher-bg: rgba(248, 250, 241, 0.72);
+  --line-art-stroke: #3a4a3d;
+}
+
+[data-theme="autumn"] {
+  --bg: #fcf7ef;
+  --note-halo: rgba(252, 247, 239, 0.95);
+  --text: #4a3c31;
+  --text-body: #3e3229;
+  --text-muted: #73614f;
+  --text-subtle: #574739;
+  --text-light: #9b8a79;
+  --text-nav: #574739;
+  --text-resume-header: #5e4d3e;
+  --surface: #fdfaf4;
+  --surface-muted: #fdfaf4;
+  --nav-bg: rgba(252, 247, 239, 0.62);
+  --theme-popover-bg: rgba(252, 247, 239, 0.48);
+  --nav-active-bg: rgba(252, 247, 239, 0.5);
+  --nav-text-active: #22170f;
+  --nav-text-inactive: #8f7d6c;
+  --hero-glow: rgba(252, 247, 239, 0.5);
+  --switcher-bg: rgba(252, 247, 239, 0.72);
+  --line-art-stroke: #4a3b30;
+}
+
 [data-theme="dark"] {
   /* Mirror of the light palette: neutrals nudged toward blue so the dark canvas
      reads cool rather than flat black — a hint of hue, not a blue-grey. */
@@ -384,7 +431,7 @@ html.is-theme-reveal::view-transition-new(root) {
   mask-size: 0 0;
 }
 
-html.is-theme-reveal *:not(.theme-toggle-sun, .theme-toggle-moon),
+html.is-theme-reveal *:not(.theme-toggle-icons svg),
 html.is-theme-reveal *::before,
 html.is-theme-reveal *::after {
   transition: none !important;
@@ -445,7 +492,9 @@ body::before {
 /* Light (default) theme: color-dodge washes out on the near-white bg, so use a
    blend that keeps the grain visible — same as the pastel themes. */
 html:not([data-theme]) body::before,
-[data-theme="normal"] body::before {
+[data-theme="normal"] body::before,
+[data-theme="spring"] body::before,
+[data-theme="autumn"] body::before {
   mix-blend-mode: multiply;
   /* Multiply over pure white, so this opacity is the whole difference between
      --bg and what you actually see: at 0.05 the page landed around #f3f3f3.
@@ -1506,8 +1555,7 @@ html[data-theme="dark"] .theme-swatch {
   height: 20px;
 }
 
-.theme-toggle-sun,
-.theme-toggle-moon {
+.theme-toggle-icons svg {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -1515,21 +1563,16 @@ html[data-theme="dark"] .theme-swatch {
   transition: opacity 0.35s ease, transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.theme-toggle-sun {
-  opacity: 1;
-  transform: rotate(0deg) scale(1);
-}
-
-.theme-toggle-moon {
+/* Four stacked icons, one per season; only the current one shows. */
+.theme-toggle-icons svg {
   opacity: 0;
   transform: rotate(-90deg) scale(0.3);
 }
 
-html[data-theme="dark"] .theme-toggle-sun {
-  opacity: 0;
-  transform: rotate(90deg) scale(0.3);
-}
-
+html:not([data-theme]) .theme-toggle-sun,
+html[data-theme="normal"] .theme-toggle-sun,
+html[data-theme="spring"] .theme-toggle-spring,
+html[data-theme="autumn"] .theme-toggle-autumn,
 html[data-theme="dark"] .theme-toggle-moon {
   opacity: 1;
   transform: rotate(0deg) scale(1);
@@ -1586,8 +1629,7 @@ html[data-theme="dark"] .theme-toggle-moon {
     animation: none;
   }
 
-  .theme-toggle-sun,
-  .theme-toggle-moon {
+  .theme-toggle-icons svg {
     transition: opacity 0.2s ease;
   }
 }
@@ -9334,4 +9376,245 @@ body[data-page="project"].page-is-leaving .pc-back {
    over the earlier padding resets. */
 body[data-page="home"] .page {
   padding-bottom: 120px;
+}
+
+/* ── Morphing texture block (home) ────────────────────────────────────────
+   Under the hero, at the column's width. texture-block.js draws into the
+   canvas; the gradient here is the fallback when WebGL isn't there. Edges
+   feathered with a mask so it dissolves into the page rather than ending on
+   a hard line, as in the reference. */
+.home-texture {
+  --tx-pad: var(--home-content-padding-x);
+  position: relative;
+  align-self: center;
+  width: 100%;
+  max-width: var(--home-content-width);
+  aspect-ratio: 16 / 8;
+  margin: 8px auto 0;
+  padding: 0 var(--tx-pad);
+  box-sizing: border-box;
+}
+
+/* The pill's visible edge (where the mask's blurred rounded rectangle is at
+   half strength) sits 11% in from each side of the canvas. The canvas is
+   widened past the text column by that margin, so the pill's edges line up
+   with the text above and below. 14.1% of the column = 11% of the wider
+   canvas; as an inset of the padded box that's 1.282 × pad − 14.1%. */
+.home-texture-details {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--tx-pad) * 1.282 - 14.1%);
+  right: calc(var(--tx-pad) * 1.282 - 14.1%);
+}
+
+/* A canvas ignores left/right stretching (it keeps its drawn width), so it's
+   sized in flow instead: 128.2% of the column, pulled back by 14.1%. */
+.home-texture-canvas {
+  display: block;
+  width: 128.2%;
+  margin-left: -14.1%;
+  height: 100%;
+  background: linear-gradient(160deg, #a9c4e6 0%, #7fae5e 45%, #2f5a36 100%);
+  image-rendering: auto;
+  /* Feathered on all four sides. */
+  /* A blurred rounded rectangle: soft all round, with properly curved
+     corners rather than the square fade two linear gradients give. */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cfilter id='f' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Crect x='22' y='20' width='156' height='60' rx='18' filter='url(%23f)'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cfilter id='f' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Crect x='22' y='20' width='156' height='60' rx='18' filter='url(%23f)'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* Push the Experience section further down the page, below the texture. */
+body[data-page="home"] .work-column--experience {
+  margin-top: 96px;
+}
+
+/* "Selected work" over the list's top rule, set like the company names in
+   the left column below it. */
+.work-section-label {
+  /* The same distance to the rule as the rule sits above "Miro" (32px
+     desktop, 24px phones, measured text to line). */
+  margin: 0 0 30px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--text-light);
+}
+
+body[data-page="home"] .work-column--experience + .home-about-intro {
+  margin-top: 120px;
+}
+
+@media (max-width: 768px) {
+  .home-texture {
+    --tx-pad: 20px;
+    aspect-ratio: 4 / 3;
+    max-width: 100%;
+  }
+
+
+  body[data-page="home"] .work-column--experience {
+    margin-top: 64px;
+  }
+
+  .work-section-label {
+    margin-bottom: 22px;
+  }
+}
+
+
+/* The seasonal details (texture-block.js), feathered with the same pill. */
+.home-texture-details {
+  /* A canvas won't stretch between left and right, so its width is spelled
+     out: the same span the grain gets from its insets. */
+  width: calc(128.2% - var(--tx-pad) * 2.564);
+  height: 100%;
+  pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cfilter id='f' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Crect x='22' y='20' width='156' height='60' rx='18' filter='url(%23f)'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100' preserveAspectRatio='none'%3E%3Cfilter id='f' x='-50%25' y='-50%25' width='200%25' height='200%25'%3E%3CfeGaussianBlur stdDeviation='9'/%3E%3C/filter%3E%3Crect x='22' y='20' width='156' height='60' rx='18' filter='url(%23f)'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+
+@media (max-width: 768px) {
+
+}
+
+
+/* Season menu (nav.js): reuses the contact menu's glass panel and items. */
+.nav-theme {
+  position: relative;
+  display: flex;
+}
+
+.nav-theme.is-open .nav-theme-menu {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  scale: 1;
+  filter: none;
+  transition-delay: 0s;
+}
+
+@media (hover: hover) {
+  .nav-theme:hover .nav-theme-menu,
+  .nav-theme:focus-within .nav-theme-menu {
+    opacity: 1;
+    visibility: visible;
+    translate: 0 0;
+    scale: 1;
+    filter: none;
+    transition-delay: 0s;
+  }
+
+  /* Just picked: tuck away until the pointer leaves and comes back. */
+  .nav-theme.is-picked .nav-theme-menu {
+    opacity: 0;
+    visibility: hidden;
+    translate: 0 -6px;
+    scale: 0.97;
+    filter: blur(4px);
+    transition-delay: 0s, 0s, 0s, 0s, 0.28s;
+  }
+}
+
+.nav-theme-menu .nav-contact-panel {
+  min-width: 0;
+  width: max-content;
+  padding: 4px;
+  gap: 0;
+}
+
+/* Rows: icon and label, full width so the hover and active fill line up. */
+.nav-theme-menu .season-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 128px;
+  padding: 7px 12px 7px 10px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: left;
+  color: var(--nav-text-inactive);
+  cursor: pointer;
+}
+
+.nav-theme-menu .season-option .nav-icon {
+  display: inline-flex;
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.nav-theme-menu .season-option svg {
+  width: 16px;
+  height: 16px;
+}
+
+.nav-theme-menu .season-option:hover,
+.nav-theme-menu .season-option:focus-visible {
+  background: var(--nav-hover-bg);
+  color: var(--nav-text-active);
+  outline: none;
+}
+
+/* The current season: darker label and a small dot at the end of the row. */
+.nav-theme-menu .season-option.is-active {
+  color: var(--nav-text-active);
+}
+
+.nav-theme-menu .season-option.is-active::after {
+  content: "";
+  width: 5px;
+  height: 5px;
+  margin-left: auto;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.6;
+}
+
+/* The rows reveal with the same stagger as the contact menu's items (which
+   they share a class with, hidden until their own menu opens). */
+.nav-theme.is-open .season-option,
+.nav-theme:focus-within .season-option {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  filter: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+    translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+    filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
+}
+
+@media (hover: hover) {
+  .nav-theme:hover .season-option {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: none;
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      opacity 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+      translate 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s),
+      filter 0.36s cubic-bezier(0.22, 1, 0.36, 1) var(--item-delay, 0s);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-theme-menu .season-option {
+    opacity: 1;
+    translate: none;
+    filter: none;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
 }
