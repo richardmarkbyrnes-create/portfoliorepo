@@ -15,6 +15,10 @@ function applyTheme(themeId) {
     button.classList.toggle('is-active', isActive);
     button.setAttribute(button.getAttribute('role') === 'menuitemradio' ? 'aria-checked' : 'aria-selected', isActive ? 'true' : 'false');
   });
+  // The season's name beside the toggle icon.
+  const label = document.getElementById('theme-toggle-label');
+  const match = THEMES.find((theme) => theme.id === themeId);
+  if (label && match) label.textContent = match.label;
   // Light text scheme for the three light seasons, dark for winter.
   document.documentElement.style.colorScheme = themeId === 'dark' ? 'dark' : 'light';
 
