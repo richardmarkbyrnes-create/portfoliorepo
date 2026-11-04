@@ -37,6 +37,9 @@
     uniform vec3 n0; uniform vec3 n1c; uniform vec3 n2c; uniform vec3 n3; uniform vec3 n4c; uniform vec3 n5c;
     uniform float prog;
     uniform float dir;
+    // Entrance, 0 -> 1 over the first moments on screen: the land rises into
+    // place and the layers come in one after another, bottom to top.
+    uniform float intro;
 
     float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
     float noise(vec2 p) {
@@ -110,7 +113,8 @@
       float edge = xs + (fbm(vec2(uv.y * 2.5, t * 0.4)) - 0.45) * 0.3 + (uv.y - 0.5) * 0.18;
       float wipe = prog >= 1.0 ? 1.0 : smoothstep(front + 0.1, front - 0.1, edge);
       float wave = exp(-pow((edge - front) * 4.5, 2.0)) * sin(prog * 3.14159);
-      float ground = 0.48 + n1 * 0.9 + n2 * 0.12 + tilt + bend + near * 0.42 + wave * 0.16;
+      float rise = 1.0 - pow(1.0 - clamp(intro / 0.7, 0.0, 1.0), 3.0);
+      float ground = 0.48 + n1 * 0.9 + n2 * 0.12 + tilt + bend + near * 0.42 + wave * 0.16 - (1.0 - rise) * 0.35;
 
       // Now and then a soft vertical ripple runs through the sky, like light
       // through glass, then fades.
@@ -143,7 +147,11 @@
       float levels = 7.0;
       vec2 cell = gl_FragCoord.xy / ditherCell;
       col = floor(col * levels + bayer4(cell)) / levels;
-      gl_FragColor = vec4(col, 1.0);
+      // Staggered by height: the ground shows first, then the rim, then each
+      // band of sky in turn up to the top.
+      float delay = clamp(0.06 + (h0 + 0.2) * 0.75, 0.0, 0.62);
+      float alpha = smoothstep(delay, delay + 0.38, intro);
+      gl_FragColor = vec4(col, alpha);
     }
   `;
 
@@ -176,6 +184,7 @@
   const uGrain = u('grain');
   const uMouse = u('mouse');
   const uPull = u('pull');
+  const uIntro = u('intro');
   const uDither = u('ditherCell');
   const uC = [u('c0'), u('c1'), u('c2'), u('c3'), u('c4'), u('c5')];
   const uN = [u('n0'), u('n1c'), u('n2c'), u('n3'), u('n4c'), u('n5c')];
@@ -353,8 +362,21 @@
   gl.uniform1f(uPull, 0);
 
   let lastNow = 0;
+  // The entrance runs once, from the first time this texture plays (so the
+  // footer's plays when you reach it), ~1.9s, a beat after the page settles.
+  const INTRO_MS = 1900;
+  let introStart = 0;
+  let introDone = reduce;
+  function updateIntro(now) {
+    if (introDone) return;
+    const k = introStart ? Math.max(0, Math.min(1, (now - introStart) / INTRO_MS)) : 0;
+    gl.uniform1f(uIntro, k);
+    if (k >= 1) introDone = true;
+  }
+
   function loop(now) {
     if (!running) return;
+    updateIntro(now);
     easePointer(lastNow ? Math.min(0.05, (now - lastNow) / 1000) : 0.016);
     // SPEED > 1 runs the landscape's own clock faster than real time.
     draw(OFFSET + ((now - start) / 1000) * SPEED);
@@ -367,6 +389,7 @@
     if (running || reduce) return;
     running = true;
     if (!start) start = performance.now();
+    if (!introStart) introStart = performance.now() + 250;
     raf = requestAnimationFrame(loop);
   }
   function pause() {
@@ -480,6 +503,7 @@
   })();
   particles.show(season);
 
+  gl.uniform1f(uIntro, reduce ? 1 : 0);
   draw(OFFSET);
   wrap.classList.add('is-ready');
 
