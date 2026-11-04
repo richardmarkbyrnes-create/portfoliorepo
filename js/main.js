@@ -1274,7 +1274,50 @@ function initHobbyPhotoFlip() {
   });
 }
 
+// The first time someone hovers the texture, a small tooltip drops in under
+// the season switcher (top right) to point out that the colours can change.
+// Once only per visitor (localStorage); it goes after a few seconds, or as
+// soon as they open the menu or pick a season.
+const THEME_NUDGE_KEY = 'portfolio-theme-nudge-seen';
+
+function initThemeNudge() {
+  const texture = document.querySelector('.home-texture:not(.home-texture--footer)');
+  const wrap = document.getElementById('nav-theme');
+  if (!texture || !wrap) return;
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  try { if (localStorage.getItem(THEME_NUDGE_KEY)) return; } catch (e) { return; }
+
+  let tip = null;
+  let timer = 0;
+  const hide = () => {
+    clearTimeout(timer);
+    if (!tip) return;
+    const el = tip;
+    tip = null;
+    el.classList.remove('is-visible');
+    el.addEventListener('transitionend', () => el.remove(), { once: true });
+    setTimeout(() => el.remove(), 600);
+  };
+
+  const show = () => {
+    texture.removeEventListener('pointerenter', show);
+    try { localStorage.setItem(THEME_NUDGE_KEY, '1'); } catch (e) { /* storage blocked */ }
+    tip = document.createElement('div');
+    tip.className = 'theme-nudge';
+    tip.setAttribute('role', 'status');
+    tip.innerHTML = '<span class="theme-nudge-title">Try another season</span><span class="theme-nudge-text">The colours change with it.</span>';
+    wrap.appendChild(tip);
+    requestAnimationFrame(() => requestAnimationFrame(() => tip && tip.classList.add('is-visible')));
+    timer = setTimeout(hide, 5200);
+  };
+
+  texture.addEventListener('pointerenter', show);
+  wrap.addEventListener('pointerenter', hide);
+  document.addEventListener('site-theme-select', hide);
+}
+
 initThemeSwitcher();
+initThemeNudge();
 initHobbyTabs();
 initHobbyCardTilt();
 initHobbyPhotoFlip();
