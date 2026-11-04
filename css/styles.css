@@ -9817,3 +9817,10 @@ body[data-page="home"] .work-column--experience .work-column-inner,
 body[data-page="home"] .home-hero .home-content-shell {
   max-width: calc(var(--home-content-width) - 40px);
 }
+
+/* The rule over About spans the same 420px block as the content under it. */
+body[data-page="home"] .work-column--about .work-column-rule {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
