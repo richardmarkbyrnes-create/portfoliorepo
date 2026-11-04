@@ -9803,3 +9803,9 @@ body[data-page="home"] .work-column--about .hobby-records {
     transition: opacity 0.2s ease;
   }
 }
+
+/* Once WebGL is drawing, drop the fallback gradient: the texture fades its
+   layers in over transparent, and the gradient would show through. */
+.home-texture.is-ready .home-texture-canvas {
+  background: none;
+}
