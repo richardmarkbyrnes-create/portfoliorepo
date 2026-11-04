@@ -9824,3 +9824,13 @@ body[data-page="home"] .work-column--about .work-column-rule {
   margin-left: auto;
   margin-right: auto;
 }
+
+/* Interests photos (Travel, Football, Animals) a size down: held to a
+   narrower row centred in their tray. Records and books keep their size. */
+body[data-page="home"] .work-column--about .hobby-photos {
+  justify-content: center;
+}
+
+body[data-page="home"] .work-column--about .hobby-photo {
+  flex: 0 1 150px;
+}
