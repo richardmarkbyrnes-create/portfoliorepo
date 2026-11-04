@@ -9698,3 +9698,25 @@ html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
   --row-ink: #6f9ad0;
 }
 
+
+/* About and Interests: one column at every width — the label above its
+   copy, as on phones, rather than in a column of its own beside it. */
+body[data-page="home"] .work-column--about .work-row--about {
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 10px;
+}
+
+/* The stacked About column is one centred block, as wide as the bio (420px):
+   label, bio, Interests tabs and the media tray all share its edges. */
+body[data-page="home"] .work-column--about .work-row--about {
+  width: 100%;
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+body[data-page="home"] .work-column--about .hobby-photos,
+body[data-page="home"] .work-column--about .hobby-books,
+body[data-page="home"] .work-column--about .hobby-records {
+  width: 100%;
+  margin-inline: 0;
+}
