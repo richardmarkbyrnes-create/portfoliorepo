@@ -7348,6 +7348,7 @@ body.page-is-leaving .top-blur {
   padding: 4px 0 12px;
 }
 
+
 .about-line-art-group {
   display: flex;
   align-items: flex-end;
@@ -9678,14 +9679,14 @@ body[data-page="home"] .page:has(.season-footer) {
    html so they outrank the per-project rules above. Winter's ink drives
    the dark-theme hover (a low tint behind, a light tint in front). */
 html[data-theme="spring"] .work-column--interactive .work-row-main[data-project] {
-  --row-wash: #edf5e8;
-  --row-ink: #4d7f50;
+  --row-wash: #eaf2fb;
+  --row-ink: #3f6f9e;
 }
 
 html:not([data-theme]) .work-column--interactive .work-row-main[data-project],
 html[data-theme="normal"] .work-column--interactive .work-row-main[data-project] {
-  --row-wash: #fce8eb;
-  --row-ink: #b5576e;
+  --row-wash: #fcf3d6;
+  --row-ink: #9a7a1c;
 }
 
 html[data-theme="autumn"] .work-column--interactive .work-row-main[data-project] {
@@ -9696,3 +9697,4 @@ html[data-theme="autumn"] .work-column--interactive .work-row-main[data-project]
 html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
   --row-ink: #6f9ad0;
 }
+
