@@ -9809,3 +9809,11 @@ body[data-page="home"] .work-column--about .hobby-records {
 .home-texture.is-ready .home-texture-canvas {
   background: none;
 }
+
+/* The project list, a touch narrower than the column around it (centred),
+   and the hero above it the same width, so the title, bio and list share a
+   left edge. */
+body[data-page="home"] .work-column--experience .work-column-inner,
+body[data-page="home"] .home-hero .home-content-shell {
+  max-width: calc(var(--home-content-width) - 40px);
+}
