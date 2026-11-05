@@ -336,7 +336,7 @@
   let raf = 0;
   // Start partway in, so the first frame is already a folded landscape.
   const OFFSET = 40;
-  const SPEED = 1.5;
+  const SPEED = 1.8;
   // Pointer over the block, in its own 0-1 space (y up, like the shader).
   // The position trails the real cursor and the pull fades in and out, so
   // the field leans after you rather than snapping.
