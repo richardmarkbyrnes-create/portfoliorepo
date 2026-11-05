@@ -9832,3 +9832,18 @@ body[data-page="home"] .work-column--about .hobby-photos {
 body[data-page="home"] .work-column--about .hobby-photo {
   flex: 0 1 150px;
 }
+
+/* The Interests block follows straight on from the line that introduces it,
+   so the two read as one passage rather than separate sections. */
+body[data-page="home"] .work-column--about .work-group--interests {
+  margin-top: 0;
+}
+
+body[data-page="home"] .work-column--about .work-group--interests .work-row--about {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
+  margin-bottom: 18px;
+}
