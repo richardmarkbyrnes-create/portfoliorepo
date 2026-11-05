@@ -106,13 +106,11 @@
   --location-polaroid-caption-limerick: #646e7a;
 }
 
-/* Summer and autumn: the light theme with a tint. The page takes a faint
+/* Spring and autumn: the light theme with a tint. The page takes a faint
    wash of the season and the inks lean the same way (a green-slate for
-   summer, a warm brown for autumn), everything else as the plain light
-   theme, which spring now wears. Summer has no data-theme attribute (it's
-   'normal', the default), hence the :not(). */
-html:not([data-theme]),
-[data-theme="normal"] {
+   spring, a warm brown for autumn); summer wears the plain light theme.
+   (The texture palettes are set separately, in texture-block.js.) */
+[data-theme="spring"] {
   --bg: #f8faf1;
   --note-halo: rgba(248, 250, 241, 0.95);
   --text: #34463a;
