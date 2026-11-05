@@ -1276,8 +1276,9 @@ function initHobbyPhotoFlip() {
 
 // The first time someone hovers the texture, a small tooltip drops in under
 // the season switcher (top right) to point out that the colours can change.
-// Once only per visitor (localStorage); it goes after a few seconds, or as
-// soon as they open the menu or pick a season.
+// Once only per visitor (localStorage). It goes 1s after the pointer leaves
+// the texture (coming back in the meantime keeps it), after a few seconds
+// regardless, or straight away when they open the menu or pick a season.
 const THEME_NUDGE_KEY = 'portfolio-theme-nudge-seen';
 
 function initThemeNudge() {
@@ -1291,6 +1292,7 @@ function initThemeNudge() {
   let timer = 0;
   const hide = () => {
     clearTimeout(timer);
+    clearTimeout(leaveTimer);
     if (!tip) return;
     const el = tip;
     tip = null;
@@ -1311,7 +1313,14 @@ function initThemeNudge() {
     timer = setTimeout(hide, 5200);
   };
 
+  let leaveTimer = 0;
   texture.addEventListener('pointerenter', show);
+  texture.addEventListener('pointerleave', () => {
+    if (!tip) return;
+    clearTimeout(leaveTimer);
+    leaveTimer = setTimeout(hide, 1000);
+  });
+  texture.addEventListener('pointerenter', () => clearTimeout(leaveTimer));
   wrap.addEventListener('pointerenter', hide);
   document.addEventListener('site-theme-select', hide);
 }
