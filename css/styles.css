@@ -87,11 +87,11 @@
   --nav-toolbar-item-height: 34px;
   --nav-radius: 10px;
   --nav-item-radius: 8px;
-  --nav-offset: 27px;
+  --nav-offset: 28px;
   --home-bottom-ascii-height: 110px;
   --home-closing-spacing-bottom: 56px;
   --footer-height: 48px;
-  --work-divider-space: 55px;
+  --work-divider-space: 56px;
   --home-content-width: calc(var(--content-mid) * 0.85);
   --home-content-padding-x: 24px;
   --selection-bg: #12110d;
@@ -823,7 +823,7 @@ img {
   flex-direction: column;
   align-items: stretch;
   gap: 8px;
-  padding: 8px 8px 7px;
+  padding: 8px 8px 8px;
   background: var(--theme-popover-bg);
   backdrop-filter: blur(28px) saturate(1.45);
   -webkit-backdrop-filter: blur(28px) saturate(1.45);
@@ -896,9 +896,9 @@ img {
 .theme-option {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  padding: 5px 12px 5px 5px;
+  padding: 4px 12px 4px 4px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -972,10 +972,10 @@ html[data-theme="dark"] .theme-option-name {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 8px;
   width: 100%;
   margin-top: 4px;
-  padding: 9px 5px 1px;
+  padding: 8px 4px 1px;
   border-top: 1px solid color-mix(in srgb, var(--text) 12%, transparent);
 }
 
@@ -1003,7 +1003,7 @@ html[data-theme="dark"] .theme-option-name {
   justify-content: center;
   min-width: 22px;
   height: 20px;
-  padding: 0 7px;
+  padding: 0 8px;
   font-family: var(--sans);
   font-size: 10px;
   font-weight: 500;
@@ -1092,7 +1092,7 @@ html[data-theme="dark"] .theme-swatch {
   gap: 2px;
   align-items: center;
   height: var(--nav-toolbar-height);
-  padding: 0 6px;
+  padding: 0 8px;
   background: var(--nav-bg);
   backdrop-filter: blur(18px) saturate(1.25);
   -webkit-backdrop-filter: blur(18px) saturate(1.25);
@@ -1323,7 +1323,7 @@ html[data-theme="dark"] .theme-swatch {
   flex-direction: column;
   gap: 2px;
   min-width: 160px;
-  padding: 6px;
+  padding: 8px;
   background: color-mix(in srgb, var(--surface) 46%, transparent);
   -webkit-backdrop-filter: blur(22px) saturate(1.6);
   backdrop-filter: blur(22px) saturate(1.6);
@@ -1351,8 +1351,8 @@ html[data-theme="dark"] .theme-swatch {
   align-items: center;
   /* Same gap and padding as .nav-contact-item, so the name lines up with
      "LinkedIn" and "Email me" below it. */
-  gap: 10px;
-  padding: 6px 10px 8px;
+  gap: 8px;
+  padding: 8px 8px 8px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -1384,8 +1384,8 @@ html[data-theme="dark"] .theme-swatch {
 .nav-contact-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 8px 10px;
+  gap: 8px;
+  padding: 8px 8px;
   border-radius: 9px;
   font-family: var(--sans);
   font-size: 13px;
@@ -1456,7 +1456,7 @@ html[data-theme="dark"] .theme-swatch {
 .nav-contact-divider {
   display: block;
   height: 1px;
-  margin: 2px 10px 6px;
+  margin: 2px 8px 8px;
   background: color-mix(in srgb, var(--text) 9%, transparent);
   transform-origin: left center;
 }
@@ -1610,7 +1610,7 @@ html[data-theme="dark"] .theme-toggle-moon {
   top: 0;
   width: 3px;
   height: 11px;
-  margin: -5.5px 0 0 -1.5px;
+  margin: -4px 0 0 -1.5px;
   border-radius: 3px;
   transform: rotate(var(--a)) translateY(-3px) scaleY(0.5);
   transform-origin: center;
@@ -1655,14 +1655,14 @@ html[data-theme="dark"] .theme-toggle-moon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
   height: var(--nav-toolbar-item-height);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: -0.03em;
   line-height: 1;
   color: var(--nav-text-inactive);
-  padding: 0 14px;
+  padding: 0 16px;
   border-radius: var(--nav-item-radius);
   border: none;
   background: transparent;
@@ -1825,7 +1825,7 @@ body[data-page="about"] {
 .home-about-intro .about-hero-title-wrap {
   width: 100%;
   max-width: var(--home-content-width);
-  margin-top: 6px;
+  margin-top: 8px;
   padding: 0 var(--home-content-padding-x);
   flex-direction: column;
   align-items: center;
@@ -2003,7 +2003,7 @@ body[data-page="about"] {
   position: relative;
   /* A transparent border holds the space, so the selected tile's white rim
      doesn't shift the labels. */
-  padding: 4px 9px;
+  padding: 4px 8px;
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
@@ -2238,7 +2238,7 @@ body[data-page="about"] {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16px 14px;
+  padding: 16px 16px;
   background: #fbf9f4;
   transform: rotateY(180deg);
 }
@@ -2288,14 +2288,14 @@ body[data-page="about"] {
 .hobby-books {
   display: flex;
   justify-content: center;
-  gap: 14px;
+  gap: 16px;
   width: 100%;
   margin: 2em 0 0;
 }
 
 @media (max-width: 768px) {
   .hobby-books {
-    gap: 10px;
+    gap: 8px;
   }
 }
 
@@ -2621,7 +2621,7 @@ body[data-page="about"] {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-top: 14px;
+  margin-top: 16px;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 400;
@@ -2810,7 +2810,7 @@ body[data-page="about"] {
 .hobby-books,
 .hobby-records {
   box-sizing: border-box;
-  padding: 28px 22px 22px;
+  padding: 28px 24px 24px;
   border-radius: 18px;
   background: color-mix(in srgb, var(--text) 4%, var(--bg));
 }
@@ -2926,7 +2926,7 @@ body[data-page="about"] {
 }
 
 body[data-page="home"] .home-main {
-  padding-top: 58px;
+  padding-top: 56px;
 }
 
 .home-main {
@@ -2945,7 +2945,7 @@ body[data-page="home"] .home-main {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 10px;
+  gap: 8px;
   position: relative;
   width: 100%;
   margin-bottom: var(--work-divider-space);
@@ -3070,7 +3070,7 @@ body[data-page="home"] .page {
 }
 
 .home-hero .hero-title-wrap {
-  padding-top: 50px;
+  padding-top: 48px;
 }
 
 .hero-title {
@@ -3566,7 +3566,7 @@ html:not([data-theme="dark"]) .work-company-logo img {
 .work-group-rule {
   display: block;
   height: 1px;
-  margin: 14px 0;
+  margin: 16px 0;
   padding: 0;
   border: none;
   background-image: repeating-linear-gradient(to right,
@@ -3579,7 +3579,7 @@ html:not([data-theme="dark"]) .work-company-logo img {
    carry ~9px of their own padding, so the margins are the target gap less
    that (32px desktop, 24px phones). */
 body[data-page="home"] {
-  --work-rule-gap: 23px;
+  --work-rule-gap: 24px;
 }
 
 .work-column-rule:has(+ .work-list) {
@@ -3591,7 +3591,7 @@ body[data-page="home"] {
 }
 
 .work-list .work-group-rule {
-  margin: var(--work-rule-gap, 14px) 0;
+  margin: var(--work-rule-gap, 16px) 0;
 }
 
 @media (max-width: 768px) {
@@ -3602,7 +3602,7 @@ body[data-page="home"] {
   /* The stacked company name sits tighter in its row than a project does;
      top it up so the gap above a group matches the gap below one. */
   .work-list h3.work-col--company {
-    padding-top: 5px;
+    padding-top: 4px;
   }
 }
 
@@ -3636,8 +3636,8 @@ body[data-page="home"] {
   column-gap: 72px;
   align-items: center;
   min-height: 30px;
-  padding: 3px 10px;
-  margin: -1px -10px;
+  padding: 4px 8px;
+  margin: -1px -8px;
   border-radius: 8px;
   border: 1px solid transparent;
   box-sizing: border-box;
@@ -3732,7 +3732,7 @@ body[data-page="home"] {
   right: 0;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   white-space: nowrap;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -3926,7 +3926,7 @@ html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   white-space: nowrap;
   font-family: var(--sans);
   font-size: 14px;
@@ -4139,7 +4139,7 @@ body[data-project="design-systems"] {
   z-index: 300;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   height: var(--nav-toolbar-height);
   font-family: var(--sans);
   font-size: 13px;
@@ -4195,7 +4195,7 @@ body[data-project="design-systems"] {
   z-index: 300;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   padding: 8px 12px;
   font-family: var(--sans);
   font-size: 11px;
@@ -4227,7 +4227,7 @@ body[data-project="design-systems"] {
   justify-content: center;
   min-width: 20px;
   height: 20px;
-  padding: 0 5px;
+  padding: 0 4px;
   font-family: var(--sans);
   font-size: 11px;
   line-height: 1;
@@ -4250,7 +4250,7 @@ body[data-project="design-systems"] {
   align-items: center;
   gap: 12px;
   margin: 104px auto 8px;
-  padding: 10px 20px;
+  padding: 8px 20px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 500;
@@ -4277,7 +4277,7 @@ body[data-project="design-systems"] {
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
   text-align: left;
 }
 
@@ -4415,7 +4415,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   bottom: calc(100% + 10px);
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 8px;
   width: max-content;
   /* No panel around it — the rows read straight off the page, so the padding is
      only there to hold them clear of the button below. */
@@ -4452,7 +4452,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   min-width: 30px;
   box-sizing: border-box;
   height: 20px;
-  padding: 0 5px;
+  padding: 0 4px;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   font-size: 10px;
   line-height: 1;
@@ -4494,7 +4494,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 .pc-next-hint--legacy {
   align-self: center;
-  margin: 10px auto 8px;
+  margin: 8px auto 8px;
   font-family: var(--sans);
   font-size: 11px;
   letter-spacing: -0.01em;
@@ -4602,9 +4602,9 @@ body[data-page="project"] .pc-next-pill.is-docked {
 .pc-menu-item {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
-  padding: 10px 12px;
+  padding: 8px 12px;
   border: 0;
   border-radius: 8px;
   background: none;
@@ -4642,7 +4642,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 .pc-menu-divider {
   height: 1px;
-  margin: 6px 4px;
+  margin: 8px 4px;
   background: var(--nav-glass-border);
 }
 
@@ -4659,7 +4659,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: none;
   grid-template-columns: repeat(3, 1fr);
   justify-items: center;
-  gap: 14px;
+  gap: 16px;
   margin: 2px 0 0;
   padding: 8px 4px;
 }
@@ -4871,7 +4871,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   z-index: 300;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   height: var(--nav-toolbar-height);
   font-family: var(--sans);
   font-size: 13px;
@@ -4904,7 +4904,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   display: flex;
   flex-direction: column;
   padding-top: 80px;
-  padding-bottom: 82px;
+  padding-bottom: 80px;
 }
 
 .pc-page .animate-in {
@@ -4925,7 +4925,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 
 /* Year and status above the project title, in the summary's light grey. */
 .pc-lead-meta {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 400;
@@ -4937,7 +4937,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 /* Two-line summary under the project title — same font/size as the home hero subtext */
 .pc-lead-summary {
   max-width: 24em;
-  margin: 18px auto 0;
+  margin: 16px auto 0;
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 400;
@@ -4979,7 +4979,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
   width: 115%;
   align-self: center;
   aspect-ratio: 16 / 10;
-  margin: 0 0 22px;
+  margin: 0 0 24px;
   background: color-mix(in srgb, var(--text) 4%, var(--bg));
   border: 2px solid var(--frame-border);
   border-radius: 10px;
@@ -4998,8 +4998,8 @@ body[data-page="project"] .pc-next-pill.is-docked {
   align-self: center;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
-  margin: 0 0 22px;
+  gap: 16px;
+  margin: 0 0 24px;
 }
 
 .pc-image-row .pc-image {
@@ -5624,7 +5624,7 @@ body[data-page="project"] .pc-next-pill.has-bubble {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 22px;
+  padding: 24px 24px;
   background: #fbf9f4;
   transform: rotateY(180deg);
 }
@@ -5643,7 +5643,7 @@ body[data-page="project"] .pc-next-pill.has-bubble {
 [data-theme="dark"] .pc-polaroid-note { color: #e8e8ea; }
 
 .pc-polaroid + .pc-polaroid {
-  margin-left: -34px;
+  margin-left: -32px;
 }
 
 .pc-polaroid:hover,
@@ -5773,7 +5773,7 @@ body[data-page="project"] .pc-next-pill.has-bubble {
    of the serif sentence beneath it. */
 .pc-eyebrow {
   display: block;
-  margin-bottom: 14px;
+  margin-bottom: 16px;
   font-family: var(--sans);
   font-size: 11px;
   font-weight: 500;
@@ -5788,7 +5788,7 @@ body[data-page="project"] .pc-next-pill.has-bubble {
 }
 
 .pc-sketch-caption {
-  margin: 22px auto 0;
+  margin: 24px auto 0;
   font-family: var(--serif);
   font-size: clamp(17px, 2.3vw, 23px);
   font-weight: 400;
@@ -5965,7 +5965,7 @@ body[data-project="visualisations"] .pc-sketch--graph .pc-sketch-caption {
 }
 
 body[data-project="custom-stickers"] .pc-sketch-caption {
-  margin-top: 34px;
+  margin-top: 32px;
 }
 
 /* Coloured artwork: a straight invert would swing the yellow wash to blue, so the
@@ -6194,7 +6194,7 @@ body.next-pill-hover .pc-next-hover-glow {
 
 .pc-detail-caption {
   width: 55%;
-  margin: 18px auto 72px;
+  margin: 16px auto 72px;
   font-family: var(--sans);
   font-size: 14px;
   font-weight: 400;
@@ -6301,7 +6301,7 @@ html:not([data-theme]) .pc-divider,
 }
 
 .pc-quote-text {
-  margin: 0 0 14px;
+  margin: 0 0 16px;
   font-family: var(--serif);
   font-size: clamp(17px, 2.3vw, 23px);
   font-weight: 400;
@@ -6358,10 +6358,10 @@ html:not([data-theme]) .pc-divider,
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 22px 20px;
+  gap: 24px 20px;
   width: 100%;
   box-sizing: border-box;
-  padding: 6px 0 0;
+  padding: 8px 0 0;
 }
 
 .pc-team-card {
@@ -6412,7 +6412,7 @@ html:not([data-theme]) .pc-divider,
   align-items: center;
   text-align: center;
   gap: 2px;
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: var(--sans);
   font-size: 12px;
   font-weight: 400;
@@ -6493,7 +6493,7 @@ html:not([data-theme]) .pc-divider,
 @media (max-width: 640px) {
   .project-about-row {
     grid-template-columns: 1fr;
-    row-gap: 10px;
+    row-gap: 8px;
   }
 }
 
@@ -6583,7 +6583,7 @@ body.overlay-open {
 }
 
 .project-ov-title {
-  margin: 0 0 26px;
+  margin: 0 0 24px;
   text-align: center;
   font-family: var(--sans);
   font-size: 23px;
@@ -6619,7 +6619,7 @@ body.overlay-open {
   }
 
   .project-overlay-content {
-    padding: 56px 22px 28px;
+    padding: 56px 24px 28px;
   }
 }
 
@@ -6650,9 +6650,9 @@ body.project-is-entering .project-top-bar {
 .project-top-bar-inner {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   height: var(--nav-toolbar-height);
-  padding: 0 14px 0 6px;
+  padding: 0 16px 0 8px;
 }
 
 .project-back-btn {
@@ -6711,7 +6711,7 @@ body.project-is-entering .project-top-bar {
 .project-detail-body {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 16px;
 }
 
 .project-detail-paragraph {
@@ -6792,7 +6792,7 @@ body[data-page="project"] .project-nav-pill {
 .project-next {
   height: auto;
   padding: 0;
-  gap: 6px;
+  gap: 8px;
   max-width: min(30vw, 220px);
   background: none;
   border: 0;
@@ -6972,7 +6972,7 @@ body.page-is-leaving .project-nav-pill {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   max-width: 720px;
   overflow-x: auto;
@@ -7731,7 +7731,7 @@ body.page-is-leaving .top-blur {
 }
 
 .dog-photo-polaroid-caption {
-  margin-top: 6px;
+  margin-top: 8px;
   font-family: 'Caveat', cursive;
   font-size: 13px;
   line-height: 1;
@@ -7893,7 +7893,7 @@ body.page-is-leaving .top-blur {
 .location-polaroid {
   width: 100%;
   margin: 0;
-  padding: 12px 12px 34px;
+  padding: 12px 12px 32px;
   background: var(--location-polaroid-bg);
   border: 1px solid var(--location-polaroid-border);
   border-radius: 2px;
@@ -7904,14 +7904,14 @@ body.page-is-leaving .top-blur {
   position: relative;
   z-index: 1;
   transform: rotate(-5deg);
-  margin-right: -18px;
+  margin-right: -16px;
 }
 
 .location-polaroid--limerick {
   position: relative;
   z-index: 2;
   transform: rotate(5deg);
-  margin-left: -18px;
+  margin-left: -16px;
   margin-top: -12px;
 }
 
@@ -7929,7 +7929,7 @@ body.page-is-leaving .top-blur {
 }
 
 .location-polaroid-caption {
-  margin-top: 10px;
+  margin-top: 8px;
   font-family: 'Caveat', cursive;
   font-size: 15px;
   line-height: 1.1;
@@ -7970,7 +7970,7 @@ body.page-is-leaving .top-blur {
 .book-cover {
   position: relative;
   width: 108px;
-  padding-left: 10px;
+  padding-left: 8px;
   filter: drop-shadow(6px 8px 14px rgba(0, 0, 0, 0.16));
 }
 
@@ -8272,7 +8272,7 @@ body.page-is-leaving .top-blur {
 }
 
 .experience-desc + .experience-desc {
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .education-item .experience-meta h3 {
@@ -8311,7 +8311,7 @@ body.page-is-leaving .top-blur {
 .languages-list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
 .language-item {
@@ -8571,7 +8571,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   [data-theme="pastel-pink"],
   [data-theme="pastel-yellow"],
   [data-theme="pastel-green"] {
-    --nav-offset: 27px;
+    --nav-offset: 28px;
   }
 
   .page {
@@ -8630,7 +8630,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   .work-overlay-shell {
     width: calc(100% - 24px);
     padding: calc(var(--nav-offset) + 12px) 0 calc(var(--nav-offset) + 80px);
-    gap: 14px;
+    gap: 16px;
   }
 
   .work-slideshow-stage {
@@ -8665,7 +8665,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   .nav-inner {
     height: var(--nav-toolbar-height);
-    padding: 0 5px;
+    padding: 0 4px;
     border-radius: var(--nav-radius);
   }
 
@@ -8741,20 +8741,20 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   .work-list .work-col--company {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
   }
 
   /* Stack the label over its copy — an 88px gutter leaves too little room for
      the paragraphs at this width. */
   .work-column--about .work-row--about {
     grid-template-columns: minmax(0, 1fr);
-    row-gap: 10px;
+    row-gap: 8px;
   }
 
   .work-row-main {
     grid-template-columns: minmax(0, 1fr) 44px;
     column-gap: 28px;
-    padding: 3px 8px;
+    padding: 4px 8px;
     margin: -1px -8px;
   }
 
@@ -8769,16 +8769,16 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   .location-polaroid {
-    padding: 10px 10px 28px;
+    padding: 8px 8px 28px;
   }
 
   .location-polaroid--amsterdam {
-    margin-right: -14px;
+    margin-right: -16px;
   }
 
   .location-polaroid--limerick {
-    margin-left: -14px;
-    margin-top: -10px;
+    margin-left: -16px;
+    margin-top: -8px;
   }
 
   .location-polaroid-caption {
@@ -8905,7 +8905,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   left: 50%;
   translate: -50% 4px;
   z-index: 20;
-  padding: 6px 10px;
+  padding: 8px 8px;
   border-radius: 8px;
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
@@ -8937,7 +8937,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   top: 8px;
   left: 8px;
   z-index: 400;
-  padding: 10px 14px;
+  padding: 8px 16px;
   border-radius: 10px;
   background: var(--nav-bg);
   border: var(--nav-border-width) solid var(--nav-glass-border);
@@ -8974,8 +8974,8 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 @media (min-width: 769px) {
   body[data-page="home"] {
     /* Drives the gaps either side of the work dividers. */
-    --work-divider-space: 50px;
-    --home-content-padding-x: 22px;
+    --work-divider-space: 48px;
+    --home-content-padding-x: 24px;
     /* Every content container on the page is capped by this one token, so the
        measure comes in together: the hero, the work rows and the about block. */
     --home-content-width: calc(var(--content-mid) * 0.8);
@@ -8995,15 +8995,15 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   body[data-page="home"] .home-hero {
-    gap: 9px;
+    gap: 8px;
   }
 
   body[data-page="home"] .home-hero .hero-title-wrap {
-    padding-top: 45px;
+    padding-top: 44px;
   }
 
   body[data-page="home"] .hero-head {
-    gap: 14px;
+    gap: 16px;
   }
 
   body[data-page="home"] .hero-bio {
@@ -9011,7 +9011,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   body[data-page="home"] .hero-bio + .hero-bio {
-    margin-top: 18px;
+    margin-top: 16px;
   }
 
   /* 44px at source. Named at this depth to clear the .home-about-intro rule
@@ -9022,7 +9022,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   body[data-page="home"] .work-row {
-    column-gap: 65px;
+    column-gap: 64px;
   }
 
   /* The same label column and gap as the project list above, so About and
@@ -9043,8 +9043,8 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   }
 
   body[data-page="home"] .about-intro {
-    gap: 18px;
-    margin-bottom: 43px;
+    gap: 16px;
+    margin-bottom: 44px;
   }
 }
 
@@ -9095,7 +9095,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   body[data-page="project"] .pc-eyebrow {
     font-size: 11px;
-    margin-bottom: 13px;
+    margin-bottom: 12px;
   }
 
   body[data-page="project"] .pc-quote-by,
@@ -9108,7 +9108,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
   /* The rhythm between sections, which is what carries most of the scale. */
   body[data-page="project"] .pc-lead-block,
   body[data-page="project"] .pc-detail {
-    margin-bottom: 65px;
+    margin-bottom: 64px;
   }
 
   /* …except a shot with a caption under it: the caption takes the gap. */
@@ -9122,15 +9122,15 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
 
   body[data-page="project"] .pc-sketch,
   body[data-page="project"] .pc-desc {
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
 
   body[data-page="project"] .pc-quote-text {
-    margin-bottom: 13px;
+    margin-bottom: 12px;
   }
 
   body[data-page="project"] .pc-team {
-    gap: 22px;
+    gap: 24px;
   }
 }
 
@@ -9370,7 +9370,7 @@ body[data-page="home"] .work-column--experience {
 .work-section-label {
   /* The same distance to the rule as the rule sits above "Miro" (32px
      desktop, 24px phones, measured text to line). */
-  margin: 0 0 30px;
+  margin: 0 0 32px;
   font-family: var(--sans);
   font-size: 13px;
   font-weight: 400;
@@ -9396,7 +9396,7 @@ body[data-page="home"] .work-column--experience + .home-about-intro {
   }
 
   .work-section-label {
-    margin-bottom: 22px;
+    margin-bottom: 24px;
   }
 }
 
@@ -9466,10 +9466,10 @@ body[data-page="home"] .work-column--experience + .home-about-intro {
 .nav-theme-menu .season-option {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   width: 100%;
   min-width: 128px;
-  padding: 7px 12px 7px 10px;
+  padding: 8px 12px 8px 8px;
   border: 0;
   border-radius: 9px;
   background: transparent;
@@ -9559,8 +9559,8 @@ body[data-page="home"] .work-column--experience + .home-about-intro {
 .nav-icon-btn.nav-label-btn {
   width: auto;
   min-width: 0;
-  gap: 7px;
-  padding: 0 11px 0 9px;
+  gap: 8px;
+  padding: 0 12px 0 8px;
 }
 
 .nav-btn-label {
@@ -9704,7 +9704,7 @@ html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
    copy, as on phones, rather than in a column of its own beside it. */
 body[data-page="home"] .work-column--about .work-row--about {
   grid-template-columns: minmax(0, 1fr);
-  row-gap: 10px;
+  row-gap: 8px;
 }
 
 /* The stacked About column is one centred block, as wide as the bio (420px):
@@ -9734,7 +9734,7 @@ body[data-page="home"] .work-column--about .hobby-records {
   flex-direction: column;
   gap: 2px;
   width: max-content;
-  padding: 10px 14px 11px;
+  padding: 8px 16px 12px;
   border-radius: 12px;
   background: color-mix(in srgb, var(--surface) 72%, transparent);
   -webkit-backdrop-filter: blur(18px) saturate(1.4);
@@ -9845,5 +9845,138 @@ body[data-page="home"] .work-column--about .work-group--interests .work-row--abo
 }
 
 body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+}
+
+/* ── About me: spacing, card and pills ────────────────────────────────────
+   Proportional spacing: a large gap between the professional bio and the
+   personal paragraph (two chapters), tight from the intro sentence to the
+   pills it introduces, medium from the pills to the card, and tight from the
+   card's own intro to its items. */
+/* Scoped like the older paragraph-gap rule it has to beat
+   (.work-col--about-copy .work-col--about-text + .work-col--about-text). */
+body[data-page="home"] .work-column--about .work-col--about-copy .work-col--about-text + .work-col--about-bridge {
+  margin-top: 40px;
+}
+
+/* Text to pills: measured from the text itself, so the line's own leading
+   (~5px) is part of the 14px. */
+body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
+  margin-bottom: 8px;
+}
+
+body[data-page="home"] .work-column--about .hobby-tablist {
+  margin-bottom: 32px;
+}
+
+/* Each tab's intro line sits just above its grey tray (tight, 14px from the
+   text), the tray itself back to its own padding and background. */
+body[data-page="home"] .work-column--about .hobby-panel > .work-col--about-text {
+  margin: 0;
+}
+
+body[data-page="home"] .work-column--about .hobby-panel .hobby-photos,
+body[data-page="home"] .work-column--about .hobby-panel .hobby-books,
+body[data-page="home"] .work-column--about .hobby-panel .hobby-records {
+  margin-top: 12px;
+  padding: 24px;
+}
+
+/* Album captions: closer to the art, artist and title tight together. */
+body[data-page="home"] .work-column--about .hobby-record-caption {
+  gap: 0;
+  margin-top: 8px;
+  line-height: 1.3;
+}
+
+/* Tabs as an underlined bar: plain labels along a faint baseline, the
+   selected one in the text colour with a 2px bar under it. */
+body[data-page="home"] .work-column--about .hobby-tablist {
+  flex-wrap: nowrap;
+  gap: 20px;
+}
+
+body[data-page="home"] .work-column--about .hobby-tab {
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-light);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+
+body[data-page="home"] .work-column--about .hobby-tab:hover {
+  background: none;
+  color: var(--text);
+}
+
+body[data-page="home"] .work-column--about .hobby-tab:active {
+  scale: 1;
+}
+
+body[data-page="home"] .work-column--about .hobby-tab[aria-selected="true"] {
+  color: var(--text);
+  background: none;
+  border-color: transparent;
+  border-bottom-color: var(--text);
+  box-shadow: none;
+}
+
+body[data-page="home"] .work-column--about .hobby-tab:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* "About me" sits above the section's rule, like "Selected work": label,
+   rule, then the copy, at the About block's 420px width. */
+body[data-page="home"] .work-column--about .work-section-label {
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Rule to the bio: the same spacing as label to rule above it. */
+body[data-page="home"] .work-column--about .work-column-rule {
+  margin-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--about .work-column-rule {
+    margin-bottom: 20px;
+  }
+}
+
+/* Narrow phones: a tighter gap so all five tabs fit on the one baseline. */
+@media (max-width: 400px) {
+  body[data-page="home"] .work-column--about .hobby-tablist {
+    gap: 12px;
+  }
+}
+
+/* Even space above and below the tab row: from the sentence above to the
+   tab labels, and from the selected tab's bar to the line below. */
+body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
+  margin-bottom: 20px;
+}
+
+body[data-page="home"] .work-column--about .hobby-tablist {
+  margin-bottom: 24px;
+}
+
+/* One rhythm through About me: bio, the interests line, the tabs, each
+   tab's intro and its tray, all 24px apart (CSS 20px where the text's own
+   line spacing adds the rest). */
+body[data-page="home"] .work-column--about .work-col--about-copy .work-col--about-text + .work-col--about-bridge {
+  margin-top: 20px;
+}
+
+body[data-page="home"] .work-column--about .hobby-panel .hobby-photos,
+body[data-page="home"] .work-column--about .hobby-panel .hobby-books,
+body[data-page="home"] .work-column--about .hobby-panel .hobby-records {
+  margin-top: 20px;
 }
