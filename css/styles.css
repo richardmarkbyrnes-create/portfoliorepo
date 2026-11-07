@@ -9415,8 +9415,15 @@ body[data-page="home"] .work-column--experience {
   color: var(--text-light);
 }
 
+/* Even space around the illustration and headline: ~96px from the list's
+   last rule to the drawing's ink, and the same from the headline's
+   descenders to the About rule (the 52px below makes up the other side). */
 body[data-page="home"] .work-column--experience + .home-about-intro {
-  margin-top: 120px;
+  margin-top: 87px;
+}
+
+body[data-page="home"] .home-about-intro + .work-column--about {
+  margin-top: 52px;
 }
 
 @media (max-width: 768px) {
