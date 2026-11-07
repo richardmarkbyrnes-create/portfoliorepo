@@ -1118,14 +1118,36 @@ function initHeroWeather() {
 }
 
 // About hobby tabs. The CSS does the motion: the outgoing panel gets
-// .is-leaving (blur out) until its animation ends, the incoming one
-// .is-active (blur in, then the staggered photos).
+// .is-leaving (slide out) until its animation ends, the incoming one
+// .is-active (slide in, then the staggered photos). data-dir on the root
+// says which way to slide (towards the tab picked), and a single indicator
+// bar glides under the selected tab.
 function initHobbyTabs() {
   document.querySelectorAll('[data-hobby-tabs]').forEach((root) => {
     const tabs = Array.from(root.querySelectorAll('[role="tab"]'));
+    const tablist = root.querySelector('[role="tablist"]');
+
+    const indicator = document.createElement('span');
+    indicator.className = 'hobby-tab-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    tablist.append(indicator);
+
+    const placeIndicator = () => {
+      const current = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+      if (!current) return;
+      indicator.style.setProperty('--x', `${current.offsetLeft}px`);
+      indicator.style.setProperty('--w', `${current.offsetWidth}px`);
+    };
+    placeIndicator();
+    // First placement without a slide in from the left edge.
+    requestAnimationFrame(() => tablist.classList.add('has-indicator'));
+    window.addEventListener('resize', placeIndicator);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeIndicator);
 
     const select = (tab) => {
       if (tab.getAttribute('aria-selected') === 'true') return;
+      const from = tabs.findIndex((t) => t.getAttribute('aria-selected') === 'true');
+      root.dataset.dir = tabs.indexOf(tab) < from ? 'prev' : 'next';
       tabs.forEach((t) => {
         const selected = t === tab;
         t.setAttribute('aria-selected', String(selected));
@@ -1142,6 +1164,7 @@ function initHobbyTabs() {
           if (prefersReducedMotion()) done();
         }
       });
+      placeIndicator();
     };
 
     tabs.forEach((tab, i) => {

@@ -2079,26 +2079,62 @@ body[data-page="about"] {
   opacity: 0;
 }
 
+/* Panels slide a short way towards the tab picked: the new one in from that
+   side, the old one out the other, with a light blur on the crossfade.
+   --hobby-shift flips with [data-dir] (set by main.js initHobbyTabs). */
+[data-hobby-tabs] { --hobby-shift: 16px; }
+[data-hobby-tabs][data-dir="prev"] { --hobby-shift: -16px; }
+
 .hobby-panel.is-active {
   visibility: visible;
   opacity: 1;
-  animation: hobby-blur-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) 0.08s backwards;
+  animation: hobby-slide-in 0.42s cubic-bezier(0.22, 1, 0.36, 1) 0.06s backwards;
 }
 
 .hobby-panel.is-leaving {
   visibility: visible;
-  animation: hobby-blur-out 0.22s ease-in both;
+  animation: hobby-slide-out 0.2s cubic-bezier(0.4, 0, 1, 1) both;
   pointer-events: none;
 }
 
-@keyframes hobby-blur-in {
-  from { opacity: 0; filter: blur(16px); translate: 0 4px; }
+@keyframes hobby-slide-in {
+  from { opacity: 0; filter: blur(4px); translate: var(--hobby-shift) 0; }
   to { opacity: 1; filter: blur(0); translate: 0 0; }
 }
 
-@keyframes hobby-blur-out {
-  from { opacity: 1; filter: blur(0); }
-  to { opacity: 0; filter: blur(16px); }
+@keyframes hobby-slide-out {
+  from { opacity: 1; filter: blur(0); translate: 0 0; }
+  to { opacity: 0; filter: blur(4px); translate: calc(var(--hobby-shift) * -1) 0; }
+}
+
+/* One bar under the selected tab that glides to the next on switch. Until
+   main.js places it, the selected tab keeps its own underline. */
+.hobby-tablist { position: relative; }
+
+.hobby-tab-indicator {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: var(--w, 0);
+  height: 2px;
+  background: var(--text);
+  translate: var(--x, 0) 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hobby-tablist.has-indicator .hobby-tab-indicator {
+  opacity: 1;
+  transition: translate 0.38s cubic-bezier(0.22, 1, 0.36, 1),
+              width 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body[data-page="home"] .work-column--about .hobby-tablist.has-indicator .hobby-tab[aria-selected="true"] {
+  border-bottom-color: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hobby-tablist.has-indicator .hobby-tab-indicator { transition: none; }
 }
 
 /* The full width of the copy column; the cards overlap rather than leaving
@@ -9786,9 +9822,10 @@ html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
 }
 
 /* The project list, a touch narrower than the column around it (centred),
-   and the hero above it the same width, so the title, bio and list share a
-   left edge. */
+   and the hero above it and About below it the same width, so the title,
+   bio, list and About all share their edges. */
 body[data-page="home"] .work-column--experience .work-column-inner,
+body[data-page="home"] .work-column--about .work-column-inner,
 body[data-page="home"] .home-hero .home-content-shell {
   max-width: calc(var(--home-content-width) - 40px);
 }
