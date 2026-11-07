@@ -9699,29 +9699,6 @@ html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
   --row-ink: #6f9ad0;
 }
 
-
-/* About and Interests: one column at every width — the label above its
-   copy, as on phones, rather than in a column of its own beside it. */
-body[data-page="home"] .work-column--about .work-row--about {
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 8px;
-}
-
-/* The stacked About column is one centred block, as wide as the bio (420px):
-   label, bio, Interests tabs and the media tray all share its edges. */
-body[data-page="home"] .work-column--about .work-row--about {
-  width: 100%;
-  max-width: 420px;
-  margin-inline: auto;
-}
-
-body[data-page="home"] .work-column--about .hobby-photos,
-body[data-page="home"] .work-column--about .hobby-books,
-body[data-page="home"] .work-column--about .hobby-records {
-  width: 100%;
-  margin-inline: 0;
-}
-
 /* First-hover nudge under the season switcher (main.js initThemeNudge): a
    small glass card with a pointer up to the button, dropping in and fading
    away on its own. */
@@ -9816,13 +9793,6 @@ body[data-page="home"] .home-hero .home-content-shell {
   max-width: calc(var(--home-content-width) - 40px);
 }
 
-/* The rule over About spans the same 420px block as the content under it. */
-body[data-page="home"] .work-column--about .work-column-rule {
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 /* Interests photos (Travel, Football, Animals) a size down: held to a
    narrower row centred in their tray. Records and books keep their size. */
 body[data-page="home"] .work-column--about .hobby-photos {
@@ -9833,38 +9803,7 @@ body[data-page="home"] .work-column--about .hobby-photo {
   flex: 0 1 150px;
 }
 
-/* The Interests block follows straight on from the line that introduces it,
-   so the two read as one passage rather than separate sections. */
-body[data-page="home"] .work-column--about .work-group--interests {
-  margin-top: 0;
-}
-
-body[data-page="home"] .work-column--about .work-group--interests .work-row--about {
-  padding-top: 0;
-  margin-top: 0;
-}
-
-body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
-  margin-bottom: 16px;
-}
-
-/* ── About me: spacing, card and pills ────────────────────────────────────
-   Proportional spacing: a large gap between the professional bio and the
-   personal paragraph (two chapters), tight from the intro sentence to the
-   pills it introduces, medium from the pills to the card, and tight from the
-   card's own intro to its items. */
-/* Scoped like the older paragraph-gap rule it has to beat
-   (.work-col--about-copy .work-col--about-text + .work-col--about-text). */
-body[data-page="home"] .work-column--about .work-col--about-copy .work-col--about-text + .work-col--about-bridge {
-  margin-top: 40px;
-}
-
-/* Text to pills: measured from the text itself, so the line's own leading
-   (~5px) is part of the 14px. */
-body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
-  margin-bottom: 8px;
-}
-
+/* ── About: tabs, card spacing ─────────────────────────────────────────── */
 body[data-page="home"] .work-column--about .hobby-tablist {
   margin-bottom: 32px;
 }
@@ -9932,25 +9871,6 @@ body[data-page="home"] .work-column--about .hobby-tab:focus-visible {
   border-radius: 4px;
 }
 
-/* "About me" sits above the section's rule, like "Selected work": label,
-   rule, then the copy, at the About block's 420px width. */
-body[data-page="home"] .work-column--about .work-section-label {
-  max-width: 420px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* Rule to the bio: the same spacing as label to rule above it. */
-body[data-page="home"] .work-column--about .work-column-rule {
-  margin-bottom: 28px;
-}
-
-@media (max-width: 768px) {
-  body[data-page="home"] .work-column--about .work-column-rule {
-    margin-bottom: 20px;
-  }
-}
-
 /* Narrow phones: a tighter gap so all five tabs fit on the one baseline. */
 @media (max-width: 400px) {
   body[data-page="home"] .work-column--about .hobby-tablist {
@@ -9958,21 +9878,9 @@ body[data-page="home"] .work-column--about .work-column-rule {
   }
 }
 
-/* Even space above and below the tab row: from the sentence above to the
-   tab labels, and from the selected tab's bar to the line below. */
-body[data-page="home"] .work-column--about .work-group:has(.work-col--about-bridge) {
-  margin-bottom: 20px;
-}
-
+/* Selected tab's bar to the intro line below it. */
 body[data-page="home"] .work-column--about .hobby-tablist {
   margin-bottom: 24px;
-}
-
-/* One rhythm through About me: bio, the interests line, the tabs, each
-   tab's intro and its tray, all 24px apart (CSS 20px where the text's own
-   line spacing adds the rest). */
-body[data-page="home"] .work-column--about .work-col--about-copy .work-col--about-text + .work-col--about-bridge {
-  margin-top: 20px;
 }
 
 body[data-page="home"] .work-column--about .hobby-panel .hobby-photos,
