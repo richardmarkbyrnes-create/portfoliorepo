@@ -9738,6 +9738,49 @@ body[data-page="home"] .page:has(.season-footer) {
   mask: linear-gradient(to bottom, transparent, #000 22%, #000 100%);
 }
 
+/* A soft white edge over the texture along the bottom and both sides, like
+   light catching the rim of a frame, with the bottom corners rounded.
+   The layer runs past the strip's top (clipped away by its overflow), so
+   only the bottom and sides show its inset glow: brightest at the edge,
+   gone within ~40px. Its outer shadow, in the page colour, fills the
+   corners outside the curve so the strip reads as a rounded frame. The top
+   is left to the texture's own fade, and the sides fade out towards it.
+   On the dark theme the glow is the page colour too, since white would
+   glare. */
+.season-footer::after {
+  --footer-rim: #fff;
+  --footer-rim-soft: rgba(255, 255, 255, 0.6);
+  --footer-rim-size: 40px;
+  --footer-radius: 28px;
+  content: "";
+  position: absolute;
+  top: -120px;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: 0 0 var(--footer-radius) var(--footer-radius);
+  box-shadow:
+    0 0 0 80px var(--bg),
+    inset 0 0 calc(var(--footer-rim-size) * 0.4) 2px var(--footer-rim),
+    inset 0 0 var(--footer-rim-size) calc(var(--footer-rim-size) * 0.25) var(--footer-rim-soft);
+  -webkit-mask: linear-gradient(to bottom, transparent 120px, #000 calc(120px + 30%));
+  mask: linear-gradient(to bottom, transparent 120px, #000 calc(120px + 30%));
+}
+
+html[data-theme="dark"] .season-footer::after {
+  --footer-rim: var(--bg);
+  --footer-rim-soft: color-mix(in srgb, var(--bg) 60%, transparent);
+}
+
+@media (max-width: 768px) {
+  .season-footer::after {
+    --footer-rim-size: 26px;
+    --footer-radius: 18px;
+  }
+}
+
 
 /* ── Project rows: title, intro line and the active row ──────────────────
    Each row is its title with "Company · intro" under it (main.js
