@@ -499,8 +499,9 @@ html:not([data-theme]) body::before,
   mix-blend-mode: multiply;
   /* Multiply over pure white, so this opacity is the whole difference between
      --bg and what you actually see: at 0.05 the page landed around #f3f3f3.
-     Light enough now to read as white, with the paper still there. */
-  opacity: 0.03;
+     Light enough now to read as white, with the paper still there; 0.045
+     brings the grain up a touch without greying the page. */
+  opacity: 0.045;
 }
 
 [data-theme="pastel-blue"] body::before,
@@ -3630,6 +3631,48 @@ body[data-page="home"] {
   margin: var(--work-rule-gap, 16px) 0;
 }
 
+/* Home: a rule between every project rather than between companies. Each
+   row draws the line over its top (the same dashes as the hrs), every row
+   carries the same padding, and the list's own top and bottom rules sit
+   flush, so every line is the same distance from the text either side.
+   (Row padding + the row link's 3px inset = --work-row-gap to the text.) */
+body[data-page="home"] {
+  --work-row-gap: 16px;
+}
+
+body[data-page="home"] .work-list .work-group-rule {
+  display: none;
+}
+
+body[data-page="home"] .work-column-rule:has(+ .work-list) {
+  margin-bottom: 0;
+}
+
+body[data-page="home"] .work-list + .work-column-rule--trailing {
+  margin-top: 0;
+}
+
+/* A half pixel more above than below: the row's min-height otherwise left
+   the text sitting a touch high between its rules. */
+body[data-page="home"] .work-column--interactive .work-list .work-row {
+  padding-block: calc(var(--work-row-gap) - 2.5px) calc(var(--work-row-gap) - 3.5px);
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row:not(.work-group:first-child > .work-row:first-child) {
+  background-image: repeating-linear-gradient(to right,
+    color-mix(in srgb, var(--text) var(--work-rule-mix, 5%), transparent) 0 3px,
+    transparent 3px 9px);
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+  background-position: top left;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] {
+    --work-row-gap: 14px;
+  }
+}
+
 @media (max-width: 768px) {
   body[data-page="home"] {
     --work-rule-gap: 16px;
@@ -3725,11 +3768,6 @@ body[data-page="home"] {
 .work-column--interactive .work-row-main[data-project="design-systems"] {
   --row-wash: #eff7f4;
   --row-ink: var(--ink-green);
-}
-
-.work-column--interactive .work-row-main:hover {
-  border-color: transparent;
-  background: var(--row-wash);
 }
 
 /* A project still in flight: no page to open yet, so it takes the neutral grey wash
@@ -3834,28 +3872,6 @@ body[data-page="home"] {
   .work-row-main--locked.is-refusing {
     animation: none;
   }
-}
-
-.work-column--interactive .work-row-main:hover .work-col--project,
-.work-column--interactive .work-row-main:hover .work-col--year {
-  color: var(--row-ink);
-}
-
-/* On the dark canvas the pale wash would glare, so the same ink drives both: a
-   low tint of it behind, a light tint of it in front. */
-html[data-theme="dark"] .work-column--interactive .work-row-main:hover {
-  background: color-mix(in srgb, var(--row-ink) 20%, transparent);
-}
-
-/* The locked row's ink is the near-white text colour rather than a project hue, so
-   the shared 20% lands far brighter here than it does on the coloured rows. */
-html[data-theme="dark"] .work-column--interactive .work-row-main--locked:hover {
-  background: color-mix(in srgb, var(--row-ink) 9%, transparent);
-}
-
-html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col--project,
-html[data-theme="dark"] .work-column--interactive .work-row-main:hover .work-col--year {
-  color: color-mix(in srgb, var(--row-ink) 35%, #ffffff);
 }
 
 .work-column--interactive .work-row-main:hover .work-col--project {
@@ -7474,6 +7490,9 @@ body.page-is-leaving .top-blur {
 /* The wrapper only carries the cursor drift, on a short transition so it keeps up
    with the pointer. The reveal (scale/slide/rotate) lives on the frame inside, so
    the two can be timed independently. */
+/* Motion here shares the Selected work list's curve (--sw-ease / --sw-time,
+   set on the home body): an ease-in-out, so the card and the rows start
+   softly and land softly together rather than leaping off the mark. */
 .project-preview {
   position: fixed;
   left: 0;
@@ -7487,10 +7506,10 @@ body.page-is-leaving .top-blur {
   filter: blur(9px);
   transform: translate(var(--px, 0px), var(--py, 0px));
   transition:
-    opacity 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.24s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.3s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.08s linear;
+    opacity 0.28s var(--sw-ease, ease-in-out),
+    visibility 0.28s var(--sw-ease, ease-in-out),
+    filter 0.32s var(--sw-ease, ease-in-out),
+    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* Portrait previews (main.js, from a project's previewAspect): narrower, so
@@ -7505,22 +7524,24 @@ body.page-is-leaving .top-blur {
   filter: blur(0);
   /* Long enough that the blur visibly resolves as the preview comes in. */
   transition:
-    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.08s linear;
+    opacity 0.36s var(--sw-ease, ease-in-out),
+    visibility 0.36s var(--sw-ease, ease-in-out),
+    filter 0.44s var(--sw-ease, ease-in-out),
+    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Already up and moving to another row: glide there instead of jumping. */
+/* Already up and moving to another row: glide there instead of jumping, on
+   the same curve and length as the rows themselves. (The cursor lean, the
+   transform, eases out slowly so it trails rather than twitches.) */
 .project-preview.is-visible.is-gliding {
   transition:
-    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    visibility 0.32s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 0.42s cubic-bezier(0.22, 1, 0.36, 1),
-    left 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-    top 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-    bottom 0.38s cubic-bezier(0.22, 1, 0.36, 1),
-    transform 0.08s linear;
+    opacity 0.36s var(--sw-ease, ease-in-out),
+    visibility 0.36s var(--sw-ease, ease-in-out),
+    filter 0.44s var(--sw-ease, ease-in-out),
+    left var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
+    top var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
+    bottom var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
+    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7566,7 +7587,7 @@ body.page-is-leaving .top-blur {
   aspect-ratio: var(--preview-aspect, 16 / 9);
   transform: translateY(6px) scale(0.9) rotate(3deg);
   transform-origin: bottom left;
-  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.4s var(--sw-ease, ease-in-out);
   background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
   border: 2px solid var(--preview-frame-border, #fff);
   border-radius: 14px;
@@ -9718,28 +9739,70 @@ body[data-page="home"] .page:has(.season-footer) {
 }
 
 
-/* Project row hovers follow the season rather than each project: one wash
-   and ink per theme, drawn from that season's landscape. Scoped through
-   html so they outrank the per-project rules above. Winter's ink drives
-   the dark-theme hover (a low tint behind, a light tint in front). */
-html[data-theme="spring"] .work-column--interactive .work-row-main[data-project] {
-  --row-wash: #eaf2fb;
-  --row-ink: #3f6f9e;
+/* ── Project rows: title, intro line and the active row ──────────────────
+   Each row is its title with "Company · intro" under it (main.js
+   initProjectRowDetails adds the line); nothing in the right column. With a real pointer, main.js marks the
+   row under it .is-active (title and line step in a touch, full strength)
+   and the list .is-hovering (every other row fades back); the preview card
+   still shows beside the active row. One ease-in-out curve and length for
+   all of it, shared with the preview's glide (--sw-ease / --sw-time), so
+   it starts softly and lands together. */
+body[data-page="home"] {
+  --sw-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  --sw-time: 0.48s;
 }
 
-html:not([data-theme]) .work-column--interactive .work-row-main[data-project],
-html[data-theme="normal"] .work-column--interactive .work-row-main[data-project] {
-  --row-wash: #fcf3d6;
-  --row-ink: #9a7a1c;
+body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
+  grid-column: 1 / -1;
+  display: block;
+  padding: 6px 24px 0 0;
+  /* (Right padding: the row steps in 8px on hover; this keeps the line
+     clear of the right edge.) */
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  /* --text-muted at half strength (what the old company column on the
+     right used), mixed into the colour rather than set as opacity so it
+     fades back with the rest of the row on its own terms. */
+  color: color-mix(in srgb, var(--text-muted) 50%, transparent);
 }
 
-html[data-theme="autumn"] .work-column--interactive .work-row-main[data-project] {
-  --row-wash: #f7e5d3;
-  --row-ink: #a3582c;
+@media (max-width: 640px) {
+  body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
+    padding: 2px 0 0;
+  }
 }
 
-html[data-theme="dark"] .work-column--interactive .work-row-main[data-project] {
-  --row-ink: #6f9ad0;
+@media (hover: hover) and (pointer: fine) {
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main > * {
+    transition:
+      translate var(--sw-time) var(--sw-ease),
+      opacity 0.36s var(--sw-ease);
+  }
+
+  /* Active: title and its line step in together. */
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main.is-active .work-col--project,
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main.is-active .work-row-desc {
+    translate: 8px 0;
+  }
+
+  /* Every other row fades back while the pointer is in the list. */
+  body[data-page="home"] .work-column--interactive .work-list.is-hovering .work-row-main[data-project]:not(.is-active) > * {
+    opacity: 0.4;
+  }
+
+  /* No background wash or border on hover any more. */
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main[data-project]:hover {
+    background: none;
+    border-color: transparent;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: reduce) {
+  body[data-page="home"] .work-column--interactive .work-list .work-row-main > * {
+    transition: none;
+  }
 }
 
 /* First-hover nudge under the season switcher (main.js initThemeNudge): a

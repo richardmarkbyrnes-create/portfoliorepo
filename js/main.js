@@ -216,6 +216,85 @@ function playTapAnimation(el, cls) {
   el.addEventListener('animationend', () => el.classList.remove(cls), { once: true });
 }
 
+// Home project rows: each carries its project's intro line under the title
+// (from projects.js, so it isn't repeated in the markup), and the row under
+// the pointer is "active" — stepped in, the others faded back, its preview
+// up. CSS does the motion off .is-active on the rows and .is-hovering on the
+// list.
+//
+// Only real pointer movement picks the row, and the gaps between rows keep
+// the current one, so the highlight never flickers between rows. Others
+// (preview, tap sound) follow the 'work-row-active' event rather than
+// mouseenter.
+const ROW_LEAVE_DELAY = 140;
+
+function initProjectRowDetails() {
+  const projects = window.PROJECTS || {};
+  const list = document.querySelector('.work-column--interactive .work-list');
+  if (!list) return;
+  const rows = [...list.querySelectorAll('.work-row-main[data-project]')];
+
+  rows.forEach((row) => {
+    const project = projects[row.dataset.project];
+    if (!project || !project.intro || row.querySelector('.work-row-desc')) return;
+    const desc = document.createElement('span');
+    desc.className = 'work-row-desc';
+    // The company leads the line ("Miro · …"); the right column numbers
+    // the rows instead.
+    if (project.company) {
+      const company = document.createElement('span');
+      company.className = 'work-row-company';
+      company.textContent = project.company;
+      const dot = document.createElement('span');
+      dot.className = 'work-row-company-dot';
+      dot.setAttribute('aria-hidden', 'true');
+      dot.textContent = '·';
+      // Real spaces either side of the dot, so screen readers (which skip
+      // the dot) still hear "Miro A text-to-sticker…" as two words.
+      desc.append(company, ' ', dot, ' ');
+    }
+    desc.append(project.intro);
+    row.append(desc);
+  });
+
+  let active = null;
+  let leaveTimer = 0;
+
+  function setActive(row) {
+    if (row === active) return;
+    if (active) active.classList.remove('is-active');
+    active = row;
+    if (row) row.classList.add('is-active');
+    list.classList.toggle('is-hovering', !!row);
+    document.dispatchEvent(new CustomEvent('work-row-active', { detail: { row } }));
+  }
+
+  list.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'mouse') return;
+    clearTimeout(leaveTimer);
+    const row = event.target.closest('.work-row-main[data-project]');
+    // In a gap between rows: keep whatever is showing.
+    if (row) setActive(row);
+  });
+
+  list.addEventListener('pointerleave', (event) => {
+    if (event.pointerType !== 'mouse') return;
+    clearTimeout(leaveTimer);
+    leaveTimer = setTimeout(() => setActive(null), ROW_LEAVE_DELAY);
+  });
+
+  list.addEventListener('focusin', (event) => {
+    const row = event.target.closest('.work-row-main[data-project]');
+    if (!row || !row.matches(':focus-visible')) return;
+    clearTimeout(leaveTimer);
+    setActive(row);
+  });
+
+  list.addEventListener('focusout', (event) => {
+    if (!list.contains(event.relatedTarget)) setActive(null);
+  });
+}
+
 function initExperienceHoverSound() {
   const rows = document.querySelectorAll('.work-column--interactive .work-row-main');
   if (!rows.length) return;
@@ -224,13 +303,21 @@ function initExperienceHoverSound() {
   tapAudio.preload = 'auto';
   tapAudio.volume = 0.4;
 
-  rows.forEach((row) => {
-    row.addEventListener('mouseenter', () => {
-      if (isSoundMuted()) return;
+  const tap = () => {
+    if (isSoundMuted()) return;
+    tapAudio.currentTime = 0;
+    tapAudio.play().catch(() => {});
+  };
 
-      tapAudio.currentTime = 0;
-      tapAudio.play().catch(() => {});
-    });
+  // Project rows tap when they become the active row (initProjectRowDetails),
+  // so a row sliding under a still pointer stays quiet; any other rows tap
+  // on enter as before.
+  document.addEventListener('work-row-active', (event) => {
+    if (event.detail.row) tap();
+  });
+  rows.forEach((row) => {
+    if (row.matches('[data-project]')) return;
+    row.addEventListener('mouseenter', tap);
   });
 }
 
@@ -644,6 +731,15 @@ function initProjectPreview() {
   window.addEventListener('resize', trackRow);
 
   const withHero = [];
+  const sources = new Map();
+
+  document.addEventListener('work-row-active', (event) => {
+    const row = event.detail.row;
+    const src = row && sources.get(row);
+    if (src) show(row, src);
+    else scheduleHide();
+  });
+
   rows.forEach((row) => {
     // Projects without a hero image simply show nothing on hover.
     const src = row.dataset.previewStack
@@ -651,11 +747,16 @@ function initProjectPreview() {
       : heroFor(row.dataset.project);
     if (!src || !src.length) return;
     withHero.push(...[].concat(src));
-    row.addEventListener('mouseenter', () => show(row, src));
+    sources.set(row, src);
     row.addEventListener('mousemove', (event) => follow(event, row));
-    row.addEventListener('mouseleave', scheduleHide);
-    row.addEventListener('focus', () => show(row, src));
-    row.addEventListener('blur', scheduleHide);
+    // Project rows follow the shared active row (initProjectRowDetails);
+    // anything else keeps its own enter/leave.
+    if (!row.matches('[data-project]')) {
+      row.addEventListener('mouseenter', () => show(row, src));
+      row.addEventListener('mouseleave', scheduleHide);
+      row.addEventListener('focus', () => show(row, src));
+      row.addEventListener('blur', scheduleHide);
+    }
     // Opening a project fades the page out, but the preview is fixed and the pointer
     // never leaves the row — so it would hang around over the transition.
     row.addEventListener('click', hide);
@@ -1356,6 +1457,7 @@ initHobbyPhotoFlip();
 initRecordNotes();
 initRecordPeek();
 initExperienceHoverSound();
+initProjectRowDetails();
 initSmoothScroll();
 initSmoothWheel();
 initKeyboardNav();
