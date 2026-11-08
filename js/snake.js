@@ -89,6 +89,11 @@
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   let bursts = [];
 
+  // The pointer over the board, for the idle grid's hover glow (CSS px in
+  // the board's space); amount eases in and out.
+  const HOVER_RADIUS = 120;
+  const hover = { x: 0, y: 0, on: false, amount: 0 };
+
   let cols = 0;
   let cellPx = TARGET_CELL;
   let snake = [];
@@ -108,7 +113,7 @@
 
   // Colours: the snake and food in the season's accent, the grid in a faint
   // tint of the text colour.
-  const ACCENTS = { normal: '#4f86e0', spring: '#4f9a62', autumn: '#c2703d', dark: '#7aa5d8' };
+  const ACCENTS = { normal: '#e07aa0', spring: '#4f9a62', autumn: '#c2703d', dark: '#7aa5d8' };
   let colours = null;
   function readColours() {
     const css = getComputedStyle(document.documentElement);
@@ -127,6 +132,7 @@
     const food = FOOD[theme] || FOOD.normal;
     colours = {
       accent: ACCENTS[theme] || ACCENTS.normal,
+      accentRgb: rgb(ACCENTS[theme] || ACCENTS.normal),
       food: rgb(food.colour),
       foodArt: food.art,
       // The grid as a solid faint colour (the text mixed 18% into the page),
@@ -256,15 +262,41 @@
       }));
     }
 
-    // 4. The grid: one faint pixel at the centre of every empty cell.
+    // 4. The grid: one faint pixel at the centre of every empty cell. While
+    //    no game is running, the dots near the pointer swell into little
+    //    blocks (in the grid's own colour), shrinking back with distance
+    //    through the dither, with a slow ripple running out from the cursor.
     const foodKey = food ? `${food[0]},${food[1]}` : '';
+    hover.amount += ((hover.on && state !== 'playing' ? 1 : 0) - hover.amount) * 0.12;
+    const lit = hover.amount > 0.01;
     for (let gy = 0; gy < ROWS; gy++) {
       for (let gx = 0; gx < cols; gx++) {
         if (strength.has(`${gx},${gy}`) || `${gx},${gy}` === foodKey) continue;
         const x = Math.floor(centre(gx) / PX);
         const y = Math.floor(centre(gy) / PX);
-        const i = (y * W + x) * 4;
-        d[i] = colours.grid[0]; d[i + 1] = colours.grid[1]; d[i + 2] = colours.grid[2]; d[i + 3] = 255;
+        let st = 0;
+        if (lit) {
+          const dist = Math.hypot(centre(gx) - hover.x, centre(gy) - hover.y);
+          const near = Math.max(0, 1 - dist / HOVER_RADIUS);
+          const ripple = 0.7 + 0.3 * Math.sin(dist / 14 - now / 170);
+          st = Math.min(1, near * (0.55 + 0.45 * near) * ripple * hover.amount * 1.15);
+        }
+        const size = st > 0.1 ? 1 + Math.round(st * 3) : 1;
+        const off = Math.floor((size - 1) / 2);
+        for (let py = 0; py < size; py++) {
+          for (let px = 0; px < size; px++) {
+            const X = x - off + px;
+            const Y = y - off + py;
+            if (X < 0 || Y < 0 || X >= W || Y >= H) continue;
+            const i = (Y * W + X) * 4;
+            // The block's core is solid accent; its outer pixels dither in.
+            const core = Math.abs(px - off) <= 0 && Math.abs(py - off) <= 0;
+            const on = st > bayer(X, Y) * (core ? 0.5 : 1);
+            if (!on && !(px === off && py === off)) continue;
+            const c = colours.grid;
+            d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 255;
+          }
+        }
       }
     }
     // 5. Eat bursts, over everything else: a ring that grows out of the
@@ -358,8 +390,15 @@
   }
 
   // A new game (not a resume) shows how to steer under the board for a
-  // couple of seconds, then fades it away.
-  const HINT_MS = 2000;
+  // few seconds (3.5s), then fades it away.
+  const HINT_MS = 3500;
+  // The season's line under the steering hint.
+  const GOALS = {
+    spring: 'Snag every blossom!',
+    normal: 'Chase the summer rays!',
+    autumn: 'Sweep up the falling leaves!',
+    dark: 'Catch the snowflakes!',
+  };
   let hintTimer = 0;
   function clearHint() {
     clearTimeout(hintTimer);
@@ -367,7 +406,15 @@
   }
   function showHint() {
     clearHint();
-    overlay.textContent = verb === 'tap' ? 'Use the arrows below to steer' : 'Use arrow keys to navigate';
+    // How to steer, then a line for the season's item.
+    overlay.innerHTML = '';
+    const how = document.createElement('span');
+    how.className = 'snake-status-title';
+    how.textContent = verb === 'tap' ? 'Use the arrows below to steer' : 'Use arrow keys to navigate';
+    const goal = document.createElement('span');
+    goal.className = 'snake-status-hint';
+    goal.textContent = GOALS[document.documentElement.getAttribute('data-theme')] || GOALS.normal;
+    overlay.append(how, goal);
     overlay.hidden = false;
     hintTimer = setTimeout(() => {
       if (state !== 'playing') return;
@@ -472,6 +519,16 @@
       if (event.detail === 0 && state === 'playing') turn(next);
     });
   });
+
+  // Track the pointer for the idle grid's hover glow (mouse only).
+  board.addEventListener('pointermove', (event) => {
+    if (event.pointerType !== 'mouse') return;
+    const r = board.getBoundingClientRect();
+    hover.x = event.clientX - r.left;
+    hover.y = event.clientY - r.top;
+    hover.on = true;
+  });
+  board.addEventListener('pointerleave', () => { hover.on = false; });
 
   // Swipes on touch: the direction of the larger movement.
   let touch = null;
