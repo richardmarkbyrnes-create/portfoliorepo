@@ -10436,6 +10436,9 @@ body[data-page="home"] .work-column--snake {
    board. Kept in the layout when hidden, so the page doesn't shift as a
    game starts and stops. */
 .snake-status {
+  /* Always two lines tall (the first-visit invitation's height), so the
+     one-line messages that replace it don't shift the page. */
+  min-height: calc(2em * 1.45);
   margin: 14px 0 0;
   font-family: var(--sans);
   font-size: 13px;
@@ -10497,4 +10500,180 @@ body[data-page="home"] .work-column--about .about-block-text,
 body[data-page="home"] .work-column--interests .interests-heading,
 body[data-page="home"] .work-column--interests .interest-title {
   font-size: 14px;
+}
+
+/* ── Top-right toolbar: liquid glass pills ───────────────────────────────
+   The season switcher and Contact each sit in their own fully rounded glass
+   pill rather than as text on a bar: a translucent, heavily blurred and
+   saturated body, a bright rim along the top edge (light catching the
+   glass) fading to a faint one below, a soft shadow, and a gentle sheen
+   across the upper half. No divider between them. Dark theme: smoky glass
+   with a dimmer rim. On phones they keep their icon-only round shape. */
+.nav-primary .nav-inner {
+  gap: 8px;
+  padding: 0;
+  background: none;
+  border-color: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.nav-primary .nav-inner .nav-divider {
+  display: none;
+}
+
+.nav-primary .nav-icon-btn.nav-label-btn {
+  /* Glass tinted with the page colour, and the theme's own text colour for
+     the label and icon, so the pills belong to the season rather than
+     sitting on it in white and black. */
+  --glass-fill: color-mix(in srgb, var(--bg) 48%, rgba(255, 255, 255, 0.2));
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-rim-low: rgba(255, 255, 255, 0.35);
+  --glass-edge: rgba(0, 0, 0, 0.06);
+  --glass-sheen: rgba(255, 255, 255, 0.55);
+  height: 38px;
+  padding: 0 14px 0 11px;
+  border-radius: 999px;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 55%),
+    var(--glass-fill);
+  backdrop-filter: blur(14px) saturate(1.8);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 0 var(--glass-rim-low),
+    inset 0 0 0 1px var(--glass-edge),
+    0 1px 1px rgba(0, 0, 0, 0.03),
+    0 3px 10px rgba(0, 0, 0, 0.035);
+  transition:
+    background-color 0.25s ease,
+    box-shadow 0.25s ease,
+    scale 0.2s var(--sw-ease, ease-in-out);
+}
+
+/* Hover: the glass brightens a touch (it no longer drops to a flat fill). */
+@media (hover: hover) {
+  .nav-primary .nav-icon-btn.nav-label-btn:hover {
+    --glass-fill: color-mix(in srgb, var(--bg) 70%, rgba(255, 255, 255, 0.3));
+    color: var(--text);
+    background:
+      linear-gradient(180deg, var(--glass-sheen), transparent 55%),
+      var(--glass-fill);
+    backdrop-filter: blur(14px) saturate(1.8);
+    -webkit-backdrop-filter: blur(14px) saturate(1.8);
+    box-shadow:
+      inset 0 1px 0 var(--glass-rim),
+      inset 0 -1px 0 var(--glass-rim-low),
+      inset 0 0 0 1px var(--glass-edge),
+      0 1px 1px rgba(0, 0, 0, 0.03),
+      0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+}
+
+.nav-primary .nav-icon-btn.nav-label-btn:active {
+  scale: 0.97;
+}
+
+html[data-theme="dark"] .nav-primary .nav-icon-btn.nav-label-btn {
+  --glass-fill: color-mix(in srgb, var(--bg) 55%, rgba(255, 255, 255, 0.04));
+  --glass-rim: rgba(255, 255, 255, 0.22);
+  --glass-rim-low: rgba(255, 255, 255, 0.06);
+  --glass-edge: rgba(255, 255, 255, 0.08);
+  --glass-sheen: rgba(255, 255, 255, 0.1);
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] .nav-primary .nav-icon-btn.nav-label-btn:hover {
+    --glass-fill: color-mix(in srgb, var(--bg) 70%, rgba(255, 255, 255, 0.08));
+  }
+}
+
+/* Phones: icon-only, round. */
+@media (max-width: 640px) {
+  .nav-primary .nav-icon-btn.nav-label-btn {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-primary .nav-icon-btn.nav-label-btn { transition: none; }
+}
+
+
+/* Project pages: the season and Contact pills without a drop shadow, just
+   the glass rim. */
+html body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn,
+html body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn:hover {
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 0 var(--glass-rim-low),
+    inset 0 0 0 1px var(--glass-edge);
+}
+
+/* The close button's X in the text colour (near-black; light on the dark
+   theme), matching the pill labels beside it. Hover still takes the
+   project's ink. */
+.pc-close {
+  color: var(--text);
+}
+
+/* ── Season menu as a switcher ───────────────────────────────────────────
+   Rather than a list with a dot, the menu reads as a segmented switcher:
+   the panel is a faintly recessed track, and the current season sits on a
+   raised tile (the card colour, a bright top rim, a hairline edge and a
+   soft shadow), the way the selected segment of a control lifts off its
+   track. The other rows stay flat, tinting only faintly on hover. */
+.nav-theme-menu .nav-contact-panel {
+  gap: 2px;
+  padding: 5px;
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.05),
+    var(--nav-shadow, 0 6px 18px rgba(0, 0, 0, 0.08));
+}
+
+.nav-theme-menu .season-option {
+  position: relative;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+}
+
+.nav-theme-menu .season-option.is-active::after {
+  content: none;
+}
+
+.nav-theme-menu .season-option:hover,
+.nav-theme-menu .season-option:focus-visible {
+  background: color-mix(in srgb, var(--text) 5%, transparent);
+}
+
+.nav-theme-menu .season-option.is-active,
+.nav-theme-menu .season-option.is-active:hover,
+.nav-theme-menu .season-option.is-active:focus-visible {
+  color: var(--text);
+  background: color-mix(in srgb, var(--surface, #fff) 92%, #fff);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 0 0 1px color-mix(in srgb, var(--text) 7%, transparent),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="dark"] .nav-theme-menu .season-option.is-active,
+html[data-theme="dark"] .nav-theme-menu .season-option.is-active:hover,
+html[data-theme="dark"] .nav-theme-menu .season-option.is-active:focus-visible {
+  background: color-mix(in srgb, var(--surface, #2a2a2e) 80%, #fff 8%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .nav-theme-menu .nav-contact-panel {
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.3),
+    var(--nav-shadow, 0 6px 18px rgba(0, 0, 0, 0.3));
 }
