@@ -10231,11 +10231,25 @@ body[data-page="home"] .work-column--interests .interest + .interest {
 .interest-title {
   margin: 0 0 8px;
   font-family: var(--sans);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: -0.02em;
   color: var(--text);
+}
+
+/* "More about me" and each interest's title at the same size as the text
+   they sit with (15px, 14px on phones), rather than the 13px of the other
+   section labels. */
+body[data-page="home"] .work-column--interests .interests-heading {
+  font-size: 15px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--interests .interests-heading,
+  .interest-title {
+    font-size: 14px;
+  }
 }
 
 /* Three small photos before the "More about me" label, overlapping and
@@ -10322,8 +10336,18 @@ body[data-page="home"] .work-column--snake {
 .snake::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: 6px;
+  /* Reaches past the board and feathers out over that margin, so the blur
+     has no hard edge: a glow near the board's edge (the food, the snake)
+     fades away instead of being cut off in a box. */
+  inset: -28px;
+  -webkit-mask:
+    linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent),
+    linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent, #000 28px, #000 calc(100% - 28px), transparent),
+    linear-gradient(to bottom, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  mask-composite: intersect;
   background: color-mix(in srgb, var(--bg) 35%, transparent);
   -webkit-backdrop-filter: blur(6px) saturate(1.1);
   backdrop-filter: blur(6px) saturate(1.1);
