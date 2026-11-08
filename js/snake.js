@@ -6,8 +6,8 @@
 // Drawn at one canvas pixel per 2 CSS px, each shape a crisp pixel
 // squircle filled with a 4x4 ordered (Bayer) dither at its strength, like
 // the texture; sized so the board spans the text column exactly. Click or
-// tap the board (or focus it and press Enter / Space) to play; Space
-// pauses and resumes; arrow keys or WASD steer while it has focus, swipes
+// tap the board (or focus it and press Enter / Space) to play; a click,
+// tap or Space pauses and resumes; arrow keys or WASD steer while it has focus, swipes
 // on touch. The best score is kept in localStorage. It pauses off screen
 // and in a hidden tab.
 (function () {
@@ -308,18 +308,47 @@
   function pause() {
     if (state !== 'playing') return;
     state = 'paused';
-    overlay.textContent = `Paused · space to resume`;
+    clearHint();
+    overlay.textContent = verb === 'tap' ? 'Paused · tap to resume' : 'Paused · click or space to resume';
     overlay.hidden = false;
     wrap.classList.remove('is-playing');
     wrap.classList.add('is-paused');
   }
 
+  // A new game (not a resume) shows how to steer under the board for a
+  // couple of seconds, then fades it away.
+  const HINT_MS = 2000;
+  let hintTimer = 0;
+  function clearHint() {
+    clearTimeout(hintTimer);
+    overlay.classList.remove('is-fading');
+  }
+  function showHint() {
+    clearHint();
+    overlay.textContent = verb === 'tap' ? 'Swipe to steer' : 'Use arrow keys to navigate';
+    overlay.hidden = false;
+    hintTimer = setTimeout(() => {
+      if (state !== 'playing') return;
+      overlay.classList.add('is-fading');
+      hintTimer = setTimeout(() => {
+        if (state === 'playing') overlay.hidden = true;
+        overlay.classList.remove('is-fading');
+      }, 400);
+    }, HINT_MS);
+  }
+
   function start() {
     if (state === 'playing') return;
+    const fresh = state !== 'paused';
     if (state === 'over') reset();
     state = 'playing';
     acc = 0;
-    overlay.hidden = true;
+    if (fresh) {
+      showHint();
+    } else {
+      clearHint();
+      overlay.hidden = true;
+    }
     wrap.classList.add('is-playing');
     wrap.classList.remove('is-paused', 'is-over');
     board.focus({ preventScroll: true });
@@ -328,6 +357,7 @@
 
   function gameOver() {
     state = 'over';
+    clearHint();
     overlay.textContent = `Game over · ${score} (best ${best}) · ${verb} to play again`;
     overlay.hidden = false;
     wrap.classList.remove('is-playing');
@@ -370,7 +400,12 @@
     turn(next);
   });
 
-  wrap.addEventListener('click', () => start());
+  // A click (or tap) on the board starts a game, and mid-game pauses and
+  // resumes it, as Space does.
+  wrap.addEventListener('click', () => {
+    if (state === 'playing') pause();
+    else start();
+  });
 
   // Swipes on touch: the direction of the larger movement.
   let touch = null;

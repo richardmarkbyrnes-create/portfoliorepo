@@ -69,9 +69,11 @@
       col = mix(col, a1, smoothstep(-0.05, 0.0, h));
       col = mix(col, a2, smoothstep(0.0, 0.07, h));
       float hs = h + (body - 0.45) * 0.12;
-      col = mix(col, a3, smoothstep(0.08, 0.18, hs));
-      col = mix(col, a4, smoothstep(0.17, 0.29, hs));
-      col = mix(col, a5, smoothstep(0.28, 0.46, hs));
+      // Wide, overlapping blends between the sky bands, so each fades into
+      // the next rather than meeting it at an edge.
+      col = mix(col, a3, smoothstep(0.05, 0.22, hs));
+      col = mix(col, a4, smoothstep(0.14, 0.35, hs));
+      col = mix(col, a5, smoothstep(0.26, 0.54, hs));
       // Deeper ground towards the bottom and in the hollows.
       col *= 1.0 - 0.18 * smoothstep(0.0, -0.45, h) * (1.0 - body);
       return col;
@@ -212,11 +214,13 @@
     // Spring: fresh greens under a soft blue sky. Summer: greens under a warm
     // sky, a peachy orange blush fading to pale apricot.
     spring: { label: 'Spring', colors: ['#97bd8f', '#c8e2b0', '#d2e2f4', '#f8fafc'], dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'] },
-    // Summer's sky is a sunset in bands: yellow at the horizon, light
-    // orange, then light blue, fading to a pale sky at the top.
+    // Summer's sky is a sunset in bands: butter yellow at the horizon,
+    // peach, then a soft blush-lilac into a pale sky at the top. Each band
+    // sits next to its neighbour on the colour wheel (the old orange went
+    // straight into blue, which met as a muddy grey stripe).
     summer: {
       label: 'Summer',
-      colors: ['#bddcb7', '#dcf1cb', '#fbe6a8', '#f9d2b0', '#c9dff3', '#f4f8fc'],
+      colors: ['#bddcb7', '#dbefc6', '#f7eab2', '#f8dcc0', '#efdbe8', '#f7f5fb'],
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
     autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },

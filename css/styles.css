@@ -10385,6 +10385,19 @@ body[data-page="home"] .work-column--snake {
   color: var(--text);
 }
 
+/* The steering hint at the start of a game fades out (snake.js). An
+   animation rather than a transition: the line's entrance animation
+   (.animate-in) holds its opacity, and only another animation can take
+   over from it. */
+.snake-status.is-fading {
+  animation: snake-hint-out 0.4s var(--sw-ease, ease-in-out) forwards;
+}
+
+@keyframes snake-hint-out {
+  from { opacity: 1; filter: blur(0); }
+  to { opacity: 0; filter: blur(3px); }
+}
+
 .snake-status[hidden] {
   display: block;
   visibility: hidden;
@@ -10398,4 +10411,18 @@ body[data-page="home"] .work-column--snake {
   body[data-page="home"] .work-column--snake {
     margin-top: 72px;
   }
+}
+
+/* ── One text size through the home page's middle ─────────────────────────
+   Selected work (its label, the project titles and their lines), the About
+   bio and More about me (the heading, each interest's title and line) all
+   at 14px, at every width. The cards' own captions and handwritten notes
+   keep their sizes. */
+body[data-page="home"] .work-column--experience .work-section-label,
+body[data-page="home"] .work-column--interactive .work-list .work-col--project,
+body[data-page="home"] .work-column--interactive .work-list .work-row-desc,
+body[data-page="home"] .work-column--about .about-block-text,
+body[data-page="home"] .work-column--interests .interests-heading,
+body[data-page="home"] .work-column--interests .interest-title {
+  font-size: 14px;
 }
