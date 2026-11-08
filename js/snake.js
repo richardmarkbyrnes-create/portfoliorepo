@@ -83,6 +83,12 @@
     ] },
   };
 
+  // Eat bursts: a dithered ring and a few sparks where an item was eaten,
+  // fading out through the dither over BURST_MS (skipped for reduced motion).
+  const BURST_MS = 440;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let bursts = [];
+
   let cols = 0;
   let cellPx = TARGET_CELL;
   let snake = [];
@@ -150,6 +156,7 @@
     const y = Math.floor(ROWS / 2);
     const x = Math.floor(cols / 3);
     snake = [[x, y], [x - 1, y], [x - 2, y], [x - 3, y]];
+    bursts = [];
     dir = [1, 0];
     queued = [];
     score = 0;
@@ -260,6 +267,40 @@
         d[i] = colours.grid[0]; d[i + 1] = colours.grid[1]; d[i + 2] = colours.grid[2]; d[i + 3] = 255;
       }
     }
+    // 5. Eat bursts, over everything else: a ring that grows out of the
+    //    eaten cell and thins as it goes, and six single-pixel sparks,
+    //    both lit through the Bayer threshold at a fading strength.
+    bursts = bursts.filter((bt) => now - bt.t < BURST_MS);
+    bursts.forEach((bt) => {
+      const k = (now - bt.t) / BURST_MS;
+      const ease = 1 - Math.pow(1 - k, 3);
+      const fade = 1 - k;
+      const cx = bt.x / PX;
+      const cy = bt.y / PX;
+      const cellC = cellPx / PX;
+      const radius = cellC * (0.35 + 0.8 * ease);
+      const thick = Math.max(0.6, cellC * 0.22 * fade);
+      const reach = Math.ceil(radius + thick + 1);
+      const lit = (x, y, st) => {
+        if (x < 0 || y < 0 || x >= W || y >= H || st <= bayer(x, y)) return;
+        const i = (y * W + x) * 4;
+        d[i] = bt.c[0]; d[i + 1] = bt.c[1]; d[i + 2] = bt.c[2]; d[i + 3] = 255;
+      };
+      for (let y = Math.floor(cy - reach); y <= cy + reach; y++) {
+        for (let x = Math.floor(cx - reach); x <= cx + reach; x++) {
+          const dist = Math.hypot(x + 0.5 - cx, y + 0.5 - cy);
+          if (Math.abs(dist - radius) <= thick) lit(x, y, fade * 0.6);
+        }
+      }
+      for (let a = 0; a < 6; a++) {
+        const ang = (a / 6) * Math.PI * 2 + Math.PI / 6;
+        const r = cellC * (0.6 + 1.3 * ease);
+        const sx = Math.floor(cx + Math.cos(ang) * r);
+        const sy = Math.floor(cy + Math.sin(ang) * r);
+        lit(sx, sy, fade * 0.8);
+      }
+    });
+
     ctx.putImageData(img, 0, 0);
   }
 
@@ -280,6 +321,7 @@
         bestEl.textContent = best;
         try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) { /* storage blocked */ }
       }
+      if (!reduceMotion) bursts.push({ x: centre(food[0]), y: centre(food[1]), t: performance.now(), c: colours.food });
       placeFood();
     } else {
       snake.pop();
