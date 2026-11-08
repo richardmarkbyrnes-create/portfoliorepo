@@ -10356,9 +10356,21 @@ body[data-page="home"] .work-column--snake {
   transition: opacity 0.3s var(--sw-ease, ease-in-out);
 }
 
+/* Paused or over, in two beats: the game drains to grayscale first, then
+   the glass frosts over it. Coming back, both clear together at once. */
+.snake-board {
+  transition: filter 0.25s var(--sw-ease, ease-in-out);
+}
+
+.snake.is-paused .snake-board,
+.snake.is-over .snake-board {
+  filter: grayscale(1);
+}
+
 .snake.is-paused::after,
 .snake.is-over::after {
   opacity: 1;
+  transition-delay: 0.22s;
 }
 
 /* The status line (how to play, paused, game over), centred under the
@@ -10404,7 +10416,8 @@ body[data-page="home"] .work-column--snake {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .snake::after { transition: none; }
+  .snake::after,
+  .snake-board { transition: none; }
 }
 
 @media (max-width: 768px) {
