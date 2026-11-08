@@ -3652,10 +3652,20 @@ body[data-page="home"] .work-list + .work-column-rule--trailing {
   margin-top: 0;
 }
 
-/* A half pixel more above than below: the row's min-height otherwise left
-   the text sitting a touch high between its rules. */
+/* The space between a row's rules belongs to the link, not the row: the
+   padding sits inside .work-row-main, so the whole band from rule to rule
+   is clickable and the hover (main.js initProjectRowDetails) never lights
+   up a row where a click would miss it. The text lands where it did when
+   the row carried the padding (link's own 4px + the gap). A half pixel
+   more above than below: the row's min-height otherwise left the text
+   sitting a touch high between its rules. */
 body[data-page="home"] .work-column--interactive .work-list .work-row {
-  padding-block: calc(var(--work-row-gap) - 2.5px) calc(var(--work-row-gap) - 3.5px);
+  padding-block: 0;
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row-main {
+  padding-top: calc(4px + var(--work-row-gap) - 2.5px);
+  padding-bottom: calc(4px + var(--work-row-gap) - 3.5px);
 }
 
 body[data-page="home"] .work-column--interactive .work-list .work-row:not(.work-group:first-child > .work-row:first-child) {
@@ -7503,13 +7513,17 @@ body.page-is-leaving .top-blur {
   opacity: 0;
   visibility: hidden;
   /* Blurs out as it goes, so it dissolves rather than just dimming */
-  filter: blur(9px);
+  filter: blur(12px);
   transform: translate(var(--px, 0px), var(--py, 0px));
+  /* Going away: blur, fade and scale out together. All three start the
+     moment the pointer leaves and run the same ~0.3s, the fade on a gentler
+     curve than the blur so you see it soften and shrink before it's gone
+     (the scale is on the frame, below). */
   transition:
-    opacity 0.28s var(--sw-ease, ease-in-out),
-    visibility 0.28s var(--sw-ease, ease-in-out),
-    filter 0.32s var(--sw-ease, ease-in-out),
-    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    opacity 0.32s cubic-bezier(0.4, 0, 0.6, 1),
+    visibility 0.32s linear,
+    filter 0.3s var(--sw-ease-out, ease-out),
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 /* Portrait previews (main.js, from a project's previewAspect): narrower, so
@@ -7527,21 +7541,23 @@ body.page-is-leaving .top-blur {
     opacity 0.36s var(--sw-ease, ease-in-out),
     visibility 0.36s var(--sw-ease, ease-in-out),
     filter 0.44s var(--sw-ease, ease-in-out),
-    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Already up and moving to another row: glide there instead of jumping, on
-   the same curve and length as the rows themselves. (The cursor lean, the
-   transform, eases out slowly so it trails rather than twitches.) */
+/* Already up and moving to another row: glide there instead of jumping.
+   Quicker than the rows and eased out rather than in-out, so it sets off
+   the moment the pointer does and keeps up with a fast sweep instead of
+   trailing behind it. (The cursor lean, the transform, stays a little
+   softer so it doesn't twitch.) */
 .project-preview.is-visible.is-gliding {
   transition:
     opacity 0.36s var(--sw-ease, ease-in-out),
     visibility 0.36s var(--sw-ease, ease-in-out),
     filter 0.44s var(--sw-ease, ease-in-out),
-    left var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
-    top var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
-    bottom var(--sw-time, 0.48s) var(--sw-ease, ease-in-out),
-    transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+    left 0.26s cubic-bezier(0.2, 0.9, 0.3, 1),
+    top 0.26s cubic-bezier(0.2, 0.9, 0.3, 1),
+    bottom 0.26s cubic-bezier(0.2, 0.9, 0.3, 1),
+    transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7551,13 +7567,15 @@ body.page-is-leaving .top-blur {
 }
 
 /* Moving between rows while the preview is up swaps its image; the new one
-   blur-fades in rather than snapping (main.js restarts this per swap). */
+   blur-fades in rather than snapping (main.js restarts this per swap). Kept
+   slower than the card's own glide, so the frame arrives first and the
+   picture resolves in it. */
 .project-preview-img.is-swapping {
   animation: project-preview-swap 0.55s cubic-bezier(0.33, 0, 0.2, 1);
 }
 
 @keyframes project-preview-swap {
-  from { opacity: 0; filter: blur(6px); }
+  from { opacity: 0; filter: blur(8px); }
   to { opacity: 1; filter: blur(0); }
 }
 
@@ -7572,7 +7590,7 @@ body.page-is-leaving .top-blur {
 
 @keyframes project-preview-ghost {
   from { opacity: 1; filter: blur(0); }
-  to { opacity: 0; filter: blur(6px); }
+  to { opacity: 0; filter: blur(8px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -7585,9 +7603,11 @@ body.page-is-leaving .top-blur {
   position: relative;
   width: 100%;
   aspect-ratio: var(--preview-aspect, 16 / 9);
-  transform: translateY(6px) scale(0.9) rotate(3deg);
+  transform: translateY(6px) scale(0.86) rotate(3deg);
   transform-origin: bottom left;
-  transition: transform 0.4s var(--sw-ease, ease-in-out);
+  /* Scaling out (hiding): eased out over the same ~0.3s as the blur and
+     fade on .project-preview. Scaling in has its own timing below. */
+  transition: transform 0.3s var(--sw-ease-out, ease-out);
   background-color: color-mix(in srgb, var(--text) 4%, var(--bg));
   border: 2px solid var(--preview-frame-border, #fff);
   border-radius: 14px;
@@ -7610,12 +7630,13 @@ body.page-is-leaving .top-blur {
 
 .project-preview.is-below .project-preview-frame {
   transform-origin: top left;
-  transform: translateY(-6px) scale(0.9) rotate(3deg);
+  transform: translateY(-6px) scale(0.86) rotate(3deg);
 }
 
 .project-preview.is-visible .project-preview-frame,
 .project-preview.is-below.is-visible .project-preview-frame {
   transform: translateY(0) scale(1) rotate(3deg);
+  transition: transform 0.4s var(--sw-ease, ease-in-out);
 }
 
 /* Stack mode (the Archive row): two thumbnails, each framed like the single
@@ -9401,6 +9422,25 @@ body[data-page="home"] .page {
   right: calc(var(--tx-pad) * 1.282 - 14.1%);
 }
 
+/* Over the hero texture's visible pill (not the faded margin round it), the
+   pointer turns into a retro pixel arrow with a dithered fill. An empty
+   layer over the canvas carries the cursor, clipped to the pill's rounded
+   rectangle (the mask's rect: 11% in from each side, 20% from top and
+   bottom) so it only applies inside the frame. It's part of .home-texture,
+   so the pointer still drives the texture's swell (texture-block.js
+   listens on the wrapper). Generated pixel by pixel: 12×19 at 2px. */
+.home-texture:not(.home-texture--footer)::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--tx-pad) * 1.282 - 14.1%);
+  right: calc(var(--tx-pad) * 1.282 - 14.1%);
+  z-index: 1;
+  clip-path: inset(20% 11% round 9% / 18%);
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='38' viewBox='0 0 24 38' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M2 4h2v2h-2zM2 6h2v2h-2zM4 6h2v2h-2zM2 8h2v2h-2zM4 8h2v2h-2zM6 8h2v2h-2zM2 10h2v2h-2zM4 10h2v2h-2zM6 10h2v2h-2zM8 10h2v2h-2zM2 12h2v2h-2zM6 12h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM2 14h2v2h-2zM4 14h2v2h-2zM6 14h2v2h-2zM8 14h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM2 16h2v2h-2zM6 16h2v2h-2zM10 16h2v2h-2zM14 16h2v2h-2zM2 18h2v2h-2zM4 18h2v2h-2zM6 18h2v2h-2zM8 18h2v2h-2zM10 18h2v2h-2zM12 18h2v2h-2zM14 18h2v2h-2zM16 18h2v2h-2zM2 20h2v2h-2zM6 20h2v2h-2zM10 20h2v2h-2zM14 20h2v2h-2zM18 20h2v2h-2zM2 22h2v2h-2zM4 22h2v2h-2zM8 22h2v2h-2zM10 22h2v2h-2zM12 22h2v2h-2zM2 24h2v2h-2zM6 24h2v2h-2zM10 24h2v2h-2zM4 26h2v2h-2zM12 26h2v2h-2zM2 28h2v2h-2zM14 28h2v2h-2zM12 30h2v2h-2zM14 32h2v2h-2zM16 34h2v2h-2z'/%3E%3Cpath fill='%23111' d='M0 0h2v2h-2zM0 2h2v2h-2zM2 2h2v2h-2zM0 4h2v2h-2zM4 4h2v2h-2zM0 6h2v2h-2zM6 6h2v2h-2zM0 8h2v2h-2zM8 8h2v2h-2zM0 10h2v2h-2zM10 10h2v2h-2zM0 12h2v2h-2zM4 12h2v2h-2zM12 12h2v2h-2zM0 14h2v2h-2zM14 14h2v2h-2zM0 16h2v2h-2zM4 16h2v2h-2zM8 16h2v2h-2zM12 16h2v2h-2zM16 16h2v2h-2zM0 18h2v2h-2zM18 18h2v2h-2zM0 20h2v2h-2zM4 20h2v2h-2zM8 20h2v2h-2zM12 20h2v2h-2zM16 20h2v2h-2zM20 20h2v2h-2zM0 22h2v2h-2zM6 22h2v2h-2zM14 22h2v2h-2zM16 22h2v2h-2zM18 22h2v2h-2zM20 22h2v2h-2zM22 22h2v2h-2zM0 24h2v2h-2zM4 24h2v2h-2zM8 24h2v2h-2zM12 24h2v2h-2zM14 24h2v2h-2zM0 26h2v2h-2zM2 26h2v2h-2zM6 26h2v2h-2zM8 26h2v2h-2zM10 26h2v2h-2zM14 26h2v2h-2zM0 28h2v2h-2zM4 28h2v2h-2zM10 28h2v2h-2zM12 28h2v2h-2zM16 28h2v2h-2zM0 30h2v2h-2zM2 30h2v2h-2zM10 30h2v2h-2zM14 30h2v2h-2zM16 30h2v2h-2zM0 32h2v2h-2zM12 32h2v2h-2zM16 32h2v2h-2zM18 32h2v2h-2zM12 34h2v2h-2zM14 34h2v2h-2zM18 34h2v2h-2zM14 36h2v2h-2zM16 36h2v2h-2z'/%3E%3C/svg%3E") 0 0, default;
+}
+
 /* A canvas ignores left/right stretching (it keeps its drawn width), so it's
    sized in flow instead: 128.2% of the column, pulled back by 14.1%. */
 .home-texture-canvas {
@@ -9690,7 +9730,7 @@ body[data-page="home"] .work-list .work-col--year {
   max-width: 100vw;
   height: 140px;
   overflow: hidden;
-  margin: 176px calc(50% - 50vw) 0;
+  margin: 240px calc(50% - 50vw) 0;
   pointer-events: none;
 }
 
@@ -9698,7 +9738,7 @@ body[data-page="home"] .work-list .work-col--year {
 @media (max-width: 768px) {
   .season-footer {
     height: 110px;
-    margin-top: 112px;
+    margin-top: 150px;
   }
 }
 
@@ -9733,7 +9773,7 @@ body[data-page="home"] .page:has(.season-footer) {
   margin: 0;
   /* A short fade at the top edge, then an even strength across the strip,
      softened overall so it sits back from the page. */
-  opacity: 0.7;
+  opacity: 0.45;
   -webkit-mask: linear-gradient(to bottom, transparent, #000 22%, #000 100%);
   mask: linear-gradient(to bottom, transparent, #000 22%, #000 100%);
 }
@@ -9792,6 +9832,7 @@ html[data-theme="dark"] .season-footer::after {
    it starts softly and lands together. */
 body[data-page="home"] {
   --sw-ease: cubic-bezier(0.45, 0, 0.2, 1);
+  --sw-ease-out: cubic-bezier(0.2, 0.9, 0.3, 1);
   --sw-time: 0.48s;
 }
 
@@ -9818,21 +9859,30 @@ body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
 }
 
 @media (hover: hover) and (pointer: fine) {
+  /* Settling back (the pointer moved off, or left the list): quick and
+     eased out, so it answers straight away instead of easing into it. */
   body[data-page="home"] .work-column--interactive .work-list .work-row-main > * {
     transition:
-      translate var(--sw-time) var(--sw-ease),
-      opacity 0.36s var(--sw-ease);
+      translate 0.3s var(--sw-ease-out),
+      opacity 0.26s var(--sw-ease-out);
   }
 
-  /* Active: title and its line step in together. */
+  /* Active: title and its line step in together, on the softer
+     in-out curve. */
   body[data-page="home"] .work-column--interactive .work-list .work-row-main.is-active .work-col--project,
   body[data-page="home"] .work-column--interactive .work-list .work-row-main.is-active .work-row-desc {
     translate: 8px 0;
+    transition:
+      translate var(--sw-time) var(--sw-ease),
+      opacity 0.3s var(--sw-ease);
   }
 
   /* Every other row fades back while the pointer is in the list. */
   body[data-page="home"] .work-column--interactive .work-list.is-hovering .work-row-main[data-project]:not(.is-active) > * {
     opacity: 0.4;
+    transition:
+      translate 0.3s var(--sw-ease-out),
+      opacity 0.36s var(--sw-ease);
   }
 
   /* No background wash or border on hover any more. */
@@ -9939,6 +9989,7 @@ body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
    bio, list and About all share their edges. */
 body[data-page="home"] .work-column--experience .work-column-inner,
 body[data-page="home"] .work-column--about .work-column-inner,
+body[data-page="home"] .work-column--snake .work-column-inner,
 body[data-page="home"] .home-hero .home-content-shell {
   max-width: calc(var(--home-content-width) - 40px);
 }
@@ -10037,4 +10088,290 @@ body[data-page="home"] .work-column--about .hobby-panel .hobby-photos,
 body[data-page="home"] .work-column--about .hobby-panel .hobby-books,
 body[data-page="home"] .work-column--about .hobby-panel .hobby-records {
   margin-top: 20px;
+}
+
+/* ── About: one large block of text ─────────────────────────────────────
+   A rule, then the bio under it (its heading is visually hidden), set
+   large and loose. */
+body[data-page="home"] .work-column--about .about-block-text {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.015em;
+  color: var(--text-light);
+  /* Justified, with hyphenation so the narrow column doesn't open rivers. */
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+
+/* Rule to text: ~37px desktop, ~29px phones (measured text to line), the
+   same gap Selected work's label keeps above its rule. */
+body[data-page="home"] .work-column--about:not(.work-column--interests) .work-column-rule {
+  margin-bottom: 30px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--about:not(.work-column--interests) .work-column-rule {
+    margin-bottom: 23px;
+  }
+}
+
+/* A line's worth of space between the bio's paragraphs. */
+body[data-page="home"] .work-column--about .about-block-text + .about-block-text {
+  margin-top: 1.1em;
+}
+
+body[data-page="home"] .work-column--about .about-block-text .about-link {
+  color: var(--text);
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--about .about-block-text {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+}
+
+/* ── Interests: collapsed behind a chevron ───────────────────────────────
+   The heading is the toggle (main.js initInterestsToggle). The panel
+   unfolds from nothing to its height, its contents fading in a beat
+   behind, on the same ease-in-out as Selected work. */
+body[data-page="home"] .work-column--about + .work-column--interests {
+  margin-top: 56px;
+}
+
+.interests-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+/* The heading itself (label and chevron) in the text colour, a step up
+   from the light grey of the other section labels. */
+.interests-toggle {
+  color: var(--text);
+}
+
+.interests-toggle:hover {
+  color: var(--text);
+  opacity: 0.75;
+}
+
+.interests-toggle:focus-visible {
+  outline: 2px solid color-mix(in srgb, var(--text) 30%, transparent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.interests-chevron {
+  flex: 0 0 auto;
+  transition: rotate var(--sw-time, 0.48s) var(--sw-ease, ease-in-out);
+}
+
+.interests-toggle[aria-expanded="true"] .interests-chevron {
+  rotate: 180deg;
+}
+
+.interests-panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--sw-time, 0.48s) var(--sw-ease, ease-in-out);
+}
+
+.interests-panel.is-open {
+  grid-template-rows: 1fr;
+}
+
+.interests-panel-inner {
+  min-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.24s var(--sw-ease, ease-in-out);
+}
+
+.interests-panel.is-open .interests-panel-inner {
+  opacity: 1;
+  transition: opacity 0.36s var(--sw-ease, ease-in-out) 0.12s;
+}
+
+/* Fully open: nothing clipped, so the content can overhang its trays. */
+.interests-panel.is-settled .interests-panel-inner {
+  overflow: visible;
+}
+
+/* Closed, the heading's rule ends the section: no gap left under it. */
+body[data-page="home"] .work-column--interests .work-column-rule {
+  margin-bottom: 0;
+}
+
+/* Opened, Interests is one long list rather than tabs: each interest a
+   small title, a line set like the About text, then its photos, books or
+   records. (Each keeps .hobby-panel.is-active, which their entrance
+   animations are keyed on; main.js replays them when the panel opens.) */
+body[data-page="home"] .work-column--interests .interests-list {
+  padding-top: 32px;
+}
+
+body[data-page="home"] .work-column--interests .interest + .interest {
+  margin-top: 56px;
+}
+
+.interest-title {
+  margin: 0 0 8px;
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+
+/* Three small photos before the "More about me" label, overlapping and
+   straight at rest; on hover they fan out, tilting like prints. */
+.interests-thumbs {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 6px;
+}
+
+.interests-thumb {
+  display: block;
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background: color-mix(in srgb, var(--text) 8%, var(--bg));
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.16), 0 3px 8px rgba(0, 0, 0, 0.1);
+  transition:
+    rotate 0.36s var(--sw-ease, ease-in-out),
+    translate 0.36s var(--sw-ease, ease-in-out);
+}
+
+.interests-thumb + .interests-thumb {
+  margin-left: -8px;
+}
+
+.interests-thumb:nth-child(2) { position: relative; z-index: 1; }
+.interests-thumb:nth-child(3) { position: relative; z-index: 2; }
+
+.interests-toggle:hover .interests-thumb:nth-child(1) { rotate: -16deg; translate: -3px 0; }
+.interests-toggle:hover .interests-thumb:nth-child(2) { rotate: 2deg; translate: 0 -3px; }
+.interests-toggle:hover .interests-thumb:nth-child(3) { rotate: 17deg; translate: 3px 0; }
+
+[data-theme="dark"] .interests-thumb {
+  border-color: var(--surface);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interests-thumb { transition: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interests-chevron,
+  .interests-panel,
+  .interests-panel-inner,
+  .interests-panel.is-open .interests-panel-inner {
+    transition: none;
+  }
+}
+
+/* ── Snake (snake.js) ─────────────────────────────────────────────────────
+   Just the board (a dithered dot grid, drawn on the canvas at one pixel per
+   2px and scaled up without smoothing), spanning the text column edge to
+   edge,
+   with the overlay line over it until a game starts. */
+body[data-page="home"] .work-column--snake {
+  margin-top: 96px;
+}
+
+.snake {
+  position: relative;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.snake-board {
+  display: block;
+  outline: none;
+  touch-action: none;
+  image-rendering: pixelated;
+}
+
+/* Keyboard focus shows round the board, but not mid-game or paused,
+   where it'd only distract. */
+.snake:not(.is-playing, .is-paused, .is-over):has(.snake-board:focus-visible) {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--text) 30%, transparent);
+}
+
+/* Paused or game over: a frosted-glass pane over the board, blurring the
+   game behind it; it fades in and out. */
+.snake::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--bg) 35%, transparent);
+  -webkit-backdrop-filter: blur(6px) saturate(1.1);
+  backdrop-filter: blur(6px) saturate(1.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s var(--sw-ease, ease-in-out);
+}
+
+.snake.is-paused::after,
+.snake.is-over::after {
+  opacity: 1;
+}
+
+/* The status line (how to play, paused, game over), centred under the
+   board. Kept in the layout when hidden, so the page doesn't shift as a
+   game starts and stops. */
+.snake-status {
+  margin: 14px 0 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  text-align: center;
+  color: var(--text-light);
+}
+
+/* The first-visit invitation: a title in the text colour, how to start
+   under it in the light grey. */
+.snake-status-title,
+.snake-status-hint {
+  display: block;
+}
+
+.snake-status-title {
+  color: var(--text);
+}
+
+.snake-status[hidden] {
+  display: block;
+  visibility: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .snake::after { transition: none; }
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--snake {
+    margin-top: 72px;
+  }
 }

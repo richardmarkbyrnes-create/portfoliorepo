@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=1295">
+  <link rel="stylesheet" href="css/styles.css?v=1334">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -129,92 +129,113 @@
       <section class="work-column work-column--about animate-on-scroll-root" aria-labelledby="about-heading">
         <div class="work-column-inner">
           <h2 class="visually-hidden" id="about-heading">About</h2>
-          <hr class="work-column-rule" aria-hidden="true">
-          <div class="work-group">
-            <div class="work-row work-row--about">
-              <span class="work-col work-col--company animate-in">About</span>
-              <div class="work-col work-col--about-copy">
-                <p class="work-col--about-text animate-in">I&rsquo;m a multidisciplinary product designer and builder from <a class="about-link" href="https://share.google/cHdG0vP55Lz0FFtul" target="_blank" rel="noopener noreferrer">Limerick</a>, Ireland. Over the years, I&rsquo;ve had the chance to work closely across varied verticals, taking 0-to-1 products off the ground at <a class="about-link" href="https://miro.com/" target="_blank" rel="noopener noreferrer">Miro</a> in Amsterdam, defining product vision for finance tools at <a class="about-link" href="https://www.cashbook.com/" target="_blank" rel="noopener noreferrer">Cashbook</a>, and building large-scale design systems and developer tools at <a class="about-link" href="https://www.sap.com" target="_blank" rel="noopener noreferrer">SAP</a>. I design because it sits at the intersection of what I enjoy the most: technology, business, and craft.</p>
-              </div>
-            </div>
+          <hr class="work-column-rule animate-in" aria-hidden="true">
+          <div class="about-block">
+            <p class="about-block-text animate-in">I&rsquo;m a multidisciplinary product designer and builder from <a class="about-link" href="https://share.google/cHdG0vP55Lz0FFtul" target="_blank" rel="noopener noreferrer">Limerick</a>, Ireland. Over the years, I&rsquo;ve taken 0-to-1 products off the ground at <a class="about-link" href="https://miro.com/" target="_blank" rel="noopener noreferrer">Miro</a>, defined product vision for fintech platforms at <a class="about-link" href="https://www.cashbook.com/" target="_blank" rel="noopener noreferrer">Cashbook</a>, and scaled design systems and developer tools at <a class="about-link" href="https://www.sap.com" target="_blank" rel="noopener noreferrer">SAP</a>.</p>
+            <p class="about-block-text animate-in">I design at the intersection of what excites me most: technology, business, and craft. That systems-led mindset started at the <a class="about-link" href="https://www.ul.ie/" target="_blank" rel="noopener noreferrer">University of Limerick</a>, where I earned a BSc in Interaction Design, a blend of user research, psychology, interface craft, and frontend and hardware engineering.</p>
+            <p class="about-block-text animate-in">I currently live in <a class="about-link" href="https://www.google.com/search?q=amsterdam" target="_blank" rel="noopener noreferrer">Amsterdam</a>, Netherlands and work at Miro. Outside of work: you&rsquo;ll find me cooking, playing football, reading, or debating whether it&rsquo;s finally time to get a dog.</p>
           </div>
-          <div class="work-group">
-            <div class="work-row work-row--about">
-              <span class="work-col work-col--company animate-in">Interests</span>
-              <div class="work-col work-col--about-copy">
-                <div class="hobby-tabs animate-in animate-in-delay-1" data-hobby-tabs>
-                  <div class="hobby-tablist" role="tablist" aria-label="Hobbies">
-                    <button class="hobby-tab" type="button" role="tab" id="hobby-tab-music" aria-controls="hobby-panel-music" aria-selected="true">Music</button>
-                    <button class="hobby-tab" type="button" role="tab" id="hobby-tab-travel" aria-controls="hobby-panel-travel" aria-selected="false" tabindex="-1">Travel</button>
-                    <button class="hobby-tab" type="button" role="tab" id="hobby-tab-reading" aria-controls="hobby-panel-reading" aria-selected="false" tabindex="-1">Reading</button>
-                    <button class="hobby-tab" type="button" role="tab" id="hobby-tab-football" aria-controls="hobby-panel-football" aria-selected="false" tabindex="-1">Football</button>
-                    <button class="hobby-tab" type="button" role="tab" id="hobby-tab-animals" aria-controls="hobby-panel-animals" aria-selected="false" tabindex="-1">Animals</button>
+        </div>
+      </section>
+
+      <!-- Interests: collapsed behind a chevron (main.js initInterestsToggle).
+           Carries .work-column--about too, for the hobby tabs' styles. -->
+      <section class="work-column work-column--about work-column--interests animate-on-scroll-root" aria-labelledby="interests-heading">
+        <div class="work-column-inner">
+          <h2 class="work-section-label interests-heading animate-in" id="interests-heading">
+            <button class="interests-toggle" type="button" aria-expanded="false" aria-controls="interests-panel">
+              <span class="interests-thumbs" aria-hidden="true">
+                <img class="interests-thumb" src="images/personal-travel.jpg" alt="" loading="lazy" decoding="async">
+                <img class="interests-thumb" src="images/personal-football.jpg" alt="" loading="lazy" decoding="async">
+                <img class="interests-thumb" src="images/personal-animals.jpg" alt="" loading="lazy" decoding="async">
+              </span>
+              <span>More about me</span>
+              <svg class="interests-chevron" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </h2>
+          <hr class="work-column-rule animate-in" aria-hidden="true">
+          <div class="interests-panel" id="interests-panel" inert>
+            <div class="interests-panel-inner">
+              <div class="interests-list">
+                <div class="hobby-panel interest is-active" id="interest-music">
+                  <h3 class="interest-title">Music</h3>
+                  <p class="about-block-text">Spotify is always on in the background, here are two albums I enjoyed over the last year.</p>
+                  <div class="hobby-records">
+                    <figure class="hobby-record" style="--i: 0; --record-art: url('/images/album-the-art-of-loving.jpg')">
+                      <div class="hobby-record-stage">
+                        <span class="hobby-record-vinyl" aria-hidden="true"></span>
+                        <span class="hobby-record-sleeve"><img src="images/album-the-art-of-loving.jpg" alt="The Art of Loving by Olivia Dean" loading="lazy" decoding="async"></span>
+                      </div>
+                      <figcaption class="hobby-record-caption">
+                        <span class="hobby-record-artist">Olivia Dean</span>
+                        <span class="hobby-record-album">The Art of Loving</span>
+                      </figcaption>
+                    </figure>
+                    <figure class="hobby-record" style="--i: 1; --record-art: url('/images/album-son-of-spergy.jpg')">
+                      <div class="hobby-record-stage">
+                        <span class="hobby-record-vinyl" aria-hidden="true"></span>
+                        <span class="hobby-record-sleeve"><img src="images/album-son-of-spergy.jpg" alt="Son of Spergy by Daniel Caesar" loading="lazy" decoding="async"></span>
+                      </div>
+                      <figcaption class="hobby-record-caption">
+                        <span class="hobby-record-artist">Daniel Caesar</span>
+                        <span class="hobby-record-album">Son of Spergy</span>
+                      </figcaption>
+                    </figure>
                   </div>
-                  <div class="hobby-panels">
-                    <div class="hobby-panel" role="tabpanel" id="hobby-panel-travel" aria-labelledby="hobby-tab-travel">
-                      <p class="work-col--about-text">I love experiencing new places and cultures. I&rsquo;ve visited 18 countries so far and I&rsquo;m always planning the next trip.</p>
-                      <div class="hobby-photos">
-                        <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-travel.jpg" alt="Travelling" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Flying back to Ireland</span></span></button></figure>
-                        <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-travel-coast.jpg" style="object-position: 72% 50%" alt="Looking out over the coast from a clifftop viewpoint at dusk" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Palermo, Italy</span></span></button></figure>
-                      </div>
-                    </div>
-                    <div class="hobby-panel" role="tabpanel" id="hobby-panel-football" aria-labelledby="hobby-tab-football">
-                      <p class="work-col--about-text">I&rsquo;ve played football my whole life. Mix of casual games to more competitively on the weekends.</p>
-                      <div class="hobby-photos">
-                        <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-football.jpg" alt="Playing football" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">My sunday league team</span></span></button></figure>
-                        <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-football-team.webp" alt="Football team photo" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Football with Miro</span></span></button></figure>
-                      </div>
-                    </div>
-                    <div class="hobby-panel" role="tabpanel" id="hobby-panel-animals" aria-labelledby="hobby-tab-animals">
-                      <p class="work-col--about-text">I&rsquo;m happiest spending time with animals, especially our two dogs back home in Ireland, Eddie and Jessie.</p>
-                      <div class="hobby-photos">
-                        <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-animals.jpg" alt="With animals" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Eddie and Jessie</span></span></button></figure>
-                        <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-animals-cat.webp" style="object-position: 50% 30%" alt="A grey long-haired cat resting on a leather sofa" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">The late Meroux</span></span></button></figure>
-                      </div>
-                    </div>
-                    <div class="hobby-panel" role="tabpanel" id="hobby-panel-reading" aria-labelledby="hobby-tab-reading">
-                      <p class="work-col--about-text">A good book and a cup of tea is my favourite way to switch off, here are two books I&rsquo;m reading right now.</p>
-                      <div class="hobby-books">
-                        <figure class="hobby-book" style="--i: 0">
-                          <span class="hobby-book-pages" aria-hidden="true"></span>
-                          <span class="hobby-book-cover" style="--cover-bg: #fefdf9"><img src="images/book-thinking-fast-and-slow.jpg?v=3" alt="Thinking, Fast and Slow by Daniel Kahneman" loading="lazy" decoding="async"></span>
-                        </figure>
-                        <figure class="hobby-book" style="--i: 1">
-                          <span class="hobby-book-pages" aria-hidden="true"></span>
-                          <span class="hobby-book-cover" style="--cover-bg: #f2f3e5"><img src="images/book-careless-people.jpg" alt="Careless People by Sarah Wynn-Williams" loading="lazy" decoding="async"></span>
-                        </figure>
-                      </div>
-                    </div>
-                    <div class="hobby-panel is-active" role="tabpanel" id="hobby-panel-music" aria-labelledby="hobby-tab-music">
-                      <p class="work-col--about-text">Spotify is always on in the background, here are two albums I enjoyed over the last year.</p>
-                      <div class="hobby-records">
-                        <figure class="hobby-record" style="--i: 0; --record-art: url('/images/album-the-art-of-loving.jpg')">
-                          <div class="hobby-record-stage">
-                            <span class="hobby-record-vinyl" aria-hidden="true"></span>
-                            <span class="hobby-record-sleeve"><img src="images/album-the-art-of-loving.jpg" alt="The Art of Loving by Olivia Dean" loading="lazy" decoding="async"></span>
-                          </div>
-                          <figcaption class="hobby-record-caption">
-                            <span class="hobby-record-artist">Olivia Dean</span>
-                            <span class="hobby-record-album">The Art of Loving</span>
-                          </figcaption>
-                        </figure>
-                        <figure class="hobby-record" style="--i: 1; --record-art: url('/images/album-son-of-spergy.jpg')">
-                          <div class="hobby-record-stage">
-                            <span class="hobby-record-vinyl" aria-hidden="true"></span>
-                            <span class="hobby-record-sleeve"><img src="images/album-son-of-spergy.jpg" alt="Son of Spergy by Daniel Caesar" loading="lazy" decoding="async"></span>
-                          </div>
-                          <figcaption class="hobby-record-caption">
-                            <span class="hobby-record-artist">Daniel Caesar</span>
-                            <span class="hobby-record-album">Son of Spergy</span>
-                          </figcaption>
-                        </figure>
-                      </div>
-                    </div>
+                </div>
+                <div class="hobby-panel interest is-active" id="interest-travel">
+                  <h3 class="interest-title">Travel</h3>
+                  <p class="about-block-text">I love experiencing new places and cultures. I&rsquo;ve visited 18 countries so far and I&rsquo;m always planning the next trip.</p>
+                  <div class="hobby-photos">
+                    <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-travel.jpg" alt="Travelling" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Flying back to Ireland</span></span></button></figure>
+                    <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-travel-coast.jpg" style="object-position: 72% 50%" alt="Looking out over the coast from a clifftop viewpoint at dusk" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Palermo, Italy</span></span></button></figure>
+                  </div>
+                </div>
+                <div class="hobby-panel interest is-active" id="interest-reading">
+                  <h3 class="interest-title">Reading</h3>
+                  <p class="about-block-text">A good book and a cup of tea is my favourite way to switch off, here are two books I&rsquo;m reading right now.</p>
+                  <div class="hobby-books">
+                    <figure class="hobby-book" style="--i: 0">
+                      <span class="hobby-book-pages" aria-hidden="true"></span>
+                      <span class="hobby-book-cover" style="--cover-bg: #fefdf9"><img src="images/book-thinking-fast-and-slow.jpg?v=3" alt="Thinking, Fast and Slow by Daniel Kahneman" loading="lazy" decoding="async"></span>
+                    </figure>
+                    <figure class="hobby-book" style="--i: 1">
+                      <span class="hobby-book-pages" aria-hidden="true"></span>
+                      <span class="hobby-book-cover" style="--cover-bg: #f2f3e5"><img src="images/book-careless-people.jpg" alt="Careless People by Sarah Wynn-Williams" loading="lazy" decoding="async"></span>
+                    </figure>
+                  </div>
+                </div>
+                <div class="hobby-panel interest is-active" id="interest-football">
+                  <h3 class="interest-title">Football</h3>
+                  <p class="about-block-text">I&rsquo;ve played football my whole life. Mix of casual games to more competitively on the weekends.</p>
+                  <div class="hobby-photos">
+                    <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-football.jpg" alt="Playing football" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">My sunday league team</span></span></button></figure>
+                    <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-football-team.webp" alt="Football team photo" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Football with Miro</span></span></button></figure>
+                  </div>
+                </div>
+                <div class="hobby-panel interest is-active" id="interest-animals">
+                  <h3 class="interest-title">Animals</h3>
+                  <p class="about-block-text">I&rsquo;m happiest spending time with animals, especially our two dogs back home in Ireland, Eddie and Jessie.</p>
+                  <div class="hobby-photos">
+                    <figure class="hobby-photo" style="--i: 0"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-animals.jpg" alt="With animals" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">Eddie and Jessie</span></span></button></figure>
+                    <figure class="hobby-photo" style="--i: 1"><button class="hobby-photo-inner" type="button" aria-pressed="false"><span class="hobby-photo-face hobby-photo-front"><img src="images/personal-animals-cat.webp" style="object-position: 50% 30%" alt="A grey long-haired cat resting on a leather sofa" loading="lazy" decoding="async"></span><span class="hobby-photo-face hobby-photo-back"><span class="hobby-photo-note">The late Meroux</span></span></button></figure>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- Snake, in the site's dither style (snake.js). Click or tap the
+           board to play; arrow keys / WASD or swipes steer. -->
+      <section class="work-column work-column--snake animate-on-scroll-root" aria-labelledby="snake-heading">
+        <div class="work-column-inner">
+          <h2 class="visually-hidden" id="snake-heading">Snake</h2>
+          <div class="snake animate-in">
+            <canvas class="snake-board" tabindex="0" aria-label="Snake game. Press Enter or click to play, steer with the arrow keys, and press Space to pause."></canvas>
+          </div>
+          <p class="snake-status animate-in" data-snake-overlay aria-live="polite"><span class="snake-status-title">Game of Snake?</span><span class="snake-status-hint">Click to play</span></p>
         </div>
       </section>
 
@@ -267,10 +288,11 @@
   </div>
 
   <script src="js/ascii-text-scramble.js?v=5"></script>
-  <script src="js/projects.js?v=65"></script>
+  <script src="js/projects.js?v=69"></script>
   <script src="js/project-nav.js?v=72"></script>
-  <script src="js/main.js?v=161"></script>
-  <script src="js/texture-block.js?v=35"></script>
+  <script src="js/main.js?v=169"></script>
+  <script src="js/texture-block.js?v=39"></script>
+  <script src="js/snake.js?v=11"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>

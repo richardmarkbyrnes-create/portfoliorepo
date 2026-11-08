@@ -37,6 +37,9 @@ window.PROJECTS = {
     ],
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
+    // Hover preview on the home page, in a frame its own shape.
+    previewImage: 'images/custom-stickers-preview.webp?v=2',
+    previewAspect: '3286 / 2056',
     polaroids: [
       { src: 'images/sticker-photo-1.webp?v=2', r: -5, note: 'Canvas ’26 — people made their own stickers, then walked off with them printed!' },
       { src: 'images/sticker-photo-2.webp?v=2', r: 4, note: 'The sticker booth. A queue all day long for AI-made versions of yourself :)' },
@@ -90,7 +93,8 @@ window.PROJECTS = {
       { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineer' },
     ],
     // Hero is a looping video set in the page markup; hover preview needs a still.
-    previewImage: 'images/ask-ai-landing.webp',
+    previewImage: 'images/ask-ai-preview.webp?v=2',
+    previewAspect: '3286 / 2056',
     heroAspect: '1716 / 1096',
     paragraphs: [
       'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
@@ -117,8 +121,8 @@ window.PROJECTS = {
       'images/canvas-insights-hero.webp?v=2',
     ],
     // Hover preview on the home page, in a frame its own shape.
-    previewImage: 'images/canvas-insights-preview.webp?v=3',
-    previewAspect: '2334 / 1474',
+    previewImage: 'images/canvas-insights-preview.webp?v=7',
+    previewAspect: '3286 / 2056',
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
