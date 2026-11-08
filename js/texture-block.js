@@ -114,7 +114,15 @@
       float wipe = prog >= 1.0 ? 1.0 : smoothstep(front + 0.1, front - 0.1, edge);
       float wave = exp(-pow((edge - front) * 4.5, 2.0)) * sin(prog * 3.14159);
       float rise = 1.0 - pow(1.0 - clamp(intro / 0.7, 0.0, 1.0), 3.0);
-      float ground = 0.48 + n1 * 0.9 + n2 * 0.12 + tilt + bend + near * 0.42 + wave * 0.16 - (1.0 - rise) * 0.35;
+      // The landform's swing from its middle height, softly limited so it
+      // can't climb or sink out of the frame: unchanged near the middle,
+      // easing off towards +/-0.16 and never reaching it. The visible pill
+      // spans y 0.2-0.8, so the ground stays between ~0.32 and ~0.64 and
+      // every view keeps both land and sky (left alone, the waves lined up
+      // and filled the frame with one colour about a third of the time).
+      float swing = n1 * 0.9 + n2 * 0.12 + tilt + bend;
+      swing = swing / (1.0 + abs(swing) / 0.16);
+      float ground = 0.48 + swing + near * 0.42 + wave * 0.16 - (1.0 - rise) * 0.35;
 
       // Now and then a soft vertical ripple runs through the sky, like light
       // through glass, then fades.
@@ -336,7 +344,7 @@
   let raf = 0;
   // Start partway in, so the first frame is already a folded landscape.
   const OFFSET = 40;
-  const SPEED = 1.8;
+  const SPEED = 2.4;
   // Pointer over the block, in its own 0-1 space (y up, like the shader).
   // The position trails the real cursor and the pull fades in and out, so
   // the field leans after you rather than snapping.

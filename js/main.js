@@ -222,11 +222,14 @@ function playTapAnimation(el, cls) {
 // up. CSS does the motion off .is-active on the rows and .is-hovering on the
 // list.
 //
-// Only real pointer movement picks the row, and the gaps between rows keep
-// the current one, so the highlight never flickers between rows. Others
+// Only real pointer movement picks the row, and only a row under the
+// pointer — one a click would open — is ever active. Others
 // (preview, tap sound) follow the 'work-row-active' event rather than
 // mouseenter.
-const ROW_LEAVE_DELAY = 140;
+// Leaving the list lets go almost at once: the gaps between rows are inside
+// the list, so there's nothing to bridge — just a frame or two of grace for
+// a pointer that clips the edge and comes straight back.
+const ROW_LEAVE_DELAY = 40;
 
 function initProjectRowDetails() {
   const projects = window.PROJECTS || {};
@@ -273,8 +276,11 @@ function initProjectRowDetails() {
     if (event.pointerType !== 'mouse') return;
     clearTimeout(leaveTimer);
     const row = event.target.closest('.work-row-main[data-project]');
-    // In a gap between rows: keep whatever is showing.
+    // Only a row you could click is active. The links fill each row from
+    // rule to rule (CSS), so there are no gaps to bridge between them;
+    // anywhere else in the list lets go, as leaving it does.
     if (row) setActive(row);
+    else leaveTimer = setTimeout(() => setActive(null), ROW_LEAVE_DELAY);
   });
 
   list.addEventListener('pointerleave', (event) => {
@@ -561,6 +567,8 @@ function initProjectPreview() {
   // Plus how far it dips over the row.
   const OVER_YEAR = 28;
   const OVERLAP = 10;
+  // And how much lower it sits than that, either side of the title.
+  const NUDGE_Y = 16;
 
   let shown = null;
   let activeRow = null;
@@ -585,7 +593,7 @@ function initProjectPreview() {
     // They are CSS pixels, so scale them up into the rect's space.
     const width = (preview.offsetWidth || preview.getBoundingClientRect().width) * scale;
     const height = (preview.offsetHeight || preview.getBoundingClientRect().height) * scale;
-    const fitsAbove = rect.top + OVERLAP - height >= 8;
+    const fitsAbove = rect.top + OVERLAP + NUDGE_Y - height >= 8;
 
     // clientWidth/Height rather than window.inner*: they exclude the scrollbar.
     const viewportWidth = document.documentElement.clientWidth;
@@ -598,11 +606,11 @@ function initProjectPreview() {
     if (fitsAbove) {
       preview.classList.remove('is-below');
       preview.style.top = 'auto';
-      preview.style.bottom = `${(viewportHeight - rect.top - OVERLAP) / scale}px`;
+      preview.style.bottom = `${(viewportHeight - rect.top - OVERLAP - NUDGE_Y) / scale}px`;
     } else {
       preview.classList.add('is-below');
       preview.style.bottom = 'auto';
-      preview.style.top = `${(rect.bottom - OVERLAP) / scale}px`;
+      preview.style.top = `${(rect.bottom - OVERLAP + NUDGE_Y) / scale}px`;
     }
   }
 
@@ -736,7 +744,10 @@ function initProjectPreview() {
   document.addEventListener('work-row-active', (event) => {
     const row = event.detail.row;
     const src = row && sources.get(row);
+    // No row: the pointer has left the list (initProjectRowDetails already
+    // waited its beat), so the card goes now rather than after another delay.
     if (src) show(row, src);
+    else if (!row) hide();
     else scheduleHide();
   });
 
@@ -1218,6 +1229,46 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
+// Interests: collapsed behind its heading's chevron, opening to one long
+// list of interests (each a title, a line and its photos). The button flips
+// aria-expanded and the panel's .is-open (CSS unfolds it); while closed the
+// panel is inert, so its tabs and photos are out of the tab order.
+function initInterestsToggle() {
+  const toggle = document.querySelector('.interests-toggle');
+  const panel = toggle && document.getElementById(toggle.getAttribute('aria-controls'));
+  if (!panel) return;
+  toggle.addEventListener('click', () => {
+    const open = toggle.getAttribute('aria-expanded') !== 'true';
+    toggle.setAttribute('aria-expanded', String(open));
+    // The panel only clips its contents while it folds or unfolds; once
+    // open it lets them overhang (the records' vinyl, tilted prints and
+    // shadows reach past the column), so .is-settled lands when the unfold
+    // finishes and comes off the moment it starts to close.
+    panel.classList.remove('is-settled');
+    panel.classList.toggle('is-open', open);
+    panel.inert = !open;
+    if (open) {
+      const settle = (event) => {
+        if (event && event.target !== panel) return;
+        panel.removeEventListener('transitionend', settle);
+        if (panel.classList.contains('is-open')) panel.classList.add('is-settled');
+      };
+      if (prefersReducedMotion()) settle();
+      else panel.addEventListener('transitionend', settle);
+    }
+    // Opening replays each interest's entrance (the photos', books' and
+    // records' staggers), which otherwise already ran out of sight while
+    // the panel was folded away.
+    if (open) {
+      panel.querySelectorAll('.interest').forEach((item) => {
+        item.classList.remove('is-active');
+        void item.offsetWidth;
+        item.classList.add('is-active');
+      });
+    }
+  });
+}
+
 // About hobby tabs. The CSS does the motion: the outgoing panel gets
 // .is-leaving (slide out) until its animation ends, the incoming one
 // .is-active (slide in, then the staggered photos). data-dir on the root
@@ -1451,6 +1502,7 @@ function initThemeNudge() {
 
 initThemeSwitcher();
 initThemeNudge();
+initInterestsToggle();
 initHobbyTabs();
 initHobbyCardTilt();
 initHobbyPhotoFlip();
