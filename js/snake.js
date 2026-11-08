@@ -36,7 +36,8 @@
   // Before a first game: one line, "Click below to play" (or "Tap").
   overlay.innerHTML = '';
   const invite = document.createElement('span');
-  invite.className = 'snake-status-title';
+  // In the light grey of the second lines, not the title colour.
+  invite.className = 'snake-status-hint';
   invite.textContent = `${verb[0].toUpperCase()}${verb.slice(1)} below to play`;
   overlay.append(invite);
 
