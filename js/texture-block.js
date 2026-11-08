@@ -378,7 +378,9 @@
   // footer's plays when you reach it), ~1.9s, a beat after the page settles.
   const INTRO_MS = 1900;
   let introStart = 0;
-  let introDone = reduce;
+  // The footer's landscape has no entrance: it's simply there.
+  let introDone = reduce || noDetails;
+  if (noDetails) gl.uniform1f(uIntro, 1);
   function updateIntro(now) {
     if (introDone) return;
     const k = introStart ? Math.max(0, Math.min(1, (now - introStart) / INTRO_MS)) : 0;
@@ -401,7 +403,9 @@
     if (running || reduce) return;
     running = true;
     if (!start) start = performance.now();
-    if (!introStart) introStart = performance.now() + 250;
+    if (!introStart) {
+      introStart = performance.now() + 250;
+    }
     raf = requestAnimationFrame(loop);
   }
   function pause() {
@@ -515,7 +519,7 @@
   })();
   particles.show(season);
 
-  gl.uniform1f(uIntro, reduce ? 1 : 0);
+  gl.uniform1f(uIntro, reduce || noDetails ? 1 : 0);
   draw(OFFSET);
   wrap.classList.add('is-ready');
 
