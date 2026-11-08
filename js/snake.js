@@ -16,6 +16,8 @@
   const ctx = board.getContext('2d');
   if (!ctx) return;
   const wrap = board.parentElement;
+  // The column the play area matches (the section's inner, text-width box).
+  const playArea = wrap.closest('.work-column-inner') || wrap.parentElement;
   // The status line under the board: how to play, paused, game over.
   const overlay = document.querySelector('[data-snake-overlay]');
   // The score now only shows in the game-over line; these stay optional.
@@ -31,15 +33,12 @@
   const BEST_KEY = 'portfolio-snake-best';
   // "Tap" on touch screens, "click" with a mouse.
   const verb = (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches) ? 'tap' : 'click';
-  // Before a first game: an invitation, with how to start under it.
+  // Before a first game: one line, "Click below to play" (or "Tap").
   overlay.innerHTML = '';
   const invite = document.createElement('span');
   invite.className = 'snake-status-title';
-  invite.textContent = 'Game of Snake?';
-  const how = document.createElement('span');
-  how.className = 'snake-status-hint';
-  how.textContent = `${verb[0].toUpperCase()}${verb.slice(1)} to play`;
-  overlay.append(invite, how);
+  invite.textContent = `${verb[0].toUpperCase()}${verb.slice(1)} below to play`;
+  overlay.append(invite);
 
   // The food is the season's icon, as 7x7 pixel art: a sun in summer, a
   // tulip in spring, a leaf in autumn and a snowflake in winter (the dark
@@ -54,7 +53,7 @@
       '.#...#.',
       '...#...',
     ] },
-    spring: { colour: '#e48fb0', art: [
+    spring: { colour: '#8fcf86', art: [
       '.#.#.#.',
       '.#####.',
       '.#####.',
@@ -92,10 +91,14 @@
   // The pointer over the board, for the idle grid's hover glow (CSS px in
   // the board's space); amount eases in and out.
   const HOVER_RADIUS = 120;
+  // Columns over which the outer dots fade from game to faint.
+  const FADE_CELLS = 6;
   const hover = { x: 0, y: 0, on: false, amount: 0 };
 
   let cols = 0;
   let cellPx = TARGET_CELL;
+  let offX = 0; // CSS px from the board's left edge to the play area
+  let extra = 0; // decorative grid columns either side of the play area
   let snake = [];
   let dir = [1, 0];
   let queued = [];
@@ -113,7 +116,7 @@
 
   // Colours: the snake and food in the season's accent, the grid in a faint
   // tint of the text colour.
-  const ACCENTS = { normal: '#e07aa0', spring: '#4f9a62', autumn: '#c2703d', dark: '#7aa5d8' };
+  const ACCENTS = { normal: '#9ed49a', spring: '#7fb2e0', autumn: '#c2703d', dark: '#7aa5d8' };
   let colours = null;
   function readColours() {
     const css = getComputedStyle(document.documentElement);
@@ -138,15 +141,26 @@
       // The grid as a solid faint colour (the text mixed 18% into the page),
       // since single dithered pixels can't carry transparency.
       grid: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.18)),
+      gridFaint: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.08)),
     };
   }
 
   function size() {
+    // The play area is the text column's width; the board itself runs the
+    // full width of the page, the dot grid carrying on either side of it.
+    // Measured from the column's content box (its padding excluded), and
+    // placed where that box actually sits relative to the board.
+    const pcs = getComputedStyle(playArea);
+    const padL = parseFloat(pcs.paddingLeft) || 0;
+    const padR = parseFloat(pcs.paddingRight) || 0;
+    const playWidth = playArea.clientWidth - padL - padR;
     const width = wrap.clientWidth;
-    const nextCols = Math.max(12, Math.round(width / TARGET_CELL));
+    const nextCols = Math.max(12, Math.round(playWidth / TARGET_CELL));
     const changed = nextCols !== cols;
     cols = nextCols;
-    cellPx = width / cols;
+    cellPx = playWidth / cols;
+    offX = Math.max(0, playArea.getBoundingClientRect().left + padL - wrap.getBoundingClientRect().left);
+    extra = Math.ceil(offX / cellPx);
     const height = cellPx * ROWS;
     // One canvas pixel per PX CSS px, scaled up without smoothing (CSS), so
     // the dither reads as chunky pixels.
@@ -173,11 +187,15 @@
   function placeFood() {
     const taken = new Set(snake.map(([x, y]) => `${x},${y}`));
     let spot;
-    do { spot = [Math.floor(Math.random() * cols), Math.floor(Math.random() * ROWS)]; } while (taken.has(`${spot[0]},${spot[1]}`));
+    // Never in the top row, where the grid fades into the page.
+    do { spot = [Math.floor(Math.random() * cols), 1 + Math.floor(Math.random() * (ROWS - 1))]; } while (taken.has(`${spot[0]},${spot[1]}`));
     food = spot;
   }
 
-  const centre = (c) => (c + 0.5) * cellPx;
+  // Cell centres in CSS px on the board. The play area sits in the middle
+  // of a wider, full-width board, offX in from its left edge.
+  const cx = (c) => (c + 0.5) * cellPx + offX;
+  const cy = (c) => (c + 0.5) * cellPx;
 
   // Every shape is a squircle (a superellipse, |x|^4 + |y|^4 = r^4): the
   // soft rounded square of an app icon rather than a circle. Traced as a
@@ -226,7 +244,7 @@
       const k = n > 1 ? i / (n - 1) : 0;
       // The head is the same size as the body (only solid where the rest
       // dithers); from there the segments taper a little to the tail.
-      dot(centre(snake[i][0]), centre(snake[i][1]), cellPx * (0.38 - 0.08 * k), colours.accent, 1);
+      dot(cx(snake[i][0]), cy(snake[i][1]), cellPx * (0.38 - 0.08 * k), colours.accent, 1);
     }
 
     // 2. Dither: a pixel inside a shape (coverage past half, so the outline
@@ -240,7 +258,7 @@
       for (let x = 0; x < W; x++) {
         const i = (y * W + x) * 4;
         if (d[i + 3] < 128) { d[i + 3] = 0; continue; }
-        const gx = Math.floor((x + 0.5) * PX / cellPx);
+        const gx = Math.floor(((x + 0.5) * PX - offX) / cellPx);
         const st = strength.get(`${gx},${gy}`) ?? 1;
         d[i + 3] = st > bayer(x, y) ? 255 : 0;
       }
@@ -250,8 +268,8 @@
     //    little through the same dither.
     if (food) {
       const art = colours.foodArt;
-      const ox = Math.floor(centre(food[0]) / PX) - Math.floor(art[0].length / 2);
-      const oy = Math.floor(centre(food[1]) / PX) - Math.floor(art.length / 2);
+      const ox = Math.floor(cx(food[0]) / PX) - Math.floor(art[0].length / 2);
+      const oy = Math.floor(cy(food[1]) / PX) - Math.floor(art.length / 2);
       const st = 0.8 + 0.2 * pulse;
       art.forEach((row, ry) => [...row].forEach((ch, rx) => {
         const x = ox + rx;
@@ -270,13 +288,23 @@
     hover.amount += ((hover.on && state !== 'playing' ? 1 : 0) - hover.amount) * 0.12;
     const lit = hover.amount > 0.01;
     for (let gy = 0; gy < ROWS; gy++) {
-      for (let gx = 0; gx < cols; gx++) {
+      for (let gx = -extra; gx < cols + extra; gx++) {
         if (strength.has(`${gx},${gy}`) || `${gx},${gy}` === foodKey) continue;
-        const x = Math.floor(centre(gx) / PX);
-        const y = Math.floor(centre(gy) / PX);
+        // Outside the play area the dots are a step fainter, so the field
+        // you can actually play in still reads.
+        // Outside the play area the dots ease from the game's strength at its
+        // edge down to the faint outer one over FADE_CELLS, so there's no
+        // hard line where the field ends. The top row is faint throughout.
+        const away = gx < 0 ? -gx : gx >= cols ? gx - cols + 1 : 0;
+        const fadeRow = gy === 0;
+        const mixK = fadeRow ? 1 : Math.min(1, away / FADE_CELLS);
+        const dotColour = mixK === 0 ? colours.grid : mixK === 1 ? colours.gridFaint
+          : colours.grid.map((v, i) => Math.round(v + (colours.gridFaint[i] - v) * (mixK * mixK * (3 - 2 * mixK))));
+        const x = Math.floor(cx(gx) / PX);
+        const y = Math.floor(cy(gy) / PX);
         let st = 0;
         if (lit) {
-          const dist = Math.hypot(centre(gx) - hover.x, centre(gy) - hover.y);
+          const dist = Math.hypot(cx(gx) - hover.x, cy(gy) - hover.y);
           const near = Math.max(0, 1 - dist / HOVER_RADIUS);
           const ripple = 0.7 + 0.3 * Math.sin(dist / 14 - now / 170);
           st = Math.min(1, near * (0.55 + 0.45 * near) * ripple * hover.amount * 1.15);
@@ -293,7 +321,7 @@
             const core = Math.abs(px - off) <= 0 && Math.abs(py - off) <= 0;
             const on = st > bayer(X, Y) * (core ? 0.5 : 1);
             if (!on && !(px === off && py === off)) continue;
-            const c = colours.grid;
+            const c = dotColour;
             d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 255;
           }
         }
@@ -353,7 +381,7 @@
         bestEl.textContent = best;
         try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) { /* storage blocked */ }
       }
-      if (!reduceMotion) bursts.push({ x: centre(food[0]), y: centre(food[1]), t: performance.now(), c: colours.food });
+      if (!reduceMotion) bursts.push({ x: cx(food[0]), y: cy(food[1]), t: performance.now(), c: colours.food });
       placeFood();
     } else {
       snake.pop();

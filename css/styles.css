@@ -9774,8 +9774,16 @@ body[data-page="home"] .page:has(.season-footer) {
   /* A short fade at the top edge, then an even strength across the strip,
      softened overall so it sits back from the page. */
   opacity: 0.45;
-  -webkit-mask: linear-gradient(to bottom, transparent, #000 22%, #000 100%);
-  mask: linear-gradient(to bottom, transparent, #000 22%, #000 100%);
+  /* A short fade at the top edge, and from the centre out to each side, as
+     the Snake grid above does, so the two read as one field. */
+  -webkit-mask:
+    linear-gradient(to bottom, transparent, #000 22%, #000 100%),
+    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to bottom, transparent, #000 22%, #000 100%),
+    linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask-composite: intersect;
 }
 
 /* A soft white edge over the texture along the bottom and both sides, like
@@ -10309,7 +10317,7 @@ body[data-page="home"] .work-column--interests .interests-heading {
    edge,
    with the overlay line over it until a game starts. */
 body[data-page="home"] .work-column--snake {
-  margin-top: 96px;
+  margin-top: 124px;
 }
 
 .snake {
@@ -10432,14 +10440,14 @@ body[data-page="home"] .work-column--snake {
   .snake-dpad-btn { transition: none; }
 }
 
-/* The status line (how to play, paused, game over), centred under the
+/* The status line (how to play, paused, game over), centred above the
    board. Kept in the layout when hidden, so the page doesn't shift as a
    game starts and stops. */
 .snake-status {
   /* Always two lines tall (the first-visit invitation's height), so the
      one-line messages that replace it don't shift the page. */
   min-height: calc(2em * 1.45);
-  margin: 14px 0 0;
+  margin: 0 0 16px;
   font-family: var(--sans);
   font-size: 13px;
   line-height: 1.45;
@@ -10484,7 +10492,7 @@ body[data-page="home"] .work-column--snake {
 
 @media (max-width: 768px) {
   body[data-page="home"] .work-column--snake {
-    margin-top: 72px;
+    margin-top: 92px;
   }
 }
 
@@ -10712,4 +10720,57 @@ body[data-page="home"] .work-column--interests .hobby-panel .hobby-photos,
 body[data-page="home"] .work-column--interests .hobby-panel .hobby-books,
 body[data-page="home"] .work-column--interests .hobby-panel .hobby-records {
   margin-top: 26px;
+}
+
+/* Snake, full width: the board (and its frosted pause glass) runs edge to
+   edge like the footer, the play area staying the text column's width in
+   the middle (snake.js draws the dot grid on out to both sides, a step
+   fainter). The outer dots fade away towards the screen edges. The section
+   sits close above the footer now. */
+body[data-page="home"] .work-column--snake .snake {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+body[data-page="home"] .work-column--snake .snake-board {
+  -webkit-mask: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  mask: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+}
+
+body[data-page="home"] .work-column--snake + .season-footer {
+  margin-top: 8px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--snake .snake-board {
+    -webkit-mask: none;
+    mask: none;
+  }
+
+  body[data-page="home"] .work-column--snake + .season-footer {
+    margin-top: 4px;
+  }
+}
+
+/* ── Snake meets the footer ──────────────────────────────────────────────
+   The footer's landscape rises to overlap the bottom of the dot grid a
+   touch; its top edge is already a soft fade. */
+body[data-page="home"] .work-column--snake + .season-footer {
+  margin-top: -18px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--snake + .season-footer {
+    margin-top: -14px;
+  }
+}
+
+/* Snake and the footer are simply there, like the footer's landscape: no
+   entrance fade on the board or its message. */
+html body[data-page="home"] .work-column--snake .snake,
+html body[data-page="home"] .work-column--snake .snake-status {
+  animation: none;
+  opacity: 1;
+  transform: none;
+  filter: none;
 }
