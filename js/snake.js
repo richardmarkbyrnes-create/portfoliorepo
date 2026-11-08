@@ -30,7 +30,7 @@
   const TICK = 150; // ms per step
   const BEST_KEY = 'portfolio-snake-best';
   // "Tap" on touch screens, "click" with a mouse.
-  const verb = window.matchMedia('(pointer: coarse)').matches ? 'tap' : 'click';
+  const verb = (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches) ? 'tap' : 'click';
   // Before a first game: an invitation, with how to start under it.
   overlay.innerHTML = '';
   const invite = document.createElement('span');
@@ -367,7 +367,7 @@
   }
   function showHint() {
     clearHint();
-    overlay.textContent = verb === 'tap' ? 'Swipe to steer' : 'Use arrow keys to navigate';
+    overlay.textContent = verb === 'tap' ? 'Use the arrows below to steer' : 'Use arrow keys to navigate';
     overlay.hidden = false;
     hintTimer = setTimeout(() => {
       if (state !== 'playing') return;
@@ -447,6 +447,30 @@
   wrap.addEventListener('click', () => {
     if (state === 'playing') pause();
     else start();
+  });
+
+  // Touch screens get the on-screen arrows (.is-touch on the section):
+  // detected up front where the browser says so, and otherwise the first
+  // time the board is touched.
+  const section = board.closest('section') || wrap;
+  const touchy = window.matchMedia('(pointer: coarse)').matches
+    || window.matchMedia('(hover: none)').matches
+    || navigator.maxTouchPoints > 0 && !window.matchMedia('(pointer: fine)').matches;
+  if (touchy) section.classList.add('is-touch');
+  board.addEventListener('touchstart', () => section.classList.add('is-touch'), { passive: true, once: true });
+
+  // The on-screen arrows (touch screens): each turns the snake the moment a
+  // finger lands, rather than on release, so it keeps up with play.
+  document.querySelectorAll('.snake-dpad-btn').forEach((btn) => {
+    const next = btn.dataset.dir.split(',').map(Number);
+    btn.addEventListener('pointerdown', (event) => {
+      event.preventDefault();
+      if (state === 'playing') turn(next);
+    });
+    // Keyboard / assistive activation still works through click.
+    btn.addEventListener('click', (event) => {
+      if (event.detail === 0 && state === 'playing') turn(next);
+    });
   });
 
   // Swipes on touch: the direction of the larger movement.

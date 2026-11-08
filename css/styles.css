@@ -10373,6 +10373,65 @@ body[data-page="home"] .work-column--snake {
   transition-delay: 0.22s;
 }
 
+/* Arrow pad under the board for touch screens: four rounded tiles in a
+   cross, shown only while a game is running (.snake.is-playing). */
+.snake-dpad {
+  display: none;
+}
+
+/* .is-touch comes from snake.js (touch detected). */
+@media all {
+  .is-touch .snake.is-playing ~ .snake-dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 52px);
+    grid-template-rows: repeat(2, 52px);
+    grid-template-areas:
+      ". up ."
+      "left down right";
+    gap: 8px;
+    justify-content: center;
+    margin-top: 16px;
+    animation: snake-dpad-in 0.3s var(--sw-ease, ease-in-out) both;
+  }
+}
+
+.snake-dpad-btn--up { grid-area: up; }
+.snake-dpad-btn--left { grid-area: left; }
+.snake-dpad-btn--down { grid-area: down; }
+.snake-dpad-btn--right { grid-area: right; }
+
+.snake-dpad-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--text) 6%, var(--bg));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--text) 8%, transparent);
+  color: var(--text);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: background-color 0.12s ease, scale 0.12s ease;
+}
+
+.snake-dpad-btn:active {
+  background: color-mix(in srgb, var(--text) 14%, var(--bg));
+  scale: 0.94;
+}
+
+@keyframes snake-dpad-in {
+  from { opacity: 0; translate: 0 6px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-touch .snake.is-playing ~ .snake-dpad { animation: none; }
+  .snake-dpad-btn { transition: none; }
+}
+
 /* The status line (how to play, paused, game over), centred under the
    board. Kept in the layout when hidden, so the page doesn't shift as a
    game starts and stops. */

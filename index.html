@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=1343">
+  <link rel="stylesheet" href="css/styles.css?v=1345">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -235,6 +235,13 @@
           <div class="snake animate-in">
             <canvas class="snake-board" tabindex="0" aria-label="Snake game. Press Enter or click to play, steer with the arrow keys, and press Space or click to pause."></canvas>
           </div>
+          <!-- Touch screens only, while a game is running (snake.js). -->
+          <div class="snake-dpad" aria-label="Steer the snake">
+            <button class="snake-dpad-btn snake-dpad-btn--up" type="button" data-dir="0,-1" aria-label="Up"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 10l4-4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="snake-dpad-btn snake-dpad-btn--left" type="button" data-dir="-1,0" aria-label="Left"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M10 4l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="snake-dpad-btn snake-dpad-btn--down" type="button" data-dir="0,1" aria-label="Down"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M4 6l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <button class="snake-dpad-btn snake-dpad-btn--right" type="button" data-dir="1,0" aria-label="Right"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M6 4l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
           <p class="snake-status animate-in" data-snake-overlay aria-live="polite"><span class="snake-status-title">Game of Snake?</span><span class="snake-status-hint">Click to play</span></p>
         </div>
       </section>
@@ -292,7 +299,7 @@
   <script src="js/project-nav.js?v=72"></script>
   <script src="js/main.js?v=169"></script>
   <script src="js/texture-block.js?v=40"></script>
-  <script src="js/snake.js?v=15"></script>
+  <script src="js/snake.js?v=17"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>
