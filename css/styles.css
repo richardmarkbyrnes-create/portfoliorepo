@@ -111,8 +111,8 @@
    spring, a warm brown for autumn); summer wears the plain light theme.
    (The texture palettes are set separately, in texture-block.js.) */
 [data-theme="spring"] {
-  --bg: #f8faf1;
-  --note-halo: rgba(248, 250, 241, 0.95);
+  --bg: #f8f9f4;
+  --note-halo: rgba(248, 249, 244, 0.95);
   --text: #34463a;
   --text-body: #2c3c31;
   --text-muted: #566a5b;
@@ -122,13 +122,13 @@
   --text-resume-header: #435848;
   --surface: #fbfcf6;
   --surface-muted: #fbfcf6;
-  --nav-bg: rgba(248, 250, 241, 0.62);
-  --theme-popover-bg: rgba(248, 250, 241, 0.48);
-  --nav-active-bg: rgba(248, 250, 241, 0.5);
+  --nav-bg: rgba(248, 249, 244, 0.62);
+  --theme-popover-bg: rgba(248, 249, 244, 0.48);
+  --nav-active-bg: rgba(248, 249, 244, 0.5);
   --nav-text-active: #16201a;
   --nav-text-inactive: #758a7b;
-  --hero-glow: rgba(248, 250, 241, 0.5);
-  --switcher-bg: rgba(248, 250, 241, 0.72);
+  --hero-glow: rgba(248, 249, 244, 0.5);
+  --switcher-bg: rgba(248, 249, 244, 0.72);
   --line-art-stroke: #3a4a3d;
 }
 
@@ -10375,7 +10375,7 @@ body[data-page="home"] .work-column--snake {
   filter: grayscale(1);
 }
 
-.snake.is-paused::after,
+/* Game over frosts over; a pause only drains the colour, no blur. */
 .snake.is-over::after {
   opacity: 1;
   transition-delay: 0.22s;
@@ -10773,4 +10773,75 @@ html body[data-page="home"] .work-column--snake .snake-status {
   opacity: 1;
   transform: none;
   filter: none;
+}
+
+/* Text highlight in each season's colours rather than near-black: a soft
+   tint of the season (the Snake's own colours), with the theme's text on
+   it. Dark keeps its light highlight. */
+:root,
+[data-theme="normal"] {
+  --selection-bg: #cfe8c9;
+  --selection-color: #1f3323;
+}
+
+[data-theme="spring"] {
+  --selection-bg: #cfe2f5;
+  --selection-color: #1d2f44;
+}
+
+[data-theme="autumn"] {
+  --selection-bg: #f2d6bd;
+  --selection-color: #3f2a1b;
+}
+
+[data-theme="dark"] {
+  --selection-bg: #34506e;
+  --selection-color: #f3f6fa;
+}
+
+/* Each interest's tray carries a faint drawing of its own behind the media:
+   record grooves for music, a globe and a flight path for travel, lines of
+   text for reading, a pitch for football, a trail of paw prints for
+   animals. Drawn in the text colour at low strength (the SVG is a mask), so
+   it follows the season; the tray is isolated so the drawing sits above its
+   fill but under everything in it. */
+body[data-page="home"] .interests-list .interest .hobby-photos,
+body[data-page="home"] .interests-list .interest .hobby-books,
+body[data-page="home"] .interests-list .interest .hobby-records {
+  position: relative;
+  isolation: isolate;
+}
+
+body[data-page="home"] .interests-list .interest .hobby-photos::before,
+body[data-page="home"] .interests-list .interest .hobby-books::before,
+body[data-page="home"] .interests-list .interest .hobby-records::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  background-color: var(--text);
+  opacity: 0.06;
+  /* The drawing, faded from nothing at the left to full at the right. */
+  -webkit-mask:
+    var(--interest-pattern) center / cover no-repeat,
+    linear-gradient(to right, transparent, #000);
+  -webkit-mask-composite: source-in;
+  mask:
+    var(--interest-pattern) center / cover no-repeat,
+    linear-gradient(to right, transparent, #000);
+  mask-composite: intersect;
+}
+
+#interest-music { --interest-pattern: url('../images/pattern-music.svg'); }
+#interest-travel { --interest-pattern: url('../images/pattern-travel.svg'); }
+#interest-reading { --interest-pattern: url('../images/pattern-reading.svg'); }
+#interest-football { --interest-pattern: url('../images/pattern-football.svg'); }
+#interest-animals { --interest-pattern: url('../images/pattern-animals.svg'); }
+
+/* Reading's lines start from the top rather than being cropped centrally. */
+body[data-page="home"] #interest-reading .hobby-books::before {
+  -webkit-mask-position: center top, 0 0;
+  mask-position: center top, 0 0;
 }
