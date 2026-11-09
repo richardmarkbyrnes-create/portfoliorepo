@@ -143,7 +143,7 @@
       // since single dithered pixels can't carry transparency.
       grid: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.18)),
       gridFaint: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.08)),
-      // The head's face, cut out of it in the page colour.
+      // The head's eye, cut out of it in the page colour.
       face: bg,
     };
   }
@@ -243,11 +243,28 @@
 
     // 1. The snake as plain coverage (full alpha): tail first, head on top.
     ctx.globalAlpha = 1;
-    for (let i = n - 1; i >= 0; i--) {
+    for (let i = n - 1; i >= 1; i--) {
       const k = n > 1 ? i / (n - 1) : 0;
-      // The head is the same size as the body (only solid where the rest
-      // dithers); from there the segments taper a little to the tail.
+      // The segments taper a little from the head to the tail.
       dot(cx(snake[i][0]), cy(snake[i][1]), cellPx * (0.38 - 0.08 * k), colours.accent, 1);
+    }
+    // The head: a Pac-Man, a round body with a wedge of mouth facing the way
+    // it's heading, chomping open and shut as it goes (still while paused or
+    // waiting, just ajar). A touch bigger than the body so it reads.
+    if (n) {
+      const hxp = cx(snake[0][0]);
+      const hyp = cy(snake[0][1]);
+      const r = cellPx * 0.45;
+      const facing = Math.atan2(dir[1], dir[0]);
+      const chomp = state === 'playing' && !reduceMotion ? Math.abs(Math.sin(now / 95)) : 0.45;
+      const mouth = 0.08 + 0.62 * chomp; // half-angle, radians
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = colours.accent;
+      ctx.beginPath();
+      ctx.moveTo(hxp, hyp);
+      ctx.arc(hxp, hyp, r, facing + mouth, facing - mouth + Math.PI * 2);
+      ctx.closePath();
+      ctx.fill();
     }
 
     // 2. Dither: a pixel inside a shape (coverage past half, so the outline
@@ -267,23 +284,20 @@
       }
     }
 
-    // 2b. A little smiley face on the head, in pixels, cut out in the page
-    //     colour: two eyes and a smile, kept upright whichever way the snake
-    //     is heading, so it always reads as a face. (x, y) from the head's
-    //     centre, y down.
+    // 2b. Pac-Man's eye: one pixel in the page colour, above the mouth
+    //     and towards the front, on the side that's "up" for the way it faces.
     if (n) {
       const [hx, hy] = snake[0];
-      const ox = cx(hx) / PX;
-      const oy = cy(hy) / PX;
-      const smile = [[-1, -1], [1, -1], [-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]];
-      smile.forEach(([a, b]) => {
-        const x = Math.floor(ox + a);
-        const y = Math.floor(oy + b);
-        if (x < 0 || y < 0 || x >= W || y >= H) return;
-        const i = (y * W + x) * 4;
-        if (!d[i + 3]) return;
-        d[i] = colours.face[0]; d[i + 1] = colours.face[1]; d[i + 2] = colours.face[2];
-      });
+      const [ax, ay] = dir;
+      // "Up" relative to travel: screen-up when moving sideways, and the
+      // left-hand side when moving vertically, so it never sits in the mouth.
+      const [ux, uy] = ay === 0 ? [0, -1] : [-1, 0];
+      const ex = Math.floor(cx(hx) / PX + ax * 0.5 + ux * 2.2);
+      const ey = Math.floor(cy(hy) / PX + ay * 0.5 + uy * 2.2);
+      if (ex >= 0 && ey >= 0 && ex < W && ey < H) {
+        const i = (ey * W + ex) * 4;
+        if (d[i + 3]) { d[i] = colours.face[0]; d[i + 1] = colours.face[1]; d[i + 2] = colours.face[2]; }
+      }
     }
 
     // 3. The food: the season's icon, centred in its cell, breathing a
