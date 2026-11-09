@@ -1317,7 +1317,9 @@ function initAboutDither() {
         if (r >= 1) continue;
         // Patchy: soft clumps (low-frequency noise) break the halo up so it
         // reads as scattered dither rather than an even ring.
-        const patch = smooth(0.25, 0.75, noise(x / 14, y / 14) * 0.65 + noise(x / 5, y / 5) * 0.35);
+        // A tighter band on the noise, so more of the field drops out
+        // between the clumps.
+        const patch = smooth(0.38, 0.72, noise(x / 12, y / 12) * 0.6 + noise(x / 4.5, y / 4.5) * 0.4);
         const strength = smooth(0.24, 0.48, r) * (1 - smooth(0.52, 1, r)) * 0.5 * fromBottom * patch;
         // Clear behind the portrait, feathering back in just outside it.
         let clear = 1;

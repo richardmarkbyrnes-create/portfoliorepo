@@ -43,7 +43,8 @@
 
   function getStoredTheme() {
     const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    return THEMES.some((theme) => theme.id === stored) ? stored : 'normal';
+    // Spring for anyone who hasn't picked a season yet.
+    return THEMES.some((theme) => theme.id === stored) ? stored : 'spring';
   }
 
   // Menu icons, one per season (the sun and moon double as summer and winter).
