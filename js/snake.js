@@ -143,6 +143,8 @@
       // since single dithered pixels can't carry transparency.
       grid: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.18)),
       gridFaint: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.08)),
+      // The head's face, cut out of it in the page colour.
+      face: bg,
     };
   }
 
@@ -263,6 +265,25 @@
         const st = strength.get(`${gx},${gy}`) ?? 1;
         d[i + 3] = st > bayer(x, y) ? 255 : 0;
       }
+    }
+
+    // 2b. A little smiley face on the head, in pixels, cut out in the page
+    //     colour: two eyes and a smile, kept upright whichever way the snake
+    //     is heading, so it always reads as a face. (x, y) from the head's
+    //     centre, y down.
+    if (n) {
+      const [hx, hy] = snake[0];
+      const ox = cx(hx) / PX;
+      const oy = cy(hy) / PX;
+      const smile = [[-1, -1], [1, -1], [-2, 1], [-1, 2], [0, 2], [1, 2], [2, 1]];
+      smile.forEach(([a, b]) => {
+        const x = Math.floor(ox + a);
+        const y = Math.floor(oy + b);
+        if (x < 0 || y < 0 || x >= W || y >= H) return;
+        const i = (y * W + x) * 4;
+        if (!d[i + 3]) return;
+        d[i] = colours.face[0]; d[i + 1] = colours.face[1]; d[i + 2] = colours.face[2];
+      });
     }
 
     // 3. The food: the season's icon, centred in its cell, breathing a
@@ -412,7 +433,16 @@
     if (state !== 'playing') return;
     state = 'paused';
     clearHint();
-    overlay.textContent = verb === 'tap' ? 'Paused · tap to resume' : 'Paused · click or space to resume';
+    // A pause icon on a little bordered tile (styled like the "More about
+    // me" thumbnails), then how to resume.
+    overlay.innerHTML = '';
+    const line = document.createElement('span');
+    line.className = 'snake-status-hint snake-status-paused';
+    const icon = document.createElement('span');
+    icon.className = 'snake-pause-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    line.append(icon, `${verb[0].toUpperCase()}${verb.slice(1)} to resume`);
+    overlay.append(line);
     overlay.hidden = false;
     wrap.classList.remove('is-playing');
     wrap.classList.add('is-paused');
