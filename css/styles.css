@@ -10707,7 +10707,7 @@ html[data-theme="dark"] .nav-theme-menu .nav-contact-panel {
 .interests-list .interest-title::after {
   content: counter(interest, decimal-leading-zero);
   font-variant-numeric: tabular-nums;
-  color: color-mix(in srgb, var(--text-light) 60%, transparent);
+  color: color-mix(in srgb, var(--text-light) 40%, transparent);
 }
 
 /* A little more air between each interest's title, its line and its tray
