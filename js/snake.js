@@ -56,7 +56,7 @@
       '.#...#.',
       '...#...',
     ] },
-    spring: { colour: '#d79ed8', art: [
+    spring: { colour: '#eedc8a', art: [
       '.#.#.#.',
       '.#####.',
       '.#####.',
@@ -116,8 +116,8 @@
       '..#.#..',
       '...#...',
     ] },
-    // A butterfly, a deeper lilac than the tulip.
-    spring: { colour: '#c08ad6', art: [
+    // A butterfly, in a light green beside the light yellow tulip.
+    spring: { colour: '#a8d69a', art: [
       '##...##',
       '###.###',
       '.#####.',
