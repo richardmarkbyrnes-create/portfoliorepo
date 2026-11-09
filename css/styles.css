@@ -9423,12 +9423,13 @@ body[data-page="home"] .page {
 }
 
 /* Over the hero texture's visible pill (not the faded margin round it), the
-   pointer turns into a retro pixel arrow with a dithered fill. An empty
+   pointer turns into a retro pixel sun (per season: see below). An empty
    layer over the canvas carries the cursor, clipped to the pill's rounded
    rectangle (the mask's rect: 11% in from each side, 20% from top and
    bottom) so it only applies inside the frame. It's part of .home-texture,
    so the pointer still drives the texture's swell (texture-block.js
-   listens on the wrapper). Generated pixel by pixel: 12×19 at 2px. */
+   listens on the wrapper). Generated pixel by pixel at 2px, its hotspot
+   at the icon's centre. */
 .home-texture:not(.home-texture--footer)::after {
   content: "";
   position: absolute;
@@ -9438,7 +9439,7 @@ body[data-page="home"] .page {
   right: calc(var(--tx-pad) * 1.282 - 14.1%);
   z-index: 1;
   clip-path: inset(20% 11% round 4% / 8%);
-  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='38' viewBox='0 0 24 38' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M2 4h2v2h-2zM2 6h2v2h-2zM4 6h2v2h-2zM2 8h2v2h-2zM4 8h2v2h-2zM6 8h2v2h-2zM2 10h2v2h-2zM4 10h2v2h-2zM6 10h2v2h-2zM8 10h2v2h-2zM2 12h2v2h-2zM6 12h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM2 14h2v2h-2zM4 14h2v2h-2zM6 14h2v2h-2zM8 14h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM2 16h2v2h-2zM6 16h2v2h-2zM10 16h2v2h-2zM14 16h2v2h-2zM2 18h2v2h-2zM4 18h2v2h-2zM6 18h2v2h-2zM8 18h2v2h-2zM10 18h2v2h-2zM12 18h2v2h-2zM14 18h2v2h-2zM16 18h2v2h-2zM2 20h2v2h-2zM6 20h2v2h-2zM10 20h2v2h-2zM14 20h2v2h-2zM18 20h2v2h-2zM2 22h2v2h-2zM4 22h2v2h-2zM8 22h2v2h-2zM10 22h2v2h-2zM12 22h2v2h-2zM2 24h2v2h-2zM6 24h2v2h-2zM10 24h2v2h-2zM4 26h2v2h-2zM12 26h2v2h-2zM2 28h2v2h-2zM14 28h2v2h-2zM12 30h2v2h-2zM14 32h2v2h-2zM16 34h2v2h-2z'/%3E%3Cpath fill='%23111' d='M0 0h2v2h-2zM0 2h2v2h-2zM2 2h2v2h-2zM0 4h2v2h-2zM4 4h2v2h-2zM0 6h2v2h-2zM6 6h2v2h-2zM0 8h2v2h-2zM8 8h2v2h-2zM0 10h2v2h-2zM10 10h2v2h-2zM0 12h2v2h-2zM4 12h2v2h-2zM12 12h2v2h-2zM0 14h2v2h-2zM14 14h2v2h-2zM0 16h2v2h-2zM4 16h2v2h-2zM8 16h2v2h-2zM12 16h2v2h-2zM16 16h2v2h-2zM0 18h2v2h-2zM18 18h2v2h-2zM0 20h2v2h-2zM4 20h2v2h-2zM8 20h2v2h-2zM12 20h2v2h-2zM16 20h2v2h-2zM20 20h2v2h-2zM0 22h2v2h-2zM6 22h2v2h-2zM14 22h2v2h-2zM16 22h2v2h-2zM18 22h2v2h-2zM20 22h2v2h-2zM22 22h2v2h-2zM0 24h2v2h-2zM4 24h2v2h-2zM8 24h2v2h-2zM12 24h2v2h-2zM14 24h2v2h-2zM0 26h2v2h-2zM2 26h2v2h-2zM6 26h2v2h-2zM8 26h2v2h-2zM10 26h2v2h-2zM14 26h2v2h-2zM0 28h2v2h-2zM4 28h2v2h-2zM10 28h2v2h-2zM12 28h2v2h-2zM16 28h2v2h-2zM0 30h2v2h-2zM2 30h2v2h-2zM10 30h2v2h-2zM14 30h2v2h-2zM16 30h2v2h-2zM0 32h2v2h-2zM12 32h2v2h-2zM16 32h2v2h-2zM18 32h2v2h-2zM12 34h2v2h-2zM14 34h2v2h-2zM18 34h2v2h-2zM14 36h2v2h-2zM16 36h2v2h-2z'/%3E%3C/svg%3E") 0 0, default;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M10 8h2v2h-2zM12 8h2v2h-2zM14 8h2v2h-2zM8 10h2v2h-2zM10 10h2v2h-2zM12 10h2v2h-2zM14 10h2v2h-2zM16 10h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM12 12h2v2h-2zM14 12h2v2h-2zM16 12h2v2h-2zM8 14h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM14 14h2v2h-2zM16 14h2v2h-2zM10 16h2v2h-2zM12 16h2v2h-2zM14 16h2v2h-2z'/%3E%3Cpath fill='%23111' d='M12 0h2v2h-2zM4 2h2v2h-2zM12 2h2v2h-2zM20 2h2v2h-2zM6 4h2v2h-2zM18 4h2v2h-2zM10 6h2v2h-2zM12 6h2v2h-2zM14 6h2v2h-2zM8 8h2v2h-2zM16 8h2v2h-2zM6 10h2v2h-2zM18 10h2v2h-2zM0 12h2v2h-2zM2 12h2v2h-2zM6 12h2v2h-2zM18 12h2v2h-2zM22 12h2v2h-2zM24 12h2v2h-2zM6 14h2v2h-2zM18 14h2v2h-2zM8 16h2v2h-2zM16 16h2v2h-2zM10 18h2v2h-2zM12 18h2v2h-2zM14 18h2v2h-2zM6 20h2v2h-2zM18 20h2v2h-2zM4 22h2v2h-2zM12 22h2v2h-2zM20 22h2v2h-2zM12 24h2v2h-2z'/%3E%3C/svg%3E") 13 13, default;
 }
 
 /* A canvas ignores left/right stretching (it keeps its drawn width), so it's
@@ -11149,4 +11150,42 @@ html[data-theme="spring"] {
    has more room above the land. */
 .home-texture:not(.home-texture--footer) {
   aspect-ratio: 16 / 9.5;
+}
+
+/* Top-right season and Contact buttons: 12px labels, 16px icons. */
+.nav-primary .nav-icon-btn.nav-label-btn .nav-btn-label {
+  font-size: 12px;
+}
+
+.nav-primary .nav-icon-btn.nav-label-btn .nav-icon,
+.nav-primary .nav-icon-btn.nav-label-btn .theme-switcher-icon,
+.nav-primary .nav-icon-btn.nav-label-btn > svg,
+.nav-primary .nav-icon-btn.nav-label-btn .theme-toggle-icons,
+.nav-primary .nav-icon-btn.nav-label-btn .theme-toggle-icons svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* The texture's hover cursor follows the season: a pixel sun in summer
+   (the rule above), a flower in spring, a leaf in autumn and a snowflake in
+   winter, each drawn with a white body, black pixel outline and a dither
+   shading its underside; hotspot at the centre. */
+html[data-theme="spring"] .home-texture:not(.home-texture--footer)::after {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' viewBox='0 0 22 22' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M8 2h2v2h-2zM10 2h2v2h-2zM12 2h2v2h-2zM8 4h2v2h-2zM10 4h2v2h-2zM12 4h2v2h-2zM2 6h2v2h-2zM4 6h2v2h-2zM8 6h2v2h-2zM10 6h2v2h-2zM12 6h2v2h-2zM16 6h2v2h-2zM18 6h2v2h-2zM2 8h2v2h-2zM4 8h2v2h-2zM6 8h2v2h-2zM14 8h2v2h-2zM16 8h2v2h-2zM18 8h2v2h-2zM10 10h2v2h-2zM2 12h2v2h-2zM4 12h2v2h-2zM6 12h2v2h-2zM14 12h2v2h-2zM16 12h2v2h-2zM18 12h2v2h-2zM2 14h2v2h-2zM4 14h2v2h-2zM8 14h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM16 14h2v2h-2zM18 14h2v2h-2zM10 16h2v2h-2zM8 18h2v2h-2zM12 18h2v2h-2z'/%3E%3Cpath fill='%23111' d='M8 0h2v2h-2zM10 0h2v2h-2zM12 0h2v2h-2zM6 2h2v2h-2zM14 2h2v2h-2zM2 4h2v2h-2zM4 4h2v2h-2zM6 4h2v2h-2zM14 4h2v2h-2zM16 4h2v2h-2zM18 4h2v2h-2zM0 6h2v2h-2zM6 6h2v2h-2zM14 6h2v2h-2zM20 6h2v2h-2zM0 8h2v2h-2zM8 8h2v2h-2zM10 8h2v2h-2zM12 8h2v2h-2zM20 8h2v2h-2zM2 10h2v2h-2zM4 10h2v2h-2zM6 10h2v2h-2zM8 10h2v2h-2zM12 10h2v2h-2zM14 10h2v2h-2zM16 10h2v2h-2zM18 10h2v2h-2zM0 12h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM12 12h2v2h-2zM20 12h2v2h-2zM0 14h2v2h-2zM6 14h2v2h-2zM14 14h2v2h-2zM20 14h2v2h-2zM2 16h2v2h-2zM4 16h2v2h-2zM6 16h2v2h-2zM8 16h2v2h-2zM12 16h2v2h-2zM14 16h2v2h-2zM16 16h2v2h-2zM18 16h2v2h-2zM6 18h2v2h-2zM10 18h2v2h-2zM14 18h2v2h-2zM8 20h2v2h-2zM10 20h2v2h-2zM12 20h2v2h-2z'/%3E%3C/svg%3E") 11 11, default;
+}
+
+html[data-theme="autumn"] .home-texture:not(.home-texture--footer)::after {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='20' viewBox='0 0 22 20' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M14 2h2v2h-2zM16 2h2v2h-2zM18 2h2v2h-2zM10 4h2v2h-2zM12 4h2v2h-2zM14 4h2v2h-2zM16 4h2v2h-2zM18 4h2v2h-2zM8 6h2v2h-2zM10 6h2v2h-2zM12 6h2v2h-2zM14 6h2v2h-2zM16 6h2v2h-2zM6 8h2v2h-2zM8 8h2v2h-2zM10 8h2v2h-2zM12 8h2v2h-2zM14 8h2v2h-2zM16 8h2v2h-2zM6 10h2v2h-2zM8 10h2v2h-2zM10 10h2v2h-2zM12 10h2v2h-2zM14 10h2v2h-2zM6 12h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM4 14h2v2h-2zM6 14h2v2h-2zM8 14h2v2h-2z'/%3E%3Cpath fill='%23111' d='M14 0h2v2h-2zM16 0h2v2h-2zM18 0h2v2h-2zM20 0h2v2h-2zM10 2h2v2h-2zM12 2h2v2h-2zM20 2h2v2h-2zM8 4h2v2h-2zM20 4h2v2h-2zM6 6h2v2h-2zM18 6h2v2h-2zM4 8h2v2h-2zM18 8h2v2h-2zM4 10h2v2h-2zM16 10h2v2h-2zM2 12h2v2h-2zM4 12h2v2h-2zM12 12h2v2h-2zM14 12h2v2h-2zM2 14h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM2 16h2v2h-2zM4 16h2v2h-2zM6 16h2v2h-2zM8 16h2v2h-2zM0 18h2v2h-2z'/%3E%3C/svg%3E") 11 10, default;
+}
+
+html[data-theme="dark"] .home-texture:not(.home-texture--footer)::after {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='26' height='26' viewBox='0 0 26 26' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M12 2h2v2h-2zM12 4h2v2h-2zM6 6h2v2h-2zM12 6h2v2h-2zM18 6h2v2h-2zM8 8h2v2h-2zM12 8h2v2h-2zM16 8h2v2h-2zM10 10h2v2h-2zM12 10h2v2h-2zM14 10h2v2h-2zM2 12h2v2h-2zM4 12h2v2h-2zM6 12h2v2h-2zM8 12h2v2h-2zM10 12h2v2h-2zM12 12h2v2h-2zM14 12h2v2h-2zM16 12h2v2h-2zM18 12h2v2h-2zM20 12h2v2h-2zM22 12h2v2h-2zM10 14h2v2h-2zM12 14h2v2h-2zM14 14h2v2h-2zM8 16h2v2h-2zM12 16h2v2h-2zM16 16h2v2h-2zM6 18h2v2h-2zM12 18h2v2h-2zM18 18h2v2h-2zM12 20h2v2h-2zM12 22h2v2h-2z'/%3E%3Cpath fill='%23111' d='M12 0h2v2h-2zM10 2h2v2h-2zM14 2h2v2h-2zM6 4h2v2h-2zM10 4h2v2h-2zM14 4h2v2h-2zM18 4h2v2h-2zM4 6h2v2h-2zM8 6h2v2h-2zM10 6h2v2h-2zM14 6h2v2h-2zM16 6h2v2h-2zM20 6h2v2h-2zM6 8h2v2h-2zM10 8h2v2h-2zM14 8h2v2h-2zM18 8h2v2h-2zM2 10h2v2h-2zM4 10h2v2h-2zM8 10h2v2h-2zM16 10h2v2h-2zM20 10h2v2h-2zM22 10h2v2h-2zM0 12h2v2h-2zM24 12h2v2h-2zM2 14h2v2h-2zM4 14h2v2h-2zM8 14h2v2h-2zM16 14h2v2h-2zM20 14h2v2h-2zM22 14h2v2h-2zM6 16h2v2h-2zM10 16h2v2h-2zM14 16h2v2h-2zM18 16h2v2h-2zM4 18h2v2h-2zM8 18h2v2h-2zM10 18h2v2h-2zM14 18h2v2h-2zM16 18h2v2h-2zM20 18h2v2h-2zM6 20h2v2h-2zM10 20h2v2h-2zM14 20h2v2h-2zM18 20h2v2h-2zM10 22h2v2h-2zM14 22h2v2h-2zM12 24h2v2h-2z'/%3E%3C/svg%3E") 13 13, default;
+}
+
+
+/* A little more room inside each top-right pill, either side. */
+@media (min-width: 641px) {
+  .nav-primary .nav-icon-btn.nav-label-btn {
+    padding: 0 17px 0 14px;
+  }
 }
