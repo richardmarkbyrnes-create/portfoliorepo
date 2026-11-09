@@ -223,12 +223,12 @@
       dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'],
     },
     // Summer's sky is a warm sunset in bands: golden mango at the horizon,
-    // juicy peach, then sunset coral fading to a warm pale top. All warm
+    // sunset coral, then juicy peach fading to a warm pale top. All warm
     // neighbours on the colour wheel, so they blend (no cool lilac or blue,
     // which read as spring).
     summer: {
       label: 'Summer',
-      colors: ['#bddcb7', '#dbefc6', '#fbdb92', '#fbc79a', '#f6b5a0', '#fcefe4'],
+      colors: ['#bddcb7', '#dbefc6', '#fbdb92', '#f6b5a0', '#fbc79a', '#fcefe4'],
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
     autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
