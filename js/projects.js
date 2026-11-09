@@ -38,7 +38,7 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     // Hover preview on the home page, in a frame its own shape.
-    previewImage: 'images/custom-stickers-preview.webp?v=2',
+    previewImage: 'images/custom-stickers-preview.webp?v=3',
     previewAspect: '3286 / 2056',
     polaroids: [
       { src: 'images/sticker-photo-1.webp?v=2', r: -5, note: 'Canvas ’26 — people made their own stickers, then walked off with them printed!' },
