@@ -1235,7 +1235,7 @@ function initHeroWeather() {
 }
 
 // A faint radial dither around the About illustration: an ordered (Bayer)
-// pattern in a light grey, a halo clear behind the figures and densest just
+// pattern in the season's soft colours, a halo clear behind the figures and densest just
 // outside them, thinning out to nothing and fading away towards the bottom, drawn at one canvas pixel per 2 CSS px like the texture and Snake.
 // Static; redrawn when the theme (and so its grey) changes.
 function initAboutDither() {
@@ -1268,7 +1268,17 @@ function initAboutDither() {
     const css = getComputedStyle(document.documentElement);
     const text = rgb(css.getPropertyValue('--text').trim() || '#333');
     const bg = rgb(css.getPropertyValue('--bg').trim() || '#fff');
-    const c = text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.2));
+    // Dots in the season's own soft colours rather than grey, picked in
+    // drifting clumps so neighbouring dots share a hue.
+    const SEASON_DOTS = {
+      spring: ['#b6d8a3', '#b7cdee', '#efe09a'],
+      normal: ['#f4d184', '#f6c09c', '#efab9b', '#bcdcae'],
+      autumn: ['#e6b384', '#edcb85', '#d49d74'],
+      // Dark: a barely-there white, just a step up from the page.
+      dark: ['#2a2a2d', '#2e2e31', '#323235'],
+    };
+    const theme = document.documentElement.getAttribute('data-theme') || 'normal';
+    const dots = (SEASON_DOTS[theme] || SEASON_DOTS.normal).map(rgb);
     const img = ctx.createImageData(w, h);
     const d = img.data;
     // Keep the portrait itself clear: its outline drawing has an open
@@ -1332,6 +1342,8 @@ function initAboutDither() {
         // Each dot a little more or less see-through, in soft clumps with a
         // touch of per-dot grain, so the field shimmers rather than reads flat.
         const vary = 0.4 + 0.6 * (noise(x / 3, y / 3) * 0.7 + hash(x, y) * 0.3);
+        const pick = noise(x / 9 + 40, y / 9 + 17) * 0.8 + hash(x + 3, y + 7) * 0.2;
+        const c = dots[Math.min(dots.length - 1, Math.floor(pick * dots.length))];
         const i = (y * w + x) * 4;
         d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = Math.round(255 * vary);
       }
