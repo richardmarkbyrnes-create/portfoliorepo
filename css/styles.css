@@ -10966,3 +10966,44 @@ html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav
     box-shadow: none;
   }
 }
+
+/* Expanded: the three photos stack into one, the second and third sliding
+   in under the first's edge, and the label closing up the space they
+   leave; collapsing fans them back out. One ease-in-out for both ways. The
+   hover fan is off while expanded, so the stack stays put. */
+.interests-thumbs {
+  transition: margin-right 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.interests-thumbs .interests-thumb {
+  transition:
+    rotate 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+    translate 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.interests-toggle[aria-expanded="true"] .interests-thumbs {
+  margin-right: -18px;
+}
+
+.interests-toggle[aria-expanded="true"] .interests-thumb:nth-child(1),
+.interests-toggle[aria-expanded="true"]:hover .interests-thumb:nth-child(1) {
+  rotate: 0deg;
+  translate: 0 0;
+}
+
+.interests-toggle[aria-expanded="true"] .interests-thumb:nth-child(2),
+.interests-toggle[aria-expanded="true"]:hover .interests-thumb:nth-child(2) {
+  rotate: 0deg;
+  translate: -12px 0;
+}
+
+.interests-toggle[aria-expanded="true"] .interests-thumb:nth-child(3),
+.interests-toggle[aria-expanded="true"]:hover .interests-thumb:nth-child(3) {
+  rotate: 0deg;
+  translate: -24px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .interests-thumbs,
+  .interests-thumbs .interests-thumb { transition: none; }
+}

@@ -1246,6 +1246,9 @@ function initInterestsToggle() {
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') !== 'true';
     toggle.setAttribute('aria-expanded', String(open));
+    // "More about me" closed, "Less about me" open.
+    const label = toggle.querySelector('.interests-label');
+    if (label) label.textContent = open ? 'Less about me' : 'More about me';
     // The panel only clips its contents while it folds or unfolds; once
     // open it lets them overhang (the records' vinyl, tilted prints and
     // shadows reach past the column), so .is-settled lands when the unfold
