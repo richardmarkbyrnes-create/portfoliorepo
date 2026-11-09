@@ -263,13 +263,6 @@ function initProjectRowDetails() {
     }
     desc.append(project.intro);
     row.append(desc);
-    // The year, two digits ("26"), at the row's far right.
-    if (project.year && !row.querySelector('.work-row-year')) {
-      const year = document.createElement('span');
-      year.className = 'work-row-year';
-      year.textContent = String(project.year).slice(-2);
-      row.append(year);
-    }
   });
 
   let active = null;
