@@ -446,6 +446,7 @@
     overlay.hidden = false;
     wrap.classList.remove('is-playing');
     wrap.classList.add('is-paused');
+    overlay.classList.add('is-clickable');
   }
 
   // A new game (not a resume) shows how to steer under the board for a
@@ -499,6 +500,7 @@
     }
     wrap.classList.add('is-playing');
     wrap.classList.remove('is-paused', 'is-over');
+    overlay.classList.remove('is-clickable');
     board.focus({ preventScroll: true });
     kick();
   }
@@ -510,6 +512,7 @@
     overlay.hidden = false;
     wrap.classList.remove('is-playing');
     wrap.classList.add('is-over');
+    overlay.classList.add('is-clickable');
   }
 
   function turn(next) {
@@ -550,6 +553,12 @@
 
   // A click (or tap) on the board starts a game, and mid-game pauses and
   // resumes it, as Space does.
+  // The paused line (and the game-over one) resumes / restarts on a click
+  // too, not just the board.
+  overlay.addEventListener('click', () => {
+    if (state === 'paused' || state === 'over') start();
+  });
+
   wrap.addEventListener('click', () => {
     if (state === 'playing') pause();
     else start();

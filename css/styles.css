@@ -10935,3 +10935,34 @@ html[data-theme="dark"] .nav-primary .nav-icon-btn.nav-label-btn {
 @media (prefers-reduced-motion: reduce) {
   .nav-contact-item .nav-contact-ext { transition: none; translate: none; }
 }
+
+/* Paused or over, the status line itself resumes / restarts on a click. */
+.snake-status.is-clickable {
+  cursor: pointer;
+}
+
+.snake-status.is-clickable:hover .snake-status-hint {
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+
+/* Winter (dark): the toolbar pills as plain flat pills rather than glass:
+   a solid fill a step lighter than the page, no sheen, rim, blur or
+   shadow, a touch lighter on hover. */
+html[data-theme="dark"] .nav-primary .nav-icon-btn.nav-label-btn,
+html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn {
+  background: color-mix(in srgb, var(--text) 7%, var(--bg));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] .nav-primary .nav-icon-btn.nav-label-btn:hover,
+  html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn:hover {
+    background: color-mix(in srgb, var(--text) 11%, var(--bg));
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    box-shadow: none;
+  }
+}
