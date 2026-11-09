@@ -1234,6 +1234,115 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
+// A faint radial dither around the About illustration: an ordered (Bayer)
+// pattern in a light grey, a halo clear behind the figures and densest just
+// outside them, thinning out to nothing and fading away towards the bottom, drawn at one canvas pixel per 2 CSS px like the texture and Snake.
+// Static; redrawn when the theme (and so its grey) changes.
+function initAboutDither() {
+  const art = document.querySelector('.home-about-intro .about-line-art');
+  if (!art) return;
+  const canvas = document.createElement('canvas');
+  canvas.className = 'about-dither';
+  canvas.setAttribute('aria-hidden', 'true');
+  art.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const PX = 2;
+  const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map((v) => (v + 0.5) / 16);
+
+  const rgb = (value) => {
+    const probe = document.createElement('span');
+    probe.style.color = value;
+    document.body.append(probe);
+    const out = getComputedStyle(probe).color.match(/[\d.]+/g).slice(0, 3).map(Number);
+    probe.remove();
+    return out;
+  };
+
+  function draw() {
+    const w = Math.round(canvas.clientWidth / PX);
+    const h = Math.round(canvas.clientHeight / PX);
+    if (!w || !h) return;
+    canvas.width = w;
+    canvas.height = h;
+    const css = getComputedStyle(document.documentElement);
+    const text = rgb(css.getPropertyValue('--text').trim() || '#333');
+    const bg = rgb(css.getPropertyValue('--bg').trim() || '#fff');
+    const c = text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.2));
+    const img = ctx.createImageData(w, h);
+    const d = img.data;
+    // Keep the portrait itself clear: its outline drawing has an open
+    // middle, so dots behind it would show through his face and hair. Found
+    // by layout offsets (not on-screen rects, which the entrance animation
+    // and hover scale move), as an ellipse in canvas pixels.
+    const portrait = art.querySelector('.about-line-art-image');
+    let hole = null;
+    if (portrait) {
+      const originX = art.clientWidth / 2 - canvas.clientWidth / 2;
+      const originY = art.clientHeight / 2 - canvas.clientHeight * 0.56;
+      let left = 0;
+      let top = 0;
+      for (let el = portrait; el && el !== art; el = el.offsetParent) { left += el.offsetLeft; top += el.offsetTop; }
+      hole = {
+        x: (left + portrait.offsetWidth / 2 - originX) / PX,
+        y: (top + portrait.offsetHeight / 2 - originY) / PX,
+        rx: (portrait.offsetWidth / 2) * 0.98 / PX,
+        ry: (portrait.offsetHeight / 2) * 1.02 / PX,
+      };
+    }
+    const cx = w / 2;
+    const cy = h * 0.58;
+    const R = w / 2;
+    const smooth = (a, b, t) => { const k = Math.min(1, Math.max(0, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
+    // Smooth value noise, fixed so the patches look the same every time.
+    const hash = (i, j) => { const v = Math.sin(i * 127.1 + j * 311.7) * 43758.5453; return v - Math.floor(v); };
+    const noise = (u, v) => {
+      const i = Math.floor(u), j = Math.floor(v), fu = u - i, fv = v - j;
+      const a = hash(i, j), b = hash(i + 1, j), c = hash(i, j + 1), e = hash(i + 1, j + 1);
+      const su = fu * fu * (3 - 2 * fu), sv = fv * fv * (3 - 2 * fv);
+      return (a + (b - a) * su) + ((c + (e - c) * su) - (a + (b - a) * su)) * sv;
+    };
+    for (let y = 0; y < h; y++) {
+      // Fades out towards the bottom, so the dots stay off the dogs and the
+      // lower half of the figures (their line art has clear middles).
+      const fromBottom = smooth(0.78, 0.3, y / h);
+      if (!fromBottom) continue;
+      for (let x = 0; x < w; x++) {
+        // A halo rather than a disc: clear in the middle (behind the
+        // portrait), densest just outside the figures, thinning out to the
+        // far edges, so it radiates out from them.
+        const dx = (x - cx) / R;
+        const dy = (y - cy) / (R * 0.62);
+        const r = Math.sqrt(dx * dx + dy * dy);
+        if (r >= 1) continue;
+        // Patchy: soft clumps (low-frequency noise) break the halo up so it
+        // reads as scattered dither rather than an even ring.
+        const patch = smooth(0.25, 0.75, noise(x / 14, y / 14) * 0.65 + noise(x / 5, y / 5) * 0.35);
+        const strength = smooth(0.24, 0.48, r) * (1 - smooth(0.52, 1, r)) * 0.5 * fromBottom * patch;
+        // Clear behind the portrait, feathering back in just outside it.
+        let clear = 1;
+        if (hole) {
+          const hr = Math.hypot((x - hole.x) / hole.rx, (y - hole.y) / hole.ry);
+          clear = smooth(1, 1.18, hr);
+          if (!clear) continue;
+        }
+        if (strength * clear <= BAYER[(y & 3) * 4 + (x & 3)]) continue;
+        // Each dot a little more or less see-through, in soft clumps with a
+        // touch of per-dot grain, so the field shimmers rather than reads flat.
+        const vary = 0.4 + 0.6 * (noise(x / 3, y / 3) * 0.7 + hash(x, y) * 0.3);
+        const i = (y * w + x) * 4;
+        d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = Math.round(255 * vary);
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+  window.addEventListener('load', draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
 // Interests: collapsed behind its heading's chevron, opening to one long
 // list of interests (each a title, a line and its photos). The button flips
 // aria-expanded and the panel's .is-open (CSS unfolds it); while closed the
@@ -1512,6 +1621,7 @@ function initThemeNudge() {
 initThemeSwitcher();
 initThemeNudge();
 initInterestsToggle();
+initAboutDither();
 initHobbyTabs();
 initHobbyCardTilt();
 initHobbyPhotoFlip();
