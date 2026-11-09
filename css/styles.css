@@ -11007,3 +11007,9 @@ html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav
   .interests-thumbs,
   .interests-thumbs .interests-thumb { transition: none; }
 }
+
+/* Selected work: each project's "Company · intro" line 2px under the
+   title's 14px. */
+body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
+  font-size: 12px;
+}
