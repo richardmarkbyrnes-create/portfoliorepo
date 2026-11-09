@@ -179,9 +179,9 @@ window.PROJECTS = {
     team: 'SAP · Fiori',
     intro: 'A VS Code extension that makes building SAP apps feel native to the IDE.',
     images: [
-      'images/developer-tools-hero.webp?v=2',
+      'images/developer-tools-hero.webp?v=3',
     ],
-    heroAspect: '2842 / 1856',
+    heroAspect: '2000 / 1422',
     heroFit: 'contain',
     paragraphs: [
       'SAP development had always happened inside heavy proprietary tooling, so bringing Fiori Tools to VS Code came with an adoption problem. Developers are protective of their workspace, and anything that reads as an enterprise bolt-on gets uninstalled — however good the underlying utilities are.',
