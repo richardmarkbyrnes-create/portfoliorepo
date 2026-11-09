@@ -11059,3 +11059,8 @@ body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
 @media (prefers-reduced-motion: reduce) {
   .home-about-intro .about-dither { transition: none; }
 }
+
+/* The halo a step more see-through once in. */
+.home-about-intro.is-in-view .about-dither {
+  opacity: 0.6;
+}
