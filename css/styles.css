@@ -7456,7 +7456,19 @@ body.page-is-leaving .top-blur {
     scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.about-line-art-dog:hover {
+/* The hover lives on a wrapper that doesn't scale. The figures shrink from
+   their bottom edge while hovered, so with the hover on the figure itself the
+   top fifth slid out from under the pointer and the polaroid flickered off
+   near the hair. The wrapper keeps the hit area the size of the drawing at
+   rest; main.js hangs the popovers on it too. */
+.about-line-art-hit {
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+  cursor: none;
+}
+
+.about-line-art-hit:hover > .about-line-art-dog {
   scale: 0.78;
 }
 
@@ -7470,7 +7482,7 @@ body.page-is-leaving .top-blur {
     scale 0.34s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.about-line-art-image:hover {
+.about-line-art-hit:hover > .about-line-art-image {
   /* Same as the dogs. Anything gentler hides under the polaroid, which pops
      up centred on the cursor right over the portrait. */
   scale: 0.78;
@@ -7857,7 +7869,7 @@ body.page-is-leaving .top-blur {
 /* The rule above outranks the plain hover shrink (same specificity, later in
    the file), so the dark portrait needs its own: the 0.78 shrink on top of
    the 1.03 horizontal correction. */
-[data-theme="dark"] .about-line-art-image:hover {
+[data-theme="dark"] .about-line-art-hit:hover > .about-line-art-image {
   scale: calc(1.03 * 0.78) 0.78;
 }
 
@@ -8635,7 +8647,7 @@ html.line-art-seen .home-about-intro.animate-on-scroll-root .about-line-art-dog-
     transition: background-color 0.3s ease, opacity 0.3s ease;
   }
 
-  .about-line-art-dog:hover {
+  .about-line-art-hit:hover > .about-line-art-dog {
     scale: 1;
   }
 }
@@ -11013,57 +11025,6 @@ html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav
    title's 14px. */
 body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
   font-size: 12px;
-}
-
-/* The faint radial dither behind the About illustration (main.js
-   initAboutDither): centred behind the figures, under them, scaled up
-   without smoothing so the pattern reads as chunky pixels. */
-.home-about-intro .about-line-art {
-  position: relative;
-  isolation: isolate;
-}
-
-.about-dither {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  z-index: -1;
-  width: min(620px, 140vw);
-  height: 300px;
-  translate: -50% -56%;
-  image-rendering: pixelated;
-  pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .about-dither {
-    height: 240px;
-  }
-}
-
-/* The dither arrives with the drawings: hidden until the About intro is
-   revealed (the same .is-in-view hold the portrait and dogs wait on), then
-   fading in over the portrait's own 1.25s, blurring in as it does. */
-.home-about-intro .about-dither {
-  opacity: 0;
-  filter: blur(6px);
-  transition:
-    opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
-    filter 1.25s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-.home-about-intro.is-in-view .about-dither {
-  opacity: 1;
-  filter: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .home-about-intro .about-dither { transition: none; }
-}
-
-/* The halo a step more see-through once in. */
-.home-about-intro.is-in-view .about-dither {
-  opacity: 0.6;
 }
 
 /* The About paragraphs come in one after another rather than together:
