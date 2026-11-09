@@ -124,7 +124,9 @@
       // and filled the frame with one colour about a third of the time).
       float swing = n1 * 0.9 + n2 * 0.12 + tilt + bend;
       swing = swing / (1.0 + abs(swing) / 0.16);
-      float ground = 0.48 + swing + near * 0.42 + wave * 0.16 - (1.0 - rise) * 0.35;
+      // Centred a little low (0.42 rather than the middle), so the sky
+      // gets the larger share of the frame.
+      float ground = 0.42 + swing + near * 0.42 + wave * 0.16 - (1.0 - rise) * 0.35;
 
       // Now and then a soft vertical ripple runs through the sky, like light
       // through glass, then fades.
@@ -213,14 +215,20 @@
     // tint up into something close to the page, so it sinks into the dark.
     // Spring: fresh greens under a soft blue sky. Summer: greens under a warm
     // sky, a peachy orange blush fading to pale apricot.
-    spring: { label: 'Spring', colors: ['#97bd8f', '#c8e2b0', '#d2e2f4', '#f8fafc'], dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'] },
-    // Summer's sky is a sunset in bands: butter yellow at the horizon,
-    // peach, then a soft blush-lilac into a pale sky at the top. Each band
-    // sits next to its neighbour on the colour wheel (the old orange went
-    // straight into blue, which met as a muddy grey stripe).
+    // Spring: a crisp morning thaw. Fresh greens, then a whisper of pale
+    // primrose and white dew at the horizon before the soft blue sky.
+    spring: {
+      label: 'Spring',
+      colors: ['#97bd8f', '#c8e2b0', '#f3efc4', '#f4f7ef', '#d3e3f4', '#f6f9fd'],
+      dark: ['#48734c', '#8cbb72', '#46678f', '#1f2734'],
+    },
+    // Summer's sky is a warm sunset in bands: golden mango at the horizon,
+    // juicy peach, then sunset coral fading to a warm pale top. All warm
+    // neighbours on the colour wheel, so they blend (no cool lilac or blue,
+    // which read as spring).
     summer: {
       label: 'Summer',
-      colors: ['#bddcb7', '#dbefc6', '#f7eab2', '#f8dcc0', '#efdbe8', '#f7f5fb'],
+      colors: ['#bddcb7', '#dbefc6', '#fbdb92', '#fbc79a', '#f6b5a0', '#fcefe4'],
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
     autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },

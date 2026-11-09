@@ -1,9 +1,9 @@
 (function () {
   var THEME_KEY = 'portfolio-theme';
   var BG = {
-    normal: '#ffffff',
+    normal: '#fafbf7',
     dark: '#151516',
-    spring: '#f8f9f4',
+    spring: '#ffffff',
     autumn: '#fcf7ef',
     'pastel-blue': '#e8f4fc',
     'pastel-pink': '#fce8f0',
@@ -12,7 +12,8 @@
   };
 
   function applyStoredTheme() {
-    var theme = localStorage.getItem(THEME_KEY) || 'normal';
+    // Spring is the default season for a first visit.
+    var theme = localStorage.getItem(THEME_KEY) || 'spring';
     var root = document.documentElement;
 
     if (theme !== 'normal') {

@@ -11093,3 +11093,60 @@ body[data-page="home"] .work-column--experience {
     margin-top: 48px;
   }
 }
+
+/* ── Summer and spring swap page colours ──────────────────────────────────
+   Summer now wears a very soft green-tinted page and green-slate inks, and
+   spring the plain white page and cool slate inks. Each keeps its own
+   landscape, icons and accents. Placed last (and scoped through html for
+   summer) so they outrank the theme blocks at the top. */
+html:not([data-theme]),
+html[data-theme="normal"] {
+  /* Summer: a very soft green-tinted page, inks a gentle green-slate. */
+  --bg: #fafbf7;
+  --note-halo: rgba(250, 251, 247, 0.95);
+  --text: #34443b;
+  --text-body: #2c3a32;
+  --text-muted: #57685c;
+  --text-subtle: #3d4e43;
+  --text-light: #808f85;
+  --text-nav: #3d4e43;
+  --text-resume-header: #43554a;
+  --surface: #fcfdf9;
+  --surface-muted: #fcfdf9;
+  --nav-bg: rgba(250, 251, 247, 0.62);
+  --theme-popover-bg: rgba(250, 251, 247, 0.48);
+  --nav-active-bg: rgba(250, 251, 247, 0.5);
+  --nav-text-active: #141c17;
+  --nav-text-inactive: #768679;
+  --hero-glow: rgba(250, 251, 247, 0.5);
+  --switcher-bg: rgba(250, 251, 247, 0.72);
+  --line-art-stroke: #3a473d;
+}
+
+html[data-theme="spring"] {
+  --bg: #ffffff;
+  --note-halo: rgba(255, 255, 255, 0.95);
+  --text: #333f4d;
+  --text-body: #2b3542;
+  --text-muted: #586676;
+  --text-subtle: #3e4c5c;
+  --text-light: #818c98;
+  --text-nav: #3e4c5c;
+  --text-resume-header: #445161;
+  --surface: #ffffff;
+  --surface-muted: #ffffff;
+  --nav-bg: rgba(251, 250, 247, 0.62);
+  --theme-popover-bg: rgba(251, 250, 247, 0.48);
+  --nav-active-bg: rgba(251, 250, 247, 0.5);
+  --nav-text-active: #0c0f13;
+  --nav-text-inactive: #758291;
+  --hero-glow: rgba(251, 250, 247, 0.5);
+  --switcher-bg: rgba(251, 250, 247, 0.72);
+  --line-art-stroke: #3b3935;
+}
+
+/* The hero texture a little taller (16:9.5 rather than 16:8), so the sky
+   has more room above the land. */
+.home-texture:not(.home-texture--footer) {
+  aspect-ratio: 16 / 9.5;
+}

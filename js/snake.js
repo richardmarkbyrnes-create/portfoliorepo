@@ -43,7 +43,9 @@
 
   // The food is the season's icon, as 7x7 pixel art: a sun in summer, a
   // tulip in spring, a leaf in autumn and a snowflake in winter (the dark
-  // theme), each in its own colour.
+  // theme), each in its own colour. A second item is always out too
+  // (FOOD_2): another icon of the same season in a near shade of the same
+  // colour.
   const FOOD = {
     normal: { colour: '#e5a13a', art: [
       '...#...',
@@ -54,7 +56,7 @@
       '.#...#.',
       '...#...',
     ] },
-    spring: { colour: '#8fcf86', art: [
+    spring: { colour: '#d79ed8', art: [
       '.#.#.#.',
       '.#####.',
       '.#####.',
@@ -103,7 +105,52 @@
   let snake = [];
   let dir = [1, 0];
   let queued = [];
-  let food = null;
+  const FOOD_2 = {
+    // An ice cream, a shade lighter than the sun.
+    normal: { colour: '#f2bd63', art: [
+      '..###..',
+      '.#####.',
+      '.#####.',
+      '#######',
+      '.#.#.#.',
+      '..#.#..',
+      '...#...',
+    ] },
+    // A butterfly, a deeper lilac than the tulip.
+    spring: { colour: '#c08ad6', art: [
+      '##...##',
+      '###.###',
+      '.#####.',
+      '...#...',
+      '.#####.',
+      '###.###',
+      '##...##',
+    ] },
+    // An acorn, a deeper gold than the leaf.
+    autumn: { colour: '#c9932c', art: [
+      '...#...',
+      '.#####.',
+      '#######',
+      '.#####.',
+      '.#####.',
+      '..###..',
+      '...#...',
+    ] },
+    // A snowman, a paler blue than the snowflake.
+    dark: { colour: '#c9dcf5', art: [
+      '...#...',
+      '..###..',
+      '..###..',
+      '.#####.',
+      '#######',
+      '#######',
+      '.#####.',
+    ] },
+  };
+
+  // Two items out at once, each [x, y, kind] (kind 0 the season's icon, 1
+  // its second).
+  let foods = [];
   let score = 0;
   let best = 0;
   let state = 'idle'; // idle | playing | paused | over
@@ -134,11 +181,16 @@
     const text = rgb(css.getPropertyValue('--text').trim() || '#333');
     const bg = rgb(css.getPropertyValue('--bg').trim() || '#fff');
     const food = FOOD[theme] || FOOD.normal;
+    const food2 = FOOD_2[theme] || FOOD_2.normal;
     colours = {
       accent: ACCENTS[theme] || ACCENTS.normal,
       accentRgb: rgb(ACCENTS[theme] || ACCENTS.normal),
       food: rgb(food.colour),
       foodArt: food.art,
+      foodKinds: [
+        { c: rgb(food.colour), art: food.art },
+        { c: rgb(food2.colour), art: food2.art },
+      ],
       // The grid as a solid faint colour (the text mixed 18% into the page),
       // since single dithered pixels can't carry transparency.
       grid: text.map((v, i) => Math.round(bg[i] + (v - bg[i]) * 0.18)),
@@ -184,15 +236,21 @@
     queued = [];
     score = 0;
     scoreEl.textContent = score;
-    placeFood();
+    foods = [];
+    placeFood(0);
+    placeFood(1);
   }
 
-  function placeFood() {
+  // Puts (or moves) the item of the given kind somewhere free: off the
+  // snake, off the other item, and never in the top or bottom two rows
+  // (the grid fades into the page at the top, the footer overlaps the
+  // bottom, and both are awkward to reach).
+  function placeFood(kind) {
     const taken = new Set(snake.map(([x, y]) => `${x},${y}`));
+    foods.forEach(([x, y, k]) => { if (k !== kind) taken.add(`${x},${y}`); });
     let spot;
-    // Never in the top row, where the grid fades into the page.
-    do { spot = [Math.floor(Math.random() * cols), 1 + Math.floor(Math.random() * (ROWS - 1))]; } while (taken.has(`${spot[0]},${spot[1]}`));
-    food = spot;
+    do { spot = [Math.floor(Math.random() * cols), 2 + Math.floor(Math.random() * (ROWS - 4))]; } while (taken.has(`${spot[0]},${spot[1]}`));
+    foods = foods.filter((f) => f[2] !== kind).concat([[spot[0], spot[1], kind]]);
   }
 
   // Cell centres in CSS px on the board. The play area sits in the middle
@@ -302,30 +360,31 @@
 
     // 3. The food: the season's icon, centred in its cell, breathing a
     //    little through the same dither.
-    if (food) {
-      const art = colours.foodArt;
-      const ox = Math.floor(cx(food[0]) / PX) - Math.floor(art[0].length / 2);
-      const oy = Math.floor(cy(food[1]) / PX) - Math.floor(art.length / 2);
-      const st = 0.8 + 0.2 * pulse;
+    foods.forEach(([fx, fy, kind], n2) => {
+      const { art, c } = colours.foodKinds[kind];
+      const ox = Math.floor(cx(fx) / PX) - Math.floor(art[0].length / 2);
+      const oy = Math.floor(cy(fy) / PX) - Math.floor(art.length / 2);
+      // The two breathe out of step.
+      const st = 0.8 + 0.2 * Math.sin(now / 260 + n2 * 1.9);
       art.forEach((row, ry) => [...row].forEach((ch, rx) => {
         const x = ox + rx;
         const y = oy + ry;
         if (ch !== '#' || x < 0 || y < 0 || x >= W || y >= H || st <= bayer(x, y)) return;
         const i = (y * W + x) * 4;
-        d[i] = colours.food[0]; d[i + 1] = colours.food[1]; d[i + 2] = colours.food[2]; d[i + 3] = 255;
+        d[i] = c[0]; d[i + 1] = c[1]; d[i + 2] = c[2]; d[i + 3] = 255;
       }));
-    }
+    });
 
     // 4. The grid: one faint pixel at the centre of every empty cell. While
     //    no game is running, the dots near the pointer swell into little
     //    blocks (in the grid's own colour), shrinking back with distance
     //    through the dither, with a slow ripple running out from the cursor.
-    const foodKey = food ? `${food[0]},${food[1]}` : '';
+    const foodKeys = new Set(foods.map(([x, y]) => `${x},${y}`));
     hover.amount += ((hover.on && state !== 'playing' ? 1 : 0) - hover.amount) * 0.12;
     const lit = hover.amount > 0.01;
     for (let gy = 0; gy < ROWS; gy++) {
       for (let gx = -extra; gx < cols + extra; gx++) {
-        if (strength.has(`${gx},${gy}`) || `${gx},${gy}` === foodKey) continue;
+        if (strength.has(`${gx},${gy}`) || foodKeys.has(`${gx},${gy}`)) continue;
         // Outside the play area the dots are a step fainter, so the field
         // you can actually play in still reads.
         // Outside the play area the dots ease from the game's strength at its
@@ -404,7 +463,8 @@
     if (queued.length) dir = queued.shift();
     const [hx, hy] = snake[0];
     const head = [(hx + dir[0] + cols) % cols, (hy + dir[1] + ROWS) % ROWS];
-    const eating = food && head[0] === food[0] && head[1] === food[1];
+    const eaten = foods.find(([x, y]) => head[0] === x && head[1] === y);
+    const eating = !!eaten;
     // Into itself (the tail's square is fine unless it's about to grow).
     const body = eating ? snake : snake.slice(0, -1);
     if (body.some(([x, y]) => x === head[0] && y === head[1])) return gameOver();
@@ -417,8 +477,8 @@
         bestEl.textContent = best;
         try { localStorage.setItem(BEST_KEY, String(best)); } catch (e) { /* storage blocked */ }
       }
-      if (!reduceMotion) bursts.push({ x: cx(food[0]), y: cy(food[1]), t: performance.now(), c: colours.food });
-      placeFood();
+      if (!reduceMotion) bursts.push({ x: cx(eaten[0]), y: cy(eaten[1]), t: performance.now(), c: colours.foodKinds[eaten[2]].c });
+      placeFood(eaten[2]);
     } else {
       snake.pop();
     }
