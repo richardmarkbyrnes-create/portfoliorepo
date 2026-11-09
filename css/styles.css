@@ -11013,3 +11013,49 @@ html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav
 body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
   font-size: 12px;
 }
+
+/* The faint radial dither behind the About illustration (main.js
+   initAboutDither): centred behind the figures, under them, scaled up
+   without smoothing so the pattern reads as chunky pixels. */
+.home-about-intro .about-line-art {
+  position: relative;
+  isolation: isolate;
+}
+
+.about-dither {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: -1;
+  width: min(620px, 140vw);
+  height: 300px;
+  translate: -50% -56%;
+  image-rendering: pixelated;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .about-dither {
+    height: 240px;
+  }
+}
+
+/* The dither arrives with the drawings: hidden until the About intro is
+   revealed (the same .is-in-view hold the portrait and dogs wait on), then
+   fading in over the portrait's own 1.25s, blurring in as it does. */
+.home-about-intro .about-dither {
+  opacity: 0;
+  filter: blur(6px);
+  transition:
+    opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-about-intro.is-in-view .about-dither {
+  opacity: 1;
+  filter: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-about-intro .about-dither { transition: none; }
+}
