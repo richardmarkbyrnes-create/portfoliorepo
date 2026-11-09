@@ -11013,3 +11013,32 @@ html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav
 body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
   font-size: 12px;
 }
+
+/* Each project's year, two digits, at the far right of its row, level with
+   the title: a pale grey, 12px. It sits in the row's right column (the
+   description spans under both). */
+body[data-page="home"] .work-column--interactive .work-list .work-row-main[data-project] {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row-year {
+  grid-column: 2;
+  grid-row: 1;
+  justify-self: end;
+  align-self: start;
+  /* Set on the title's first line: 12px, nudged down to share its
+     baseline. */
+  margin-top: 2px;
+  font-size: 12px;
+  line-height: 1.45;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--text-light) 55%, transparent);
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row-desc {
+  grid-row: 2;
+}
+
+body[data-page="home"] .work-column--interactive .work-list .work-row-main[data-project] > .work-col--project {
+  align-self: start;
+}
