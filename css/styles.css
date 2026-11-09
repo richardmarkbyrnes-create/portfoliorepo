@@ -11079,3 +11079,17 @@ body[data-page="home"] .work-column--about .about-block .about-block-text:nth-ch
 body[data-page="home"] .work-column--about .about-block .about-block-text:nth-child(3) {
   animation-delay: 0.32s;
 }
+
+/* Even space either side of the hero texture, measured from its visible
+   edges (its box carries feathered margins): "Selected work" sits as far
+   below the texture as the bio sits above it (~120px desktop, ~105px
+   phones). */
+body[data-page="home"] .work-column--experience {
+  margin-top: 63px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--experience {
+    margin-top: 48px;
+  }
+}
