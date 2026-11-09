@@ -47,7 +47,12 @@ function cycleThemeWithReveal(origin) {
 function setThemeWithReveal(themeId, origin) {
   if (themeId === getStoredTheme()) return;
   const change = () => applyTheme(themeId);
-  if (!document.startViewTransition || !origin || prefersReducedMotion()) {
+  // With text highlighted, switch without the reveal: Chrome's view
+  // transition crashes the tab when a selection's ::selection colours (which
+  // follow the theme) change mid-transition, on the second switch or so.
+  const sel = window.getSelection && window.getSelection();
+  const hasSelection = !!sel && !sel.isCollapsed && sel.toString().trim() !== '';
+  if (!document.startViewTransition || !origin || prefersReducedMotion() || hasSelection) {
     change();
     return;
   }
@@ -1237,6 +1242,7 @@ function initInterestsToggle() {
   const toggle = document.querySelector('.interests-toggle');
   const panel = toggle && document.getElementById(toggle.getAttribute('aria-controls'));
   if (!panel) return;
+
   toggle.addEventListener('click', () => {
     const open = toggle.getAttribute('aria-expanded') !== 'true';
     toggle.setAttribute('aria-expanded', String(open));
