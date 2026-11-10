@@ -5084,7 +5084,7 @@ body[data-page="project"] .pc-next-pill.is-docked {
 }
 
 .pc-image--main.has-image {
-  border: 2px solid var(--frame-border);
+  border: 3px solid var(--frame-border);
 }
 
 .pc-image--main.pc-image--fit.has-image {
@@ -11149,4 +11149,32 @@ html[data-theme="dark"] .home-texture:not(.home-texture--footer)::after {
   .nav-primary .nav-icon-btn.nav-label-btn {
     padding: 0 17px 0 14px;
   }
+}
+
+/* Every project UI frame (the heroes, the image rows, the detail shots and
+   the looping hero video) in the same mount: a slight white border and a
+   faint drop shadow. Dark theme keeps its own frame colour, with a deeper
+   shadow so it still reads. */
+html body .pc-image,
+html body .pc-detail {
+  border: 3px solid var(--frame-border, #fff);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+html[data-theme="dark"] body .pc-image,
+html[data-theme="dark"] body .pc-detail {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* The video sits inside its border (it used to overhang it by 2px and hide
+   it), with no white fade over the bottom of the footage. */
+.pc-image--loop .pc-hero-video {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  clip-path: inset(0 round 7px);
+}
+
+.pc-image--loop::after {
+  display: none;
 }

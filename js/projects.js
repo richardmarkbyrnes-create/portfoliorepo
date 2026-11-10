@@ -95,7 +95,7 @@ window.PROJECTS = {
     // Hero is a looping video set in the page markup; hover preview needs a still.
     previewImage: 'images/ask-ai-preview.webp?v=2',
     previewAspect: '3286 / 2056',
-    heroAspect: '1716 / 1096',
+    heroAspect: '1716 / 1052',
     paragraphs: [
       'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
       'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call — you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
