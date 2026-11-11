@@ -1236,6 +1236,50 @@ function initHeroWeather() {
     .catch(() => {});
 }
 
+// Videos can ask for their own playback speed (data-rate="0.85" plays at
+// 85%); set on load and kept when the browser resets it on a new source.
+function initVideoRates() {
+  document.querySelectorAll('video[data-rate]').forEach((v) => {
+    const rate = parseFloat(v.dataset.rate);
+    if (!rate) return;
+    const apply = () => { v.defaultPlaybackRate = rate; v.playbackRate = rate; };
+    apply();
+    v.addEventListener('loadedmetadata', apply);
+  });
+}
+
+// Project pages: the hero frame grows very slightly as you scroll past it,
+// from its normal size to 3% larger by the time it has scrolled out of
+// view, so the page feels like it moves through depth. Uses the standalone
+// scale property, which the entrance animation (on transform) leaves alone.
+// Off for reduced motion.
+function initHeroScrollScale() {
+  if (document.body.dataset.page !== 'project' || prefersReducedMotion()) return;
+  const hero = document.querySelector('.pc-image--main');
+  if (!hero) return;
+  const MAX = 0.03;
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const r = hero.getBoundingClientRect();
+    const vh = window.innerHeight;
+    // 0 while the hero is fully in place at the top, 1 once its bottom edge
+    // has left the top of the window.
+    const t = Math.min(1, Math.max(0, (vh * 0.85 - r.bottom) / (vh * 0.85)));
+    const p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height)));
+    const k = Math.max(t, p);
+    hero.style.scale = String(1 + MAX * k);
+  };
+  const onScroll = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
 // Interests: collapsed behind its heading's chevron, opening to one long
 // list of interests (each a title, a line and its photos). The button flips
 // aria-expanded and the panel's .is-open (CSS unfolds it); while closed the
@@ -1537,5 +1581,7 @@ initClickSpark();
 initInProgressStatus();
 initHeroWeather();
 initReducedMotionVideo();
+initHeroScrollScale();
+initVideoRates();
 updateClock();
 setInterval(updateClock, 1000);
