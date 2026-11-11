@@ -25,7 +25,7 @@
        can't see until the scripts run; this starts it downloading straight
        away. Keep in step with images[0] in projects.js. -->
   <link rel="preload" href="/images/canvas-insights-hero.webp?v=2" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/css/styles.css?v=1420">
+  <link rel="stylesheet" href="/css/styles.css?v=1435">
 </head>
 <body data-page="project" data-project="customer-insights">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -70,8 +70,8 @@
 
       <p class="pc-desc animate-in" id="pc-desc-1" style="animation-delay:380ms"></p>
 
-      <figure class="pc-sketch animate-in" style="animation-delay:425ms">
-        <img src="images/canvas-insights-search.png" alt="Sticky notes, documents, video clips and speech bubbles feeding into a search field." width="1600" height="873" loading="lazy" decoding="async">
+      <figure class="pc-sketch pc-sketch--hairline animate-in" style="animation-delay:425ms">
+        <div class="pc-hairline" id="canvas-figure"></div>
         <figcaption class="pc-sketch-caption"><span class="pc-eyebrow">Solution</span>Turning scattered insight data into<br>structured, multiplayer components.<span class="pc-lead-muted">That&rsquo;s why we built Insight cards.</span></figcaption>
       </figure>
 
@@ -101,10 +101,11 @@
     </article>
   </main>
 
-  <script src="/js/projects.js?v=71"></script>
+  <script src="/js/projects.js?v=72"></script>
   <script src="/js/ascii-text-scramble.js?v=5"></script>
   <script src="/js/project-nav.js?v=72"></script>
   <script src="/js/main.js?v=187"></script>
+  <script type="module" src="/js/canvas-figure.js?v=5"></script>
   <div class="pc-next-glow" aria-hidden="true"></div>
 
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->

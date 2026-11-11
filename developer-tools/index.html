@@ -25,7 +25,7 @@
        can't see until the scripts run; this starts it downloading straight
        away. Keep in step with images[0] in projects.js. -->
   <link rel="preload" href="/images/developer-tools-hero.webp?v=3" as="image" fetchpriority="high">
-  <link rel="stylesheet" href="/css/styles.css?v=1420">
+  <link rel="stylesheet" href="/css/styles.css?v=1435">
 </head>
 <body data-page="project" data-project="developer-tools">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -66,8 +66,8 @@
 
       <p class="pc-desc animate-in" id="pc-desc-1" style="animation-delay:380ms"></p>
 
-      <figure class="pc-sketch pc-sketch--ide animate-in" style="animation-delay:425ms">
-        <img src="images/developer-tools-ide.png" alt="A blueprint-style drawing of a code editor: file tree, open tabs, source pane and terminal." width="2473" height="1278" loading="lazy" decoding="async">
+      <figure class="pc-sketch pc-sketch--hairline animate-in" style="animation-delay:425ms">
+        <div class="pc-hairline" id="fold-figure"></div>
         <figcaption class="pc-sketch-caption">Designing an extension that felt<br>native to developers&rsquo; IDEs.<span class="pc-lead-muted">Enabling seamless adoption.</span></figcaption>
       </figure>
 
@@ -95,10 +95,11 @@
     </article>
   </main>
 
-  <script src="/js/projects.js?v=71"></script>
+  <script src="/js/projects.js?v=72"></script>
   <script src="/js/ascii-text-scramble.js?v=5"></script>
   <script src="/js/project-nav.js?v=72"></script>
   <script src="/js/main.js?v=187"></script>
+  <script type="module" src="/js/fold-figure.js?v=1"></script>
   <div class="pc-next-glow" aria-hidden="true"></div>
 
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
