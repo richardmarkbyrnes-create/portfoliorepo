@@ -11295,3 +11295,31 @@ body[data-project="developer-tools"] .pc-sketch--hairline .pc-sketch-caption {
 body[data-project="developer-tools"] .pc-sketch--hairline + .pc-desc {
   margin-bottom: 60px;
 }
+
+/* Project heroes (image or video) arrive with a slight scale-in out of a
+   blur: from 93% and 10px of blur to full size and sharp, on the same long
+   ease-out as the rest of the page's entrance. The scroll scale (main.js)
+   uses the separate scale property, so the two don't fight. */
+@keyframes heroScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.93);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+body[data-page="project"] .pc-image--main.animate-in {
+  animation: heroScaleIn 1.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-page="project"] .pc-image--main.animate-in {
+    animation: none;
+    opacity: 1;
+  }
+}
