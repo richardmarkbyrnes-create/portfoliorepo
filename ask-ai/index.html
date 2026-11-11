@@ -21,7 +21,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="/css/styles.css?v=1420">
+  <link rel="stylesheet" href="/css/styles.css?v=1435">
 </head>
 <body data-page="project" data-project="ask-ai">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -59,7 +59,7 @@
         <h1 class="pc-lead" id="pc-lead"></h1>
       </header>
       <div class="pc-image pc-image--main pc-image--loop animate-in" style="animation-delay:90ms" aria-hidden="true">
-        <video class="pc-hero-video" src="/images/ask-ai-hero.mp4?v=10" width="1716" height="1052" autoplay loop muted playsinline preload="auto"></video>
+        <video class="pc-hero-video" src="/images/ask-ai-hero.mp4?v=11" width="1716" height="1052" autoplay loop muted playsinline preload="auto"></video>
       </div>
 
       <figure class="pc-sketch pc-sketch--textonly animate-in" style="animation-delay:250ms">
@@ -69,7 +69,7 @@
       <p class="pc-desc animate-in" id="pc-desc-1" style="animation-delay:380ms"></p>
 
       <figure class="pc-sketch pc-sketch--network animate-in" style="animation-delay:425ms">
-        <img src="images/ask-ai-network.png" alt="A sprawling node-and-edge graph, dense with clusters and trailing single nodes." width="1789" height="1182" loading="lazy" decoding="async">
+        <div class="pc-hairline" id="ask-ai-figure"></div>
         <figcaption class="pc-sketch-caption"><span class="pc-eyebrow">Solution</span>Connecting the dots.<span class="pc-lead-muted">Enabling users to uncover customer insights faster through natural conversation.</span></figcaption>
       </figure>
 
@@ -103,10 +103,11 @@
     </article>
   </main>
 
-  <script src="/js/projects.js?v=71"></script>
+  <script src="/js/projects.js?v=72"></script>
   <script src="/js/ascii-text-scramble.js?v=5"></script>
   <script src="/js/project-nav.js?v=72"></script>
   <script src="/js/main.js?v=187"></script>
+  <script type="module" src="/js/ask-ai-figure.js?v=9"></script>
   <div class="pc-next-glow" aria-hidden="true"></div>
 
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->

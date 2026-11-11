@@ -11157,6 +11157,10 @@ html[data-theme="dark"] .home-texture:not(.home-texture--footer)::after {
    shadow so it still reads. */
 html body .pc-image,
 html body .pc-detail {
+  /* The detail shots' artwork has its own rounded panel (about 15px) set
+     just inside the frame; 18px outside keeps the white border an even
+     width all the way round the corner, concentric with it. */
+  border-radius: 18px;
   border: 3px solid var(--frame-border, #fff);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.06);
 }
@@ -11172,9 +11176,122 @@ html[data-theme="dark"] body .pc-detail {
   inset: 0;
   width: 100%;
   height: 100%;
-  clip-path: inset(0 round 7px);
+  clip-path: inset(0 round 15px);
 }
 
 .pc-image--loop::after {
   display: none;
+}
+
+/* Ask Insights' "Solution" illustration: the hairline Settle figure
+   (js/ask-ai-figure.js), sized by its box (it keeps a 5:4 ratio), in fine
+   grey hairlines with near-black highlights. The tiles' faces take the page
+   colour so they sit on it rather than as white blocks. Dark theme: light
+   lines on the dark page. */
+.pc-hairline {
+  width: min(480px, 72%);
+  margin: 0 auto;
+  --hairline-plate: var(--bg);
+  --hairline-hi: #09090b;
+  --hairline-edge: #52525b;
+  --hairline-mid: #a1a1aa;
+  --hairline-lo: #e4e4e7;
+  --hairline-stroke: 0.9;
+}
+
+[data-theme="dark"] .pc-hairline {
+  --hairline-hi: #e8e8ea;
+  --hairline-edge: #9a9aa3;
+  --hairline-mid: #5b5d64;
+  --hairline-lo: #2e2e33;
+}
+
+@media (max-width: 640px) {
+  .pc-hairline {
+    width: 100%;
+  }
+}
+
+/* Ask Insights' Solution caption: the hairline figure's box carries empty
+   room under its drawing (~70px), so the caption is pulled up to sit about
+   56px under the drawing itself. */
+body[data-project="ask-ai"] .pc-sketch--network:has(.pc-hairline) .pc-sketch-caption {
+  margin-top: -16px;
+}
+
+/* More room after the paragraph that follows it, before the next shot. */
+body[data-project="ask-ai"] .pc-sketch--network:has(.pc-hairline) + .pc-desc {
+  margin-bottom: 112px;
+}
+
+/* Custom Stickers' Solution figure (the hairline Lens): the same spacing as
+   Ask Insights' — the caption ~55px under the drawing itself (its box has
+   empty room below it), ~42px from the caption to the paragraph, and
+   ~155px after the paragraph before the next shot. */
+body[data-project="custom-stickers"] .pc-diagram--hairline .pc-sketch-caption {
+  margin-top: -14px;
+}
+
+body[data-project="custom-stickers"] .pc-diagram--hairline {
+  margin-bottom: 0;
+}
+
+body[data-project="custom-stickers"] .pc-diagram--hairline + .pc-desc {
+  margin-top: 40px;
+  margin-bottom: 112px;
+}
+
+/* Canvas Insights' Solution figure (the hairline Layers): the same spacing
+   as the other project figures — the caption ~55px under the drawing, ~42px
+   to the paragraph, ~155px after the paragraph before the next shot. */
+body[data-project="customer-insights"] .pc-sketch--hairline .pc-sketch-caption {
+  margin-top: -6px;
+}
+
+/* The stacked card sits low in the figure's box (the box keeps room for the
+   plates floating apart above it), so the figure is pulled up to close the
+   gap under the paragraph before it. */
+body[data-project="customer-insights"] .pc-sketch--hairline .pc-hairline {
+  margin-top: -48px;
+}
+
+body[data-project="customer-insights"] .pc-sketch--hairline + .pc-desc {
+  margin-bottom: 112px;
+}
+
+/* Visualisations' Solution figure (the hairline Dashboard): the same
+   spacing as the other project figures — ~150px from the paragraph above to
+   the drawing, the caption ~55px under it, ~42px to the paragraph, ~155px
+   after that paragraph before the next shot. */
+body[data-project="visualisations"] .pc-sketch--hairline .pc-hairline {
+  margin-top: 4px;
+}
+
+body[data-project="visualisations"] .pc-sketch--hairline .pc-sketch-caption {
+  margin-top: -19px;
+}
+
+body[data-project="visualisations"] .pc-sketch--hairline + .pc-desc {
+  margin-bottom: 112px;
+}
+
+/* Visualisations' Dashboard figure a little bigger than the others. */
+body[data-project="visualisations"] .pc-sketch--hairline .pc-hairline {
+  width: min(560px, 86%);
+}
+
+/* SAP Developer Platform's figure (the hairline Fold): the same spacing as
+   the other project figures — ~150px from the paragraph above to the
+   drawing, the caption ~55px under it, ~42px to the paragraph, ~155px after
+   that paragraph. */
+body[data-project="developer-tools"] .pc-sketch--hairline .pc-hairline {
+  margin-top: 87px;
+}
+
+body[data-project="developer-tools"] .pc-sketch--hairline .pc-sketch-caption {
+  margin-top: 28px;
+}
+
+body[data-project="developer-tools"] .pc-sketch--hairline + .pc-desc {
+  margin-bottom: 60px;
 }
