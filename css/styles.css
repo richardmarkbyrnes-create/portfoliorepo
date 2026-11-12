@@ -11358,3 +11358,15 @@ body.page-is-leaving .page {
 body[data-page="project"] .pc-image--main.animate-in {
   will-change: opacity, transform, filter;
 }
+
+/* Season and Contact menus a little rounder: the rows (and the raised
+   current-season tile) 12px rather than 9px, the panel round them to match
+   so the gap between stays even. */
+.nav-theme-menu .season-option,
+.nav-contact-item {
+  border-radius: 12px;
+}
+
+.nav-contact-menu .nav-contact-panel {
+  border-radius: 18px;
+}
