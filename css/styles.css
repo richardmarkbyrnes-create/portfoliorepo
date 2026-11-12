@@ -11370,3 +11370,28 @@ body[data-page="project"] .pc-image--main.animate-in {
 .nav-contact-menu .nav-contact-panel {
   border-radius: 18px;
 }
+
+/* Custom Stickers' detail shot is a recording of the flow, framed like the
+   other detail shots (border, corners, shadow) and a little bigger. */
+body[data-project="custom-stickers"] .pc-detail--video {
+  display: block;
+  width: 130%;
+  height: auto;
+  line-height: 0;
+}
+
+/* A video is composited, so it ignores rounded corners and overflow
+   clipping: the frame (border, shadow) sits on a wrapper, and the video's
+   own corners are cut with clip-path to match the frame's inside edge. */
+body[data-project="custom-stickers"] .pc-detail--video video {
+  display: block;
+  width: 100%;
+  height: auto;
+  clip-path: inset(0 round 15px);
+}
+
+@media (max-width: 640px) {
+  body[data-project="custom-stickers"] .pc-detail--video {
+    width: 100%;
+  }
+}
