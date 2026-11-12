@@ -92,8 +92,8 @@ window.PROJECTS = {
       { name: 'Frak Lopez', photo: 'images/team-frank.jpg', role: 'Engineer' },
     ],
     // Hero is a looping video set in the page markup; hover preview needs a still.
-    previewImage: 'images/ask-ai-preview.webp?v=2',
-    previewAspect: '3286 / 2056',
+    previewImage: 'images/ask-ai-preview-loop.webp?v=1',
+    previewAspect: '640 / 392',
     heroAspect: '1716 / 1050',
     paragraphs: [
       'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
