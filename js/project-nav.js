@@ -258,7 +258,7 @@ function initQuoteReveal(el) {
 
     const done = () => root.classList.remove('page-entering');
     page.addEventListener('animationend', (event) => {
-      if (event.animationName === 'pageBlurIn') done();
+      if (event.animationName === 'pageBlurIn' || event.animationName === 'pageFadeIn') done();
     }, { once: true });
     // The timeout is the backstop in case animationend never comes, and it has
     // to outlast the entrance (0.52s). It only starts counting once the

@@ -11323,3 +11323,38 @@ body[data-page="project"] .pc-image--main.animate-in {
     opacity: 1;
   }
 }
+
+/* ── Smoother page transitions ───────────────────────────────────────────
+   Leaving and arriving used to blur the whole page (blur(8–10px) on .page),
+   which the browser has to recompute across the entire page every frame;
+   with the hero blurring inside it at the same time, frames dropped and the
+   change stuttered. The page now moves on opacity and a small slide alone,
+   which the compositor handles cheaply, and the blur is kept to the hero,
+   which is one element. */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+html.page-entering .page {
+  animation-name: pageFadeIn;
+  will-change: opacity, transform;
+}
+
+body.page-is-leaving .page {
+  filter: none;
+  will-change: opacity, transform;
+  transition:
+    opacity 0.32s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body[data-page="project"] .pc-image--main.animate-in {
+  will-change: opacity, transform, filter;
+}
