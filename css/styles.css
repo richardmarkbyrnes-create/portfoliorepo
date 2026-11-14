@@ -11395,3 +11395,14 @@ body[data-project="custom-stickers"] .pc-detail--video video {
     width: 100%;
   }
 }
+
+/* A little more room either side of the detail-shot captions. */
+.pc-detail-caption {
+  margin-top: 28px;
+  margin-bottom: 94px;
+}
+
+/* Caption to the next shot: the shot's own 40px top margin plus this. */
+.pc-detail-caption:has(+ .pc-detail) {
+  margin-bottom: 22px;
+}
