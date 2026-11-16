@@ -11406,3 +11406,15 @@ body[data-project="custom-stickers"] .pc-detail--video video {
 .pc-detail-caption:has(+ .pc-detail) {
   margin-bottom: 22px;
 }
+
+/* The "outside the box" animation with its background cut away (an
+   animated WebP with transparency), so the line work sits straight on the
+   page in every theme: no brightness lift needed in light, and on dark the
+   blue lines are lifted a little rather than the whole frame inverted. */
+.pc-learning-gif--clear {
+  filter: none;
+}
+
+[data-theme="dark"] .pc-learning-gif--clear {
+  filter: brightness(1.7) saturate(0.6);
+}

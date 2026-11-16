@@ -1,8 +1,8 @@
 window.PROJECT_ORDER = [
   'onboarding',
-  'custom-stickers',
   'ask-ai',
   'customer-insights',
+  'custom-stickers',
   'navigation',
   'visualisations',
   'developer-tools',
