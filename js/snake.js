@@ -74,7 +74,7 @@
       '.#.#...',
       '#......',
     ] },
-    dark: { colour: '#a9c8ee', art: [
+    dark: { colour: '#f2f2f4', art: [
       '...#...',
       '.#.#.#.',
       '..###..',
@@ -136,8 +136,8 @@
       '..###..',
       '...#...',
     ] },
-    // A snowman, a paler blue than the snowflake.
-    dark: { colour: '#c9dcf5', art: [
+    // A snowman, a mid grey beside the white snowflake.
+    dark: { colour: '#a4a4aa', art: [
       '...#...',
       '..###..',
       '..###..',
@@ -164,7 +164,7 @@
 
   // Colours: the snake and food in the season's accent, the grid in a faint
   // tint of the text colour.
-  const ACCENTS = { normal: '#9ed49a', spring: '#7fb2e0', autumn: '#c2703d', dark: '#7aa5d8' };
+  const ACCENTS = { normal: '#9ed49a', spring: '#7fb2e0', autumn: '#c2703d', dark: '#d8d8dc' };
   let colours = null;
   function readColours() {
     const css = getComputedStyle(document.documentElement);

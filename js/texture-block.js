@@ -232,7 +232,9 @@
       dark: ['#4f7d55', '#94c482', '#8f7a45', '#8a5e48', '#7a4f5e', '#2a2127'],
     },
     autumn: { label: 'Autumn', colors: ['#d6a07e', '#efc09a', '#f6d999', '#fcf4e4'], dark: ['#7d4629', '#c98042', '#94713a', '#2b221a'] },
-    winter: { label: 'Winter', colors: ['#97a9bd', '#c6d3df', '#e6edf4', '#fcfdfe'], dark: ['#4d6077', '#93abc2', '#3a4f68', '#1d2531'] },
+    // Winter (the dark theme) in black and white: grey ground, a pale rim,
+    // a deeper grey sky fading to near the page at the top.
+    winter: { label: 'Winter', colors: ['#a6a6aa', '#cfcfd3', '#e9e9ec', '#fcfcfd'], dark: ['#58585d', '#b0b0b6', '#434347', '#1e1e20'] },
   };
   const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
   const isDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
