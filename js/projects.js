@@ -32,9 +32,9 @@ window.PROJECTS = {
     headline: 'Unblocking Personal\nExpression with Gen AI',
     team: 'Miro · Growth Adoption',
     images: [
-      'images/custom-stickers-hero.webp',
+      'images/custom-stickers-hero.webp?v=2',
     ],
-    heroAspect: '2842 / 1856',
+    heroAspect: '2812 / 1796',
     heroFit: 'contain',
     // Hover preview on the home page, in a frame its own shape.
     previewImage: 'images/custom-stickers-preview.webp?v=3',
@@ -117,7 +117,7 @@ window.PROJECTS = {
       { name: 'Mor Sela', photo: 'images/team-mor.jpg', role: 'Engineer' },
     ],
     images: [
-      'images/canvas-insights-hero.webp?v=2',
+      'images/canvas-insights-hero.webp?v=3',
     ],
     // Hover preview on the home page, in a frame its own shape.
     previewImage: 'images/canvas-insights-preview.webp?v=7',

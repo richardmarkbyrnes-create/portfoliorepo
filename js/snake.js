@@ -526,13 +526,6 @@
   // A new game (not a resume) shows how to steer under the board for a
   // few seconds (3.5s), then fades it away.
   const HINT_MS = 3500;
-  // The season's line under the steering hint.
-  const GOALS = {
-    spring: 'Snag every blossom!',
-    normal: 'Chase the summer rays!',
-    autumn: 'Sweep up the falling leaves!',
-    dark: 'Catch the snowflakes!',
-  };
   let hintTimer = 0;
   function clearHint() {
     clearTimeout(hintTimer);
@@ -540,15 +533,12 @@
   }
   function showHint() {
     clearHint();
-    // How to steer, then a line for the season's item.
+    // Just how to steer; no seasonal line under it.
     overlay.innerHTML = '';
     const how = document.createElement('span');
     how.className = 'snake-status-title';
     how.textContent = verb === 'tap' ? 'Use the arrows below to steer' : 'Use arrow keys to navigate';
-    const goal = document.createElement('span');
-    goal.className = 'snake-status-hint';
-    goal.textContent = GOALS[document.documentElement.getAttribute('data-theme')] || GOALS.normal;
-    overlay.append(how, goal);
+    overlay.append(how);
     overlay.hidden = false;
     hintTimer = setTimeout(() => {
       if (state !== 'playing') return;
