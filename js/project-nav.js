@@ -723,6 +723,15 @@ function initQuoteReveal(el) {
       topTitle.textContent = project.title;
       topCompany.appendChild(topTitle);
       document.body.appendChild(topCompany);
+      // It's built a moment after the back button has started arriving, so
+      // put its entrance on the button's clock: the two appear as one.
+      const backEl = document.getElementById('project-back');
+      const backAnim = backEl?.getAnimations?.()[0];
+      const crumbAnim = topCompany.getAnimations?.()[0];
+      if (backAnim && crumbAnim && backAnim.currentTime != null) {
+        crumbAnim.currentTime = backAnim.currentTime;
+        if (backAnim.playState === 'paused') crumbAnim.pause();
+      }
     }
     const onScroll = () => {
       const scrolled = window.scrollY > 20;
