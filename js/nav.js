@@ -96,8 +96,16 @@
       wrap.classList.toggle('is-open', open);
       btn.setAttribute('aria-expanded', String(open));
     };
+    // With a mouse the menu is hover-only: a click doesn't latch it open
+    // (and the button gives up focus, or :focus would hold it). Keyboard
+    // presses (detail 0) and touch screens still toggle it.
+    const hoverOnly = window.matchMedia('(hover: hover) and (pointer: fine)');
     btn.addEventListener('click', (event) => {
       event.stopPropagation();
+      if (hoverOnly.matches && event.detail > 0) {
+        btn.blur();
+        return;
+      }
       setOpen(!wrap.classList.contains('is-open'));
     });
     wrap.querySelectorAll('.season-option').forEach((opt) => {
@@ -171,8 +179,16 @@
       wrap.classList.toggle('is-open', open);
       btn.setAttribute('aria-expanded', String(open));
     };
+    // With a mouse the menu is hover-only: a click doesn't latch it open
+    // (and the button gives up focus, or :focus would hold it). Keyboard
+    // presses (detail 0) and touch screens still toggle it.
+    const hoverOnly = window.matchMedia('(hover: hover) and (pointer: fine)');
     btn.addEventListener('click', (event) => {
       event.stopPropagation();
+      if (hoverOnly.matches && event.detail > 0) {
+        btn.blur();
+        return;
+      }
       setOpen(!wrap.classList.contains('is-open'));
     });
     document.addEventListener('click', (event) => {
