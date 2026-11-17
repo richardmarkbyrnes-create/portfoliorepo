@@ -315,6 +315,118 @@ function initQuoteReveal(el) {
     if (navPrimary && !prefersReducedMotion()) navPrimary.classList.add('nav-returning');
   }
 
+  // Stipple shading on the hairline drawings: each plate's silhouette is
+  // filled with a dot pattern that's sparse up top and thickens towards its
+  // lower edge, like the side of a stippled engraving. Patterns are sized
+  // in the shape's own bounding box so they ride along as the plates move,
+  // with the dot size worked out per shape so it reads the same everywhere.
+  function initHairlineStipple() {
+    if (document.body.dataset.page !== 'project') return;
+    const NS = 'http://www.w3.org/2000/svg';
+    const CELL = 1.1; // dither grid, in drawing units
+    const DOT = 0.8;  // square dot size, in drawing units
+    let uid = 0;
+
+    // 4x4 Bayer matrix: the order cells switch on as the shading deepens.
+    const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    // How deep the shading reaches up from a plate's lower edge, in drawing
+    // units: about a plate's thickness, so it sits on the side faces.
+    const BAND = 7;
+    // Dot probability by distance above the lower edge: dense at the edge,
+    // thinning to nothing by the top of the band.
+    const density = (d) => (d >= BAND ? 0 : 0.85 * Math.pow(1 - d / BAND, 1.2));
+    function stipple(svg, shape) {
+      let box;
+      try { box = shape.getBBox(); } catch { return; }
+      if (!box.width || !box.height) return;
+      let defs = svg.querySelector(':scope > defs.hl-stipple-defs');
+      if (!defs) {
+        defs = document.createElementNS(NS, 'defs');
+        defs.setAttribute('class', 'hl-stipple-defs');
+        svg.prepend(defs);
+      }
+      const id = `hl-stipple-${++uid}`;
+      const pat = document.createElementNS(NS, 'pattern');
+      pat.setAttribute('id', id);
+      pat.setAttribute('patternUnits', 'objectBoundingBox');
+      pat.setAttribute('patternContentUnits', 'objectBoundingBox');
+      pat.setAttribute('width', '1');
+      pat.setAttribute('height', '1');
+      const bg = document.createElementNS(NS, 'rect');
+      bg.setAttribute('width', '1');
+      bg.setAttribute('height', '1');
+      bg.setAttribute('class', 'hl-stipple-bg');
+      const dw = DOT / box.width;
+      const dh = DOT / box.height;
+      const pt = svg.createSVGPoint();
+      const inside = (x, y) => { pt.x = x; pt.y = y; return shape.isPointInFill(pt); };
+      let d = '';
+      // Ordered dither: a fixed grid shared by every shape (so neighbouring
+      // plates line up), each cell switched on when the shading there beats
+      // its threshold in a 4x4 Bayer matrix.
+      const i0 = Math.floor(box.x / CELL);
+      const j0 = Math.floor(box.y / CELL);
+      const i1 = Math.ceil((box.x + box.width) / CELL);
+      const j1 = Math.ceil((box.y + box.height) / CELL);
+      for (let j = j0; j < j1; j++) {
+        for (let i = i0; i < i1; i++) {
+          const x = (i + 0.5) * CELL;
+          const y = (j + 0.5) * CELL;
+          if (!inside(x, y)) continue;
+          // Distance straight down to the shape's edge, capped at the band.
+          let dist = 0;
+          while (dist < BAND && inside(x, y + dist + 1)) dist += 1;
+          const threshold = (BAYER[(j & 3) * 4 + (i & 3)] + 0.5) / 16;
+          if (density(dist) <= threshold) continue;
+          const u = (i * CELL - box.x) / box.width;
+          const v = (j * CELL - box.y) / box.height;
+          d += `M${u.toFixed(4)} ${v.toFixed(4)}h${dw.toFixed(4)}v${dh.toFixed(4)}h${(-dw).toFixed(4)}z`;
+        }
+      }
+      const dots = document.createElementNS(NS, 'path');
+      dots.setAttribute('d', d);
+      dots.setAttribute('class', 'hl-stipple-dots');
+      pat.append(bg, dots);
+      defs.appendChild(pat);
+      shape.style.fill = `url(#${id})`;
+      shape.dataset.stipple = id;
+    }
+
+    // One shape per idle moment, so building the dots never holds up a
+    // frame while the page is arriving or scrolling.
+    const idle = window.requestIdleCallback || ((fn) => setTimeout(fn, 16));
+    function apply(svg) {
+      svg.querySelectorAll('path.sil:not([data-stipple])').forEach((el) => {
+        if (el.classList.contains('nf')) return;
+        el.dataset.stipple = 'pending';
+        idle(() => { if (el.isConnected) stipple(svg, el); }, { timeout: 1500 });
+      });
+    }
+
+    function watch(host) {
+      const run = () => { const svg = host.querySelector(':scope > svg'); if (svg) apply(svg); };
+      run();
+      let queued = false;
+      new MutationObserver(() => {
+        if (queued) return;
+        queued = true;
+        requestAnimationFrame(() => { queued = false; run(); });
+      }).observe(host, { childList: true, subtree: true });
+    }
+
+    const start = () => {
+      const hosts = document.querySelectorAll('[data-hairline]');
+      if (hosts.length) { hosts.forEach(watch); return true; }
+      return false;
+    };
+    // The figures mount from their own modules, so wait for them to appear.
+    if (!start()) {
+      const mo = new MutationObserver(() => { if (start()) mo.disconnect(); });
+      mo.observe(document.body, { childList: true, subtree: true });
+      setTimeout(() => mo.disconnect(), 10000);
+    }
+  }
+
   function initProjectPage() {
     if (document.body.dataset.page !== 'project') return;
 
@@ -1022,4 +1134,5 @@ function initQuoteReveal(el) {
   initWorkLinks();
   initHomeReturn();
   initProjectPage();
+  initHairlineStipple();
 })();

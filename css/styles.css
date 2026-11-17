@@ -12138,3 +12138,11 @@ html body .pc-shortcuts-panel {
   left: auto;
   right: 0;
 }
+
+/* Stipple shading on the hairline drawings (project-nav.js): the pattern's
+   ground is the plate colour and the dots take the drawing's edge tone, so
+   both follow the season. */
+.hl-stipple-bg { fill: var(--hairline-plate, var(--bg)); }
+.hl-stipple-dots { fill: var(--hairline-edge, #52525b); }
+.hl-stipple-bg,
+.hl-stipple-dots { stroke: none; }
