@@ -12146,3 +12146,460 @@ html body .pc-shortcuts-panel {
 .hl-stipple-dots { fill: var(--hairline-edge, #52525b); }
 .hl-stipple-bg,
 .hl-stipple-dots { stroke: none; }
+
+/* Team credit as one line under the divider: "Shoutouts · Name, Name". */
+html body[data-page="project"] .pc-team.pc-team--line {
+  display: block;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  color: var(--text-light);
+  text-align: left;
+}
+
+html body[data-page="project"] .pc-team--line .pc-team-label {
+  font-size: inherit;
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+html body[data-page="project"] .pc-team--line .pc-team-sep {
+  margin: 0 0.6em;
+  opacity: 0.6;
+}
+
+html body[data-page="project"] .pc-team-divider {
+  margin-bottom: 24px;
+}
+
+/* Centred under the (narrower) divider, as the quote above it is. */
+html body[data-page="project"] .pc-team.pc-team--line {
+  text-align: center;
+}
+
+/* The shoutouts line keeps to the divider's width (the same 66% measure as
+   the copy) and wraps onto more lines rather than running past it. */
+html body[data-page="project"] .pc-team.pc-team--line {
+  max-width: 66%;
+  align-self: center;
+  text-wrap: balance;
+}
+
+/* More room under the last thing on every project page. */
+html body[data-page="project"] .pc-page {
+  padding-bottom: 160px;
+}
+
+/* Smaller screens: the divider widens to 90% of the column; so does the line. */
+@media (max-width: 768px) {
+  html body[data-page="project"] .pc-team.pc-team--line {
+    max-width: 90%;
+  }
+}
+
+/* Shoutout names: hover (or focus) one for a small pill above it with
+   their photo and role. */
+html body[data-page="project"] .pc-team-person {
+  position: relative;
+  white-space: nowrap;
+  cursor: default;
+  outline: none;
+  transition: color 0.2s ease;
+}
+
+html body[data-page="project"] .pc-team-person:hover,
+html body[data-page="project"] .pc-team-person:focus-visible {
+  color: var(--text);
+}
+
+.pc-team-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 11px 4px 4px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 6px 16px rgba(0, 0, 0, 0.08);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% 4px;
+  scale: 0.96;
+  transition:
+    opacity 0.2s ease,
+    translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-team-person:hover .pc-team-tip,
+.pc-team-person:focus-visible .pc-team-tip {
+  opacity: 1;
+  translate: -50% 0;
+  scale: 1;
+}
+
+.pc-team-tip-avatar {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.pc-team-tip-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-team-tip-avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  font-weight: 600;
+  color: #fff;
+  background: hsl(var(--avatar-hue, 220), 55%, 58%);
+}
+
+/* No photo or role to show: no pill. */
+.pc-team-tip:not(:has(.pc-team-tip-role)):has(.pc-team-tip-avatar--initials) {
+  display: none;
+}
+
+/* Winter: the Next project pill's dark glass. */
+html[data-theme="dark"] .pc-team-tip {
+  background: #1a1a1c;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-team-tip { transition: opacity 0.15s linear; translate: -50% 0; scale: 1; }
+}
+
+/* The hovered name (and its pill) sits above its neighbours. */
+html body[data-page="project"] .pc-team-person:hover,
+html body[data-page="project"] .pc-team-person:focus-visible {
+  z-index: 30;
+}
+
+/* Even spacing round the shoutouts on every page: 72px from the last
+   content to the divider, 32px from the divider to the line. Pages without
+   a quote leave an empty quote box before the divider; it's dropped, and
+   whatever ends the section gives up its own bottom margin so the gap
+   doesn't stack up. */
+html body[data-page="project"] .pc-quote-reveal:has(+ .pc-team-divider--no-quote) {
+  display: none;
+}
+
+html body[data-page="project"] .pc-page > :has(+ .pc-team-divider),
+html body[data-page="project"] .pc-page > :has(+ .pc-quote-reveal + .pc-team-divider--no-quote) {
+  margin-bottom: 0;
+}
+
+html body[data-page="project"] .pc-team-divider,
+html body[data-page="project"] .pc-team-divider.pc-team-divider--no-quote {
+  margin-top: 72px;
+  margin-bottom: 32px;
+}
+
+html body[data-page="project"] .pc-page > .pc-before-team {
+  margin-bottom: 0;
+}
+
+/* "Back home" tooltip on the back button: the season nudge's card, below
+   the button and pointing up at it, shown while hovered or focused. */
+html body .pc-back .pc-back-tip {
+  top: calc(100% + 12px);
+  left: -4px;
+  right: auto;
+  padding: 8px 14px 9px;
+  transform-origin: top left;
+  white-space: nowrap;
+}
+
+html body .pc-back .pc-back-tip::before {
+  left: 18px;
+  right: auto;
+}
+
+@media (hover: hover) {
+  html body .pc-back:hover .pc-back-tip {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: none;
+  }
+}
+
+html body .pc-back:focus-visible .pc-back-tip {
+  opacity: 1;
+  translate: 0 0;
+  scale: 1;
+  filter: none;
+}
+
+/* Small screens have no hover; no tooltip. */
+@media (max-width: 768px) {
+  html body .pc-back .pc-back-tip { display: none; }
+}
+
+/* Shoutouts: a centred row of the team's photos above the names line,
+   each a small circle with a page-coloured ring, overlapping a touch. */
+html body[data-page="project"] .pc-team-avatars {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin: 0 0 14px;
+}
+
+.pc-team-avatar {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  margin-left: -6px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px var(--bg), 0 1px 3px rgba(0, 0, 0, 0.12);
+  background: var(--surface);
+}
+
+.pc-team-avatar:first-child {
+  margin-left: 0;
+}
+
+.pc-team-avatar img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-team-avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: hsl(var(--avatar-hue, 220), 55%, 58%);
+}
+
+/* "Shoutouts" on its own line, the names beneath it; smaller photos. */
+html body[data-page="project"] .pc-team--line .pc-team-label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+html body[data-page="project"] .pc-team--line .pc-team-sep {
+  display: none;
+}
+
+html body[data-page="project"] .pc-team-avatar {
+  width: 26px;
+  height: 26px;
+  margin-left: -5px;
+}
+
+html body[data-page="project"] .pc-team-avatar:first-child {
+  margin-left: 0;
+}
+
+html body[data-page="project"] .pc-team-avatar--initials {
+  font-size: 10px;
+}
+
+/* ── The team under the hero ────────────────────────────────────────────
+   A centred row of small round photos, overlapping a touch, between the
+   hero image and the first section. Each one shows its person's name and
+   role in a pill above it on hover or focus. */
+html body[data-page="project"] .pc-team-avatars {
+  display: flex;
+  justify-content: center;
+  align-self: center;
+  margin: 8px 0 72px;
+}
+
+html body[data-page="project"] .pc-team-avatar {
+  position: relative;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin-left: -6px;
+  overflow: visible;
+  border-radius: 50%;
+  box-shadow: none;
+  background: none;
+  cursor: default;
+  outline: none;
+  transition: translate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html body[data-page="project"] .pc-team-avatar:first-child {
+  margin-left: 0;
+}
+
+.pc-team-avatar-pic {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 0 0 2px var(--bg), 0 1px 3px rgba(0, 0, 0, 0.12);
+  background: var(--surface);
+}
+
+.pc-team-avatar-pic img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pc-team-avatar-pic.pc-team-avatar--initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--sans);
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  background: hsl(var(--avatar-hue, 220), 55%, 58%);
+}
+
+/* The hovered photo lifts a little and sits above its neighbours. */
+html body[data-page="project"] .pc-team-avatar:hover,
+html body[data-page="project"] .pc-team-avatar:focus-visible {
+  z-index: 30;
+  translate: 0 -2px;
+}
+
+html body[data-page="project"] .pc-team-avatar:focus-visible .pc-team-avatar-pic {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--text-light);
+}
+
+/* Name and role pill. */
+.pc-team-tip.pc-team-tip--text {
+  gap: 6px;
+  padding: 7px 12px;
+  font-family: var(--sans);
+}
+
+.pc-team-tip-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.pc-team-tip--text .pc-team-tip-role {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body[data-page="project"] .pc-team-avatar { transition: none; translate: none; }
+}
+
+/* Under the hero, the pill opens below the photo so it never covers the image. */
+html body[data-page="project"] .pc-team-avatar .pc-team-tip {
+  top: calc(100% + 8px);
+  bottom: auto;
+  translate: -50% -4px;
+}
+
+html body[data-page="project"] .pc-team-avatar:hover .pc-team-tip,
+html body[data-page="project"] .pc-team-avatar:focus-visible .pc-team-tip {
+  translate: -50% 0;
+}
+
+/* Facts row under the hero: "Team · photos", "Timeline · …", "Ownership · …"
+   spread edge to edge across the hero's width (set in project-nav.js). */
+html body[data-page="project"] .pc-facts {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  flex-wrap: wrap;
+  align-self: center;
+  max-width: calc(100vw - 32px);
+  margin: 4px 0 72px;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+
+html body[data-page="project"] .pc-facts--single {
+  justify-content: center;
+}
+
+.pc-fact {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.pc-fact-label {
+  font-weight: 500;
+  color: var(--text);
+  opacity: 0.7;
+}
+
+.pc-fact-sep {
+  color: var(--text-light);
+  opacity: 0.6;
+}
+
+.pc-fact-value {
+  color: var(--text-light);
+}
+
+/* The photos sit in the row now, so no margin of their own; a size smaller. */
+html body[data-page="project"] .pc-facts .pc-team-avatars {
+  margin: 0;
+}
+
+html body[data-page="project"] .pc-facts .pc-team-avatar {
+  width: 22px;
+  height: 22px;
+  margin-left: -5px;
+}
+
+html body[data-page="project"] .pc-facts .pc-team-avatar:first-child {
+  margin-left: 0;
+}
+
+html body[data-page="project"] .pc-facts .pc-team-avatar--initials {
+  font-size: 9px;
+}
+
+/* Phones: the hero runs full width; the facts stack centred if they must wrap. */
+@media (max-width: 640px) {
+  html body[data-page="project"] .pc-facts {
+    justify-content: center;
+    gap: 14px 24px;
+  }
+}

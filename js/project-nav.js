@@ -723,93 +723,20 @@ function initQuoteReveal(el) {
       }
     }
 
-    // Team credit at the end of the page under the quote: a grey tray of photo
-    // cards, styled like the Music tab's records — photo, then name, then role.
-    const teamAnchorQuote = document.querySelector('.pc-quote-reveal');
-    const members = (project.teamMembers || []).filter((m) => m && !m.break);
-    if (teamAnchorQuote && members.length) {
-      const initials = (name) => name
-        .split(/\s+/)
-        .filter(Boolean)
-        .slice(0, 2)
-        .map((w) => w[0])
-        .join('')
-        .toUpperCase();
-
-      const team = document.createElement('div');
-      team.className = 'pc-team animate-in';
-
-      const label = document.createElement('span');
-      label.className = 'pc-team-label';
-      label.textContent = 'Shoutout to the team';
-      team.appendChild(label);
-
-      const grid = document.createElement('div');
-      grid.className = 'pc-team-grid';
-
-      members.forEach((member, i) => {
-        const name = typeof member === 'string' ? member : member.name;
-        const photo = typeof member === 'string' ? null : member.photo;
-        const role = typeof member === 'string' ? null : member.role;
-
-        const card = document.createElement('figure');
-        card.className = 'pc-team-card';
-
-        const frame = document.createElement('span');
-        frame.className = 'pc-team-photo';
-        if (photo) {
-          const img = document.createElement('img');
-          img.src = photo;
-          img.alt = '';
-          img.loading = 'lazy';
-          img.decoding = 'async';
-          frame.appendChild(img);
-        } else {
-          frame.classList.add('pc-team-photo--initials');
-          frame.style.setProperty('--avatar-hue', `${(i * 67) % 360}`);
-          frame.textContent = initials(name);
-        }
-
-        const caption = document.createElement('figcaption');
-        caption.className = 'pc-team-caption';
-        // First names only; the full name stays on the card for screen readers.
-        const nm = document.createElement('span');
-        nm.className = 'pc-team-name';
-        nm.textContent = name.split(/\s+/)[0];
-        card.setAttribute('aria-label', role ? `${name}, ${role}` : name);
-        caption.appendChild(nm);
-        if (role) {
-          const rl = document.createElement('span');
-          rl.className = 'pc-team-role';
-          rl.textContent = role;
-          caption.appendChild(rl);
-        }
-
-        card.appendChild(frame);
-        card.appendChild(caption);
-        grid.appendChild(card);
-      });
-      team.appendChild(grid);
-
-      // Dashed divider between the quote and the team shoutout. Without a quote the
-      // divider sits straight under the last paragraph, so it drops its top margin to
-      // avoid doubling up on the paragraph's own bottom spacing.
-      const teamDivider = document.createElement('hr');
-      teamDivider.className = project.quote
-        ? 'pc-rule pc-team-divider'
-        : 'pc-rule pc-team-divider pc-team-divider--no-quote';
-      teamDivider.setAttribute('aria-hidden', 'true');
-
-      // Hang the team off whichever element actually ends the section.
-      // A learning section, where a page has one, stays directly under the quote.
-      const teamAnchor = document.querySelector('.pc-learning') || document.querySelector('.pc-stat') || teamAnchorQuote;
-      teamAnchor.insertAdjacentElement('afterend', teamDivider);
-      teamDivider.insertAdjacentElement('afterend', team);
-    }
-
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
     const topBlur = document.querySelector('.top-blur');
     const centerTitleEl = document.getElementById('pc-title-center');
+    // Hovering the back button shows "Back home" in the season nudge's
+    // glass card, pointing up at the button.
+    const backBtn = document.getElementById('project-back');
+    if (backBtn && !backBtn.querySelector('.pc-back-tip')) {
+      const tip = document.createElement('span');
+      tip.className = 'theme-nudge pc-back-tip';
+      tip.setAttribute('aria-hidden', 'true');
+      tip.innerHTML = '<span class="theme-nudge-title">Back home</span>';
+      backBtn.appendChild(tip);
+    }
+
     // The breadcrumb beside the back button: the company's logo and the
     // project title. Always visible.
     let topCompany = document.getElementById('pc-top-company');
