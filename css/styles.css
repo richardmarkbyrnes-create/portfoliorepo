@@ -12034,3 +12034,107 @@ html body .pc-back.pc-back--home:active {
     width: 100%;
   }
 }
+
+/* The toolbar pills and the back button take the dropdown rows' corner
+   (12px) instead of full pill rounding. */
+html body .nav-primary .nav-icon-btn.nav-label-btn,
+html body[data-page] .pc-back.pc-back--home {
+  border-radius: 12px;
+}
+
+/* The breadcrumb arrives and leaves with the back button, on the same
+   animations and timings, so the two read as one unit between pages. */
+html.page-entering body[data-page="project"] .pc-top-company {
+  animation: pcBackBlurIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+html body[data-page="project"].page-is-leaving .pc-top-company {
+  opacity: 0;
+  filter: blur(6px);
+  transition:
+    opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) and (min-width: 769px) {
+  html.from-home body[data-page="project"] .pc-top-company {
+    animation: pcHomeSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.06s backwards;
+  }
+
+  html body[data-page="project"].page-is-leaving.is-leaving-home .pc-top-company {
+    opacity: 0;
+    filter: none;
+    translate: -32px 0;
+    transition:
+      opacity 0.26s ease,
+      translate 0.32s cubic-bezier(0.55, 0, 0.45, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.page-entering body[data-page="project"] .pc-top-company,
+  html.from-home body[data-page="project"] .pc-top-company { animation: none; }
+}
+
+/* Winter: the top buttons (season, Contact and back) take the "Next project"
+   pill's look: dark translucent glass, a white hairline and a soft dark
+   shadow. */
+html[data-theme="dark"] body .nav-primary .nav-icon-btn.nav-label-btn,
+html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn,
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  color: var(--text);
+  background: rgba(20, 20, 22, 0.78);
+  -webkit-backdrop-filter: blur(18px) saturate(1.25);
+  backdrop-filter: blur(18px) saturate(1.25);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] body .nav-primary .nav-icon-btn.nav-label-btn:hover,
+  html[data-theme="dark"] body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn:hover {
+    color: #f7f7f8;
+    background: rgba(32, 32, 35, 0.85);
+    -webkit-backdrop-filter: blur(18px) saturate(1.25);
+    backdrop-filter: blur(18px) saturate(1.25);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 2px 14px rgba(0, 0, 0, 0.45);
+  }
+
+  /* The back button keeps its hover: grows slightly, shadow deepens. */
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: #f7f7f8;
+    background: rgba(20, 20, 22, 0.78);
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.16),
+      0 4px 20px rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* Same corner shape as the dropdown rows: 12px on a 33px row is the same
+   proportion as 14px on these 38px buttons. */
+html body .nav-primary .nav-icon-btn.nav-label-btn,
+html body[data-page] .pc-back.pc-back--home {
+  border-radius: 14px;
+}
+
+/* Small screens: just the back button, no breadcrumb or logo beside it. */
+@media (max-width: 768px) {
+  html body .pc-top-company {
+    display: none;
+  }
+}
+
+/* The keyboard-shortcuts glyph sits bottom right; its panel opens up from
+   that corner. */
+html body .pc-shortcuts {
+  left: auto;
+  right: 20px;
+}
+
+html body .pc-shortcuts-panel {
+  left: auto;
+  right: 0;
+}
