@@ -11955,3 +11955,82 @@ html body .pc-back.pc-back--home:active {
     margin-bottom: -4px;
   }
 }
+
+/* Wide screens: project images and videos grow so they're easier to read,
+   while the text column stays the same width. Each width is its usual
+   share of the column times --pc-media, capped to the screen. */
+@media (min-width: 1600px) {
+  html body[data-page="project"] { --pc-media: 1; }
+}
+
+/* 1920px and up: 10% bigger. 2000px and up: a further 20% (1.1 + 0.2). */
+@media (min-width: 1920px) {
+  html body[data-page="project"] { --pc-media: 1.1; }
+}
+
+@media (min-width: 2000px) {
+  html body[data-page="project"] { --pc-media: 1.3; }
+}
+
+@media (min-width: 1600px) {
+  html body[data-page="project"] .pc-image {
+    width: calc(115% * var(--pc-media));
+    max-width: calc(100vw - 64px);
+  }
+
+  html body[data-page="project"] .pc-image--loop {
+    width: calc(180% * var(--pc-media));
+  }
+
+  html body[data-page="project"] .pc-detail,
+  html body[data-page="project"] .pc-loop {
+    width: calc(115.5% * var(--pc-media));
+    max-width: calc(100vw - 64px);
+  }
+
+  html body[data-project="ask-ai"] .pc-detail {
+    width: calc(150% * var(--pc-media));
+  }
+
+  html body[data-project="custom-stickers"] .pc-detail--video {
+    width: calc(130% * var(--pc-media));
+  }
+
+  html body[data-page="project"] .pc-diagram {
+    width: calc(115% * var(--pc-media));
+    max-width: calc(100vw - 64px);
+  }
+
+  html body[data-project="automations"] .pc-diagram,
+  html body[data-project="custom-stickers"] .pc-diagram {
+    width: calc(100% * var(--pc-media));
+  }
+}
+
+/* Line drawings stay at their usual size; only screenshots and videos grow. */
+@media (min-width: 1600px) {
+  html body[data-project] .pc-diagram.pc-diagram--hairline {
+    width: 100%;
+  }
+}
+
+/* Wide screens, continued: the hero and the side-by-side image row keep
+   their own (wider) shares of the column, scaled the same way. */
+@media (min-width: 1600px) {
+  html body[data-page="project"] .pc-image--main {
+    width: calc(163% * var(--pc-media));
+  }
+
+  html body[data-page="project"] .pc-image--main.pc-image--loop {
+    width: calc(180% * var(--pc-media));
+  }
+
+  html body[data-page="project"] .pc-image-row {
+    width: calc(150% * var(--pc-media));
+    max-width: calc(100vw - 64px);
+  }
+
+  html body[data-page="project"] .pc-image-row .pc-image {
+    width: 100%;
+  }
+}
