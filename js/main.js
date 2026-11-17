@@ -1280,6 +1280,89 @@ function initHeroScrollScale() {
   update();
 }
 
+// A faint dot grid around the About illustration: a 12px grid of small
+// dots in a light tint of the text colour, feathered out at the edges, with
+// the portrait and each dog cut out (a soft oval round each), so the dots
+// flow round the drawings rather than through them. Holes come from layout
+// offsets, not on-screen rects, which the entrance and hover scales move.
+// Redrawn on resize and when the theme changes.
+function initAboutDots() {
+  const art = document.querySelector('.home-about-intro .about-line-art');
+  if (!art) return;
+  const canvas = document.createElement('canvas');
+  canvas.className = 'about-dots';
+  canvas.setAttribute('aria-hidden', 'true');
+  art.prepend(canvas);
+  const ctx = canvas.getContext('2d');
+  if (!ctx) return;
+  const figures = [...art.querySelectorAll('.about-line-art-image, .about-line-art-dog')];
+  const GAP = 12;
+  const smooth = (a, b, t) => { const k = Math.min(1, Math.max(0, (t - a) / (b - a))); return k * k * (3 - 2 * k); };
+
+  // As wide as the dashed rule closing Selected work above it, and from 60px
+  // above the drawings down to where they end, so the dots stop under them.
+  const rule = document.querySelector('.work-column--experience .work-column-rule--trailing');
+  const group = art.querySelector('.about-line-art-group');
+  const ABOVE = 60;
+  function size() {
+    if (rule) canvas.style.width = `${Math.round(rule.getBoundingClientRect().width)}px`;
+    if (group) {
+      const bottom = group.offsetTop + group.offsetHeight;
+      canvas.style.top = `${-ABOVE}px`;
+      canvas.style.height = `${bottom + ABOVE}px`;
+    }
+  }
+
+  function draw() {
+    size();
+    const w = canvas.clientWidth;
+    const h = canvas.clientHeight;
+    if (!w || !h) return;
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, w, h);
+    // The canvas's top-left inside the art box.
+    const ox = (art.clientWidth - w) / 2;
+    const oy = -ABOVE;
+    const holes = figures.map((f) => {
+      let x = 0;
+      let y = 0;
+      for (let el = f; el && el !== art; el = el.offsetParent) { x += el.offsetLeft; y += el.offsetTop; }
+      return { cx: x + f.offsetWidth / 2 - ox, cy: y + f.offsetHeight / 2 - oy, rx: f.offsetWidth * 0.56, ry: f.offsetHeight * 0.56 };
+    });
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text').trim() || '#333';
+    const cols = Math.floor(w / GAP);
+    const rows = Math.floor(h / GAP);
+    const x0 = (w - (cols - 1) * GAP) / 2;
+    const y0 = (h - (rows - 1) * GAP) / 2;
+    for (let j = 0; j < rows; j++) {
+      for (let i = 0; i < cols; i++) {
+        const x = x0 + i * GAP;
+        const y = y0 + j * GAP;
+        // Feathered out at the edges...
+        const edge = smooth(0, 0.16, Math.min(x / w, 1 - x / w)) * smooth(0, 0.22, y / h) * smooth(0, 0.12, 1 - y / h);
+        // ...and kept clear of each drawing, fading back in just outside it.
+        let clear = 1;
+        for (const hl of holes) clear = Math.min(clear, smooth(1, 1.25, Math.hypot((x - hl.cx) / hl.rx, (y - hl.cy) / hl.ry)));
+        const a = 0.22 * edge * clear;
+        if (a < 0.01) continue;
+        ctx.globalAlpha = a;
+        ctx.beginPath();
+        ctx.arc(x, y, 1, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+    ctx.globalAlpha = 1;
+  }
+
+  draw();
+  window.addEventListener('resize', draw);
+  window.addEventListener('load', draw);
+  new MutationObserver(draw).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+}
+
 // Interests: collapsed behind its heading's chevron, opening to one long
 // list of interests (each a title, a line and its photos). The button flips
 // aria-expanded and the panel's .is-open (CSS unfolds it); while closed the
@@ -1558,6 +1641,7 @@ function initThemeNudge() {
 initThemeSwitcher();
 initThemeNudge();
 initInterestsToggle();
+initAboutDots();
 initHobbyTabs();
 initHobbyCardTilt();
 initHobbyPhotoFlip();

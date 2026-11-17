@@ -1307,7 +1307,7 @@ html[data-theme="dark"] .theme-swatch {
 
 @media (hover: hover) {
   .nav-contact:hover .nav-contact-menu,
-  .nav-contact:focus-within .nav-contact-menu {
+  .nav-contact:has(:focus-visible) .nav-contact-menu {
     opacity: 1;
     visibility: visible;
     translate: 0 0;
@@ -1503,9 +1503,9 @@ html[data-theme="dark"] .theme-swatch {
   .nav-contact:hover .nav-contact-header,
   .nav-contact:hover .nav-contact-item,
   .nav-contact:hover .nav-contact-divider,
-  .nav-contact:focus-within .nav-contact-header,
-  .nav-contact:focus-within .nav-contact-item,
-  .nav-contact:focus-within .nav-contact-divider {
+  .nav-contact:has(:focus-visible) .nav-contact-header,
+  .nav-contact:has(:focus-visible) .nav-contact-item,
+  .nav-contact:has(:focus-visible) .nav-contact-divider {
     opacity: 1;
     translate: 0 0;
     scale: 1;
@@ -9552,7 +9552,7 @@ body[data-page="home"] .home-about-intro + .work-column--about {
 
 @media (hover: hover) {
   .nav-theme:hover .nav-theme-menu,
-  .nav-theme:focus-within .nav-theme-menu {
+  .nav-theme:has(:focus-visible) .nav-theme-menu {
     opacity: 1;
     visibility: visible;
     translate: 0 0;
@@ -9635,7 +9635,7 @@ body[data-page="home"] .home-about-intro + .work-column--about {
 /* The rows reveal with the same stagger as the contact menu's items (which
    they share a class with, hidden until their own menu opens). */
 .nav-theme.is-open .season-option,
-.nav-theme:focus-within .season-option {
+.nav-theme:has(:focus-visible) .season-option {
   opacity: 1;
   translate: 0 0;
   scale: 1;
@@ -11417,4 +11417,36 @@ body[data-project="custom-stickers"] .pc-detail--video video {
 
 [data-theme="dark"] .pc-learning-gif--clear {
   filter: brightness(1.7) saturate(0.6);
+}
+
+/* A faint dot grid around the About illustration (main.js initAboutDots):
+   wider and taller than the drawings, feathered out at its edges, and kept
+   clear of the portrait and the dogs themselves, so the dots flow round
+   them. It arrives with the drawings. */
+.home-about-intro .about-line-art {
+  position: relative;
+  isolation: isolate;
+}
+
+/* Sized by main.js: as wide as the Selected work rule above, from a little
+   above the drawings down to their feet. */
+.about-dots {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  z-index: -1;
+  width: 447px;
+  height: 100%;
+  translate: -50% 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.home-about-intro.is-in-view .about-dots {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-dots { transition: none; opacity: 1; }
 }
