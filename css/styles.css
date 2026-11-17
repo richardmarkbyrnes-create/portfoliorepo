@@ -11450,3 +11450,494 @@ body[data-project="custom-stickers"] .pc-detail--video video {
 @media (prefers-reduced-motion: reduce) {
   .about-dots { transition: none; opacity: 1; }
 }
+
+/* Expanded, the "Less about me" heading sticks to the top of the window as
+   you scroll through the interests, on a band of the page colour that fades
+   out underneath it so the content slides away beneath. Collapsed, it sits
+   in the flow as before. */
+.work-column--interests:has(.interests-toggle[aria-expanded="true"]) .interests-heading {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  margin-inline: -24px;
+  padding: 24px 24px 28px;
+  background: linear-gradient(to bottom, var(--bg) 0, var(--bg) 62%, color-mix(in srgb, var(--bg) 0%, transparent) 100%);
+}
+
+/* ── Project pages: "Back home" ───────────────────────────────────────────
+   The breadcrumb and the close button give way to one pill top left: a
+   chevron and "Back home", in the same glass as the toolbar pills on the
+   right and level with them. Arriving from home it slides in from the left
+   edge (as the close button used to from the right); leaving for home it
+   slides back out. The toolbar no longer has a close button to clear, so it
+   stays in its home-page corner. */
+html body .pc-back.pc-back--home {
+  --glass-fill: color-mix(in srgb, var(--bg) 48%, rgba(255, 255, 255, 0.2));
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-rim-low: rgba(255, 255, 255, 0.35);
+  --glass-edge: rgba(0, 0, 0, 0.06);
+  --glass-sheen: rgba(255, 255, 255, 0.55);
+  top: calc(var(--nav-offset) + (var(--nav-toolbar-height) - 38px) / 2);
+  left: 24px;
+  gap: 6px;
+  width: auto;
+  height: 38px;
+  padding: 0 16px 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 55%),
+    var(--glass-fill);
+  backdrop-filter: blur(14px) saturate(1.8);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 0 var(--glass-rim-low),
+    inset 0 0 0 1px var(--glass-edge),
+    0 1px 1px rgba(0, 0, 0, 0.03),
+    0 3px 10px rgba(0, 0, 0, 0.035);
+  transition: background-color 0.25s ease, scale 0.2s var(--sw-ease, ease-in-out);
+}
+
+html body .pc-back.pc-back--home svg {
+  width: 16px;
+  height: 16px;
+  transition: translate 0.25s var(--sw-ease, ease-in-out);
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    --glass-fill: color-mix(in srgb, var(--bg) 70%, rgba(255, 255, 255, 0.3));
+    color: var(--text);
+  }
+
+  html body .pc-back.pc-back--home:hover svg {
+    translate: -2px 0;
+  }
+}
+
+html body .pc-back.pc-back--home:active {
+  scale: 0.97;
+}
+
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  background: color-mix(in srgb, var(--text) 7%, var(--bg));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    background: color-mix(in srgb, var(--text) 11%, var(--bg));
+  }
+}
+
+/* Phones: the same pill, in the corner the old button used. */
+@media (max-width: 768px) {
+  html body[data-page="project"] .pc-back.pc-back--home {
+    top: 21px;
+    left: 16px;
+    width: auto;
+    padding: 0 14px 0 10px;
+    gap: 6px;
+    border-radius: 999px;
+  }
+}
+
+/* The toolbar keeps its home-page corner on project pages now. */
+html body[data-page="project"] .nav-primary {
+  right: 24px;
+}
+
+@media (max-width: 768px) {
+  html body[data-page="project"] .nav-primary {
+    right: 16px;
+  }
+}
+
+/* The hand-off between home and a project: the pill slides in from the
+   left as a project opens, and back out to the left heading home. The
+   toolbar no longer slides across, since it stays put. */
+@keyframes pcHomeSlideIn {
+  from { opacity: 0; translate: -32px 0; }
+}
+
+@media (hover: hover) and (min-width: 769px) {
+  html.from-home body[data-page="project"] .pc-back.pc-back--home {
+    animation: pcHomeSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.06s backwards;
+  }
+
+  html body[data-page="home"].page-is-leaving.is-leaving-to-project .nav-primary,
+  html body[data-page="project"].page-is-leaving.is-leaving-home .nav-primary {
+    transform: none;
+  }
+
+  html body[data-page="project"].page-is-leaving.is-leaving-home .pc-back.pc-back--home {
+    opacity: 0;
+    filter: none;
+    transform: translateX(-32px);
+    transition:
+      opacity 0.26s ease,
+      transform 0.32s cubic-bezier(0.55, 0, 0.45, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.from-home body[data-page="project"] .pc-back.pc-back--home { animation: none; }
+}
+
+/* The chevron shows on "Back home" (the old breadcrumb hid it on desktop). */
+html body .pc-back.pc-back--home .pc-back-chevron {
+  display: block;
+}
+
+/* "Back home" as a solid dark grey pill with light text, no shadow or
+   glass, in every theme. */
+html body .pc-back.pc-back--home,
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  color: #f5f5f6;
+  background: #2b2b2f;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover,
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: #ffffff;
+    background: #3a3a3f;
+  }
+}
+
+/* On the dark page the same grey would sink in, so it lifts a step. */
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  background: #3a3a3f;
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    background: #48484e;
+  }
+}
+
+/* "Back home" in a mid grey rather than near-black. */
+html body .pc-back.pc-back--home {
+  background: #6b6b72;
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    background: #7a7a82;
+  }
+}
+
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  background: #4a4a50;
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    background: #58585f;
+  }
+}
+
+/* "Back home" in a light grey with dark text. */
+html body .pc-back.pc-back--home {
+  color: #1c1c1f;
+  background: #e4e4e7;
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    color: #000;
+    background: #d6d6da;
+  }
+}
+
+/* Winter: a light grey would glare on the dark page, so it's the inverse,
+   a lifted grey with light text. */
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  color: #f2f2f4;
+  background: #3a3a3f;
+}
+
+@media (hover: hover) {
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: #fff;
+    background: #48484e;
+  }
+}
+
+/* "Back home" hover: a slower, eased fade of fill and text together, with
+   the chevron gliding rather than ticking across. */
+html body .pc-back.pc-back--home {
+  transition:
+    background-color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    color 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html body .pc-back.pc-back--home svg {
+  transition: translate 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover svg {
+    translate: -3px 0;
+  }
+}
+
+/* Scrolling a project page fades in the company's logo and name at the top
+   centre, over a soft blur and fade so it reads above the content. */
+html body[data-page="project"] .top-blur {
+  display: block;
+  height: 112px;
+  z-index: 290;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--bg) 88%, transparent) 0%,
+    color-mix(in srgb, var(--bg) 55%, transparent) 45%,
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 100%);
+  transition: opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-top-company {
+  position: fixed;
+  top: var(--nav-offset);
+  left: 50%;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--nav-toolbar-height);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% -6px;
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    translate 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.pc-top-company.is-visible {
+  opacity: 1;
+  translate: -50% 0;
+}
+
+.pc-top-company-logo {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+body.page-is-leaving .pc-top-company {
+  opacity: 0;
+}
+
+/* Phones: the label takes the top centre the scrolled title used. */
+@media (max-width: 768px) {
+  .pc-top-company { top: 16px; }
+  html body[data-page="project"] .pc-title-center { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-top-company { transition: opacity 0.2s linear; translate: -50% 0; }
+}
+
+/* The company label sits top left, just right of the "Back home" pill
+   (24px inset + ~113px pill + 14px gap), sliding in from the pill's side. */
+.pc-top-company {
+  left: 151px;
+  translate: -6px 0;
+}
+
+.pc-top-company.is-visible {
+  translate: 0 0;
+}
+
+@media (max-width: 768px) {
+  .pc-top-company { left: 143px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-top-company { translate: 0 0; }
+}
+
+/* No top blur or fade on project pages. */
+html body[data-page="project"] .top-blur {
+  display: none;
+}
+
+/* "Back home" is just the chevron now, in a round button the pill's height. */
+html body .pc-back.pc-back--home,
+html body[data-page="project"] .pc-back.pc-back--home {
+  width: 38px;
+  padding: 0;
+  gap: 0;
+  justify-content: center;
+}
+
+html body .pc-back.pc-back--home .pc-back-label {
+  display: none;
+}
+
+/* The company label follows the round button: inset + 38px + 12px gap. */
+.pc-top-company { left: 74px; }
+
+@media (max-width: 768px) {
+  .pc-top-company { left: 66px; }
+}
+
+/* "Back home" hover: no chevron nudge, the button simply inverts. Black
+   with a white icon; in winter, white with a black icon. */
+html body .pc-back.pc-back--home svg,
+html body .pc-back.pc-back--home:hover svg {
+  translate: none;
+  transition: none;
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    color: #fff;
+    background: #000;
+  }
+
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: #000;
+    background: #fff;
+  }
+}
+
+/* The old chevron nudge on hover is gone for good. */
+html body .pc-back.pc-back--home svg,
+html body .pc-back.pc-back--home:hover svg {
+  transform: none;
+}
+
+/* The breadcrumb returns beside the round back button:
+   [logo] Company / Project, always shown, company dimmer than the title. */
+.pc-top-company,
+.pc-top-company.is-visible {
+  opacity: 1;
+  translate: 0 0;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.pc-top-company-name,
+.pc-top-company-sep {
+  color: var(--text);
+  opacity: 0.3;
+}
+
+.pc-top-company-title {
+  color: var(--text);
+  opacity: 0.5;
+}
+
+[data-theme="dark"] .pc-top-company-name { opacity: 0.5; }
+[data-theme="dark"] .pc-top-company-title { color: #fff; opacity: 1; }
+
+/* Same arrival as the back button when coming from home. */
+@media (hover: hover) and (min-width: 769px) {
+  html.from-home body[data-page="project"] .pc-top-company {
+    animation: pcHomeSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s backwards;
+  }
+}
+
+/* The back button wears the top-right pills' glass (round, same fill, rim
+   and sheen), plus a soft drop shadow. Hover still inverts it. */
+html body .pc-back.pc-back--home {
+  --glass-fill: color-mix(in srgb, var(--bg) 48%, rgba(255, 255, 255, 0.2));
+  --glass-rim: rgba(255, 255, 255, 0.95);
+  --glass-rim-low: rgba(255, 255, 255, 0.35);
+  --glass-edge: rgba(0, 0, 0, 0.06);
+  --glass-sheen: rgba(255, 255, 255, 0.55);
+  color: var(--text);
+  background:
+    linear-gradient(180deg, var(--glass-sheen), transparent 55%),
+    var(--glass-fill);
+  backdrop-filter: blur(14px) saturate(1.8);
+  -webkit-backdrop-filter: blur(14px) saturate(1.8);
+  box-shadow:
+    inset 0 1px 0 var(--glass-rim),
+    inset 0 -1px 0 var(--glass-rim-low),
+    inset 0 0 0 1px var(--glass-edge),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Winter: the toolbar's flat pill, a step lighter than the page, with the
+   shadow deepened so it still reads on the dark ground. */
+html[data-theme="dark"] body .pc-back.pc-back--home {
+  color: var(--text);
+  background: color-mix(in srgb, var(--text) 7%, var(--bg));
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    color: #fff;
+    background: #000;
+  }
+
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: #000;
+    background: #fff;
+  }
+}
+
+/* Text-only breadcrumb: it starts right after the button. */
+.pc-top-company { gap: 8px; }
+
+/* Back button hover: no invert. It keeps its glass, the drop shadow
+   deepens a touch and the button grows very slightly. */
+html body .pc-back.pc-back--home {
+  transition:
+    box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (hover: hover) {
+  html body .pc-back.pc-back--home:hover {
+    color: var(--text);
+    background:
+      linear-gradient(180deg, var(--glass-sheen), transparent 55%),
+      var(--glass-fill);
+    box-shadow:
+      inset 0 1px 0 var(--glass-rim),
+      inset 0 -1px 0 var(--glass-rim-low),
+      inset 0 0 0 1px var(--glass-edge),
+      0 1px 3px rgba(0, 0, 0, 0.09),
+      0 6px 16px rgba(0, 0, 0, 0.13);
+    scale: 1.04;
+  }
+
+  html[data-theme="dark"] body .pc-back.pc-back--home:hover {
+    color: var(--text);
+    background: color-mix(in srgb, var(--text) 7%, var(--bg));
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(0, 0, 0, 0.5);
+  }
+}
+
+html body .pc-back.pc-back--home:active {
+  scale: 0.97;
+}

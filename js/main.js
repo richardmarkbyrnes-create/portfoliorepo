@@ -1305,7 +1305,8 @@ function initAboutDots() {
   const group = art.querySelector('.about-line-art-group');
   const ABOVE = 60;
   function size() {
-    if (rule) canvas.style.width = `${Math.round(rule.getBoundingClientRect().width)}px`;
+    // A touch wider than the rule (24px each side), held inside the window.
+    if (rule) canvas.style.width = `${Math.round(Math.min(rule.getBoundingClientRect().width + 48, window.innerWidth - 16))}px`;
     if (group) {
       const bottom = group.offsetTop + group.offsetHeight;
       canvas.style.top = `${-ABOVE}px`;
