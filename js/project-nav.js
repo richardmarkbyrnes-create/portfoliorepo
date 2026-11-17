@@ -344,7 +344,8 @@ function initQuoteReveal(el) {
     // The company's logo leads the breadcrumb, just after the chevron.
     const logoSrc = window.COMPANY_LOGOS?.[project.company];
     const backLink = document.getElementById('project-back');
-    if (logoSrc && backLink && !backLink.querySelector('.pc-back-logo')) {
+    // Only the old breadcrumb carried the logo; the "Back home" pill doesn't.
+    if (logoSrc && backLink && backCompany && !backLink.querySelector('.pc-back-logo')) {
       const logo = document.createElement('img');
       logo.className = 'company-logo pc-back-logo';
       logo.src = logoSrc;
@@ -697,6 +698,32 @@ function initQuoteReveal(el) {
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
     const topBlur = document.querySelector('.top-blur');
     const centerTitleEl = document.getElementById('pc-title-center');
+    // The breadcrumb beside the back button: the company's logo and the
+    // project title. Always visible.
+    let topCompany = document.getElementById('pc-top-company');
+    if (!topCompany && project.company) {
+      topCompany = document.createElement('div');
+      topCompany.className = 'pc-top-company';
+      topCompany.id = 'pc-top-company';
+      topCompany.setAttribute('aria-hidden', 'true');
+      topCompany.classList.add('is-visible');
+      // Breadcrumb: the company's logo, then the project title.
+      const topLogoSrc = window.COMPANY_LOGOS?.[project.company];
+      if (topLogoSrc) {
+        const topLogo = document.createElement('img');
+        topLogo.className = 'company-logo pc-top-company-logo';
+        topLogo.src = topLogoSrc;
+        topLogo.alt = '';
+        topLogo.width = 160;
+        topLogo.height = 160;
+        topCompany.appendChild(topLogo);
+      }
+      const topTitle = document.createElement('span');
+      topTitle.className = 'pc-top-company-title';
+      topTitle.textContent = project.title;
+      topCompany.appendChild(topTitle);
+      document.body.appendChild(topCompany);
+    }
     const onScroll = () => {
       const scrolled = window.scrollY > 20;
       if (topBlur) topBlur.classList.toggle('is-visible', scrolled);
