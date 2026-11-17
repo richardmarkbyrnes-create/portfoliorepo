@@ -18,7 +18,7 @@ window.PROJECTS = {
     team: 'Miro · Growth Adoption',
     intro: 'First-run experiences that orient new users and set them up for success.',
     paragraphs: [
-      'We mapped key activation moments — creating a first board, inviting a teammate, and discovering core tools — then designed lightweight prompts and progressive disclosure around them.',
+      'We mapped key activation moments, creating a first board, inviting a teammate, and discovering core tools, then designed lightweight prompts and progressive disclosure around them.',
       'We centred the work on helping people understand what Miro is for and how to get value from it in their first session, guiding them without overwhelming them.',
       'The approach prioritised momentum: fewer steps to a meaningful outcome, with clear off-ramps for users who wanted to explore on their own.',
     ],
@@ -40,13 +40,13 @@ window.PROJECTS = {
     previewImage: 'images/custom-stickers-preview.webp?v=3',
     previewAspect: '3286 / 2056',
     polaroids: [
-      { src: 'images/sticker-photo-1.webp?v=2', r: -5, note: 'Canvas ’26 — people made their own stickers, then walked off with them printed!' },
+      { src: 'images/sticker-photo-1.webp?v=2', r: -5, note: 'Canvas ’26, people made their own stickers, then walked off with them printed!' },
       { src: 'images/sticker-photo-2.webp?v=2', r: 4, note: 'The sticker booth. A queue all day long for AI-made versions of yourself :)' },
     ],
     intro: 'A text-to-sticker generative AI tool built into Miro’s stickers panel.',
     paragraphs: [
-      'Miro’s library of emojis and static stickers was popular but finite. In retrospectives and design sprints, teams kept running out of ways to react to a specific idea, an inside joke, or anything too niche for a stock icon. Keeping the set stocked was our job, and it didn’t scale — every addition meant more design and production work for a library that could never cover everything.',
-      'We built Custom Stickers, a text-to-sticker generator that sits inside the panel people already use. Type “taco wearing sunglasses” and you get transparent, on-brand options in seconds; the interface applies the outlines and styling behind the scenes, so a few words are enough to get a usable result. It turned into a genuine engagement driver — during live workshops it gamified the whole session, and teams started building their own visual shorthand as they went.',
+      'Miro’s library of emojis and static stickers was popular but finite. In retrospectives and design sprints, teams kept running out of ways to react to a specific idea, an inside joke, or anything too niche for a stock icon. Keeping the set stocked was our job, and it didn’t scale, every addition meant more design and production work for a library that could never cover everything.',
+      'We built Custom Stickers, a text-to-sticker generator that sits inside the panel people already use. Type “taco wearing sunglasses” and you get transparent, on-brand options in seconds; the interface applies the outlines and styling behind the scenes, so a few words are enough to get a usable result. It turned into a genuine engagement driver, during live workshops it gamified the whole session, and teams started building their own visual shorthand as they went.',
     ],
     quote: 'What seems like a simple feature to us can be a profound tool for self-validation to someone else; great ideas always transcend their original purpose.',
     quoteBy: 'Customer feedback',
@@ -71,7 +71,7 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
-      'Product managers and researchers liked Insights but were tired of logging in every week to re-run the same handful of searches — feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it, which reduced monthly active usage.',
+      'Product managers and researchers liked Insights but were tired of logging in every week to re-run the same handful of searches, feature requests from sales calls, complaints about the last release. Query fatigue set in, and it meant the product only worked on the weeks somebody remembered to visit it, which reduced monthly active usage.',
       'Automations turns those repeat searches into scheduled reports and delivers them wherever a team already works: Slack, email or in-product. We reduced setup to a three-step trigger, action and destination that takes about a minute, then spent our time with engineering on making the scheduling and delivery reliable. It saved researchers hours of manual reporting a month, and because the reports land in shared channels, people without accounts started seeing the value too, which increased Insights adoption overall.',
     ],
     quote: 'Automations help keep our entire team updated on what our customers are saying, straight in our Slack channels.',
@@ -96,8 +96,8 @@ window.PROJECTS = {
     previewAspect: '640 / 392',
     heroAspect: '1716 / 1050',
     paragraphs: [
-      'Research and product teams had years of customer conversation on file — sales calls, support logs, interviews — and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
-      'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call — you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
+      'Research and product teams had years of customer conversation on file, sales calls, support logs, interviews, and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
+      'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call, you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
     ],
     quote: 'It’s amazing how quickly we can surface customer feedback that before took such mental effort to gather.',
     quoteBy: 'Product manager at Miro',
@@ -125,8 +125,8 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
-      'Good customer insight tends to stay wherever the team collected it. Teams running workshops in Miro were copy-pasting findings across as plain sticky notes, which stripped out the quotes, metadata and context that made them worth citing in the first place — leaving a workshop full of claims nobody could trace back later.',
-      'Insight cards bring the source of truth onto the canvas. They restructure themselves depending on where you drop them — compact inside a table, spanning a kanban column, opening out to the full customer quote when they stand alone — so they fit whatever structure a team already works in. Researchers can import and tag; everyone else can skim. Either way the card links back to the original feedback, so anyone can trace a workshop conclusion back to something a customer actually said.',
+      'Good customer insight tends to stay wherever the team collected it. Teams running workshops in Miro were copy-pasting findings across as plain sticky notes, which stripped out the quotes, metadata and context that made them worth citing in the first place, leaving a workshop full of claims nobody could trace back later.',
+      'Insight cards bring the source of truth onto the canvas. They restructure themselves depending on where you drop them, compact inside a table, spanning a kanban column, opening out to the full customer quote when they stand alone, so they fit whatever structure a team already works in. Researchers can import and tag; everyone else can skim. Either way the card links back to the original feedback, so anyone can trace a workshop conclusion back to something a customer actually said.',
     ],
     quote: 'This helps us make decisions based on data we can trust, and gives stakeholders visibility into results without constant back and forth among teams.',
     quoteBy: 'Customer feedback',
@@ -146,7 +146,7 @@ window.PROJECTS = {
     heroAspect: '2842 / 1856',
     heroFit: 'contain',
     paragraphs: [
-      'Cashbook’s interface was straining under its own growth. The navigation had no room left for new features, let alone whole new modules, and accountants were paying for it daily — moving between ledgers, reports and settings took more clicks than the work warranted.',
+      'Cashbook’s interface was straining under its own growth. The navigation had no room left for new features, let alone whole new modules, and accountants were paying for it daily, moving between ledgers, reports and settings took more clicks than the work warranted.',
       'We rebuilt the information architecture, consolidating deeply nested menus into categories you can scan in one pass. The new framework treats modules as separate categories, so the team can switch a product on without disturbing the core, and it hands more of the screen back to dense financial tables.',
     ],
   },
@@ -167,7 +167,7 @@ window.PROJECTS = {
     heroFit: 'contain',
     paragraphs: [
       'Managers were making decisions from tables they couldn’t read quickly. Spotting a trend meant working it out by hand or waiting for month-end reports from their accountant, by which point the moment to act on it had usually passed.',
-      'We designed dashboards that pull the few numbers that matter — cash runway, burn rate, outstanding invoices — to the top, as charts built for scanning rather than study. Research decided that list; nothing earned a place for being easy to plot. Each visual is a way in rather than a dead end: hover for detail, or click an odd-looking dip to land in the transactions behind it. A weekly chore became a check-in, and cash flow problems started surfacing while there was still time to do something about them.',
+      'We designed dashboards that pull the few numbers that matter, cash runway, burn rate, outstanding invoices, to the top, as charts built for scanning rather than study. Research decided that list; nothing earned a place for being easy to plot. Each visual is a way in rather than a dead end: hover for detail, or click an odd-looking dip to land in the transactions behind it. A weekly chore became a check-in, and cash flow problems started surfacing while there was still time to do something about them.',
     ],
   },
   'developer-tools': {
@@ -183,8 +183,8 @@ window.PROJECTS = {
     heroAspect: '2000 / 1422',
     heroFit: 'contain',
     paragraphs: [
-      'SAP development had always happened inside heavy proprietary tooling, so bringing Fiori Tools to VS Code came with an adoption problem. Developers are protective of their workspace, and anything that reads as an enterprise bolt-on gets uninstalled — however good the underlying utilities are.',
-      'The bar we set was that you shouldn’t be able to tell where Microsoft’s code ends and ours begins. We matched VS Code’s typography, iconography and density, and made every custom element respond to its theming — from default light and dark through to community favourites — so nothing came out unreadable when someone switched. Dense app-generation steps turned into sidebars, wizards and command-palette flows that suited keyboard-first habits.',
+      'SAP development had always happened inside heavy proprietary tooling, so bringing Fiori Tools to VS Code came with an adoption problem. Developers are protective of their workspace, and anything that reads as an enterprise bolt-on gets uninstalled, however good the underlying utilities are.',
+      'The bar we set was that you shouldn’t be able to tell where Microsoft’s code ends and ours begins. We matched VS Code’s typography, iconography and density, and made every custom element respond to its theming, from default light and dark through to community favourites, so nothing came out unreadable when someone switched. Dense app-generation steps turned into sidebars, wizards and command-palette flows that suited keyboard-first habits.',
     ],
   },
   'design-systems': {
@@ -201,7 +201,7 @@ window.PROJECTS = {
     heroFit: 'contain',
     paragraphs: [
       'As Fiori Tools grew, the design files struggled to follow. Designers were changing colour values in mockups by hand to check how a feature held up in light, dark and high-contrast themes, and engineers couldn’t find the token that matched the mockup a designer handed them.',
-      'We rebuilt the Figma library as one source of truth: over 200 components documented from plain buttons up to code-generator wizards, on a variable structure that retints the lot across ten-plus VS Code themes in a click. We mapped the naming to production CSS and JSON with the front-end team, which took the guesswork out of handoff. Design once, flip a theme to check contrast, hand it over — QA cycles shortened and the team got its time back for harder problems.',
+      'We rebuilt the Figma library as one source of truth: over 200 components documented from plain buttons up to code-generator wizards, on a variable structure that retints the lot across ten-plus VS Code themes in a click. We mapped the naming to production CSS and JSON with the front-end team, which took the guesswork out of handoff. Design once, flip a theme to check contrast, hand it over, QA cycles shortened and the team got its time back for harder problems.',
     ],
   },
 };
