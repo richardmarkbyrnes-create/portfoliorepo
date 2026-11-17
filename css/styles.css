@@ -11941,3 +11941,17 @@ html body .pc-back.pc-back--home {
 html body .pc-back.pc-back--home:active {
   scale: 0.97;
 }
+
+/* The sticky heading's padding (for its fade backdrop) is cancelled by
+   matching negative margins, so expanding doesn't shift the toggle or the
+   divider below it: it stays put and simply becomes sticky. */
+.work-column--interests:has(.interests-toggle[aria-expanded="true"]) .interests-heading {
+  margin-top: -24px;
+  margin-bottom: 4px;
+}
+
+@media (max-width: 768px) {
+  .work-column--interests:has(.interests-toggle[aria-expanded="true"]) .interests-heading {
+    margin-bottom: -4px;
+  }
+}
