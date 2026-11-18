@@ -371,7 +371,10 @@
     gl.uniform2f(uMouse, pointer.x, pointer.y);
     gl.uniform1f(uPull, pointer.pull);
   }
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+  // The pointer no longer pushes the field about (it fought with the Snake
+  // easter egg over the hero block); the texture just keeps morphing.
+  const POINTER_PULL = false;
+  if (POINTER_PULL && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
     wrap.addEventListener('pointermove', (event) => {
       const r = canvas.getBoundingClientRect();
       pointer.tx = (event.clientX - r.left) / r.width;
