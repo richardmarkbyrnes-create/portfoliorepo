@@ -1670,3 +1670,95 @@ initHeroScrollScale();
 initVideoRates();
 updateClock();
 setInterval(updateClock, 1000);
+
+// Easter egg: hovering the hero texture swaps its cursor for a small "Play?"
+// pill; a click opens Snake over the texture's visible band, outlined shapes
+// and no grid, focused and running. Escape closes it again.
+function initTextureSnake() {
+  const texture = document.querySelector('.home-texture:not(.home-texture--footer)');
+  const canvas = texture?.querySelector('.home-texture-canvas');
+  const section = document.getElementById('snake-section');
+  if (!texture || !canvas || !section) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // The game's home: a layer over the texture's band (the soft pill the
+  // mask leaves visible), sized from the canvas on every resize.
+  const host = document.createElement('div');
+  host.className = 'texture-snake';
+  texture.appendChild(host);
+  host.appendChild(section);
+  // The game's status line ("Move your cursor to steer", "Click to resume"…)
+  // sits just under the texture's band rather than over the game.
+  const status = section.querySelector('[data-snake-overlay]');
+  if (status) {
+    status.classList.add('texture-snake-status');
+    texture.appendChild(status);
+  }
+  const place = () => {
+    const c = canvas.getBoundingClientRect();
+    const w = texture.getBoundingClientRect();
+    const top = c.top - w.top + c.height * 0.21;
+    const height = c.height * 0.58;
+    host.style.left = `${c.left - w.left + c.width * 0.14}px`;
+    host.style.top = `${top}px`;
+    host.style.width = `${c.width * 0.72}px`;
+    host.style.height = `${height}px`;
+    if (status) status.style.top = `${top + height + c.height * 0.1}px`;
+  };
+  place();
+  window.addEventListener('resize', place);
+
+  // The "Play?" pill that follows the pointer while it's over the texture.
+  const pill = document.createElement('div');
+  pill.className = 'texture-play-pill';
+  pill.setAttribute('aria-hidden', 'true');
+  pill.innerHTML = '<svg viewBox="0 0 12 12" width="10" height="10"><path d="M3 1.8v8.4c0 .5.5.8.9.5l6.4-4.2a.6.6 0 0 0 0-1L3.9 1.3c-.4-.3-.9 0-.9.5z" fill="currentColor"/></svg><span>Play?</span>';
+  document.body.appendChild(pill);
+  const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const open = () => texture.classList.contains('is-playing');
+  const move = (e) => { pill.style.translate = `${e.clientX}px ${e.clientY}px`; };
+  // Only over the texture's visible band (the game's layer), not the faded
+  // margin round it.
+  host.addEventListener('pointermove', (e) => {
+    if (!fine || open()) return;
+    move(e);
+    pill.classList.add('is-visible');
+  });
+  host.addEventListener('pointerleave', () => pill.classList.remove('is-visible'));
+
+  const start = () => {
+    if (open()) return;
+    pill.classList.remove('is-visible');
+    texture.classList.add('is-playing');
+    section.hidden = false;
+    place();
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      section.classList.add('is-open');
+      window.dispatchEvent(new Event('resize')); // snake.js re-measures
+    }));
+    setTimeout(() => {
+      const board = section.querySelector('.snake-board');
+      if (!board) return;
+      board.focus({ preventScroll: true });
+      board.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
+    }, reduce ? 0 : 450);
+  };
+  const stop = () => {
+    if (!open()) return;
+    // Pause it on the way out (Space toggles pause while playing).
+    const board = section.querySelector('.snake-board');
+    section.classList.remove('is-open');
+    texture.classList.remove('is-playing');
+    if (status) status.hidden = true;
+    setTimeout(() => { section.hidden = true; }, reduce ? 0 : 400);
+    board?.blur();
+  };
+  host.addEventListener('click', (e) => {
+    if (open()) return;
+    e.preventDefault();
+    start();
+  });
+  section.addEventListener('keydown', (e) => { if (e.key === 'Escape') stop(); });
+}
+
+initTextureSnake();

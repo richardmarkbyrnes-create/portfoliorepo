@@ -28,7 +28,9 @@
   const PX = 2; // CSS px per canvas pixel
   const BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5].map((v) => (v + 0.5) / 16);
   const bayer = (x, y) => BAYER[(y & 3) * 4 + (x & 3)];
-  const ROWS = 12;
+  // Rows on the board; inside the hero texture (the easter egg) it's fitted
+  // to the texture's band instead, between 6 and 12.
+  let ROWS = 12;
   const TICK = 150; // ms per step
   const BEST_KEY = 'portfolio-snake-best';
   // "Tap" on touch screens, "click" with a mouse.
@@ -211,9 +213,14 @@
     const playWidth = playArea.clientWidth - padL - padR;
     const width = wrap.clientWidth;
     const nextCols = Math.max(12, Math.round(playWidth / TARGET_CELL));
-    const changed = nextCols !== cols;
+    let changed = nextCols !== cols;
     cols = nextCols;
     cellPx = playWidth / cols;
+    const host = board.closest('.texture-snake');
+    if (host && state !== 'playing') {
+      const nextRows = Math.max(6, Math.min(12, Math.floor(host.clientHeight / cellPx)));
+      if (nextRows !== ROWS) { ROWS = nextRows; changed = true; }
+    }
     offX = Math.max(0, playArea.getBoundingClientRect().left + padL - wrap.getBoundingClientRect().left);
     extra = Math.ceil(offX / cellPx);
     const height = cellPx * ROWS;
@@ -283,6 +290,9 @@
   }
 
   function draw(now) {
+    // Nothing to draw while the board is hidden (the easter egg keeps it
+    // collapsed until it's opened).
+    if (!board.width || !board.height) return;
     if (!colours) readColours();
     const W = board.width;
     const H = board.height;
@@ -320,7 +330,7 @@
       ctx.fillStyle = colours.accent;
       ctx.beginPath();
       ctx.moveTo(hxp, hyp);
-      ctx.arc(hxp, hyp, r, facing + mouth, facing - mouth + Math.PI * 2);
+      ctx.arc(hxp, hyp, Math.max(0, r), facing + mouth, facing - mouth + Math.PI * 2);
       ctx.closePath();
       ctx.fill();
     }
@@ -382,7 +392,10 @@
     const foodKeys = new Set(foods.map(([x, y]) => `${x},${y}`));
     hover.amount += ((hover.on && state !== 'playing' ? 1 : 0) - hover.amount) * 0.12;
     const lit = hover.amount > 0.01;
-    for (let gy = 0; gy < ROWS; gy++) {
+    // The easter-egg version (opened from the footer) has no dot grid: just
+    // the snake and the food, outlined in CSS.
+    const gridRows = board.closest('.snake-egg') ? 0 : ROWS;
+    for (let gy = 0; gy < gridRows; gy++) {
       for (let gx = -extra; gx < cols + extra; gx++) {
         if (strength.has(`${gx},${gy}`) || foodKeys.has(`${gx},${gy}`)) continue;
         // Outside the play area the dots are a step fainter, so the field
@@ -459,8 +472,36 @@
     ctx.putImageData(img, 0, 0);
   }
 
+  // Cursor steering (the easter-egg game in the hero texture, on a mouse or
+  // trackpad): the snake heads for the pointer, turning along whichever axis
+  // it's further off on, never straight back on itself. Keys still work.
+  const cursorSteer = () => !!board.closest('.texture-snake')
+    && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  let aim = null;
+  board.addEventListener('pointermove', (event) => {
+    if (!cursorSteer()) return;
+    const r = board.getBoundingClientRect();
+    aim = [(event.clientX - r.left - offX) / cellPx, (event.clientY - r.top) / cellPx];
+  });
+
+  function steerToAim() {
+    if (!aim || queued.length || !cursorSteer()) return;
+    const [hx, hy] = snake[0];
+    const dx = aim[0] - (hx + 0.5);
+    const dy = aim[1] - (hy + 0.5);
+    if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return; // arrived: carry on
+    const along = [Math.sign(dx), 0];
+    const across = [0, Math.sign(dy)];
+    const [first, second] = Math.abs(dx) >= Math.abs(dy) ? [along, across] : [across, along];
+    const back = (d) => d[0] === -dir[0] && d[1] === -dir[1];
+    for (const d of [first, second]) {
+      if ((d[0] || d[1]) && !back(d)) { dir = d; return; }
+    }
+  }
+
   function step() {
     if (queued.length) dir = queued.shift();
+    else steerToAim();
     const [hx, hy] = snake[0];
     const head = [(hx + dir[0] + cols) % cols, (hy + dir[1] + ROWS) % ROWS];
     const eaten = foods.find(([x, y]) => head[0] === x && head[1] === y);
@@ -537,7 +578,8 @@
     overlay.innerHTML = '';
     const how = document.createElement('span');
     how.className = 'snake-status-title';
-    how.textContent = verb === 'tap' ? 'Use the arrows below to steer' : 'Use arrow keys to navigate';
+    how.textContent = verb === 'tap' ? 'Use the arrows below to steer'
+      : cursorSteer() ? 'Move your cursor to steer' : 'Use arrow keys to navigate';
     overlay.append(how);
     overlay.hidden = false;
     hintTimer = setTimeout(() => {
