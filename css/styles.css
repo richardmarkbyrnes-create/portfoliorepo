@@ -13815,3 +13815,28 @@ body[data-page="home"] main.page::after {
 @media (max-width: 768px) {
   body[data-page="home"] main.page { padding-bottom: 200px; }
 }
+
+/* The fourth About paragraph (the tools line pushed Amsterdam to fourth)
+   joins the cascade instead of arriving with the first. */
+body[data-page="home"] .work-column--about .about-block .about-block-text:nth-child(4) {
+  animation-delay: 0.48s;
+}
+
+/* Each tool logo on a small white tile with a soft drop shadow. */
+.about-tool-icon {
+  box-sizing: border-box;
+  width: 1.35em;
+  height: 1.35em;
+  padding: 0.2em;
+  margin: 0 0.32em 0 0.06em;
+  vertical-align: -0.3em;
+  border-radius: 0.34em;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+
+/* Winter: a lifted dark tile instead of white, which would glare. */
+html[data-theme="dark"] .about-tool-icon {
+  background: #2a2a2d;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 6px rgba(0, 0, 0, 0.45);
+}

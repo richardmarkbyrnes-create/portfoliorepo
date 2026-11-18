@@ -256,7 +256,15 @@
     const taken = new Set(snake.map(([x, y]) => `${x},${y}`));
     foods.forEach(([x, y, k]) => { if (k !== kind) taken.add(`${x},${y}`); });
     let spot;
-    do { spot = [Math.floor(Math.random() * cols), 2 + Math.floor(Math.random() * (ROWS - 4))]; } while (taken.has(`${spot[0]},${spot[1]}`));
+    // In the hero texture the band's edges fade out, so food keeps clear of
+    // them: about an eighth of the width in from each side, a fifth of the
+    // height from top and bottom.
+    const inTexture = !!board.closest('.texture-snake');
+    const mx = inTexture ? Math.max(2, Math.round(cols * 0.12)) : 0;
+    const my = inTexture ? Math.max(1, Math.round(ROWS * 0.2)) : 2;
+    do {
+      spot = [mx + Math.floor(Math.random() * (cols - 2 * mx)), my + Math.floor(Math.random() * (ROWS - 2 * my))];
+    } while (taken.has(`${spot[0]},${spot[1]}`));
     foods = foods.filter((f) => f[2] !== kind).concat([[spot[0], spot[1], kind]]);
   }
 
