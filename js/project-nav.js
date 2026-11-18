@@ -149,6 +149,13 @@ function initQuoteReveal(el) {
     // into its home-page corner (CSS). Leaving home for a project, the
     // toolbar slides left to where it sits on a project page, and the flag
     // tells that page to slide the close button in beside it (theme-init.js).
+    // Project to project: the back button and toolbar stay put, so flag the
+    // hop for the arriving page (theme-init.js) and hold them here.
+    const hopTarget = new URL(href, window.location.href).pathname.split('/').filter(Boolean)[0];
+    if (!leaveProject && document.body.dataset.page === 'project' && hopTarget && window.PROJECTS?.[hopTarget]) {
+      try { sessionStorage.setItem('portfolio-project-hop', '1'); } catch (e) { /* storage blocked */ }
+      document.body.classList.add('is-hopping');
+    }
     if (leaveProject) {
       sessionStorage.setItem(LEAVE_KEY, '1');
       document.body.classList.add('is-leaving-home');
@@ -726,9 +733,18 @@ function initQuoteReveal(el) {
     // Top blur (and, on mobile, the centered title) only appear once the user scrolls
     const topBlur = document.querySelector('.top-blur');
     const centerTitleEl = document.getElementById('pc-title-center');
+    // Hovering the back button eases in a framed outline round the page,
+    // nudged in from the left edge: a hint of the card being let go (CSS).
+    const backBtn = document.getElementById('project-back');
+    if (backBtn && !document.querySelector('.pc-back-frame')) {
+      const frame = document.createElement('div');
+      frame.className = 'pc-back-frame';
+      frame.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(frame);
+    }
+
     // Hovering the back button shows "Back home" in the season nudge's
     // glass card, pointing up at the button.
-    const backBtn = document.getElementById('project-back');
     if (backBtn && !backBtn.querySelector('.pc-back-tip')) {
       const tip = document.createElement('span');
       tip.className = 'theme-nudge pc-back-tip';

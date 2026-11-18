@@ -12603,3 +12603,482 @@ html body[data-page="project"] .pc-facts .pc-team-avatar--initials {
     gap: 14px 24px;
   }
 }
+
+/* Back button hover: the page eases into a framed card, its edge nudged in
+   from the left of the screen, with the margin round it dimmed a touch.
+   The frame sits behind the page's content (z-index 0, under .page). */
+.pc-back-frame {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  bottom: 10px;
+  left: 20px;
+  z-index: 0;
+  border-radius: 22px;
+  background: var(--bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.05),
+    0 0 0 100vmax rgba(0, 0, 0, 0.035);
+  pointer-events: none;
+  opacity: 0;
+  translate: -14px 0;
+  scale: 1.01;
+  transition:
+    opacity 0.45s cubic-bezier(0.65, 0, 0.35, 1),
+    translate 0.6s cubic-bezier(0.65, 0, 0.35, 1),
+    scale 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@media (hover: hover) and (min-width: 769px) {
+  body:has(#project-back:hover) .pc-back-frame {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+  }
+}
+
+html[data-theme="dark"] .pc-back-frame {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 0 0 100vmax rgba(0, 0, 0, 0.35);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pc-back-frame { translate: none; scale: 1; transition: opacity 0.2s linear; }
+}
+
+/* Equal 10px inset on every side; the margin round it a little darker. */
+.pc-back-frame {
+  inset: 10px;
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 0 0 100vmax rgba(0, 0, 0, 0.065);
+}
+
+html[data-theme="dark"] .pc-back-frame {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 0 0 100vmax rgba(0, 0, 0, 0.5);
+}
+
+/* The page frame is always there now (desktop): a rounded window 10px in
+   from every edge, with the margin round it a shade darker than the page.
+   It sits above the content (which scrolls under its edges) and below the
+   fixed controls, and only draws the margin and a hairline rim. */
+@media (min-width: 769px) {
+  html body[data-page="project"] .pc-back-frame {
+    inset: 10px;
+    z-index: 250;
+    background: none;
+    opacity: 1;
+    translate: none;
+    scale: 1;
+    transition: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+      0 0 0 100vmax color-mix(in srgb, var(--bg) 93.5%, #000);
+  }
+
+  html[data-theme="dark"] body[data-page="project"] .pc-back-frame {
+    box-shadow:
+      inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+      0 0 0 100vmax color-mix(in srgb, var(--bg) 55%, #000);
+  }
+
+  /* Controls step in by the frame's 10px so they keep their room inside it. */
+  html body[data-page="project"] .pc-back.pc-back--home { left: 34px; }
+  html body[data-page="project"] .pc-top-company { left: 84px; }
+  html body[data-page="project"] .nav-primary { right: 34px; }
+  html body .pc-shortcuts { right: 30px; bottom: calc(env(safe-area-inset-bottom, 0px) + 30px); }
+}
+
+@media (max-width: 768px) {
+  .pc-back-frame { display: none; }
+}
+
+/* The About dot grid, fainter. */
+.home-about-intro.is-in-view .about-dots {
+  opacity: 0.55;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-dots { opacity: 0.55; }
+}
+
+/* The frame eases in from the screen's edges as a project page opens, and
+   back out to them as the reader leaves. */
+@keyframes pcFrameIn {
+  from {
+    inset: 0;
+    border-radius: 0;
+    opacity: 0;
+  }
+}
+
+@media (min-width: 769px) {
+  html body[data-page="project"] .pc-back-frame {
+    animation: pcFrameIn 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+    transition:
+      inset 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      border-radius 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  html body[data-page="project"].page-is-leaving .pc-back-frame {
+    inset: 0;
+    border-radius: 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body[data-page="project"] .pc-back-frame { animation: none; transition: none; }
+}
+
+/* The toolbar's 10px step in (to clear the frame) eases in with the frame
+   on arrival, rather than jumping, and eases back out as the page leaves. */
+@keyframes pcNavStepIn {
+  from { right: 24px; }
+}
+
+@media (min-width: 769px) {
+  html body[data-page="project"] .nav-primary {
+    animation:
+      navDropIn 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      pcNavStepIn 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html.from-home body[data-page="project"] .nav-primary {
+    animation: pcNavStepIn 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html body[data-page="project"].page-is-leaving .nav-primary {
+    right: 24px;
+    transition: right 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body[data-page="project"] .nav-primary,
+  html.from-home body[data-page="project"] .nav-primary { animation: none; }
+}
+
+/* Smoother frame and toolbar motion: compositor-only properties (opacity,
+   scale, translate) instead of inset/right, which re-laid out every frame
+   and stuttered while the page was busy loading. The exit runs inside the
+   page's 320ms leave so it's never cut short. */
+@keyframes pcFrameFade {
+  from { opacity: 0; scale: 1.025; }
+}
+
+@keyframes pcNavNudge {
+  from { translate: 10px 0; }
+}
+
+@media (min-width: 769px) {
+  html body[data-page="project"] .pc-back-frame {
+    inset: 10px;
+    border-radius: 22px;
+    will-change: opacity, scale;
+    animation: pcFrameFade 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+    transition:
+      opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html body[data-page="project"].page-is-leaving .pc-back-frame {
+    inset: 10px;
+    border-radius: 22px;
+    opacity: 0;
+    scale: 1.025;
+  }
+
+  html body[data-page="project"] .nav-primary {
+    right: 34px;
+    animation:
+      navDropIn 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+      pcNavNudge 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html.from-home body[data-page="project"] .nav-primary {
+    animation: pcNavNudge 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html body[data-page="project"].page-is-leaving .nav-primary {
+    right: 34px;
+    translate: 10px 0;
+    transition: translate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body[data-page="project"] .pc-back-frame,
+  html body[data-page="project"] .nav-primary,
+  html.from-home body[data-page="project"] .nav-primary { animation: none; transition: none; }
+}
+
+/* Exit on the arrival's own curve (ease in and out), fitted inside the
+   page's 320ms leave so it completes before the next page loads. */
+@media (min-width: 769px) {
+  html body[data-page="project"] .pc-back-frame {
+    transition:
+      opacity 0.3s cubic-bezier(0.65, 0, 0.35, 1),
+      scale 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+
+  html body[data-page="project"].page-is-leaving .nav-primary {
+    transition: translate 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+}
+
+/* The frame and toolbar only move on the way in from home and out to it.
+   Between projects they stay put, so the frame reads as constant. */
+@media (min-width: 769px) {
+  html body[data-page="project"] .pc-back-frame {
+    animation: none;
+  }
+
+  html.from-home body[data-page="project"] .pc-back-frame {
+    animation: pcFrameFade 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html body[data-page="project"].page-is-leaving:not(.is-leaving-home) .pc-back-frame {
+    opacity: 1;
+    scale: 1;
+  }
+
+  html body[data-page="project"] .nav-primary {
+    animation: navDropIn 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  html.from-home body[data-page="project"] .nav-primary {
+    animation: pcNavNudge 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+
+  html body[data-page="project"].page-is-leaving:not(.is-leaving-home) .nav-primary {
+    translate: none;
+  }
+}
+
+/* Project to project, the back button and the top-right toolbar hold still:
+   no fade or lift on the way out (body.is-hopping) and no entrance on the
+   way in (html.project-hop). The breadcrumb still changes over. */
+html body[data-page="project"].page-is-leaving.is-hopping .pc-back.pc-back--home,
+html body[data-page="project"].page-is-leaving.is-hopping .nav-primary {
+  opacity: 1;
+  filter: none;
+  transform: none;
+  translate: none;
+  transition: none;
+}
+
+html.project-hop body[data-page="project"] .pc-back,
+html.project-hop body[data-page="project"] .pc-back.pc-back--home,
+html.project-hop body[data-page="project"] .nav-primary {
+  animation: none;
+}
+
+/* About dot grid at 30%. */
+.home-about-intro.is-in-view .about-dots {
+  opacity: 0.3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-dots { opacity: 0.3; }
+}
+
+/* ── Home: "My current toolstack" under Selected work ────────────────────
+   A row of app icons; each lifts a touch on hover and names itself in a
+   small pill above it. */
+body[data-page="home"] .work-column--toolstack {
+  margin-top: 72px;
+}
+
+.toolstack-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toolstack-item {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  outline: none;
+  transition: translate 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toolstack-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 9px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06), 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .toolstack-item img {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08), 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.toolstack-item:hover,
+.toolstack-item:focus-visible {
+  translate: 0 -2px;
+  z-index: 2;
+}
+
+.toolstack-item:focus-visible img {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--text-light);
+}
+
+.toolstack-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 6px 16px rgba(0, 0, 0, 0.08);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  color: var(--text);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  translate: -50% 4px;
+  scale: 0.96;
+  transition:
+    opacity 0.2s ease,
+    translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.toolstack-item:hover .toolstack-tip,
+.toolstack-item:focus-visible .toolstack-tip {
+  opacity: 1;
+  translate: -50% 0;
+  scale: 1;
+}
+
+html[data-theme="dark"] .toolstack-tip {
+  background: #1a1a1c;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toolstack-item, .toolstack-tip { transition: opacity 0.15s linear; }
+  .toolstack-item:hover, .toolstack-item:focus-visible { translate: none; }
+}
+
+/* The toolstack shares the narrower inner width of the list above, so its
+   left edge lines up with Selected work. */
+body[data-page="home"] .work-column--toolstack .work-column-inner {
+  max-width: calc(var(--home-content-width) - 40px);
+}
+
+/* Toolstack icons a size down, framed in a white border like the photo
+   stack beside "More about me". */
+.toolstack-list { gap: 10px; }
+
+.toolstack-item,
+.toolstack-item img {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+}
+
+.toolstack-item img {
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="dark"] .toolstack-item img {
+  border-color: var(--surface);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* The toolstack icons overlap a touch, like the photo stack; the hovered one
+   comes to the front. */
+.toolstack-list { gap: 0; }
+
+.toolstack-item + .toolstack-item { margin-left: -6px; }
+
+.toolstack-item:hover,
+.toolstack-item:focus-visible { z-index: 5; }
+
+/* Toolstack tiles: each supplied logo centred on a light grey tile with a
+   white border; in winter the tile turns dark and GitHub's black mark
+   flips to white. */
+.toolstack-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  border: 2px solid #fff;
+  border-radius: 9px;
+  background: #ededef;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08), 0 1px 1px rgba(0, 0, 0, 0.05);
+}
+
+.toolstack-item:focus-visible .toolstack-tile {
+  box-shadow: 0 0 0 2px var(--bg), 0 0 0 3.5px var(--text-light);
+}
+
+.toolstack-item img.toolstack-logo {
+  width: 58%;
+  height: 58%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  object-fit: contain;
+}
+
+.toolstack-item img.toolstack-logo--claude-code { width: 64%; }
+
+html[data-theme="dark"] .toolstack-tile {
+  border-color: var(--surface);
+  background: #2a2a2d;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] .toolstack-item img.toolstack-logo {
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .toolstack-item img.toolstack-logo--github {
+  filter: invert(1);
+}
+
+/* Even spacing round the toolstack: 64px from the About text, 16px from its
+   label to the icons, and 64px on to "More about me" (48 / 14 / 48 on
+   phones). */
+body[data-page="home"] .work-column--toolstack {
+  margin-top: 64px;
+}
+
+body[data-page="home"] .work-column--toolstack .work-section-label {
+  margin-bottom: 16px;
+}
+
+body[data-page="home"] .work-column--toolstack + .work-column--interests {
+  margin-top: 64px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .work-column--toolstack { margin-top: 48px; }
+  body[data-page="home"] .work-column--toolstack .work-section-label { margin-bottom: 14px; }
+  body[data-page="home"] .work-column--toolstack + .work-column--interests { margin-top: 48px; }
+}

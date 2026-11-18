@@ -104,6 +104,11 @@
         sessionStorage.removeItem('portfolio-from-home');
         if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('from-home');
       }
+      // Arriving from another project: the corner controls stay where they were.
+      if (sessionStorage.getItem('portfolio-project-hop')) {
+        sessionStorage.removeItem('portfolio-project-hop');
+        root.classList.add('project-hop');
+      }
       // project-nav.js spends this one itself (initHomeReturn); only read it.
       if (sessionStorage.getItem('portfolio-project-leave')) root.classList.add('from-project');
     } catch (err) {
