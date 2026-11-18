@@ -102,114 +102,10 @@ function initThemeSwitcher() {
     const { id, origin } = event.detail || {};
     if (!id || id === getStoredTheme()) return;
     setThemeWithReveal(id, origin || toggle);
-    playThemeTransitionSound();
     playTapAnimation(toggle.querySelector('.theme-toggle-icons'), 'is-tapped');
   });
 }
 
-const VOLUME_STORAGE_KEY = 'portfolio-volume-muted';
-
-function isSoundMuted() {
-  return localStorage.getItem(VOLUME_STORAGE_KEY) === 'true';
-}
-
-// Pitch follows the theme: descending into dark, ascending back into light.
-const THEME_TRANSITION_SOUNDS = {
-  dark: '/sounds/transition_down.wav',
-  light: '/sounds/transition_up.wav',
-};
-const themeTransitionAudios = {};
-
-// Call after the theme has been applied — the direction is read from the new theme.
-function playThemeTransitionSound() {
-  if (isSoundMuted()) return;
-
-  const direction = getStoredTheme() === 'dark' ? 'dark' : 'light';
-  let audio = themeTransitionAudios[direction];
-  if (!audio) {
-    audio = new Audio(THEME_TRANSITION_SOUNDS[direction]);
-    audio.preload = 'auto';
-    audio.volume = 0.4;
-    // Play the clip slow to drop its pitch. Browsers preserve pitch by default when
-    // you change rate, which would only make it slower — turning that off gives the
-    // tape-speed effect we want. Prefixes cover Safari and older Firefox.
-    audio.preservesPitch = false;
-    audio.webkitPreservesPitch = false;
-    audio.mozPreservesPitch = false;
-    audio.playbackRate = 0.82;
-    themeTransitionAudios[direction] = audio;
-  }
-
-  audio.currentTime = 0;
-  audio.play().catch(() => {});
-}
-
-const CLICK_SPARK_SOUNDS = ['sounds/tap_01.wav', 'sounds/tap_02.wav', 'sounds/tap_03.wav', 'sounds/tap_04.wav'];
-let clickSparkAudios = null;
-let clickSparkSoundIndex = 0;
-
-function playClickSparkSound() {
-  if (!clickSparkAudios) {
-    clickSparkAudios = CLICK_SPARK_SOUNDS.map((src) => {
-      const audio = new Audio(src);
-      audio.preload = 'auto';
-      audio.volume = 0.4;
-      return audio;
-    });
-  }
-  const audio = clickSparkAudios[clickSparkSoundIndex % clickSparkAudios.length];
-  clickSparkSoundIndex += 1;
-  audio.currentTime = 0;
-  audio.play().catch(() => {});
-}
-
-function sparkRayColor(theme, index, total) {
-  if (theme === 'dark') {
-    const lightness = 78 + (index / Math.max(1, total - 1)) * 22; // 78%–100% white
-    return `hsl(0, 0%, ${lightness}%)`;
-  }
-  return '#111111';
-}
-
-function spawnClickSpark(x, y) {
-  const theme = document.documentElement.getAttribute('data-theme');
-  const spark = document.createElement('div');
-  spark.className = 'click-spark';
-  spark.style.left = `${x}px`;
-  spark.style.top = `${y}px`;
-
-  const rays = 6;
-  for (let i = 0; i < rays; i += 1) {
-    const ray = document.createElement('span');
-    ray.className = 'click-spark-ray';
-    ray.style.setProperty('--a', `${(360 / rays) * i}deg`);
-    ray.style.background = sparkRayColor(theme, i, rays);
-    spark.appendChild(ray);
-  }
-
-  document.body.appendChild(spark);
-  spark.addEventListener('animationend', () => spark.remove(), { once: true });
-  window.setTimeout(() => spark.remove(), 700);
-}
-
-// Controls have their own press feedback, so the spark only fires on plain page
-// clicks. The sound still plays on them — except where the control brings its own,
-// which would otherwise stack two sounds on one click.
-const SPARK_EXEMPT = 'button, a, [role="button"], input, select, textarea, label, summary';
-// The theme buttons have their own transition sound — no tap on top of it.
-const CLICK_SOUND_EXEMPT = '#pc-next-pill, #theme-toggle, #nav-menu-theme';
-
-function initClickSpark() {
-  document.addEventListener('click', (event) => {
-    if (isSoundMuted()) return;
-    const target = event.target;
-    if (target.closest?.(CLICK_SOUND_EXEMPT)) return;
-    playClickSparkSound();
-    if (prefersReducedMotion()) return;
-    if (target.closest?.(SPARK_EXEMPT)) return;
-    spawnClickSpark(event.clientX, event.clientY);
-  });
-}
 
 function playTapAnimation(el, cls) {
   if (!el) return;
@@ -228,7 +124,7 @@ function playTapAnimation(el, cls) {
 //
 // Only real pointer movement picks the row, and only a row under the
 // pointer — one a click would open — is ever active. Others
-// (preview, tap sound) follow the 'work-row-active' event rather than
+// (the preview) follow the 'work-row-active' event rather than
 // mouseenter.
 // Leaving the list lets go almost at once: the gaps between rows are inside
 // the list, so there's nothing to bridge — just a frame or two of grace for
@@ -246,20 +142,6 @@ function initProjectRowDetails() {
     if (!project || !project.intro || row.querySelector('.work-row-desc')) return;
     const desc = document.createElement('span');
     desc.className = 'work-row-desc';
-    // The company leads the line ("Miro · …"); the right column numbers
-    // the rows instead.
-    if (project.company) {
-      const company = document.createElement('span');
-      company.className = 'work-row-company';
-      company.textContent = project.company;
-      const dot = document.createElement('span');
-      dot.className = 'work-row-company-dot';
-      dot.setAttribute('aria-hidden', 'true');
-      dot.textContent = '·';
-      // Real spaces either side of the dot, so screen readers (which skip
-      // the dot) still hear "Miro A text-to-sticker…" as two words.
-      desc.append(company, ' ', dot, ' ');
-    }
     desc.append(project.intro);
     row.append(desc);
   });
@@ -439,8 +321,7 @@ function initKeyboardNav() {
     if (event.key === 't' || event.key === 'T') {
       event.preventDefault();
       cycleThemeWithReveal(document.getElementById('theme-toggle'));
-      playThemeTransitionSound();
-      playTapAnimation(document.querySelector('.theme-toggle-icons'), 'is-tapped');
+        playTapAnimation(document.querySelector('.theme-toggle-icons'), 'is-tapped');
     }
   });
 }
@@ -1634,7 +1515,6 @@ initDogPhotoPopovers();
 initProjectPreview();
 initCountUp();
 initFooter();
-initClickSpark();
 initInProgressStatus();
 initHeroWeather();
 initReducedMotionVideo();
