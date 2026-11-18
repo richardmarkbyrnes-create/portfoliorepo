@@ -22,5 +22,5 @@ jobs:
           publish_dir: .
           # Dev-only files stay out of the published site: the local server
           # (with its edit endpoint), its package script and the README.
-          exclude_assets: '.github,serve.py,package.json,README.md'
+          exclude_assets: '.github,.claude,serve.py,package.json,README.md,skills-lock.json'
           cname: richardmarkbyrnes.work

@@ -108,7 +108,6 @@ function initThemeSwitcher() {
 }
 
 const VOLUME_STORAGE_KEY = 'portfolio-volume-muted';
-const EXPERIENCE_TAP_SOUND = 'sounds/tap_04.wav';
 
 function isSoundMuted() {
   return localStorage.getItem(VOLUME_STORAGE_KEY) === 'true';
@@ -303,32 +302,6 @@ function initProjectRowDetails() {
 
   list.addEventListener('focusout', (event) => {
     if (!list.contains(event.relatedTarget)) setActive(null);
-  });
-}
-
-function initExperienceHoverSound() {
-  const rows = document.querySelectorAll('.work-column--interactive .work-row-main');
-  if (!rows.length) return;
-
-  const tapAudio = new Audio(EXPERIENCE_TAP_SOUND);
-  tapAudio.preload = 'auto';
-  tapAudio.volume = 0.4;
-
-  const tap = () => {
-    if (isSoundMuted()) return;
-    tapAudio.currentTime = 0;
-    tapAudio.play().catch(() => {});
-  };
-
-  // Project rows tap when they become the active row (initProjectRowDetails),
-  // so a row sliding under a still pointer stays quiet; any other rows tap
-  // on enter as before.
-  document.addEventListener('work-row-active', (event) => {
-    if (event.detail.row) tap();
-  });
-  rows.forEach((row) => {
-    if (row.matches('[data-project]')) return;
-    row.addEventListener('mouseenter', tap);
   });
 }
 
@@ -1648,7 +1621,6 @@ initHobbyCardTilt();
 initHobbyPhotoFlip();
 initRecordNotes();
 initRecordPeek();
-initExperienceHoverSound();
 initProjectRowDetails();
 initSmoothScroll();
 initSmoothWheel();

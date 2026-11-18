@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "skills": {
+    "ui-sound-design": {
+      "source": "dannyjpwilliams/ui-sound-design-skill",
+      "commit": "6cb4be41a19a5556ffd94f04e641e18b623ac483",
+      "sourceType": "github",
+      "skillPath": "skills/ui-sound-design/SKILL.md",
+      "computedHash": "1bfab6446d0d277aba585282fef697bc56d1ac08d257a427932fb17343b807fc"
+    }
+  }
+}

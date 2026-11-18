@@ -140,9 +140,8 @@
 
   markLineArtSeen();
 
-  // Sound starts off when someone arrives and whenever they reload, so nobody
-  // gets audio they didn't ask for. Moving between projects leaves the choice
-  // alone — an unmute should survive the click through to the next page.
+  // Sound starts on when someone arrives and whenever they reload. Moving
+  // between pages leaves any stored choice alone.
   //
   // Arriving and clicking a link are both navigation type "navigate", so the
   // session flag is what separates them: no flag means this is the first page of
@@ -164,7 +163,11 @@
       var firstOfSession = !sessionStorage.getItem(VISITED_KEY);
       sessionStorage.setItem(VISITED_KEY, '1');
 
-      if (reloaded || firstOfSession) localStorage.setItem(VOLUME_KEY, 'true');
+      // Sound is on: there's no mute button on the page any more, and the
+      // sounds are quiet and only play after the visitor's first click or key
+      // press (browsers hold audio until then). Clearing the key also drops a
+      // mute left over from an older version of the site.
+      if (reloaded || firstOfSession) localStorage.removeItem(VOLUME_KEY);
     } catch (err) {
       // storage blocked — the readers default to unmuted, nothing to undo
     }
