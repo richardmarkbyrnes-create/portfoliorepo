@@ -140,40 +140,8 @@
 
   markLineArtSeen();
 
-  // Sound starts on when someone arrives and whenever they reload. Moving
-  // between pages leaves any stored choice alone.
-  //
-  // Arriving and clicking a link are both navigation type "navigate", so the
-  // session flag is what separates them: no flag means this is the first page of
-  // the tab. Set in the head, ahead of the scripts that read the key to draw the
-  // volume icon.
-  var VOLUME_KEY = 'portfolio-volume-muted';
-  var VISITED_KEY = 'portfolio-visited';
-
-  function resetSoundIfArriving() {
-    try {
-      var entry = (window.performance && performance.getEntriesByType)
-        ? performance.getEntriesByType('navigation')[0]
-        : null;
-      var reloaded = entry
-        ? entry.type === 'reload'
-        // Deprecated, but the only signal in older browsers. 1 === TYPE_RELOAD.
-        : !!(window.performance && performance.navigation && performance.navigation.type === 1);
-
-      var firstOfSession = !sessionStorage.getItem(VISITED_KEY);
-      sessionStorage.setItem(VISITED_KEY, '1');
-
-      // Sound is on: there's no mute button on the page any more, and the
-      // sounds are quiet and only play after the visitor's first click or key
-      // press (browsers hold audio until then). Clearing the key also drops a
-      // mute left over from an older version of the site.
-      if (reloaded || firstOfSession) localStorage.removeItem(VOLUME_KEY);
-    } catch (err) {
-      // storage blocked — the readers default to unmuted, nothing to undo
-    }
-  }
-
-  resetSoundIfArriving();
+  // (The site has no sound; a mute flag left by older versions is cleared.)
+  try { localStorage.removeItem('portfolio-volume-muted'); } catch (err) { /* storage blocked */ }
 
   // When a page is restored from the back/forward cache (e.g. navigating with
   // the arrow keys / browser back), scripts don't re-run, so a theme changed on
