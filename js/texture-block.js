@@ -371,15 +371,19 @@
     gl.uniform2f(uMouse, pointer.x, pointer.y);
     gl.uniform1f(uPull, pointer.pull);
   }
-  // The pointer no longer pushes the field about (it fought with the Snake
-  // easter egg over the hero block); the texture just keeps morphing.
-  const POINTER_PULL = false;
-  if (POINTER_PULL && window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
+  // The field leans away from the pointer only where the "Play?" pill shows
+  // (the band the Snake game sits in), and stops once a game is running, so
+  // it never fights the game.
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches && !reduce) {
     wrap.addEventListener('pointermove', (event) => {
       const r = canvas.getBoundingClientRect();
       pointer.tx = (event.clientX - r.left) / r.width;
       pointer.ty = 1 - (event.clientY - r.top) / r.height;
-      pointer.target = 1;
+      const onBand = !!event.target.closest?.('.texture-snake');
+      pointer.target = onBand && !wrap.classList.contains('is-playing') ? 1 : 0;
+    });
+    wrap.addEventListener('click', () => {
+      if (wrap.classList.contains('is-playing')) pointer.target = 0;
     });
     wrap.addEventListener('pointerleave', () => { pointer.target = 0; });
   }
