@@ -20,7 +20,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preload" href="/fonts/BespokeSerif-Regular.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Adamina&family=Caveat:wght@400&family=Inter:wght@400;500;600&display=swap">
-  <link rel="stylesheet" href="css/styles.css?v=1525">
+  <link rel="stylesheet" href="css/styles.css?v=1550">
 </head>
 <body data-page="home">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -49,7 +49,7 @@
 
       <section class="work-column work-column--experience work-column--interactive" aria-labelledby="work-heading">
         <div class="work-column-inner">
-          <h2 class="work-section-label animate-in animate-in-delay-3" id="work-heading">Selected work</h2>
+          <h2 class="work-section-label animate-in animate-in-delay-3" id="work-heading">Selected work<span class="work-section-count" aria-hidden="true">05</span></h2>
           <hr class="work-column-rule animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0" aria-hidden="true">
           <div class="work-list">
             <div class="work-group animate-in" style="animation-delay: calc(var(--fade-step, 0.115s) * 4); opacity: 0">
@@ -133,22 +133,9 @@
           <div class="about-block">
             <p class="about-block-text animate-in">I&rsquo;m a multidisciplinary product designer and builder from <a class="about-link" href="https://share.google/cHdG0vP55Lz0FFtul" target="_blank" rel="noopener noreferrer">Limerick</a>, Ireland. Over the years, I&rsquo;ve taken 0-to-1 products off the ground at <a class="about-link" href="https://miro.com/" target="_blank" rel="noopener noreferrer">Miro</a>, defined product vision for fintech platforms at <a class="about-link" href="https://www.cashbook.com/" target="_blank" rel="noopener noreferrer">Cashbook</a>, and scaled design systems and developer tools at <a class="about-link" href="https://www.sap.com" target="_blank" rel="noopener noreferrer">SAP</a>.</p>
             <p class="about-block-text animate-in">I design at the intersection of what excites me most: technology, business, and craft. That systems-led mindset started at the <a class="about-link" href="https://www.ul.ie/" target="_blank" rel="noopener noreferrer">University of Limerick</a>, where I earned a BSc in Interaction Design, a blend of user research, psychology, interface craft, and frontend and hardware engineering.</p>
+            <p class="about-block-text animate-in">These days I spend most of my time in the terminal building with <span class="about-tool"><img class="about-tool-icon about-tool-icon--claude-code" src="images/tool-logo-claude-code.png" alt="" width="16" height="16" decoding="async">Claude Code</span>, braindumping ideas in <span class="about-tool"><img class="about-tool-icon about-tool-icon--gemini" src="images/tool-logo-gemini.png" alt="" width="16" height="16" decoding="async">Gemini</span>, documenting in <span class="about-tool"><img class="about-tool-icon about-tool-icon--figma" src="images/tool-logo-figma.png" alt="" width="16" height="16" decoding="async">Figma</span> then pushing PRs through <span class="about-tool"><img class="about-tool-icon about-tool-icon--github" src="images/tool-logo-github.png" alt="" width="16" height="16" decoding="async">GitHub</span>.</p>
             <p class="about-block-text animate-in">I currently live in <a class="about-link" href="https://www.google.com/search?q=amsterdam" target="_blank" rel="noopener noreferrer">Amsterdam</a>, Netherlands and work at Miro. Outside of work: you&rsquo;ll find me cooking, playing football, reading, or debating whether it&rsquo;s finally time to get a dog.</p>
           </div>
-        </div>
-      </section>
-
-      <!-- The tools Richard designs and builds with day to day. -->
-      <section class="work-column work-column--toolstack animate-on-scroll-root" aria-labelledby="toolstack-heading">
-        <div class="work-column-inner">
-          <h2 class="work-section-label animate-in" id="toolstack-heading">My toolstack</h2>
-          <ul class="toolstack-list">
-            <li class="toolstack-item animate-in" tabindex="0" aria-label="Gemini"><span class="toolstack-tile"><img class="toolstack-logo toolstack-logo--gemini" src="images/tool-logo-gemini.png" alt="" loading="lazy" decoding="async"></span><span class="toolstack-tip" aria-hidden="true">Gemini</span></li>
-            <li class="toolstack-item animate-in" tabindex="0" aria-label="Claude"><span class="toolstack-tile"><img class="toolstack-logo toolstack-logo--claude" src="images/tool-logo-claude.png" alt="" loading="lazy" decoding="async"></span><span class="toolstack-tip" aria-hidden="true">Claude</span></li>
-            <li class="toolstack-item animate-in" tabindex="0" aria-label="Claude Code"><span class="toolstack-tile"><img class="toolstack-logo toolstack-logo--claude-code" src="images/tool-logo-claude-code.png" alt="" loading="lazy" decoding="async"></span><span class="toolstack-tip" aria-hidden="true">Claude Code</span></li>
-            <li class="toolstack-item animate-in" tabindex="0" aria-label="Figma"><span class="toolstack-tile"><img class="toolstack-logo toolstack-logo--figma" src="images/tool-logo-figma.png" alt="" loading="lazy" decoding="async"></span><span class="toolstack-tip" aria-hidden="true">Figma</span></li>
-            <li class="toolstack-item animate-in" tabindex="0" aria-label="GitHub"><span class="toolstack-tile"><img class="toolstack-logo toolstack-logo--github" src="images/tool-logo-github.png" alt="" loading="lazy" decoding="async"></span><span class="toolstack-tip" aria-hidden="true">GitHub</span></li>
-          </ul>
         </div>
       </section>
 
@@ -243,7 +230,7 @@
 
       <!-- Snake, in the site's dither style (snake.js). Click or tap the
            board to play; arrow keys / WASD or swipes steer. -->
-      <section class="work-column work-column--snake animate-on-scroll-root" aria-labelledby="snake-heading">
+      <section class="work-column work-column--snake snake-egg animate-on-scroll-root" id="snake-section" aria-labelledby="snake-heading" hidden>
         <div class="work-column-inner">
           <h2 class="visually-hidden" id="snake-heading">Snake</h2>
           <p class="snake-status animate-in" data-snake-overlay aria-live="polite"><span class="snake-status-hint">Click below to play</span></p>
@@ -260,13 +247,7 @@
         </div>
       </section>
 
-      <!-- Footer: the same morphing landscape as the block under the hero,
-           across the full width (texture-block.js draws it). -->
-      <div class="season-footer" aria-hidden="true">
-        <div class="home-texture home-texture--footer" data-no-details>
-          <canvas class="home-texture-canvas"></canvas>
-        </div>
-      </div>
+
     </div>
   </main>
 
@@ -311,9 +292,9 @@
   <script src="js/ascii-text-scramble.js?v=5"></script>
   <script src="js/projects.js?v=82"></script>
   <script src="js/project-nav.js?v=98"></script>
-  <script src="js/main.js?v=192"></script>
+  <script src="js/main.js?v=204"></script>
   <script src="js/texture-block.js?v=47"></script>
-  <script src="js/snake.js?v=45"></script>
+  <script src="js/snake.js?v=50"></script>
   <!-- Progressive blur: eight masked backdrop-filter layers along the bottom edge. -->
   <div class="progressive-blur bottom-blur" aria-hidden="true">
     <div class="layer blur-1"></div>
