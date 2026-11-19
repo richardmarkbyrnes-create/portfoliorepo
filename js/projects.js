@@ -5,7 +5,6 @@ window.PROJECT_ORDER = [
   'custom-stickers',
   'navigation',
   'automations',
-  'developer-tools',
   'design-systems',
 ];
 
