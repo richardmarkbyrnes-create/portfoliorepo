@@ -1309,6 +1309,20 @@ html[data-theme="dark"] .theme-swatch {
 }
 
 @media (hover: hover) {
+  /* Hopping straight from one trigger to the other: the menu being left
+     drops its grace period and closes at once, so the two never overlap. */
+  body:has(.nav-theme:hover) .nav-contact:not(.is-open) .nav-contact-menu,
+  body:has(.nav-contact:hover) .nav-theme:not(.is-open) .nav-theme-menu {
+    transition-delay: 0s, 0s, 0s, 0s, 0.28s;
+  }
+
+  body:has(.nav-theme:hover) .nav-contact:not(.is-open) :is(.nav-contact-header, .nav-contact-item, .nav-contact-divider),
+  body:has(.nav-contact:hover) .nav-theme:not(.is-open) .season-option {
+    transition-delay: 0s;
+  }
+}
+
+@media (hover: hover) {
   .nav-contact:hover .nav-contact-menu,
   .nav-contact:has(:focus-visible) .nav-contact-menu {
     opacity: 1;
@@ -12147,16 +12161,59 @@ html body[data-page] .pc-back.pc-back--home {
   }
 }
 
-/* The keyboard-shortcuts glyph sits bottom right; its panel opens up from
-   that corner. */
+/* The keyboard-shortcuts glyph sits bottom left; its panel opens up from
+   that corner. The back-to-top arrow (.to-top) takes the bottom right. */
 html body .pc-shortcuts {
-  left: auto;
-  right: 20px;
+  left: 20px;
+  right: auto;
 }
 
 html body .pc-shortcuts-panel {
-  left: auto;
-  right: 0;
+  left: 0;
+  right: auto;
+}
+
+/* Back to top (main.js): a very faint arrow, bottom right, that only shows
+   once the page has been scrolled; same weight and hover as the shortcuts
+   glyph across from it. */
+.to-top {
+  position: fixed;
+  right: 20px;
+  bottom: calc(env(safe-area-inset-bottom, 0px) + 20px);
+  z-index: 320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--text);
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 6px;
+  cursor: pointer;
+  transition:
+    opacity 0.3s ease,
+    translate 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.3s;
+}
+
+.to-top.is-shown {
+  opacity: 0.22;
+  visibility: visible;
+  translate: 0 0;
+  transition-delay: 0s;
+}
+
+.to-top.is-shown:hover,
+.to-top.is-shown:focus-visible {
+  opacity: 0.65;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .to-top { transition: opacity 0.3s ease, visibility 0s linear 0.3s; translate: none; }
 }
 
 /* Stipple shading on the hairline drawings (project-nav.js): the pattern's
@@ -12709,7 +12766,8 @@ html[data-theme="dark"] .pc-back-frame {
   html body[data-page="project"] .pc-back.pc-back--home { left: 34px; }
   html body[data-page="project"] .pc-top-company { left: 84px; }
   html body[data-page="project"] .nav-primary { right: 34px; }
-  html body .pc-shortcuts { right: 30px; bottom: calc(env(safe-area-inset-bottom, 0px) + 30px); }
+  html body .pc-shortcuts { left: 30px; right: auto; bottom: calc(env(safe-area-inset-bottom, 0px) + 30px); }
+  html body .to-top { right: 30px; bottom: calc(env(safe-area-inset-bottom, 0px) + 30px); }
 }
 
 @media (max-width: 768px) {

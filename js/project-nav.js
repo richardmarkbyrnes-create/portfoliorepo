@@ -521,13 +521,14 @@ function initQuoteReveal(el) {
       }
     }
 
-    // Year and status above the title, e.g. "2025 · Shipped". Projects that
-    // never went out carry their own status in projects.js.
+    // Company, year and status above the title, e.g. "Miro · 2025 · Shipped".
+    // Projects that never went out carry their own status in projects.js.
     if (lead && project.year && !document.getElementById('pc-lead-meta')) {
       const meta = document.createElement('p');
       meta.className = 'pc-lead-meta';
       meta.id = 'pc-lead-meta';
-      meta.textContent = `${project.year} \u00b7 ${project.status || 'Shipped'}`;
+      meta.textContent = [project.company, project.year, project.status || 'Shipped']
+        .filter(Boolean).join(' \u00b7 ');
       lead.before(meta);
     }
 

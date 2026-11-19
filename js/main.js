@@ -1709,3 +1709,35 @@ function initFooterTyping() {
 }
 
 initFooterTyping();
+
+// Back to top: a faint arrow in the bottom-right corner that appears once the
+// page has been scrolled a way down, and scrolls back up when clicked.
+function initToTop() {
+  if (document.getElementById('to-top')) return;
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'to-top';
+  btn.id = 'to-top';
+  btn.setAttribute('aria-label', 'Back to top');
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>';
+  document.body.appendChild(btn);
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    btn.classList.toggle('is-shown', window.scrollY > 480);
+  };
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+  update();
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+    btn.blur();
+  });
+}
+
+initToTop();
