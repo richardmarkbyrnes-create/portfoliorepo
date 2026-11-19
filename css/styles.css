@@ -14092,3 +14092,31 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
 @media (prefers-reduced-motion: reduce) {
   .site-footer-email.is-pulse-a, .site-footer-email.is-pulse-b { animation: none; }
 }
+
+/* Footer base line: LinkedIn and Resume match the copyright (13px, the
+   same soft grey); hover still darkens them. */
+.site-footer-base .site-footer-social a {
+  font-size: 13px;
+  line-height: inherit;
+  color: var(--text-light);
+  opacity: 0.8;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.site-footer-base .site-footer-social a:hover,
+.site-footer-base .site-footer-social a:focus-visible {
+  color: var(--text);
+  opacity: 1;
+}
+
+.site-footer-copy,
+.site-footer-base .site-footer-social {
+  line-height: 1.5;
+}
+
+/* The foot dither rolls: its top edge rises and falls across the page
+   (a 720px seamless tile) instead of running level. */
+body[data-page="home"] main.page::after {
+  -webkit-mask: url("../images/bottom-dither.png?v=3") left bottom / 720px 120px repeat-x;
+  mask: url("../images/bottom-dither.png?v=3") left bottom / 720px 120px repeat-x;
+}
