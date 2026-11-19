@@ -5416,10 +5416,9 @@ body[data-page="project"] .pc-next-pill.has-bubble {
   z-index: 2;
 }
 
-/* The next project's name: a second line that opens under the label when the
-   reader reaches the end of the page (.is-at-end, project-nav.js). A 0fr/1fr
-   grid row, so it grows from nothing rather than jumping in, and the pill and
-   its bubble grow with it. */
+/* The next project's name: a second line that opens under the label while
+   the pill is hovered or focused. A 0fr/1fr grid row, so it grows from
+   nothing rather than jumping in, and the pill and its bubble grow with it. */
 .pc-next-pill .pc-next-copy {
   flex-direction: column;
   align-items: center;
@@ -5450,7 +5449,8 @@ body[data-page="project"] .pc-next-pill.has-bubble {
   white-space: nowrap;
 }
 
-.pc-next-pill.is-at-end .pc-next-sub {
+.pc-next-pill:hover .pc-next-sub,
+.pc-next-pill:focus-visible .pc-next-sub {
   grid-template-rows: 1fr;
   /* The gap under the label only exists while the name is showing, so the
      single-line pill stays centred. */
@@ -13438,9 +13438,6 @@ body[data-page="home"] .flick-footer + .season-footer {
   object-fit: contain;
 }
 
-html[data-theme="dark"] .about-tool-icon--github {
-  filter: invert(1);
-}
 
 /* ── Sign-off: the name filled with the season texture ───────────────────
    The texture sits under the name and is masked to its letters (the mask
@@ -13917,6 +13914,15 @@ body[data-page="home"] .work-column--about .about-block .about-block-text:nth-ch
 html[data-theme="dark"] .about-tool-icon {
   background: #2a2a2d;
   box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 2px 6px rgba(0, 0, 0, 0.45);
+}
+
+/* GitHub's mark is black, so winter inverts it to white. The invert takes
+   the img's tile and shadow with it, so those are set to the inverse of the
+   dark tile (#2a2a2d, faint ring, dark shadow) and land right after. */
+html[data-theme="dark"] .about-tool-icon--github {
+  background: #d5d5d2;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 2px 6px rgba(255, 255, 255, 0.45);
+  filter: invert(1);
 }
 
 /* ── Home footer ─────────────────────────────────────────────────────────
