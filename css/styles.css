@@ -13897,6 +13897,21 @@ body[data-page="home"] .work-column--about .about-block .about-block-text:nth-ch
   animation-delay: 0.48s;
 }
 
+/* The same beat carries on below: "More about me" then its rule, and in the
+   footer the label, the address, then the base line. Each section is its own
+   scroll root, so the delays run from the moment it comes into view. */
+body[data-page="home"] .work-column--interests .interests-heading.animate-in,
+body[data-page="home"] .work-column--interests .work-column-rule.animate-in,
+body[data-page="home"] .site-footer .site-footer-label.animate-in,
+body[data-page="home"] .site-footer .site-footer-email.animate-in,
+body[data-page="home"] .site-footer .site-footer-base.animate-in {
+  animation-fill-mode: both;
+}
+
+body[data-page="home"] .work-column--interests .work-column-rule.animate-in { animation-delay: 0.16s; }
+body[data-page="home"] .site-footer .site-footer-email.animate-in { animation-delay: 0.16s; }
+body[data-page="home"] .site-footer .site-footer-base.animate-in { animation-delay: 0.32s; }
+
 /* Each tool logo on a small white tile with a soft drop shadow. */
 .about-tool-icon {
   box-sizing: border-box;
@@ -14175,10 +14190,9 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
   animation-delay: calc(var(--n) * 0.14s);
 }
 
-/* Tick, envelope, tick: the envelope sits largest in the middle. */
-.site-footer-mail-icon:nth-child(1) { font-size: 22px; }
-.site-footer-mail-icon:nth-child(2) { font-size: 30px; }
-.site-footer-mail-icon:nth-child(3) { font-size: 18px; }
+/* Envelope, then a smaller tick. */
+.site-footer-mail-icon:nth-child(1) { font-size: 30px; }
+.site-footer-mail-icon:nth-child(2) { font-size: 20px; }
 
 @media (prefers-reduced-motion: reduce) {
   .site-footer-mail-icon { animation: none; }

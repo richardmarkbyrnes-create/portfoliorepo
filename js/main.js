@@ -1635,7 +1635,7 @@ function initSiteFooter() {
       // Off the right end of the address, a little above its midline.
       burst.style.left = `${r.width + 10}px`;
       burst.style.top = `${r.height * 0.2}px`;
-      ['\u2713', '\u2709', '\u2713'].forEach((glyph, i) => {
+      ['\u2709', '\u2713'].forEach((glyph, i) => {
         const icon = document.createElement('span');
         icon.className = 'site-footer-mail-icon';
         icon.style.setProperty('--n', i);
