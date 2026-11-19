@@ -1624,9 +1624,15 @@ function initSiteFooter() {
   const label = footer.querySelector('.site-footer-label');
   let t = 0;
   email?.addEventListener('click', () => {
+    // A soft blur-and-fade pulse on the address as it's copied.
+    // Two classes swapped each time, so a repeat click restarts it and the
+    // element never drops back to its scroll-in fade.
+    const a = email.classList.contains('is-pulse-a');
+    email.classList.toggle('is-pulse-a', !a);
+    email.classList.toggle('is-pulse-b', a);
     navigator.clipboard?.writeText(email.dataset.copyEmail).then(() => {
       if (!label) return;
-      label.textContent = 'Email copied';
+      label.innerHTML = 'Email copied<svg class="site-footer-tick" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
       clearTimeout(t);
       t = setTimeout(() => { label.textContent = 'Email me'; }, 2000);
     }).catch(() => { /* clipboard blocked: the mailto: still runs */ });
@@ -1634,3 +1640,50 @@ function initSiteFooter() {
 }
 
 initSiteFooter();
+
+// Footer email: each time it scrolls into view, the domain ("@gmail.com")
+// types itself out after the name, with a caret that blinks a moment and
+// fades. The full address is always in the layout, so nothing shifts.
+function initFooterTyping() {
+  const typed = document.querySelector('.site-footer-typed');
+  if (!typed || prefersReducedMotion()) return;
+  const text = typed.dataset.typed || typed.textContent;
+  typed.textContent = '';
+  const chars = [...text].map((ch) => {
+    const s = document.createElement('span');
+    s.className = 'site-footer-char';
+    s.textContent = ch;
+    typed.appendChild(s);
+    return s;
+  });
+  const caret = document.createElement('span');
+  caret.className = 'site-footer-caret';
+  caret.setAttribute('aria-hidden', 'true');
+  let timer = 0;
+  const reset = () => {
+    clearTimeout(timer);
+    chars.forEach((c) => c.classList.remove('is-shown'));
+    typed.prepend(caret);
+    caret.classList.remove('is-done');
+  };
+  const play = () => {
+    reset();
+    let i = 0;
+    const next = () => {
+      if (i >= chars.length) {
+        timer = setTimeout(() => caret.classList.add('is-done'), 900);
+        return;
+      }
+      chars[i].classList.add('is-shown');
+      chars[i].after(caret);
+      i += 1;
+      timer = setTimeout(next, 70 + Math.random() * 60);
+    };
+    timer = setTimeout(next, 350);
+  };
+  reset();
+  new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else reset(); }, { threshold: 0.6 })
+    .observe(typed.closest('a') || typed);
+}
+
+initFooterTyping();
