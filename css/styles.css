@@ -13983,7 +13983,7 @@ body[data-page="home"] .site-footer .work-column-inner {
 
 .site-footer-email { font-size: min(33px, 7.15cqi); }
 
-/* Footer base: copyright left, LinkedIn and Resume right, on one line. */
+/* Footer base: LinkedIn and Resume left, copyright right, on one line. */
 .site-footer-base {
   align-items: baseline;
   margin-top: 72px;
@@ -14118,6 +14118,27 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
 .site-footer-copy,
 .site-footer-base .site-footer-social {
   line-height: 1.5;
+}
+
+/* Thin vertical rule between LinkedIn and Resume, centred in the gap. */
+.site-footer-base .site-footer-social {
+  align-items: center;
+}
+
+.site-footer-base .site-footer-social li + li {
+  position: relative;
+}
+
+.site-footer-base .site-footer-social li + li::before {
+  content: "";
+  position: absolute;
+  left: -14px;
+  top: 50%;
+  width: 1px;
+  height: 12px;
+  transform: translateY(-50%);
+  background: var(--text-light);
+  opacity: 0.35;
 }
 
 /* The foot dither rolls: its top edge rises and falls across the page
