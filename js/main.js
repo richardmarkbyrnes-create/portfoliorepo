@@ -1614,3 +1614,23 @@ function initTextureSnake() {
 }
 
 initTextureSnake();
+
+// Footer: the email copies itself as well as opening the mail app, and says
+// so for a moment.
+function initSiteFooter() {
+  const footer = document.querySelector('.site-footer');
+  if (!footer) return;
+  const email = footer.querySelector('[data-copy-email]');
+  const label = footer.querySelector('.site-footer-label');
+  let t = 0;
+  email?.addEventListener('click', () => {
+    navigator.clipboard?.writeText(email.dataset.copyEmail).then(() => {
+      if (!label) return;
+      label.textContent = 'Email copied';
+      clearTimeout(t);
+      t = setTimeout(() => { label.textContent = 'Email me'; }, 2000);
+    }).catch(() => { /* clipboard blocked: the mailto: still runs */ });
+  });
+}
+
+initSiteFooter();
