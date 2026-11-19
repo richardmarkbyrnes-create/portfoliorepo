@@ -1623,16 +1623,33 @@ function initSiteFooter() {
   const email = footer.querySelector('[data-copy-email]');
   const label = footer.querySelector('.site-footer-label');
   let t = 0;
-  email?.addEventListener('click', () => {
-    // A soft blur-and-fade pulse on the address as it's copied.
-    // Two classes swapped each time, so a repeat click restarts it and the
-    // element never drops back to its scroll-in fade.
-    const a = email.classList.contains('is-pulse-a');
-    email.classList.toggle('is-pulse-a', !a);
-    email.classList.toggle('is-pulse-b', a);
+  email?.addEventListener('click', (e) => {
+    // Three little envelopes drift up from where the address was clicked and
+    // fade (CSS borrows the record-note motion). Each burst is its own node,
+    // so quick repeat clicks stack rather than restart.
+    if (!prefersReducedMotion()) {
+      const r = email.getBoundingClientRect();
+      const burst = document.createElement('span');
+      burst.className = 'site-footer-mail';
+      burst.setAttribute('aria-hidden', 'true');
+      // Off the right end of the address, a little above its midline.
+      burst.style.left = `${r.width + 10}px`;
+      burst.style.top = `${r.height * 0.2}px`;
+      ['\u2713', '\u2709', '\u2713'].forEach((glyph, i) => {
+        const icon = document.createElement('span');
+        icon.className = 'site-footer-mail-icon';
+        icon.style.setProperty('--n', i);
+        icon.style.left = `${i * 20}px`;
+        icon.style.top = `${(i % 2) * 10}px`;
+        icon.textContent = glyph;
+        burst.append(icon);
+      });
+      email.append(burst);
+      setTimeout(() => burst.remove(), 3200);
+    }
     navigator.clipboard?.writeText(email.dataset.copyEmail).then(() => {
       if (!label) return;
-      label.innerHTML = 'Email copied<svg class="site-footer-tick" viewBox="0 0 16 16" width="12" height="12" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      label.textContent = 'Email copied';
       clearTimeout(t);
       t = setTimeout(() => { label.textContent = 'Email me'; }, 2000);
     }).catch(() => { /* clipboard blocked: the mailto: still runs */ });

@@ -1294,6 +1294,9 @@ html[data-theme="dark"] .theme-swatch {
     scale 0.28s cubic-bezier(0.22, 1, 0.36, 1),
     filter 0.24s ease,
     visibility 0s linear 0.28s;
+  /* A short grace period after the pointer leaves, so a slip off the edge
+     doesn't snap the menu shut. Opening resets this to 0s. */
+  transition-delay: 0.2s, 0.2s, 0.2s, 0.2s, 0.48s;
 }
 
 .nav-contact.is-open .nav-contact-menu {
@@ -1475,6 +1478,9 @@ html[data-theme="dark"] .theme-swatch {
     translate 0.18s ease,
     scale 0.18s ease,
     filter 0.18s ease;
+  /* Hold the rows while the panel's own close delay runs (.nav-contact-menu),
+     so the content doesn't thin out before the panel goes. */
+  transition-delay: 0s, 0s, 0.2s, 0.2s, 0.2s, 0.2s;
 }
 
 .nav-contact-divider {
@@ -10665,7 +10671,15 @@ html body[data-page="project"] .nav-primary .nav-icon-btn.nav-label-btn:hover {
 
 .nav-theme-menu .season-option {
   position: relative;
-  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.25s ease;
+  /* Closed state: the reveal properties wait out the menu's close delay. */
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.25s ease,
+    opacity 0.18s ease 0.2s,
+    translate 0.18s ease 0.2s,
+    scale 0.18s ease 0.2s,
+    filter 0.18s ease 0.2s;
 }
 
 .nav-theme-menu .season-option.is-active::after {
@@ -14004,17 +14018,6 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
   body[data-page="home"] .work-column.site-footer { margin-top: 72px; }
 }
 
-/* The tick after "Email copied". */
-.site-footer-tick {
-  display: inline-block;
-  margin-left: 5px;
-  vertical-align: -1px;
-  animation: siteFooterTick 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes siteFooterTick {
-  from { opacity: 0; scale: 0.6; }
-}
 
 /* Footer email typing: unshown letters hold their space; a thin caret
    blinks at the typing point, then fades once the domain is in. */
@@ -14079,24 +14082,42 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
   color: color-mix(in srgb, var(--text) 72%, var(--bg));
 }
 
-.site-footer-email.is-pulse-a {
-  animation: siteFooterPulse 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+/* On click, a few little envelopes drift up off the address and fade, the
+   same voice as the music notes that rise off the record sleeves
+   (.hobby-record-note): sans, muted grey, three sizes, blur in and out. */
+.site-footer-email { position: relative; }
+
+.site-footer-mail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 0;
+  height: 0;
+  pointer-events: none;
 }
 
-.site-footer-email.is-pulse-b {
-  animation: siteFooterPulse2 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+.site-footer-mail-icon {
+  --dir: 1;
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--sans);
+  font-size: 22px;
+  line-height: 1;
+  color: var(--text-muted);
+  opacity: 0;
+  animation: hobby-record-note 2.4s cubic-bezier(0.33, 0, 0.2, 1) both;
+  animation-delay: calc(var(--n) * 0.14s);
 }
 
-@keyframes siteFooterPulse {
-  45% { filter: blur(2.5px); opacity: 0.55; }
-}
-
-@keyframes siteFooterPulse2 {
-  45% { filter: blur(2.5px); opacity: 0.55; }
-}
+/* Tick, envelope, tick: the envelope sits largest in the middle. */
+.site-footer-mail-icon:nth-child(1) { font-size: 22px; }
+.site-footer-mail-icon:nth-child(2) { font-size: 30px; }
+.site-footer-mail-icon:nth-child(3) { font-size: 18px; }
 
 @media (prefers-reduced-motion: reduce) {
-  .site-footer-email.is-pulse-a, .site-footer-email.is-pulse-b { animation: none; }
+  .site-footer-mail-icon { animation: none; }
 }
 
 /* Footer base line: LinkedIn and Resume match the copyright (13px, the

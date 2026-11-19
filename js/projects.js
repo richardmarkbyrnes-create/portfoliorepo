@@ -4,7 +4,7 @@ window.PROJECT_ORDER = [
   'customer-insights',
   'custom-stickers',
   'navigation',
-  'visualisations',
+  'automations',
   'developer-tools',
   'design-systems',
 ];
