@@ -13997,3 +13997,98 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
 @media (max-width: 768px) {
   body[data-page="home"] .work-column.site-footer { margin-top: 72px; }
 }
+
+/* The tick after "Email copied". */
+.site-footer-tick {
+  display: inline-block;
+  margin-left: 5px;
+  vertical-align: -1px;
+  animation: siteFooterTick 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes siteFooterTick {
+  from { opacity: 0; scale: 0.6; }
+}
+
+/* Footer email typing: unshown letters hold their space; a thin caret
+   blinks at the typing point, then fades once the domain is in. */
+.site-footer-char {
+  visibility: hidden;
+}
+
+.site-footer-char.is-shown {
+  visibility: visible;
+}
+
+.site-footer-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.9em;
+  margin: 0 1px 0 -1px;
+  vertical-align: -0.1em;
+  background: currentColor;
+  animation: siteFooterCaret 0.9s steps(1) infinite;
+  transition: opacity 0.4s ease;
+}
+
+.site-footer-caret.is-done {
+  opacity: 0;
+}
+
+@keyframes siteFooterCaret {
+  50% { background: transparent; }
+}
+
+/* Top-right buttons heading home: the same 0.7s ease in and out as on the
+   way into a project, played as the home page arrives (from the project
+   position, 10px further in) rather than squeezed into the 320ms leave. */
+@keyframes pcNavHomeStep {
+  from { translate: -10px 0; }
+}
+
+@media (min-width: 769px) {
+  html body[data-page="project"].page-is-leaving.is-leaving-home .nav-primary {
+    translate: none;
+    transition: none;
+  }
+
+  html.from-project body[data-page="home"] .nav-primary {
+    animation: pcNavHomeStep 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.05s backwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.from-project body[data-page="home"] .nav-primary { animation: none; }
+}
+
+/* Footer email: a gentle colour shift on hover, and on click a very soft
+   blur-and-fade that eases in and back out. */
+.site-footer-email {
+  transition: color 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.site-footer-email:hover,
+.site-footer-email:focus-visible {
+  opacity: 1;
+  color: color-mix(in srgb, var(--text) 72%, var(--bg));
+}
+
+.site-footer-email.is-pulse-a {
+  animation: siteFooterPulse 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.site-footer-email.is-pulse-b {
+  animation: siteFooterPulse2 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+@keyframes siteFooterPulse {
+  45% { filter: blur(2.5px); opacity: 0.55; }
+}
+
+@keyframes siteFooterPulse2 {
+  45% { filter: blur(2.5px); opacity: 0.55; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer-email.is-pulse-a, .site-footer-email.is-pulse-b { animation: none; }
+}
