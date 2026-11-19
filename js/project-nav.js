@@ -905,8 +905,7 @@ function initQuoteReveal(el) {
         nextPill.querySelector('.pc-next-sep')?.remove();
         if (next) {
           nextPill.setAttribute('aria-label', `Jump to next project: ${next.title}`);
-          // The project's name, revealed as a second line once the reader
-          // reaches the end of the page (.is-at-end, below).
+          // The project's name, revealed as a second line on hover/focus (CSS).
           const copy = nextPill.querySelector('.pc-next-copy');
           if (copy && !copy.querySelector('.pc-next-sub')) {
             const sub = document.createElement('span');
@@ -953,9 +952,6 @@ function initQuoteReveal(el) {
           const bottom = window.scrollY + window.innerHeight;
           const height = document.documentElement.scrollHeight;
           nextPill.classList.toggle('is-docked', bottom >= height * 0.8);
-          // In the last 4% of the page the next project's name opens up
-          // under the label (CSS); scrolling back up folds it away again.
-          nextPill.classList.toggle('is-at-end', bottom >= height * 0.96);
         };
         window.addEventListener('scroll', updatePillDock, { passive: true });
         window.addEventListener('resize', updatePillDock);
