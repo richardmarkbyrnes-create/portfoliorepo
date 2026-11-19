@@ -6277,6 +6277,12 @@ body[data-project="ask-ai"] .pc-detail {
   width: 150%;
 }
 
+/* Wider captions under the wider Ask Insights shots, so a two-clause
+   caption holds to two lines instead of three. */
+body[data-project="ask-ai"] .pc-detail-caption {
+  width: 80%;
+}
+
 @media (max-width: 640px) {
   .pc-detail,
   body[data-project="ask-ai"] .pc-detail {
