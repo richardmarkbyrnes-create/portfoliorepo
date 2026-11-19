@@ -1641,7 +1641,7 @@ function initSiteFooter() {
 
 initSiteFooter();
 
-// Footer email: each time it scrolls into view, the domain ("@gmail.com")
+// Footer email: the first time it scrolls into view, the domain ("@gmail.com")
 // types itself out after the name, with a caret that blinks a moment and
 // fades. The full address is always in the layout, so nothing shifts.
 function initFooterTyping() {
@@ -1682,8 +1682,13 @@ function initFooterTyping() {
     timer = setTimeout(next, 350);
   };
   reset();
-  new IntersectionObserver(([e]) => { if (e.isIntersecting) play(); else reset(); }, { threshold: 0.6 })
-    .observe(typed.closest('a') || typed);
+  // Plays once, the first time the address comes into view.
+  const io = new IntersectionObserver(([e]) => {
+    if (!e.isIntersecting) return;
+    play();
+    io.disconnect();
+  }, { threshold: 0.6 });
+  io.observe(typed.closest('a') || typed);
 }
 
 initFooterTyping();
