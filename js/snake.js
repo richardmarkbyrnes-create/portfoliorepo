@@ -31,7 +31,7 @@
   // Rows on the board; inside the hero texture (the easter egg) it's fitted
   // to the texture's band instead, between 6 and 12.
   let ROWS = 12;
-  const TICK = 150; // ms per step
+  const TICK = 185; // ms per step (a touch slower than it was, at 150)
   const BEST_KEY = 'portfolio-snake-best';
   // "Tap" on touch screens, "click" with a mouse.
   const verb = (window.matchMedia('(pointer: coarse)').matches || window.matchMedia('(hover: none)').matches) ? 'tap' : 'click';
