@@ -14411,3 +14411,8 @@ html body[data-project="navigation"] .pc-page > .pc-desc:has(+ .pc-loop) {
   55% { translate: calc(var(--tx, -46px) * 0.4) calc(var(--ty, 64px) * 0.5); rotate: -8deg; }
   100% { opacity: 0; translate: var(--tx, -46px) var(--ty, 64px); rotate: 8deg; scale: 1.05; filter: blur(3px); }
 }
+
+/* Little Richard's polaroid a size up on the dogs'. */
+#richard-photo-popover .dog-photo-polaroid {
+  width: min(176px, 42vw);
+}
