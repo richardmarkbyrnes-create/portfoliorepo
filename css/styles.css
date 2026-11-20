@@ -14276,19 +14276,6 @@ html[data-theme="dark"] .home-texture-details {
   filter: none;
 }
 
-/* Contact button: a small photo of little Richard in place of the
-   envelope, on a white rim with a soft shadow. */
-.nav-primary .nav-icon-btn.nav-label-btn .nav-contact-avatar {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  box-sizing: border-box;
-  border: 1.5px solid #fff;
-  border-radius: 6px;
-  object-fit: cover;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.18);
-}
-
 /* Ask Insights hero: the video a size up in its landscape frame. */
 html body .pc-image--loop.pc-image--scene .pc-hero-video {
   width: 94%;

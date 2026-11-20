@@ -147,7 +147,7 @@
     return `
       <div class="nav-contact" id="nav-contact">
         <button class="nav-icon-btn nav-label-btn nav-contact-btn" id="nav-contact-btn" type="button" aria-label="Contact" aria-haspopup="true" aria-expanded="false" aria-controls="nav-contact-menu">
-          <img class="nav-contact-avatar" src="/images/avatar-little-richard.png" width="96" height="96" alt="" decoding="async"><span class="nav-btn-label">Contact</span>
+          ${MAIL_ICON}<span class="nav-btn-label">Contact</span>
         </button>
         <div class="nav-contact-menu" id="nav-contact-menu">
           <div class="nav-contact-panel">
