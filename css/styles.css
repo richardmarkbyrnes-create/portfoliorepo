@@ -14238,3 +14238,40 @@ html body .pc-image--loop.pc-image--scene .pc-hero-video {
   width: 90%;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
 }
+
+/* Falling petals, leaves and snow styled like the Snake's pieces: solid,
+   with a 2px rim (white, or dark in winter) and a soft shadow. They fade
+   away while a game is running over the texture. */
+.home-texture-details {
+  filter:
+    drop-shadow(1.5px 0 0 #fff)
+    drop-shadow(-1.5px 0 0 #fff)
+    drop-shadow(0 1.5px 0 #fff)
+    drop-shadow(0 -1.5px 0 #fff)
+    drop-shadow(0 2px 3px rgba(0, 0, 0, 0.16));
+  transition: opacity 0.4s ease;
+}
+
+html[data-theme="dark"] .home-texture-details {
+  filter:
+    drop-shadow(1.5px 0 0 #2a2a2d)
+    drop-shadow(-1.5px 0 0 #2a2a2d)
+    drop-shadow(0 1.5px 0 #2a2a2d)
+    drop-shadow(0 -1.5px 0 #2a2a2d)
+    drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+}
+
+.home-texture.is-playing .home-texture-details {
+  opacity: 0;
+}
+
+/* The particle layer scales its coarse pixels up crisply. */
+.home-texture-details {
+  image-rendering: pixelated;
+}
+
+/* Falling particles: plain pixels, no outline or shadow. */
+.home-texture-details,
+html[data-theme="dark"] .home-texture-details {
+  filter: none;
+}
