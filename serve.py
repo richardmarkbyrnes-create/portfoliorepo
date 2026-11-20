@@ -253,6 +253,52 @@ class DeckHandler(SimpleHTTPRequestHandler):
         self.send_header("Expires", "0")
         super().end_headers()
 
+    # Single byte ranges (bytes=a-b, bytes=a-, bytes=-n): browsers need these
+    # to seek inside an MP4, and GitHub Pages serves them, so the dev server
+    # should too or the hero video can't be scrubbed locally.
+    def send_head(self):
+        rng = self.headers.get('Range')
+        path = self.translate_path(self.path)
+        m = re.match(r'bytes=(\d*)-(\d*)$', rng or '')
+        if not m or os.path.isdir(path) or not os.path.exists(path):
+            return super().send_head()
+        size = os.path.getsize(path)
+        a, b = m.groups()
+        if a == '' and b == '':
+            return super().send_head()
+        if a == '':
+            start, end = max(size - int(b), 0), size - 1
+        else:
+            start = int(a)
+            end = min(int(b), size - 1) if b else size - 1
+        if start > end or start >= size:
+            self.send_response(416)
+            self.send_header('Content-Range', 'bytes */%d' % size)
+            self.end_headers()
+            return None
+        f = open(path, 'rb')
+        f.seek(start)
+        self.send_response(206)
+        self.send_header('Content-Type', self.guess_type(path))
+        self.send_header('Accept-Ranges', 'bytes')
+        self.send_header('Content-Range', 'bytes %d-%d/%d' % (start, end, size))
+        self.send_header('Content-Length', str(end - start + 1))
+        self.end_headers()
+        self._range_remaining = end - start + 1
+        return f
+
+    def copyfile(self, source, outputfile):
+        remaining = getattr(self, '_range_remaining', None)
+        if remaining is None:
+            return super().copyfile(source, outputfile)
+        self._range_remaining = None
+        while remaining > 0:
+            chunk = source.read(min(65536, remaining))
+            if not chunk:
+                break
+            outputfile.write(chunk)
+            remaining -= len(chunk)
+
     def _json(self, status, payload):
         body = json.dumps(payload).encode('utf-8')
         self.send_response(status)

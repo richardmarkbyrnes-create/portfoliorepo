@@ -432,9 +432,9 @@
   }
 
   // Faint seasonal details on a second canvas over the field: snow drifting
-  // down in winter, leaves tumbling in autumn and petals floating in spring.
-  // Summer has none. Kept very quiet, masked to the same pill, and
-  // left out entirely for reduced motion.
+  // down in winter, leaves tumbling in autumn and blossom petals fluttering
+  // in spring. Summer has none. Kept very quiet, masked to the same pill,
+  // and left out entirely for reduced motion.
   const particles = (() => {
     if (noDetails) return { step() {}, show() {} };
     const layer = document.createElement('canvas');
@@ -465,26 +465,36 @@
     }
 
     const rand = (a, b) => a + Math.random() * (b - a);
+    const pick = (arr) => arr[Math.floor(rand(0, arr.length))];
     function spawn(k, anywhere) {
-      const base = { x: rand(0, W), y: anywhere ? rand(0, H) : rand(-20, -4), phase: rand(0, Math.PI * 2) };
-      if (k === 'winter') return { ...base, r: rand(0.6, 1.4), vy: rand(8, 16), sway: rand(3, 8) };
+      const base = { x: rand(0, W), y: anywhere ? rand(0, H) : rand(-24, -6), phase: rand(0, Math.PI * 2) };
+      if (k === 'winter') return { ...base, r: rand(1.2, 2.6), vy: rand(9, 18), sway: rand(4, 10) };
       if (k === 'autumn') {
         const tones = ['#c2672a', '#a8501f', '#e0a33c', '#8a4a24'];
-        return { ...base, r: rand(2.4, 4), vy: rand(11, 20), sway: rand(8, 16), rot: rand(0, 6.3), vr: rand(-1.6, 1.6), color: tones[Math.floor(rand(0, tones.length))] };
+        return { ...base, r: rand(3.6, 6), vy: rand(12, 22), sway: rand(10, 18), rot: rand(0, 6.3), vr: rand(-1.6, 1.6), color: pick(tones) };
       }
       if (k === 'spring') {
-        const tones = ['#f2b3c6', '#f7cfdb', '#ffffff'];
-        return { ...base, r: rand(1.6, 2.8), vy: rand(7, 13), sway: rand(8, 15), rot: rand(0, 6.3), vr: rand(-1, 1), color: tones[Math.floor(rand(0, tones.length))] };
+        // Blossom: light pink petals that flutter down slowly, swaying wide.
+        const tones = ['#f6c6d6', '#fbd9e4', '#f3b7cb', '#fff0f5'];
+        return { ...base, r: rand(2.6, 4.4), vy: rand(6, 11), sway: rand(14, 26), rot: rand(0, 6.3), vr: rand(-2.2, 2.2), flutter: rand(1.2, 2.2), color: pick(tones) };
       }
       return null;
     }
-    const COUNT = { winter: 26, autumn: 8, spring: 10 };
+    const COUNT = { winter: 26, autumn: 9, spring: 14 };
 
     function setKind(k) {
       kind = k;
       items = [];
       size();
       for (let i = 0; i < (COUNT[k] || 0); i += 1) items.push(spawn(k, true));
+    }
+
+    function petal(r) {
+      ctx.beginPath();
+      ctx.moveTo(0, -r);
+      ctx.bezierCurveTo(r * 1.05, -r * 0.55, r * 0.85, r * 0.55, 0, r);
+      ctx.bezierCurveTo(-r * 0.85, r * 0.55, -r * 1.05, -r * 0.55, 0, -r);
+      ctx.fill();
     }
 
     function step(dt, t) {
@@ -496,32 +506,38 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       // They read stronger against the dark page, so they step back there.
-      ctx.globalAlpha = alpha * (isDark() ? 0.7 : 1);
-      {
-        items.forEach((p, i) => {
-          p.y += p.vy * dt;
-          const x = p.x + Math.sin(t * 0.8 + p.phase) * p.sway;
-          if (p.y > H + 10) items[i] = spawn(kind, false);
-          if (kind === 'winter') {
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-            ctx.beginPath();
-            ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
-            ctx.fill();
-          } else {
-            p.rot += p.vr * dt;
-            ctx.save();
-            ctx.translate(x, p.y);
-            ctx.rotate(p.rot);
-            ctx.fillStyle = p.color;
-            ctx.globalAlpha = alpha * (isDark() ? 0.7 : 1) * (kind === 'autumn' ? 0.42 : 0.5);
-            ctx.beginPath();
-            ctx.ellipse(0, 0, p.r, p.r * (kind === 'autumn' ? 0.55 : 0.62), 0, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.restore();
-            ctx.globalAlpha = alpha * (isDark() ? 0.7 : 1);
-          }
-        });
-      }
+      const base = alpha * (isDark() ? 0.7 : 1);
+      ctx.globalAlpha = base;
+
+      items.forEach((p, i) => {
+        p.y += p.vy * dt;
+        const x = p.x + Math.sin(t * 0.8 + p.phase) * p.sway;
+        if (p.y > H + 12) items[i] = spawn(kind, false);
+        if (kind === 'winter') {
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          ctx.beginPath();
+          ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          return;
+        }
+        p.rot += p.vr * dt;
+        ctx.save();
+        ctx.translate(x, p.y);
+        ctx.fillStyle = p.color;
+        if (kind === 'spring') {
+          // Petals tip back and forth as they fall, so they catch the light.
+          ctx.rotate(p.rot + Math.sin(t * p.flutter + p.phase) * 0.6);
+          ctx.globalAlpha = base * 0.62;
+          petal(p.r);
+        } else {
+          ctx.rotate(p.rot);
+          ctx.globalAlpha = base * 0.42;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.restore();
+      });
     }
 
     function show(k) {
