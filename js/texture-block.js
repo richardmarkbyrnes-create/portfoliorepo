@@ -395,6 +395,8 @@
   // footer's plays when you reach it), ~1.9s, a beat after the page settles.
   const INTRO_MS = 1900;
   let introStart = 0;
+  // Entrance progress (0-1), shared with the seasonal particles.
+  let introK = reduce || noDetails ? 1 : 0;
   // The footer's landscape has no entrance: it's simply there.
   let introDone = reduce || noDetails;
   if (noDetails) gl.uniform1f(uIntro, 1);
@@ -402,6 +404,7 @@
     if (introDone) return;
     const k = introStart ? Math.max(0, Math.min(1, (now - introStart) / INTRO_MS)) : 0;
     gl.uniform1f(uIntro, k);
+    introK = k;
     if (k >= 1) introDone = true;
   }
 
@@ -488,7 +491,11 @@
       kind = k;
       items = [];
       size();
-      for (let i = 0; i < (COUNT[k] || 0); i += 1) items.push(spawn(k, true));
+      for (let i = 0; i < (COUNT[k] || 0); i += 1) {
+        // The first batch pops in one by one as the land finishes rising,
+        // staggered across the back half of the entrance.
+        items.push({ ...spawn(k, true), d: 0.45 + Math.random() * 0.45 });
+      }
     }
 
     function petal(r) {
@@ -513,19 +520,24 @@
       ctx.globalAlpha = base;
 
       items.forEach((p, i) => {
+        // Grows in from nothing once the entrance reaches its turn.
+        const rk = p.d ? Math.min(1, Math.max(0, (introK - p.d) / 0.12)) : 1;
+        const grow = rk * rk * (3 - 2 * rk);
+        if (grow <= 0) return;
         p.y += p.vy * dt;
         const x = p.x + Math.sin(t * 0.8 + p.phase) * p.sway;
         if (p.y > H + 12) items[i] = spawn(kind, false);
         if (kind === 'winter') {
           ctx.fillStyle = '#ffffff';
           ctx.beginPath();
-          ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
+          ctx.arc(x, p.y, p.r * grow, 0, Math.PI * 2);
           ctx.fill();
           return;
         }
         p.rot += p.vr * dt;
         ctx.save();
         ctx.translate(x, p.y);
+        ctx.scale(grow, grow);
         ctx.fillStyle = p.color;
         if (kind === 'spring') {
           // Petals tip back and forth as they fall, so they catch the light.
