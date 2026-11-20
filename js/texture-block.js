@@ -453,7 +453,9 @@
 
     function size() {
       const r = layer.getBoundingClientRect();
-      dpr = Math.min(2, window.devicePixelRatio || 1);
+      // Drawn coarse, one canvas pixel per 2 CSS pixels and scaled up
+      // unsmoothed (CSS), so the pieces read as chunky pixels like the Snake.
+      dpr = 0.5;
       const w = Math.round(r.width * dpr);
       const h = Math.round(r.height * dpr);
       if (w !== layer.width || h !== layer.height) {
@@ -468,7 +470,7 @@
     const pick = (arr) => arr[Math.floor(rand(0, arr.length))];
     function spawn(k, anywhere) {
       const base = { x: rand(0, W), y: anywhere ? rand(0, H) : rand(-24, -6), phase: rand(0, Math.PI * 2) };
-      if (k === 'winter') return { ...base, r: rand(1.2, 2.6), vy: rand(9, 18), sway: rand(4, 10) };
+      if (k === 'winter') return { ...base, r: rand(2, 3.4), vy: rand(9, 18), sway: rand(4, 10) };
       if (k === 'autumn') {
         const tones = ['#c2672a', '#a8501f', '#e0a33c', '#8a4a24'];
         return { ...base, r: rand(3.6, 6), vy: rand(12, 22), sway: rand(10, 18), rot: rand(0, 6.3), vr: rand(-1.6, 1.6), color: pick(tones) };
@@ -506,7 +508,8 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
       // They read stronger against the dark page, so they step back there.
-      const base = alpha * (isDark() ? 0.7 : 1);
+      // Solid now: each piece is outlined like the Snake's food (CSS).
+      const base = alpha;
       ctx.globalAlpha = base;
 
       items.forEach((p, i) => {
@@ -514,7 +517,7 @@
         const x = p.x + Math.sin(t * 0.8 + p.phase) * p.sway;
         if (p.y > H + 12) items[i] = spawn(kind, false);
         if (kind === 'winter') {
-          ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+          ctx.fillStyle = '#ffffff';
           ctx.beginPath();
           ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
           ctx.fill();
@@ -527,17 +530,26 @@
         if (kind === 'spring') {
           // Petals tip back and forth as they fall, so they catch the light.
           ctx.rotate(p.rot + Math.sin(t * p.flutter + p.phase) * 0.6);
-          ctx.globalAlpha = base * 0.62;
+          ctx.globalAlpha = base;
           petal(p.r);
         } else {
           ctx.rotate(p.rot);
-          ctx.globalAlpha = base * 0.42;
+          ctx.globalAlpha = base;
           ctx.beginPath();
           ctx.ellipse(0, 0, p.r, p.r * 0.55, 0, 0, Math.PI * 2);
           ctx.fill();
         }
         ctx.restore();
       });
+      // Snap every edge to whole pixels, as the Snake does: half-covered
+      // pixels turn fully on, the rest off, so there's no soft anti-aliasing.
+      if (layer.width && layer.height) {
+        const img = ctx.getImageData(0, 0, layer.width, layer.height);
+        const d = img.data;
+        const on = Math.round(255 * Math.min(1, alpha));
+        for (let i = 3; i < d.length; i += 4) d[i] = d[i] >= 96 * Math.min(1, alpha) ? on : 0;
+        ctx.putImageData(img, 0, 0);
+      }
     }
 
     function show(k) {
