@@ -320,6 +320,16 @@ function initQuoteReveal(el) {
     sessionStorage.removeItem(LEAVE_KEY);
     const navPrimary = document.querySelector('.nav-primary');
     if (navPrimary && !prefersReducedMotion()) navPrimary.classList.add('nav-returning');
+    // The project page's frame carries over and eases out here, on the same
+    // 0.7s curve it eased in on, then goes.
+    if (!prefersReducedMotion() && window.matchMedia('(min-width: 769px)').matches) {
+      const frame = document.createElement('div');
+      frame.className = 'pc-back-frame pc-back-frame--leaving';
+      frame.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(frame);
+      frame.addEventListener('animationend', () => frame.remove(), { once: true });
+      setTimeout(() => frame.remove(), 1200);
+    }
   }
 
   // Stipple shading on the hairline drawings: each plate's silhouette is

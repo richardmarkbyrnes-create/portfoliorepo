@@ -1741,3 +1741,50 @@ function initToTop() {
 }
 
 initToTop();
+
+// Project pages: picking a season sends three little season glyphs drifting
+// off the season button and fading, on the record notes' motion.
+function initThemeBurst() {
+  if (document.body.dataset.page !== 'project') return;
+  const GLYPHS = { spring: '✿', normal: '☀', autumn: '❦', dark: '❄' };
+  // Listens in the capture phase so it runs before the theme is applied, and
+  // stays quiet when the season picked is already the one in play.
+  document.addEventListener('site-theme-select', (event) => {
+    const id = event.detail?.id;
+    if (!id || id === getStoredTheme() || prefersReducedMotion()) return;
+    const glyph = GLYPHS[id] || GLYPHS.normal;
+    const btn = document.getElementById('theme-toggle') || document.querySelector('.nav-primary .theme-toggle');
+    if (!btn) return;
+    const r = btn.getBoundingClientRect();
+    const burst = document.createElement('span');
+    burst.className = 'theme-burst';
+    burst.setAttribute('aria-hidden', 'true');
+    // From the button's left edge, beside its icon, drifting out leftwards.
+    burst.style.left = `${r.left + 6}px`;
+    burst.style.top = `${r.bottom - 6}px`;
+    for (let i = 0; i < 3; i += 1) {
+      const icon = document.createElement('span');
+      icon.className = 'theme-burst-icon';
+      icon.style.setProperty('--n', i);
+      icon.style.top = `${i * 6}px`;
+      icon.style.right = `${i * 4}px`;
+      // Each takes its own line: one steeper, one middling, one wider.
+      const spread = [[-14, 76], [-48, 58], [-78, 22]][i];
+      icon.style.setProperty('--tx', `${spread[0]}px`);
+      icon.style.setProperty('--ty', `${spread[1]}px`);
+      icon.textContent = glyph;
+      burst.append(icon);
+    }
+    // The chosen season's own icon (nav.js), so each burst matches its button.
+    const iconSvg = window.SEASON_ICONS?.[id];
+    if (iconSvg) burst.querySelectorAll('.theme-burst-icon').forEach((icon) => {
+      icon.innerHTML = iconSvg;
+      const svg = icon.querySelector('svg');
+      svg?.removeAttribute('class');
+    });
+    document.body.append(burst);
+    setTimeout(() => burst.remove(), 3000);
+  }, true);
+}
+
+initThemeBurst();
