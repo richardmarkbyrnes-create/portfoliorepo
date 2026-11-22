@@ -25,6 +25,8 @@ window.PROJECTS = {
     quoteBy: 'Customer feedback',
   },
   'custom-stickers': {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/custom-stickers-hero.webp?v=2', 'images/think-outside-box.webp'],
     title: 'Custom Stickers',
     company: 'Miro',
     year: '2026',
@@ -51,6 +53,8 @@ window.PROJECTS = {
     quoteBy: 'Customer feedback',
   },
   automations: {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/automations-hero.webp', 'images/automations-detail.webp'],
     title: 'Automations',
     company: 'Miro',
     year: '2025',
@@ -77,6 +81,8 @@ window.PROJECTS = {
     quoteBy: 'Customer feedback',
   },
   'ask-ai': {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/ask-ai-preview-loop.webp?v=3', 'images/ask-ai-landing.webp'],
     title: 'Ask Insights',
     company: 'Miro',
     year: '2025',
@@ -102,6 +108,8 @@ window.PROJECTS = {
     quoteBy: 'Product manager at Miro',
   },
   'customer-insights': {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/canvas-insights-hero.webp?v=3', 'images/canvas-insights-detail.webp'],
     title: 'Canvas Insights',
     company: 'Miro',
     year: '2024',
@@ -131,6 +139,8 @@ window.PROJECTS = {
     quoteBy: 'Customer feedback',
   },
   navigation: {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/navigation-hero.webp?v=3', 'images/navigation-detail.webp'],
     title: 'Navigation',
     company: 'Cashbook',
     year: '2024',
@@ -187,6 +197,8 @@ window.PROJECTS = {
     ],
   },
   'design-systems': {
+    // Two shots for the next-project pill's thumbnails.
+    nextShots: ['images/sap-fiori-hero.webp?v=2', 'images/sap-fiori-hero.webp?v=2'],
     title: 'Design Systems',
     company: 'SAP',
     year: '2022',
