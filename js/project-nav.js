@@ -909,23 +909,20 @@ function initQuoteReveal(el) {
         // The pill reads the same on every page; the project it leads to is
         // named for screen readers only.
         const next = window.PROJECTS?.[nextSlug];
-        const nameEl = document.getElementById('pc-next-name');
-        if (nameEl) nameEl.textContent = 'Jump to next project';
-        document.getElementById('pc-next-company')?.remove();
-        nextPill.querySelector('.pc-next-sep')?.remove();
         if (next) {
+          // "Next · Title" with "Jump to next project" under it, and two of
+          // the project's shots as fanned thumbnails on the left.
+          const nameEl = nextPill.querySelector('.pc-next-project');
+          if (nameEl) nameEl.textContent = next.title;
           nextPill.setAttribute('aria-label', `Jump to next project: ${next.title}`);
-          // The project's name, revealed as a second line on hover/focus (CSS).
-          const copy = nextPill.querySelector('.pc-next-copy');
-          if (copy && !copy.querySelector('.pc-next-sub')) {
-            const sub = document.createElement('span');
-            sub.className = 'pc-next-sub';
-            sub.setAttribute('aria-hidden', 'true');
-            const subText = document.createElement('span');
-            subText.textContent = next.title;
-            sub.appendChild(subText);
-            copy.appendChild(sub);
-          }
+          const list = next.nextShots || next.images || [];
+          // The second shot sits at the back, the first in front.
+          const order = [list[1] || list[0], list[0]];
+          nextPill.querySelectorAll('.pc-next-thumb img').forEach((img, i) => {
+            const src = order[i];
+            if (src) img.src = `/${src.replace(/^\//, '')}`;
+            else img.closest('.pc-next-thumb')?.remove();
+          });
           // Lets CSS tint the bottom wash in the colour of the project the pill
           // leads to.
           document.body.dataset.nextProject = nextSlug;
@@ -954,7 +951,6 @@ function initQuoteReveal(el) {
         // <body> so it isn't trapped in the `.page` stacking context (which sits
         // below the bottom blur).
         if (nextPill.parentNode !== document.body) document.body.appendChild(nextPill);
-        buildBubble(nextPill);
 
         // Dock the pill to the bottom of the screen once the user scrolls into the
         // last 20% of the page (CSS handles the magnetic slide-in).
