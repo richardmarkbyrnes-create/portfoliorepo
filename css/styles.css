@@ -13794,42 +13794,6 @@ html[data-theme="dark"] .texture-play-pill {
   display: none;
 }
 
-/* Home: a very faint ordered dither building up towards the foot of the
-   page, in the text colour (the pattern is a mask, so it suits every
-   season). */
-body[data-page="home"] main.page::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 220px;
-  pointer-events: none;
-  background: var(--text);
-  opacity: 0.07;
-  -webkit-mask: url("../images/bottom-dither.png") left bottom / 16px 220px repeat-x;
-  mask: url("../images/bottom-dither.png") left bottom / 16px 220px repeat-x;
-}
-
-html[data-theme="dark"] body[data-page="home"] main.page::after {
-  opacity: 0.09;
-}
-
-/* More room under the last section, and a shorter dither at the foot. */
-body[data-page="home"] main.page {
-  padding-bottom: 300px;
-}
-
-body[data-page="home"] main.page::after {
-  height: 120px;
-  -webkit-mask: url("../images/bottom-dither.png?v=2") left bottom / 16px 120px repeat-x;
-  mask: url("../images/bottom-dither.png?v=2") left bottom / 16px 120px repeat-x;
-}
-
-@media (max-width: 768px) {
-  body[data-page="home"] main.page { padding-bottom: 200px; }
-}
-
 /* The fourth About paragraph (the tools line pushed Amsterdam to fourth)
    joins the cascade instead of arriving with the first. */
 body[data-page="home"] .work-column--about .about-block .about-block-text:nth-child(4) {
@@ -13966,15 +13930,14 @@ html[data-theme="dark"] .about-tool-icon--github {
 .site-footer-nav a { color: var(--text); }
 .site-footer-nav a:hover { opacity: 0.65; }
 
-/* The footer now ends the page; trim the space under it. */
+/* The footer ends the page and carries its own room (the sticker pad). */
 body[data-page="home"] main.page {
-  padding-bottom: 140px;
+  padding-bottom: 0;
 }
 
 @media (max-width: 768px) {
   .site-footer { margin-top: 140px; }
   .site-footer-base { margin-top: 80px; }
-  body[data-page="home"] main.page { padding-bottom: 110px; }
 }
 
 /* The footer shares the work columns' box (same edges as Selected work);
@@ -14177,13 +14140,6 @@ body[data-page="home"] .work-column.site-footer { margin-top: 96px; }
   transform: translateY(-50%);
   background: var(--text-light);
   opacity: 0.35;
-}
-
-/* The foot dither rolls: its top edge rises and falls across the page
-   (a 720px seamless tile) instead of running level. */
-body[data-page="home"] main.page::after {
-  -webkit-mask: url("../images/bottom-dither.png?v=3") left bottom / 720px 120px repeat-x;
-  mask: url("../images/bottom-dither.png?v=3") left bottom / 720px 120px repeat-x;
 }
 
 /* Ask Insights detail shots: the UI is a transparent cut-out that stays
@@ -14421,4 +14377,128 @@ html body[data-project="navigation"] .pc-page > .pc-desc:has(+ .pc-loop) {
 /* Little Richard's polaroid a size up on the dogs'. */
 #richard-photo-popover .dog-photo-polaroid {
   width: min(176px, 42vw);
+}
+
+/* Footer sticker press (footer-stickers.js). The footer's cursor is a pixel
+   stamp, white with a black outline like the texture cursors, hotspot at
+   the foot of the base; it dips for a beat as a sticker is pressed down.
+   Stickers are 7x7 pixel art in the Snake's style, rimmed and shadowed like
+   the hero's pixel @, scattered over the footer and leaving the links to
+   their own cursor. Extra room below the base line to press into. */
+/* Room for the pad above the links row and below it to the page's foot. */
+body[data-page="home"] .site-footer.sticker-press {
+  padding-bottom: 120px;
+}
+
+body[data-page="home"] .site-footer.sticker-press .site-footer-base {
+  margin-top: 100px;
+}
+
+@media (max-width: 768px) {
+  body[data-page="home"] .site-footer.sticker-press { padding-bottom: 90px; }
+  body[data-page="home"] .site-footer.sticker-press .site-footer-base { margin-top: 80px; }
+}
+
+/* The stamp cursor over the whole footer (so it holds across the content
+   column too); the invite and the links keep their own. */
+body[data-page="home"] .site-footer.sticker-press .site-footer-label,
+body[data-page="home"] .site-footer.sticker-press .site-footer-base {
+  cursor: default;
+}
+
+body[data-page="home"] .site-footer.sticker-press {
+  cursor: var(--stamp-cursor, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='22' viewBox='0 0 28 22' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M2 16h2v2h-2zM2 18h2v2h-2zM4 14h2v2h-2zM4 16h2v2h-2zM4 18h2v2h-2zM6 12h2v2h-2zM6 14h2v2h-2zM6 16h2v2h-2zM6 18h2v2h-2zM8 12h2v2h-2zM8 14h2v2h-2zM8 16h2v2h-2zM8 18h2v2h-2zM10 2h2v2h-2zM10 4h2v2h-2zM10 12h2v2h-2zM10 14h2v2h-2zM10 16h2v2h-2zM10 18h2v2h-2zM12 2h2v2h-2zM12 4h2v2h-2zM12 6h2v2h-2zM12 8h2v2h-2zM12 10h2v2h-2zM12 12h2v2h-2zM12 14h2v2h-2zM12 16h2v2h-2zM12 18h2v2h-2zM14 2h2v2h-2zM14 4h2v2h-2zM14 6h2v2h-2zM14 8h2v2h-2zM14 10h2v2h-2zM14 12h2v2h-2zM14 14h2v2h-2zM14 16h2v2h-2zM14 18h2v2h-2zM16 2h2v2h-2zM16 4h2v2h-2zM16 12h2v2h-2zM16 14h2v2h-2zM16 16h2v2h-2zM16 18h2v2h-2zM18 12h2v2h-2zM18 14h2v2h-2zM18 16h2v2h-2zM18 18h2v2h-2zM20 12h2v2h-2zM20 14h2v2h-2zM20 16h2v2h-2zM20 18h2v2h-2zM22 14h2v2h-2zM22 16h2v2h-2zM22 18h2v2h-2zM24 16h2v2h-2zM24 18h2v2h-2z'/%3E%3Cpath fill='%23111' d='M0 14h2v2h-2zM0 16h2v2h-2zM0 18h2v2h-2zM0 20h2v2h-2zM2 12h2v2h-2zM2 14h2v2h-2zM2 20h2v2h-2zM4 10h2v2h-2zM4 12h2v2h-2zM4 20h2v2h-2zM6 10h2v2h-2zM6 20h2v2h-2zM8 0h2v2h-2zM8 2h2v2h-2zM8 4h2v2h-2zM8 6h2v2h-2zM8 10h2v2h-2zM8 20h2v2h-2zM10 0h2v2h-2zM10 6h2v2h-2zM10 8h2v2h-2zM10 10h2v2h-2zM10 20h2v2h-2zM12 0h2v2h-2zM12 20h2v2h-2zM14 0h2v2h-2zM14 20h2v2h-2zM16 0h2v2h-2zM16 6h2v2h-2zM16 8h2v2h-2zM16 10h2v2h-2zM16 20h2v2h-2zM18 0h2v2h-2zM18 2h2v2h-2zM18 4h2v2h-2zM18 6h2v2h-2zM18 10h2v2h-2zM18 20h2v2h-2zM20 10h2v2h-2zM20 20h2v2h-2zM22 10h2v2h-2zM22 12h2v2h-2zM22 20h2v2h-2zM24 12h2v2h-2zM24 14h2v2h-2zM24 20h2v2h-2zM26 14h2v2h-2zM26 16h2v2h-2zM26 18h2v2h-2zM26 20h2v2h-2z'/%3E%3C/svg%3E") 14 20, pointer);
+}
+
+body[data-page="home"] .site-footer.sticker-press.is-stamping {
+  cursor: var(--stamp-cursor-down, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='18' viewBox='0 0 28 18' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M2 12h2v2h-2zM2 14h2v2h-2zM4 10h2v2h-2zM4 12h2v2h-2zM4 14h2v2h-2zM6 8h2v2h-2zM6 10h2v2h-2zM6 12h2v2h-2zM6 14h2v2h-2zM8 8h2v2h-2zM8 10h2v2h-2zM8 12h2v2h-2zM8 14h2v2h-2zM10 2h2v2h-2zM10 4h2v2h-2zM10 8h2v2h-2zM10 10h2v2h-2zM10 12h2v2h-2zM10 14h2v2h-2zM12 2h2v2h-2zM12 4h2v2h-2zM12 6h2v2h-2zM12 8h2v2h-2zM12 10h2v2h-2zM12 12h2v2h-2zM12 14h2v2h-2zM14 2h2v2h-2zM14 4h2v2h-2zM14 6h2v2h-2zM14 8h2v2h-2zM14 10h2v2h-2zM14 12h2v2h-2zM14 14h2v2h-2zM16 2h2v2h-2zM16 4h2v2h-2zM16 8h2v2h-2zM16 10h2v2h-2zM16 12h2v2h-2zM16 14h2v2h-2zM18 8h2v2h-2zM18 10h2v2h-2zM18 12h2v2h-2zM18 14h2v2h-2zM20 8h2v2h-2zM20 10h2v2h-2zM20 12h2v2h-2zM20 14h2v2h-2zM22 10h2v2h-2zM22 12h2v2h-2zM22 14h2v2h-2zM24 12h2v2h-2zM24 14h2v2h-2z'/%3E%3Cpath fill='%23111' d='M0 10h2v2h-2zM0 12h2v2h-2zM0 14h2v2h-2zM0 16h2v2h-2zM2 8h2v2h-2zM2 10h2v2h-2zM2 16h2v2h-2zM4 6h2v2h-2zM4 8h2v2h-2zM4 16h2v2h-2zM6 6h2v2h-2zM6 16h2v2h-2zM8 0h2v2h-2zM8 2h2v2h-2zM8 4h2v2h-2zM8 6h2v2h-2zM8 16h2v2h-2zM10 0h2v2h-2zM10 6h2v2h-2zM10 16h2v2h-2zM12 0h2v2h-2zM12 16h2v2h-2zM14 0h2v2h-2zM14 16h2v2h-2zM16 0h2v2h-2zM16 6h2v2h-2zM16 16h2v2h-2zM18 0h2v2h-2zM18 2h2v2h-2zM18 4h2v2h-2zM18 6h2v2h-2zM18 16h2v2h-2zM20 6h2v2h-2zM20 16h2v2h-2zM22 6h2v2h-2zM22 8h2v2h-2zM22 16h2v2h-2zM24 8h2v2h-2zM24 10h2v2h-2zM24 16h2v2h-2zM26 10h2v2h-2zM26 12h2v2h-2zM26 14h2v2h-2zM26 16h2v2h-2z'/%3E%3C/svg%3E") 14 16, pointer);
+}
+
+body[data-page="home"] .site-footer.sticker-press a {
+  cursor: pointer;
+}
+
+/* The pad runs the full viewport width behind the footer's content, from
+   under the email (top set by the script) to the footer's foot, so presses
+   land anywhere across the foot of the page below the invite. */
+.footer-sticker-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 50vw);
+  width: 100vw;
+  z-index: 0;
+}
+
+/* A faint pixel dot grid over the pad, in the text colour, fading up from
+   the foot of the page to nothing at the pad's top. */
+.footer-sticker-zone::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: conic-gradient(at 2px 2px, transparent 75%, var(--text) 0) 0 0 / 14px 14px;
+  opacity: 0.1;
+  -webkit-mask: linear-gradient(to bottom, transparent, #000 85%);
+  mask: linear-gradient(to bottom, transparent, #000 85%);
+}
+
+html[data-theme="dark"] .footer-sticker-zone::before {
+  opacity: 0.14;
+}
+
+body[data-page="home"] .site-footer.sticker-press > .work-column-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* The sticker layer lives on the body, fitted over the pad by the script,
+   above the bottom progressive blur (100) and under the fixed chrome (300). */
+.footer-stickers {
+  position: absolute;
+  z-index: 150;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.footer-sticker {
+  position: absolute;
+  /* Size and centring margin set per sticker by the script (4px a cell);
+     --s is its slight random scale. */
+  rotate: var(--rot, 0deg);
+  scale: var(--s, 1);
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.footer-sticker svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.footer-sticker-rim {
+  fill: #ffffff;
+}
+
+html[data-theme="dark"] .footer-sticker {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+html[data-theme="dark"] .footer-sticker-rim {
+  fill: #3a3b3e;
+}
+
+/* Pressed on: lands from a touch above, squashes, and settles. */
+.footer-sticker.is-pressing {
+  animation: footerStickerPress 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes footerStickerPress {
+  0% { scale: calc(var(--s, 1) * 1.35); opacity: 0; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.25)); }
+  55% { scale: calc(var(--s, 1) * 0.92); opacity: 1; }
+  100% { scale: var(--s, 1); opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-sticker.is-pressing { animation: none; }
 }
