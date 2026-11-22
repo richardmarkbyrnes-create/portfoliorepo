@@ -12,10 +12,10 @@
   if (!footer) return;
 
   const MAX = 80;
-  // How long a pressed sticker holds before it starts to fade, and how long
-  // the fade takes (kept in step with the CSS transition).
+  // How long a pressed sticker holds before it pops, and the burst's length
+  // (the Snake's BURST_MS; kept in step with the CSS animations).
   const HOLD_MS = 4000;
-  const FADE_MS = 3000;
+  const BURST_MS = 440;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Five stickers per season, each in its own colour within the season's
@@ -216,6 +216,30 @@
   let stickers = [];
   let next = 0;
 
+  // The pop: the sticker swells and vanishes while a burst plays at its spot,
+  // a dashed (dithered) ring growing out and six pixel sparks flying off, all
+  // in the sticker's colour and fading over BURST_MS.
+  function pop(el, s, colour) {
+    const i = stickers.indexOf(s);
+    if (i >= 0) stickers.splice(i, 1);
+    if (reduce) { el.remove(); return; }
+    const burst = document.createElement('span');
+    burst.className = 'footer-sticker-burst';
+    burst.style.left = el.style.left;
+    burst.style.top = el.style.top;
+    burst.style.setProperty('--c', colour);
+    const size = Math.round(parseFloat(el.style.width) * (s.s || 1) * 2.4);
+    burst.style.width = `${size}px`;
+    burst.style.height = `${size}px`;
+    burst.style.margin = `${-size / 2}px 0 0 ${-size / 2}px`;
+    const sparks = Array.from({ length: 6 }, (_, k) => `<rect class="footer-sticker-spark" x="19" y="19" width="2" height="2" style="--a:${k * 60 + 30}deg"/>`).join('');
+    burst.innerHTML = `<svg viewBox="0 0 40 40" shape-rendering="crispEdges" aria-hidden="true"><circle class="footer-sticker-ring" cx="20" cy="20" r="6" fill="none" stroke-width="2.5" stroke-dasharray="2 2"/>${sparks}</svg>`;
+    layer.append(burst);
+    el.classList.add('is-popping');
+    el.addEventListener('animationend', () => el.remove(), { once: true });
+    setTimeout(() => { el.remove(); burst.remove(); }, BURST_MS + 100);
+  }
+
   function place(el, s) {
     const art = setFor()[s.k % setFor().length].art;
     const w = (Math.max(...art.map((row) => row.length)) + 2) * 4;
@@ -278,14 +302,9 @@
     if (layer.children.length >= MAX) layer.firstElementChild.remove();
     layer.append(el);
     el.addEventListener('animationend', () => el.classList.remove('is-pressing'), { once: true });
-    // Stickers are passing: after a few seconds each starts a slow fade and
-    // is cleared once it has gone.
-    setTimeout(() => {
-      el.classList.add('is-fading');
-      const gone = () => { el.remove(); const i = stickers.indexOf(s); if (i >= 0) stickers.splice(i, 1); };
-      el.addEventListener('transitionend', gone, { once: true });
-      setTimeout(gone, FADE_MS + 200); // backstop
-    }, HOLD_MS);
+    // Stickers are passing: after a few seconds each pops, with the Snake's
+    // eat burst (a dithered ring and six sparks in its colour), and is gone.
+    setTimeout(() => pop(el, s, kind.colour), HOLD_MS);
 
     // The stamp cursor dips for a beat.
     footer.classList.add('is-stamping');
