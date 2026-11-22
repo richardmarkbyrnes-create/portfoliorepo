@@ -3240,6 +3240,31 @@ body[data-page="home"] .page {
   opacity: 0.5;
 }
 
+/* The "at" in the hero subtitle is a pixel @ glyph: a 10px ink grid with a
+   one-pixel white rim and a soft shadow, sized to the lowercase letters. */
+.hero-at {
+  display: inline-block;
+  width: 0.98em;
+  height: 0.98em;
+  vertical-align: -0.12em;
+  margin: 0 0.02em;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.hero-at-halo {
+  fill: #ffffff;
+}
+
+/* Dark page: a white rim would glare, so the rim lifts a step off the page
+   instead and the shadow deepens to keep the sticker reading as raised. */
+[data-theme="dark"] .hero-at {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
+}
+
+[data-theme="dark"] .hero-at-halo {
+  fill: #3a3b3e;
+}
+
 /* On the first homepage view of a session the hero lands as one solid line, then
    the connecting words ("is a", "and") settle back to muted a beat later — so the
    name reads first. The .hero-intro flag is set once, in theme-init.js. */
@@ -10809,53 +10834,6 @@ html body[data-page="home"] .work-column--snake .snake-status {
 [data-theme="dark"] {
   --selection-bg: #34506e;
   --selection-color: #f3f6fa;
-}
-
-/* Each interest's tray carries a faint drawing of its own behind the media:
-   record grooves for music, a globe and a flight path for travel, lines of
-   text for reading, a pitch for football, a trail of paw prints for
-   animals. Drawn in the text colour at low strength (the SVG is a mask), so
-   it follows the season; the tray is isolated so the drawing sits above its
-   fill but under everything in it. */
-body[data-page="home"] .interests-list .interest .hobby-photos,
-body[data-page="home"] .interests-list .interest .hobby-books,
-body[data-page="home"] .interests-list .interest .hobby-records {
-  position: relative;
-  isolation: isolate;
-}
-
-body[data-page="home"] .interests-list .interest .hobby-photos::before,
-body[data-page="home"] .interests-list .interest .hobby-books::before,
-body[data-page="home"] .interests-list .interest .hobby-records::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  background-color: var(--text);
-  opacity: 0.06;
-  /* The drawing, faded from nothing at the left to full at the right. */
-  -webkit-mask:
-    var(--interest-pattern) center / cover no-repeat,
-    linear-gradient(to right, transparent, #000);
-  -webkit-mask-composite: source-in;
-  mask:
-    var(--interest-pattern) center / cover no-repeat,
-    linear-gradient(to right, transparent, #000);
-  mask-composite: intersect;
-}
-
-#interest-music { --interest-pattern: url('../images/pattern-music.svg'); }
-#interest-travel { --interest-pattern: url('../images/pattern-travel.svg'); }
-#interest-reading { --interest-pattern: url('../images/pattern-reading.svg'); }
-#interest-football { --interest-pattern: url('../images/pattern-football.svg'); }
-#interest-animals { --interest-pattern: url('../images/pattern-animals.svg'); }
-
-/* Reading's lines start from the top rather than being cropped centrally. */
-body[data-page="home"] #interest-reading .hobby-books::before {
-  -webkit-mask-position: center top, 0 0;
-  mask-position: center top, 0 0;
 }
 
 /* Paused: a pause icon on a small tile, bordered and shadowed like the
