@@ -2,8 +2,8 @@
 // stamp pad: the cursor is a stamp, and pressing anywhere across the full
 // width of the footer (off the links) drops a pixel-art sticker of the
 // season's things at that spot, in the same 7x7 style as the Snake's food.
-// The pad runs from under the email invite to the foot of the page, the
-// full width, skipping the links row. Stickers last the visit (a reload clears them) and
+// The pad runs from under the links row to the foot of the page, the full
+// width. Stickers last the visit (a reload clears them) and
 // redraw in the new season when the theme is switched. They're drawn on a
 // body-level layer above the bottom progressive blur, so they stay sharp.
 (() => {
@@ -152,9 +152,8 @@
   }
 
   // The pad: a full-bleed box behind the footer's content, from just under
-  // the email address to the foot of the page, that takes the presses. The
-  // links row across it is left alone.
-  const email = footer.querySelector('.site-footer-email');
+  // the links row to the foot of the page, that takes the presses.
+  const base = footer.querySelector('.site-footer-base');
   const zone = document.createElement('div');
   zone.className = 'footer-sticker-zone';
   zone.setAttribute('aria-hidden', 'true');
@@ -197,8 +196,8 @@
     return { x, y };
   }
   function fit() {
-    if (email) {
-      zone.style.top = `${Math.max(0, email.offsetTop + email.offsetHeight + 12)}px`;
+    if (base) {
+      zone.style.top = `${Math.max(0, base.offsetTop + base.offsetHeight + 12)}px`;
     }
     const { x, y } = docOffset(zone);
     layer.style.left = `${x}px`;
@@ -244,7 +243,7 @@
     if (e.target.closest('a, button, input, [data-copy-email], .site-footer-base')) return;
     const rect = zone.getBoundingClientRect();
     if (!rect.width || !rect.height) return;
-    // Only within the pad: the invite above it is left alone.
+    // Only within the pad: everything above it is left alone.
     if (e.clientY < rect.top) return;
     const set = setFor();
     const kind = set[next % set.length];

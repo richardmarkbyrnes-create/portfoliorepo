@@ -135,23 +135,24 @@
 [data-theme="autumn"] {
   --bg: #fcf7ef;
   --note-halo: rgba(252, 247, 239, 0.95);
-  --text: #4a3c31;
-  --text-body: #3e3229;
-  --text-muted: #73614f;
-  --text-subtle: #574739;
-  --text-light: #9b8a79;
-  --text-nav: #574739;
-  --text-resume-header: #5e4d3e;
+  /* Inks a step warmer, into rust and chestnut, so autumn shows in the type. */
+  --text: #563826;
+  --text-body: #4a2f1f;
+  --text-muted: #8a5a3c;
+  --text-subtle: #67422c;
+  --text-light: #a98366;
+  --text-nav: #67422c;
+  --text-resume-header: #6d4830;
   --surface: #fdfaf4;
   --surface-muted: #fdfaf4;
   --nav-bg: rgba(252, 247, 239, 0.62);
   --theme-popover-bg: rgba(252, 247, 239, 0.48);
   --nav-active-bg: rgba(252, 247, 239, 0.5);
-  --nav-text-active: #22170f;
-  --nav-text-inactive: #8f7d6c;
+  --nav-text-active: #2a160a;
+  --nav-text-inactive: #a07a5e;
   --hero-glow: rgba(252, 247, 239, 0.5);
   --switcher-bg: rgba(252, 247, 239, 0.72);
-  --line-art-stroke: #4a3b30;
+  --line-art-stroke: #553626;
 }
 
 [data-theme="dark"] {
@@ -6135,9 +6136,9 @@ body.next-glow-visible .pc-next-glow {
   opacity: 1;
 }
 
-/* Hovering the pill blooms a second wash in the colour of the project it leads
-   to, so the bottom of the screen previews where you're about to go. Same
-   groupings as the badge and the home page's row hovers. */
+/* Hovering the pill blooms a second wash along the bottom edge in the season's
+   frame tint (the same wash the page frame carries), rather than the next
+   project's colour. The per-project inks below are kept for the badge. */
 body[data-next-project="custom-stickers"] {
   --next-ink: var(--ink-amber);
 }
@@ -6178,8 +6179,8 @@ body[data-next-project="design-systems"] {
   opacity: 0;
   background-image: radial-gradient(
     ellipse 18% 100% at 50% 100%,
-    color-mix(in srgb, var(--next-ink, var(--text)) 18%, transparent) 0%,
-    color-mix(in srgb, var(--next-ink, var(--text)) 6%, transparent) 45%,
+    var(--frame-tint, var(--text)) 0%,
+    color-mix(in srgb, var(--frame-tint, var(--text)) 45%, transparent) 45%,
     transparent 78%);
   transition: opacity 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
@@ -11043,23 +11044,25 @@ html[data-theme="normal"] {
   /* Summer: a very soft green-tinted page, inks a gentle green-slate. */
   --bg: #fafbf7;
   --note-halo: rgba(250, 251, 247, 0.95);
-  --text: #34443b;
-  --text-body: #2c3a32;
-  --text-muted: #57685c;
-  --text-subtle: #3d4e43;
-  --text-light: #808f85;
-  --text-nav: #3d4e43;
-  --text-resume-header: #43554a;
+  /* Inks lean a step further into the season's green, so the switch to
+     summer reads in the type as well as the page. */
+  --text: #2f4a3a;
+  --text-body: #27402f;
+  --text-muted: #4f6f58;
+  --text-subtle: #3a5a45;
+  --text-light: #7c9a84;
+  --text-nav: #3a5a45;
+  --text-resume-header: #3f6049;
   --surface: #fcfdf9;
   --surface-muted: #fcfdf9;
   --nav-bg: rgba(250, 251, 247, 0.62);
   --theme-popover-bg: rgba(250, 251, 247, 0.48);
   --nav-active-bg: rgba(250, 251, 247, 0.5);
-  --nav-text-active: #141c17;
-  --nav-text-inactive: #768679;
+  --nav-text-active: #122319;
+  --nav-text-inactive: #729680;
   --hero-glow: rgba(250, 251, 247, 0.5);
   --switcher-bg: rgba(250, 251, 247, 0.72);
-  --line-art-stroke: #3a473d;
+  --line-art-stroke: #365643;
 }
 
 html[data-theme="spring"] {
@@ -12728,11 +12731,12 @@ html[data-theme="dark"] .pc-back-frame {
     pointer-events: none;
   }
 
-  /* Summer light green, spring light blue, autumn light orange, winter dark grey. */
-  html body[data-page="project"] .pc-back-frame { --frame-tint: #cfe6d2; }
-  html[data-theme="spring"] body[data-page="project"] .pc-back-frame { --frame-tint: #cfe1f3; }
-  html[data-theme="autumn"] body[data-page="project"] .pc-back-frame { --frame-tint: #f5d6b4; }
-  html[data-theme="dark"] body[data-page="project"] .pc-back-frame { --frame-tint: #2e2f32; }
+  /* Summer light green, spring light blue, autumn light orange, winter dark
+     grey. On the body, so the next-project pill's hover wash can share it. */
+  html body[data-page="project"] { --frame-tint: #cfe6d2; }
+  html[data-theme="spring"] body[data-page="project"] { --frame-tint: #cfe1f3; }
+  html[data-theme="autumn"] body[data-page="project"] { --frame-tint: #f5d6b4; }
+  html[data-theme="dark"] body[data-page="project"] { --frame-tint: #2e2f32; }
 
   /* Controls step in by the frame's 10px so they keep their room inside it. */
   html body[data-page="project"] .pc-back.pc-back--home { left: 34px; }
@@ -14387,18 +14391,18 @@ html body[data-project="navigation"] .pc-page > .pc-desc:has(+ .pc-loop) {
    Stickers are 7x7 pixel art in the Snake's style, rimmed and shadowed like
    the hero's pixel @, scattered over the footer and leaving the links to
    their own cursor. Extra room below the base line to press into. */
-/* Room for the pad above the links row and below it to the page's foot. */
+/* Room for the pad below the links row, down to the page's foot. */
 body[data-page="home"] .site-footer.sticker-press {
   padding-bottom: 120px;
 }
 
 body[data-page="home"] .site-footer.sticker-press .site-footer-base {
-  margin-top: 100px;
+  margin-top: 56px;
 }
 
 @media (max-width: 768px) {
   body[data-page="home"] .site-footer.sticker-press { padding-bottom: 90px; }
-  body[data-page="home"] .site-footer.sticker-press .site-footer-base { margin-top: 80px; }
+  body[data-page="home"] .site-footer.sticker-press .site-footer-base { margin-top: 48px; }
 }
 
 /* The stamp cursor only over the pad. The content column lets hovers
@@ -14541,4 +14545,59 @@ html[data-theme="dark"] .footer-sticker-rim {
 
 @media (prefers-reduced-motion: reduce) {
   .footer-sticker.is-pressing { animation: none; }
+}
+
+/* Ask Insights hero above the page grain: the body grain is masked out over
+   the hero frame's box (set by project-nav.js), and the frame carries its own
+   grain on top, the same texture, stepping position so it crawls like film. */
+body[data-project="ask-ai"].has-hero-hole::before {
+  /* The hole is a rounded rect (an SVG sized to the frame, 18px corners
+     like the frame's), so no grain-free square shows past its corners. */
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' rx='18' ry='18' fill='%23000'/%3E%3C/svg%3E") var(--hero-x) var(--hero-y) / var(--hero-w) var(--hero-h) no-repeat,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25'%3E%3Crect width='100%25' height='100%25' rx='18' ry='18' fill='%23000'/%3E%3C/svg%3E") var(--hero-x) var(--hero-y) / var(--hero-w) var(--hero-h) no-repeat,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+html body .pc-image--loop.pc-image--scene::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  height: auto;
+  z-index: 2;
+  /* The frame is 18px round with a 3px border, so its inner edge is 15px;
+     clip-path rather than relying on the frame's overflow, which an
+     animated layer can escape at the corners. */
+  border-radius: 15px;
+  clip-path: inset(0 round 15px);
+  background: url('../images/bg-texture.png') repeat;
+  background-size: 128px auto;
+  image-rendering: pixelated;
+  mix-blend-mode: multiply;
+  opacity: 0.06;
+  pointer-events: none;
+  animation: heroGrain 0.6s steps(1) infinite;
+}
+
+html[data-theme="dark"] body .pc-image--loop.pc-image--scene::after {
+  mix-blend-mode: screen;
+  opacity: 0.07;
+}
+
+@keyframes heroGrain {
+  0% { background-position: 0 0; }
+  20% { background-position: -24px 12px; }
+  40% { background-position: 16px -28px; }
+  60% { background-position: -36px -8px; }
+  80% { background-position: 10px 30px; }
+  100% { background-position: 28px -16px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body .pc-image--loop.pc-image--scene::after { animation: none; }
 }

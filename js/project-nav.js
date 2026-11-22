@@ -1086,3 +1086,42 @@ function initQuoteReveal(el) {
   initProjectPage();
   initHairlineStipple();
 })();
+
+// Ask Insights hero: the page grain (body::before) is masked out over the
+// hero frame, so the landscape and footage sit above it and carry their own
+// animated grain instead (CSS). The hole follows the frame's document box,
+// measured from layout offsets so the entrance transform can't skew it.
+(() => {
+  if (document.body.dataset.project !== 'ask-ai') return;
+  const hero = document.querySelector('.pc-image--scene');
+  if (!hero) return;
+  const fit = () => {
+    let x = 0;
+    let y = 0;
+    for (let n = hero; n; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+    const b = document.body.style;
+    b.setProperty('--hero-x', `${x}px`);
+    b.setProperty('--hero-y', `${y}px`);
+    b.setProperty('--hero-w', `${hero.offsetWidth}px`);
+    b.setProperty('--hero-h', `${hero.offsetHeight}px`);
+  };
+  // The hole opens once the hero's own entrance (fade, rise and blur) has
+  // played, so a clean rectangle never shows on the page before the frame.
+  let opened = false;
+  const open = () => {
+    if (opened) return;
+    opened = true;
+    fit();
+    document.body.classList.add('has-hero-hole');
+  };
+  if (hero.classList.contains('animate-in') && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    hero.addEventListener('animationend', (e) => { if (e.target === hero) open(); });
+    setTimeout(open, 3000); // backstop
+  } else {
+    open();
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(document.body);
+})();
