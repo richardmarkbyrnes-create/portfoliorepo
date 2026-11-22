@@ -14481,6 +14481,23 @@ html[data-theme="dark"] .footer-sticker-zone::before {
   display: block;
 }
 
+/* The ghosts breathe: a slow, slightly staggered pulse as the cue to press. */
+.footer-sticker-ghost {
+  animation: footerGhostPulse 2.8s ease-in-out infinite;
+}
+
+.footer-sticker-ghost:nth-child(2) { animation-delay: 0.45s; }
+.footer-sticker-ghost:nth-child(3) { animation-delay: 0.9s; }
+
+@keyframes footerGhostPulse {
+  0%, 100% { opacity: 0.55; scale: 0.96; }
+  50% { opacity: 1; scale: 1.06; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-sticker-ghost { animation: none; }
+}
+
 html[data-theme="dark"] .footer-sticker-ghosts {
   opacity: 0.2;
 }
