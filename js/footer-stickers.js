@@ -116,7 +116,7 @@
   // hotspot at the foot of the base; the pressed one has a shorter handle.
   const STAMP_UP = ['....####....', '....####....', '.....##.....', '.....##.....', '.....##.....', '..########..', '.##########.', '############', '############'];
   const STAMP_DOWN = ['....####....', '....####....', '.....##.....', '..########..', '.##########.', '############', '############'];
-  function cursorFor(rows, colour) {
+  function cursorFor(rows, colour, lineH = 4) {
     const cell = 2;
     const ink = new Set();
     rows.forEach((row, y) => [...row].forEach((c, x) => { if (c === '#') ink.add(`${x},${y}`); }));
@@ -133,8 +133,8 @@
     const cols = rows[0].length + 2;
     const stampRows = rows.length + 2;
     const w = cols * cell;
-    // Under the stamp: a 4px colour line with a 1px white border round it.
-    const lineH = 4;
+    // Under the stamp: the colour line (4px at rest, squashed to 2px while
+    // pressed, 3px on the way back up) with a 1px white border round it.
     const lineY = stampRows * cell;
     const h = lineY + lineH + 2;
     const path = (cells) => [...cells].map((k) => k.split(',').map(Number))
@@ -152,7 +152,10 @@
     const set = setFor();
     const colour = set[next % set.length].colour;
     footer.style.setProperty('--stamp-cursor', cursorFor(STAMP_UP, colour));
-    footer.style.setProperty('--stamp-cursor-down', cursorFor(STAMP_DOWN, colour));
+    // The press: handle down and the colour line squashed, already in the
+    // next sticker's colour; then a half-step back up before it settles.
+    footer.style.setProperty('--stamp-cursor-down', cursorFor(STAMP_DOWN, colour, 2));
+    footer.style.setProperty('--stamp-cursor-mid', cursorFor(STAMP_UP, colour, 3));
   }
 
   // The pad: a full-bleed box behind the footer's content, from just under
@@ -306,10 +309,18 @@
     // eat burst (a dithered ring and six sparks in its colour), and is gone.
     setTimeout(() => pop(el, s, kind.colour), HOLD_MS);
 
-    // The stamp cursor dips for a beat.
+    // The stamp cursor dips for a beat, its colour line squashing with it,
+    // then springs back up in the new colour.
+    footer.classList.remove('is-stamped');
     footer.classList.add('is-stamping');
     clearTimeout(press.t);
-    press.t = setTimeout(() => footer.classList.remove('is-stamping'), 140);
+    clearTimeout(press.t2);
+    // Held down for a moment before it springs back.
+    press.t = setTimeout(() => {
+      footer.classList.remove('is-stamping');
+      footer.classList.add('is-stamped');
+      press.t2 = setTimeout(() => footer.classList.remove('is-stamped'), 90);
+    }, 260);
   }
 
   footer.addEventListener('pointerdown', press);

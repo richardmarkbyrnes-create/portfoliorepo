@@ -3245,10 +3245,11 @@ body[data-page="home"] .page {
    one-pixel white rim and a soft shadow, sized to the lowercase letters. */
 .hero-at {
   display: inline-block;
-  width: 0.98em;
-  height: 0.98em;
-  vertical-align: -0.12em;
-  margin: 0 0.02em;
+  width: 0.88em;
+  height: 0.88em;
+  vertical-align: -0.1em;
+  /* Tucked in a little towards "Miro" on its right. */
+  margin: 0 -0.1em 0 0.02em;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
 }
 
@@ -14418,6 +14419,10 @@ body[data-page="home"] .site-footer.sticker-press > .work-column-inner > * {
 
 body[data-page="home"] .site-footer.sticker-press .footer-sticker-zone {
   cursor: var(--stamp-cursor, url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='22' viewBox='0 0 28 22' shape-rendering='crispEdges'%3E%3Cpath fill='%23fff' d='M2 16h2v2h-2zM2 18h2v2h-2zM4 14h2v2h-2zM4 16h2v2h-2zM4 18h2v2h-2zM6 12h2v2h-2zM6 14h2v2h-2zM6 16h2v2h-2zM6 18h2v2h-2zM8 12h2v2h-2zM8 14h2v2h-2zM8 16h2v2h-2zM8 18h2v2h-2zM10 2h2v2h-2zM10 4h2v2h-2zM10 12h2v2h-2zM10 14h2v2h-2zM10 16h2v2h-2zM10 18h2v2h-2zM12 2h2v2h-2zM12 4h2v2h-2zM12 6h2v2h-2zM12 8h2v2h-2zM12 10h2v2h-2zM12 12h2v2h-2zM12 14h2v2h-2zM12 16h2v2h-2zM12 18h2v2h-2zM14 2h2v2h-2zM14 4h2v2h-2zM14 6h2v2h-2zM14 8h2v2h-2zM14 10h2v2h-2zM14 12h2v2h-2zM14 14h2v2h-2zM14 16h2v2h-2zM14 18h2v2h-2zM16 2h2v2h-2zM16 4h2v2h-2zM16 12h2v2h-2zM16 14h2v2h-2zM16 16h2v2h-2zM16 18h2v2h-2zM18 12h2v2h-2zM18 14h2v2h-2zM18 16h2v2h-2zM18 18h2v2h-2zM20 12h2v2h-2zM20 14h2v2h-2zM20 16h2v2h-2zM20 18h2v2h-2zM22 14h2v2h-2zM22 16h2v2h-2zM22 18h2v2h-2zM24 16h2v2h-2zM24 18h2v2h-2z'/%3E%3Cpath fill='%23111' d='M0 14h2v2h-2zM0 16h2v2h-2zM0 18h2v2h-2zM0 20h2v2h-2zM2 12h2v2h-2zM2 14h2v2h-2zM2 20h2v2h-2zM4 10h2v2h-2zM4 12h2v2h-2zM4 20h2v2h-2zM6 10h2v2h-2zM6 20h2v2h-2zM8 0h2v2h-2zM8 2h2v2h-2zM8 4h2v2h-2zM8 6h2v2h-2zM8 10h2v2h-2zM8 20h2v2h-2zM10 0h2v2h-2zM10 6h2v2h-2zM10 8h2v2h-2zM10 10h2v2h-2zM10 20h2v2h-2zM12 0h2v2h-2zM12 20h2v2h-2zM14 0h2v2h-2zM14 20h2v2h-2zM16 0h2v2h-2zM16 6h2v2h-2zM16 8h2v2h-2zM16 10h2v2h-2zM16 20h2v2h-2zM18 0h2v2h-2zM18 2h2v2h-2zM18 4h2v2h-2zM18 6h2v2h-2zM18 10h2v2h-2zM18 20h2v2h-2zM20 10h2v2h-2zM20 20h2v2h-2zM22 10h2v2h-2zM22 12h2v2h-2zM22 20h2v2h-2zM24 12h2v2h-2zM24 14h2v2h-2zM24 20h2v2h-2zM26 14h2v2h-2zM26 16h2v2h-2zM26 18h2v2h-2zM26 20h2v2h-2z'/%3E%3C/svg%3E") 14 20, pointer);
+}
+
+body[data-page="home"] .site-footer.sticker-press.is-stamped .footer-sticker-zone {
+  cursor: var(--stamp-cursor-mid, var(--stamp-cursor));
 }
 
 body[data-page="home"] .site-footer.sticker-press.is-stamping .footer-sticker-zone {
