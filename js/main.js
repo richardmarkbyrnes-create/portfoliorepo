@@ -741,10 +741,11 @@ function initBottomBlurVisibility() {
     const isHome = document.body.dataset.page === 'home';
     const atTop = !isHome && window.scrollY < 40;
     const tooShort = maxScroll <= 0;
-    // Off once the footer landscape comes up, so the blur's banding doesn't
-    // cut a line across it.
-    const footer = document.querySelector('.season-footer');
-    const atBottom = isHome && maxScroll - window.scrollY < 160 + (footer ? footer.offsetHeight : 0);
+    // Off once the footer comes into view, so the blur's banding never sits
+    // over the sign-off or the sticker pad beneath it.
+    const footer = document.querySelector('.site-footer');
+    const footerUp = footer ? footer.getBoundingClientRect().top < window.innerHeight : false;
+    const atBottom = isHome && (footerUp || maxScroll - window.scrollY < 160);
     document.body.classList.toggle('bottom-blur-visible', !atTop && !tooShort && !atBottom);
     ticking = false;
   }
@@ -1713,6 +1714,8 @@ initFooterTyping();
 // Back to top: a faint arrow in the bottom-right corner that appears once the
 // page has been scrolled a way down, and scrolls back up when clicked.
 function initToTop() {
+  // Not on the home page: its foot is the sticker pad, kept clear.
+  if (document.body.dataset.page === 'home') return;
   if (document.getElementById('to-top')) return;
   const btn = document.createElement('button');
   btn.type = 'button';
