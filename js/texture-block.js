@@ -473,9 +473,11 @@
     const pick = (arr) => arr[Math.floor(rand(0, arr.length))];
     function spawn(k, anywhere) {
       const base = { x: rand(0, W), y: anywhere ? rand(0, H) : rand(-24, -6), phase: rand(0, Math.PI * 2) };
-      if (k === 'winter') return { ...base, r: rand(2, 3.4), vy: rand(9, 18), sway: rand(4, 10) };
+      if (k === 'winter') return { ...base, r: rand(1.4, 2.4), vy: rand(9, 18), sway: rand(4, 10) };
       if (k === 'autumn') {
-        const tones = ['#c2672a', '#a8501f', '#e0a33c', '#8a4a24'];
+        // Muted, dusty tones: the leaves should sit back in the texture
+        // rather than pop as saturated orange against it.
+        const tones = ['#d4a07c', '#c9906a', '#e2bf8c', '#bf9478'];
         return { ...base, r: rand(3.6, 6), vy: rand(12, 22), sway: rand(10, 18), rot: rand(0, 6.3), vr: rand(-1.6, 1.6), color: pick(tones) };
       }
       if (k === 'spring') {
@@ -485,7 +487,7 @@
       }
       return null;
     }
-    const COUNT = { winter: 26, autumn: 9, spring: 14 };
+    const COUNT = { winter: 14, autumn: 9, spring: 14 };
 
     function setKind(k) {
       kind = k;
