@@ -41,7 +41,7 @@
       // Green leaf
       { colour: '#7cc47a', art: ['.......#.', '....####.', '..######.', '.#######.', '.#######.', '.######..', '..####...', '...#.....', '..#......'] },
       // Bunny
-      { colour: '#e6d3c0', art: ['.##...##.', '.##...##.', '.##...##.', '.#######.', '#########', '##.###.##', '#########', '.#######.', '..#####..'] },
+      { colour: '#f3dc7a', art: ['.##...##.', '.##...##.', '.##...##.', '.#######.', '#########', '##.###.##', '#########', '.#######.', '..#####..'] },
     ],
     autumn: [
       // Leaf
@@ -94,6 +94,16 @@
       }
     });
     return `<svg viewBox="0 0 ${cols + 2} ${rows + 2}" shape-rendering="crispEdges" aria-hidden="true"><path class="footer-sticker-rim" d="${cellPath(rim)}"/><path fill="${colour}" d="${cellPath(ink)}"/></svg>`;
+  }
+
+  // A ghost of a sticker: its cells only, in the text colour (set in CSS),
+  // for the faint row that hints at the pad.
+  function ghostSvgFor(kind) {
+    const { art } = kind;
+    const cols = Math.max(...art.map((row) => row.length));
+    const cells = [];
+    art.forEach((row, y) => [...row].forEach((c, x) => { if (c === '#') cells.push([x, y]); }));
+    return `<svg viewBox="0 0 ${cols} ${art.length}" width="${cols * 4}" height="${art.length * 4}" shape-rendering="crispEdges" aria-hidden="true"><path fill="currentColor" d="${cellPath(cells)}"/></svg>`;
   }
 
   // The stamp cursor, drawn here rather than in CSS so a 2px line under its
@@ -151,6 +161,20 @@
   footer.prepend(zone);
   footer.classList.add('sticker-press');
 
+  // The hint: the season's five stickers as ghosts, centred low on the pad.
+  // They fade once the first sticker is pressed.
+  const ghosts = document.createElement('div');
+  ghosts.className = 'footer-sticker-ghosts';
+  zone.append(ghosts);
+  function renderGhosts() {
+    ghosts.replaceChildren(...setFor().slice(0, 3).map((kind) => {
+      const g = document.createElement('span');
+      g.className = 'footer-sticker-ghost';
+      g.innerHTML = ghostSvgFor(kind);
+      return g;
+    }));
+  }
+
   // The stickers, on a body-level layer kept over the pad's document box so
   // they sit above the fixed bottom blur rather than under it.
   const layer = document.createElement('div');
@@ -158,17 +182,29 @@
   layer.setAttribute('aria-hidden', 'true');
   document.body.append(layer);
 
+  // The layer is clipped (CSS) so no sticker can lengthen the document; it
+  // bleeds this far above the pad so stickers pressed near its top aren't
+  // cut by the clip. Positions are stored relative to the pad itself.
+  const BLEED = 40;
+  // Document position from layout offsets, not getBoundingClientRect: the
+  // page's entrance slides content with a transform, and a rect measured
+  // mid-slide put the layer past the body's foot, lengthening the page
+  // until the next fit.
+  function docOffset(el) {
+    let x = 0;
+    let y = 0;
+    for (let n = el; n; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+    return { x, y };
+  }
   function fit() {
-    const f = footer.getBoundingClientRect();
     if (email) {
-      const e = email.getBoundingClientRect();
-      zone.style.top = `${Math.max(0, e.bottom - f.top + 12)}px`;
+      zone.style.top = `${Math.max(0, email.offsetTop + email.offsetHeight + 12)}px`;
     }
-    const r = zone.getBoundingClientRect();
-    layer.style.left = `${r.left + window.scrollX}px`;
-    layer.style.top = `${r.top + window.scrollY}px`;
-    layer.style.width = `${r.width}px`;
-    layer.style.height = `${r.height}px`;
+    const { x, y } = docOffset(zone);
+    layer.style.left = `${x}px`;
+    layer.style.top = `${y - BLEED}px`;
+    layer.style.width = `${zone.offsetWidth}px`;
+    layer.style.height = `${zone.offsetHeight + BLEED}px`;
   }
 
   // Stickers in CSS px from the pad's top centre, so they hold their place
@@ -185,13 +221,14 @@
     el.style.height = `${h}px`;
     el.style.margin = `${-h / 2}px 0 0 ${-w / 2}px`;
     el.style.left = `calc(50% + ${s.x}px)`;
-    el.style.top = `${s.y}px`;
+    el.style.top = `${s.y + BLEED}px`;
     el.style.setProperty('--rot', `${s.r}deg`);
     el.style.setProperty('--s', s.s || 1);
   }
 
   function render() {
     updateCursor();
+    renderGhosts();
     const set = setFor();
     layer.replaceChildren(...stickers.map((s) => {
       const el = document.createElement('span');
@@ -210,17 +247,24 @@
     // Only within the pad: the invite above it is left alone.
     if (e.clientY < rect.top) return;
     const set = setFor();
+    const kind = set[next % set.length];
+    const scale = Math.round((0.85 + Math.random() * 0.3) * 100) / 100;
+    // Keep the sticker's whole box within the pad's bottom edge: anything
+    // hanging below the page's foot would lengthen the document and nudge
+    // the page as it lands.
+    const half = (kind.art.length + 2) * 4 * scale * 0.75 + 6;
     const s = {
       x: Math.round(e.clientX - (rect.left + rect.width / 2)),
-      y: Math.round(e.clientY - rect.top),
+      y: Math.round(Math.min(e.clientY - rect.top, rect.height - half)),
       r: Math.round(-14 + Math.random() * 28),
       // A little size variation, so a run of stickers reads hand-placed.
-      s: Math.round((0.85 + Math.random() * 0.3) * 100) / 100,
+      s: scale,
       k: next % set.length,
     };
     next += 1;
     stickers.push(s);
     updateCursor();
+    ghosts.classList.add('is-done');
     while (stickers.length > MAX) stickers.shift();
     fit();
 
@@ -243,6 +287,9 @@
   fit();
   window.addEventListener('resize', fit);
   window.addEventListener('load', fit);
+  // And again once the page's entrance has played out.
+  document.addEventListener('page-entering-go', () => setTimeout(fit, 900));
+  setTimeout(fit, 1600);
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(document.body);
 
   // Season switch: the same stickers, redrawn in the new season's set.
