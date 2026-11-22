@@ -14524,6 +14524,13 @@ body[data-page="home"] .site-footer.sticker-press > .work-column-inner {
   fill: #ffffff;
 }
 
+/* A few seconds after landing, a sticker fades slowly away (timing set in
+   footer-stickers.js). */
+.footer-sticker.is-fading {
+  opacity: 0;
+  transition: opacity 3s ease-in;
+}
+
 html[data-theme="dark"] .footer-sticker {
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.6));
 }

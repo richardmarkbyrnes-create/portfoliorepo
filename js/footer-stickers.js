@@ -12,6 +12,10 @@
   if (!footer) return;
 
   const MAX = 80;
+  // How long a pressed sticker holds before it starts to fade, and how long
+  // the fade takes (kept in step with the CSS transition).
+  const HOLD_MS = 4000;
+  const FADE_MS = 3000;
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Five stickers per season, each in its own colour within the season's
@@ -274,6 +278,14 @@
     if (layer.children.length >= MAX) layer.firstElementChild.remove();
     layer.append(el);
     el.addEventListener('animationend', () => el.classList.remove('is-pressing'), { once: true });
+    // Stickers are passing: after a few seconds each starts a slow fade and
+    // is cleared once it has gone.
+    setTimeout(() => {
+      el.classList.add('is-fading');
+      const gone = () => { el.remove(); const i = stickers.indexOf(s); if (i >= 0) stickers.splice(i, 1); };
+      el.addEventListener('transitionend', gone, { once: true });
+      setTimeout(gone, FADE_MS + 200); // backstop
+    }, HOLD_MS);
 
     // The stamp cursor dips for a beat.
     footer.classList.add('is-stamping');
