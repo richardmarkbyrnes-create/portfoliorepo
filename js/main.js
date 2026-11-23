@@ -1110,8 +1110,6 @@ function initVideoRates() {
 // Off for reduced motion.
 function initHeroScrollScale() {
   if (document.body.dataset.page !== 'project' || prefersReducedMotion()) return;
-  // Ask Insights has its own, larger scroll growth (project-nav.js).
-  if (document.body.dataset.project === 'ask-ai') return;
   const hero = document.querySelector('.pc-image--main');
   if (!hero) return;
   const MAX = 0.03;
