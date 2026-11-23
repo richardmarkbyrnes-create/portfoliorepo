@@ -14795,3 +14795,24 @@ body[data-page="project"] .pc-next-pill--card:not(.is-docked) .pc-next-thumb--b 
 @media (prefers-reduced-motion: reduce) {
   .pc-next-thumb { transition: none; }
 }
+
+/* Ask Insights hero on scroll (project-nav.js sets --hero-p from 0 to 1 as
+   the frame rises to the toolbar). The title blurs and fades out, the frame
+   eases up from 96% to full size, and the footage grows from its 94% inset
+   to fill the frame edge to edge, its corners rounding out to the frame's. */
+body[data-project="ask-ai"] .pc-lead-block > * {
+  filter: blur(calc(var(--hero-p, 0) * 14px));
+  opacity: calc(1 - var(--hero-p, 0));
+  translate: 0 calc(var(--hero-p, 0) * -16px);
+}
+
+html body[data-project="ask-ai"] .pc-image--loop.pc-image--scene {
+  /* The scale itself is set inline by project-nav.js. */
+  z-index: 1;
+}
+
+/* The footage keeps its inset (a touch tighter as it grows), so the
+   landscape stays in view around it while the whole frame scales up. */
+html body[data-project="ask-ai"] .pc-image--loop.pc-image--scene .pc-hero-video {
+  width: calc(94% + 1.5% * var(--hero-p, 0));
+}
