@@ -14679,9 +14679,9 @@ html[data-theme="dark"] body .pc-image--loop.pc-image--scene::after {
    fans them a touch more. Same glass and dock motion as before. */
 body[data-page="project"] .pc-next-pill--card {
   flex-direction: row-reverse;
-  gap: 28px;
-  padding: 10px 0 10px 24px;
-  border-radius: 18px;
+  gap: 22px;
+  padding: 8px 0 8px 20px;
+  border-radius: 16px;
   /* A white edge, and the thumbnails clipped where they poke past it. */
   border: 2px solid #ffffff;
   overflow: hidden;
@@ -14701,15 +14701,15 @@ body[data-page="project"] .pc-next-pill--card:hover {
 .pc-next-thumbs {
   position: relative;
   flex: none;
-  width: 104px;
-  height: 44px;
+  width: 86px;
+  height: 38px;
 }
 
 .pc-next-thumb {
   position: absolute;
   display: block;
   overflow: hidden;
-  border-radius: 8px;
+  border-radius: 7px;
   border: 2px solid var(--frame-border);
   background: var(--surface);
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08);
@@ -14730,19 +14730,19 @@ body[data-page="project"] .pc-next-pill--card:hover {
 }
 
 .pc-next-thumb--a {
-  width: 80px;
-  height: 56px;
-  right: 26px;
-  bottom: -20px;
+  width: 66px;
+  height: 46px;
+  right: 22px;
+  bottom: -17px;
   z-index: 1;
   --tilt: -7deg;
 }
 
 .pc-next-thumb--b {
-  width: 70px;
-  height: 50px;
-  right: -10px;
-  bottom: -14px;
+  width: 58px;
+  height: 40px;
+  right: -8px;
+  bottom: -12px;
   z-index: 2;
   --tilt: 9deg;
   transition-delay: 0.1s;
@@ -14770,7 +14770,7 @@ body[data-page="project"] .pc-next-pill--card:not(.is-docked) .pc-next-thumb--b 
 }
 
 .pc-next-pill--card .pc-next-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 500;
   letter-spacing: -0.02em;
   color: var(--nav-text-active);
@@ -14782,7 +14782,7 @@ body[data-page="project"] .pc-next-pill--card:not(.is-docked) .pc-next-thumb--b 
 }
 
 .pc-next-line {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 400;
   letter-spacing: -0.01em;
   color: var(--nav-text-inactive);
