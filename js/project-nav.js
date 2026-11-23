@@ -1095,12 +1095,18 @@ function initQuoteReveal(el) {
     let x = 0;
     let y = 0;
     for (let n = hero; n; n = n.offsetParent) { x += n.offsetLeft; y += n.offsetTop; }
+    // The frame scales about its centre on scroll (--hero-scale, below);
+    // the hole grows with it.
+    const sc = parseFloat(document.body.style.getPropertyValue('--hero-scale')) || 1;
+    const w = hero.offsetWidth;
+    const h = hero.offsetHeight;
     const b = document.body.style;
-    b.setProperty('--hero-x', `${x}px`);
-    b.setProperty('--hero-y', `${y}px`);
-    b.setProperty('--hero-w', `${hero.offsetWidth}px`);
-    b.setProperty('--hero-h', `${hero.offsetHeight}px`);
+    b.setProperty('--hero-x', `${x - (w * (sc - 1)) / 2}px`);
+    b.setProperty('--hero-y', `${y - (h * (sc - 1)) / 2}px`);
+    b.setProperty('--hero-w', `${w * sc}px`);
+    b.setProperty('--hero-h', `${h * sc}px`);
   };
+  document.addEventListener('ask-ai-hero-scale', fit);
   // The hole opens once the hero's own entrance (fade, rise and blur) has
   // played, so a clean rectangle never shows on the page before the frame.
   let opened = false;
@@ -1120,4 +1126,40 @@ function initQuoteReveal(el) {
   window.addEventListener('resize', fit);
   window.addEventListener('load', fit);
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(document.body);
+})();
+
+// Ask Insights hero on scroll: a progress value (0 at the top of the page,
+// 1 once the hero frame has risen to the toolbar) drives the CSS. The title
+// block (meta row, title and summary) blurs and fades away while the footage
+// grows from its inset to fill the frame edge to edge, and the frame itself
+// grows past full size.
+(() => {
+  if (document.body.dataset.project !== 'ask-ai') return;
+  const hero = document.querySelector('.pc-image--scene');
+  if (!hero) return;
+  // Tied to the reader's own scrolling, so it runs under reduced motion too.
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    let top = 0;
+    for (let n = hero; n; n = n.offsetParent) top += n.offsetTop;
+    // Done by the time the frame's top is 96px from the top of the window.
+    const span = Math.max(120, top - 96);
+    const p = Math.min(1, Math.max(0, window.scrollY / span));
+    // Eased, so the growth starts gently and lands softly.
+    const eased = p * p * (3 - 2 * p);
+    document.body.style.setProperty('--hero-p', eased.toFixed(4));
+    // The frame grows from 96% to as much as 110%, but never wider than the
+    // window less a small margin.
+    const maxScale = Math.min(1.1, (window.innerWidth - 32) / hero.offsetWidth);
+    const scale = 0.96 + (maxScale - 0.96) * eased;
+    document.body.style.setProperty('--hero-scale', scale.toFixed(4));
+    // Set on the frame itself (inline beats any stylesheet rule).
+    hero.style.scale = scale.toFixed(4);
+    document.dispatchEvent(new Event('ask-ai-hero-scale'));
+  };
+  const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
 })();
