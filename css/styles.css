@@ -14796,3 +14796,184 @@ body[data-page="project"] .pc-next-pill--card:not(.is-docked) .pc-next-thumb--b 
   .pc-next-thumb { transition: none; }
 }
 
+
+/* Next-project pill as a solid card with a layered, stacked-card shadow:
+   a crisp hairline, a soft near shadow, a long soft drop, and a lighter
+   "card beneath" edge, instead of the glass. The thumbnails get the same
+   treatment at their own scale. */
+html body[data-page="project"] .pc-next-pill--card,
+html[data-theme] body[data-page="project"] .pc-next-pill--card {
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 6px 14px -4px rgba(0, 0, 0, 0.12),
+    0 18px 32px -10px rgba(0, 0, 0, 0.18),
+    0 15px 0 -10px #ececec,
+    0 20px 24px -10px rgba(0, 0, 0, 0.14);
+}
+
+html[data-theme="dark"] body[data-page="project"] .pc-next-pill--card {
+  background: #26272a;
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 6px 14px -4px rgba(0, 0, 0, 0.45),
+    0 18px 32px -10px rgba(0, 0, 0, 0.55),
+    0 15px 0 -10px #1a1b1d,
+    0 20px 24px -10px rgba(0, 0, 0, 0.5);
+}
+
+.pc-next-thumb {
+  border-width: 0;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.08),
+    0 6px 12px -3px rgba(0, 0, 0, 0.18),
+    0 10px 16px -6px rgba(0, 0, 0, 0.14);
+}
+
+[data-theme="dark"] .pc-next-thumb {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.5),
+    0 6px 12px -3px rgba(0, 0, 0, 0.6),
+    0 10px 16px -6px rgba(0, 0, 0, 0.5);
+}
+
+/* Home page hover previews as the same stacked card: a crisp edge, a soft
+   near shadow, a long soft drop and a lighter card edge beneath. */
+.project-preview-frame,
+.project-preview-stack img {
+  border-color: #ffffff;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 16px -4px rgba(0, 0, 0, 0.14),
+    0 22px 36px -12px rgba(0, 0, 0, 0.2),
+    0 14px 0 -7px #ececec,
+    0 24px 26px -12px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"] .project-preview-frame,
+html[data-theme="dark"] .project-preview-stack img {
+  border-color: #3c3d3f;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 8px 16px -4px rgba(0, 0, 0, 0.5),
+    0 22px 36px -12px rgba(0, 0, 0, 0.6),
+    0 14px 0 -7px #1a1b1d,
+    0 24px 26px -12px rgba(0, 0, 0, 0.55);
+}
+
+/* The card beneath moves: tucked right under the pill while it's away, it
+   slides down into place as the pill docks, and drops a little further on
+   hover as the pill lifts. Same for the home previews as they appear. */
+html body[data-page="project"] .pc-next-pill--card,
+html[data-theme] body[data-page="project"] .pc-next-pill--card {
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1.4, 0.36, 1),
+    opacity 0.4s ease,
+    color 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+    background-color 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+    border-radius 0.4s cubic-bezier(0.65, 0, 0.35, 1),
+    box-shadow 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.12s;
+}
+
+html body[data-page="project"] .pc-next-pill--card:not(.is-docked) {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 10px -4px rgba(0, 0, 0, 0.1),
+    0 10px 20px -10px rgba(0, 0, 0, 0.12),
+    0 2px 0 -10px #ececec,
+    0 8px 16px -10px rgba(0, 0, 0, 0.1);
+}
+
+html body[data-page="project"] .pc-next-pill--card.is-docked:hover,
+html body[data-page="project"] .pc-next-pill--card.is-docked:focus-visible {
+  transition-delay: 0s;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 8px 18px -4px rgba(0, 0, 0, 0.14),
+    0 24px 40px -12px rgba(0, 0, 0, 0.2),
+    0 20px 0 -9px #e6e6e6,
+    0 28px 30px -12px rgba(0, 0, 0, 0.16);
+}
+
+html[data-theme="dark"] body[data-page="project"] .pc-next-pill--card:not(.is-docked) {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 4px 10px -4px rgba(0, 0, 0, 0.4),
+    0 10px 20px -10px rgba(0, 0, 0, 0.45),
+    0 2px 0 -10px #1a1b1d,
+    0 8px 16px -10px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="dark"] body[data-page="project"] .pc-next-pill--card.is-docked:hover,
+html[data-theme="dark"] body[data-page="project"] .pc-next-pill--card.is-docked:focus-visible {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 8px 18px -4px rgba(0, 0, 0, 0.5),
+    0 24px 40px -12px rgba(0, 0, 0, 0.6),
+    0 20px 0 -9px #161718,
+    0 28px 30px -12px rgba(0, 0, 0, 0.55);
+}
+
+/* Home previews: the card beneath slides out as the preview comes in. */
+.project-preview-frame {
+  transition:
+    transform 0.3s var(--sw-ease-out, ease-out),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.project-preview.is-visible .project-preview-frame,
+.project-preview.is-below.is-visible .project-preview-frame {
+  transition:
+    transform 0.4s var(--sw-ease, ease-in-out),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+.project-preview:not(.is-visible) .project-preview-frame,
+.project-preview:not(.is-visible) .project-preview-stack img {
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 4px 10px -4px rgba(0, 0, 0, 0.1),
+    0 10px 20px -12px rgba(0, 0, 0, 0.14),
+    0 2px 0 -7px #ececec,
+    0 10px 16px -12px rgba(0, 0, 0, 0.1);
+}
+
+html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-frame,
+html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack img {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 1px 2px rgba(0, 0, 0, 0.45),
+    0 4px 10px -4px rgba(0, 0, 0, 0.4),
+    0 10px 20px -12px rgba(0, 0, 0, 0.5),
+    0 2px 0 -7px #1a1b1d,
+    0 10px 16px -12px rgba(0, 0, 0, 0.4);
+}
+
+.project-preview-stack img {
+  transition:
+    translate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    rotate 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    scale 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body[data-page="project"] .pc-next-pill--card,
+  .project-preview-frame,
+  .project-preview-stack img { transition: none; }
+}
