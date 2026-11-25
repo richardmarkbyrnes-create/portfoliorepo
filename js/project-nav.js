@@ -860,9 +860,12 @@ function initQuoteReveal(el) {
         const hint = document.getElementById('pc-key-hint');
         const HINT_KEY = 'portfolio-keynav-hint';
         let hintTimer = null;
+        // Ask Insights runs longer (the folded Vision work deck sits under the
+        // quote), so its pill shows up sooner in the scroll.
+        const revealDistance = document.body.dataset.project === 'ask-ai' ? 1500 : 760;
         const revealNext = () => {
           const nearBottom = window.innerHeight + window.scrollY
-            >= document.documentElement.scrollHeight - 760;
+            >= document.documentElement.scrollHeight - revealDistance;
           nextBtn.classList.toggle('is-visible', nearBottom);
 
           if (hint && nearBottom && !localStorage.getItem(HINT_KEY)) {

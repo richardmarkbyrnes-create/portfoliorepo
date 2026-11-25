@@ -14977,3 +14977,167 @@ html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack
   .project-preview-frame,
   .project-preview-stack img { transition: none; }
 }
+
+
+/* Ask Insights "Vision work": three concept shots in a row under the quote,
+   introduced by a squiggle divider with the title set in its gap. Shots are
+   transparent cut-outs like .pc-detail--scene, so each tile paints the
+   season's landscape behind them. */
+.pc-vision {
+  width: 150%;
+  max-width: calc(100vw - 64px);
+  align-self: center;
+  /* Two full beats after the quote so the appendix doesn't crowd it. */
+  margin: 200px 0 88px;
+}
+/* The divider runs edge to edge, breaking out of the shot column. */
+.pc-vision-head {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-bottom: 72px;
+}
+.pc-squig {
+  flex: 1;
+  height: 12px;
+  overflow: hidden;
+  color: var(--text-light);
+  opacity: 0.15;
+}
+html[data-theme="dark"] .pc-squig { opacity: 0.25; }
+.pc-squig svg { display: block; width: 100%; height: 100%; }
+.pc-vision-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  flex: none;
+}
+.pc-vision-name {
+  font-family: var(--serif);
+  font-size: clamp(19px, 2.3vw, 24px);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--text-body);
+}
+.pc-vision-sub {
+  margin-top: 6px;
+  font-family: var(--sans);
+  font-size: 13px;
+  letter-spacing: -0.01em;
+  color: var(--text-light);
+}
+.pc-vision-row {
+  display: flex;
+  flex-direction: column;
+}
+/* Captions reuse the detail-shot caption; the gap between tiles lives in the
+   caption's bottom margin, same as the shots above. */
+body[data-project="ask-ai"] .pc-vision-caption {
+  width: 56%;
+  max-width: 560px;
+  margin: 16px auto 56px;
+}
+.pc-vision-row .pc-vision-caption:last-child { margin-bottom: 0; }
+/* Each tile paints the season's landscape behind the transparent cut-out,
+   drained of colour so the concept shots read as sketches rather than
+   shipped work. The image sits on top, untouched. */
+html body .pc-vision-shot {
+  position: relative;
+  width: 100%;
+  border-radius: 18px;
+  border: 3px solid var(--frame-border, #fff);
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--surface);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+html body .pc-vision-shot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-image: url('../images/scene-summer.webp?v=3');
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1);
+}
+html body .pc-vision-shot img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+html[data-theme="spring"] body .pc-vision-shot::before { background-image: url('../images/scene-spring.webp?v=3'); }
+html[data-theme="autumn"] body .pc-vision-shot::before { background-image: url('../images/scene-autumn.webp?v=3'); }
+html[data-theme="dark"] body .pc-vision-shot::before { background-image: url('../images/scene-winter.webp?v=3'); }
+html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3); }
+@media (max-width: 640px) {
+  .pc-vision { width: 100%; }
+  .pc-vision-head { gap: 16px; }
+}
+
+
+
+/* Vision work fan: folded, the three shots overlap in a row like a hand of
+   cards (middle one in flow sets the height; the outer two are absolute and
+   splayed). Unfolding is animated in js/pc-vision-fan.js, which measures
+   both layouts and eases each tile between them. */
+.pc-vision-row { position: relative; }
+.pc-vision-shot { --r: 0deg; transform: rotate(var(--r)); transform-origin: center; }
+.pc-vision.is-collapsed .pc-vision-row { cursor: pointer; padding-bottom: 32px; }
+/* Folded: a vertical deck. The first concept sits in front at near-full
+   width; the other two peek out below it, each a step smaller and further
+   back, so the three read as one stack of cards. */
+.pc-vision.is-collapsed .pc-vision-shot {
+  transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1), bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+}
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(1) { position: relative; width: 86%; margin: 0 auto; z-index: 3; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(3) { position: absolute; width: 78%; left: 11%; bottom: 16px; z-index: 2; opacity: 0.85; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(5) { position: absolute; width: 70%; left: 15%; bottom: 0;  z-index: 1; opacity: 0.7; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(3) { bottom: 8px; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { bottom: -12px; }
+/* Captions leave the flow while folded so they don't push the fan apart; they
+   fade back in once the tiles have landed. */
+.pc-vision .pc-vision-caption { transition: opacity 0.4s ease 0.35s; }
+.pc-vision.is-collapsed .pc-vision-caption {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+  margin: 0;
+  overflow: hidden;
+  transition: none;
+}
+.pc-vision.is-flipping .pc-vision-shot:nth-child(1) { z-index: 3; }
+.pc-vision.is-flipping .pc-vision-shot:nth-child(3) { z-index: 2; }
+.pc-vision.is-flipping .pc-vision-shot:nth-child(5) { z-index: 1; }
+.pc-vision.is-flipping .pc-vision-shot:hover { transform: none; }
+
+.pc-vision-toggle {
+  display: block;
+  margin: 28px auto 0;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-light) 10%, transparent);
+  font-family: var(--sans);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-body);
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+.pc-vision-toggle:hover { background: color-mix(in srgb, var(--text-light) 18%, transparent); }
+.pc-vision-toggle-close { display: none; }
+.pc-vision:not(.is-collapsed) .pc-vision-toggle-open { display: none; }
+.pc-vision:not(.is-collapsed) .pc-vision-toggle-close { display: inline; }
+/* Unfolded, the last caption already carries bottom margin, so the button
+   sits a little clear of it. */
+.pc-vision:not(.is-collapsed) .pc-vision-toggle { margin-top: 48px; }
+
