@@ -14987,8 +14987,10 @@ html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack
   width: 150%;
   max-width: calc(100vw - 64px);
   align-self: center;
-  /* Two full beats after the quote so the appendix doesn't crowd it. */
-  margin: 200px 0 88px;
+  /* Two full beats after the quote so the appendix doesn't crowd it, and
+     enough below that the fold toggle scrolls clear of the fixed frame and
+     bottom blur at the end of the page. */
+  margin: 200px 0 200px;
 }
 /* The divider runs edge to edge, breaking out of the shot column. */
 .pc-vision-head {
@@ -14997,7 +14999,7 @@ html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack
   gap: 36px;
   width: 100vw;
   margin-left: calc(50% - 50vw);
-  margin-bottom: 72px;
+  margin-bottom: 104px;
 }
 .pc-squig {
   flex: 1;
@@ -15090,16 +15092,60 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
 .pc-vision-row { position: relative; }
 .pc-vision-shot { --r: 0deg; transform: rotate(var(--r)); transform-origin: center; }
 .pc-vision.is-collapsed .pc-vision-row { cursor: pointer; }
-/* Folded: a fan. The listen-mode concept sits centre and in front; the other
-   two come out from behind it to the left and right, smaller and tilted. */
+/* Folded: a loose pile of cards sitting in a dashed tray, with a count badge
+   on the front card. The listen-mode concept is in front and sets the
+   height; the other two lean out behind it at opposite tilts. */
 .pc-vision.is-collapsed .pc-vision-shot {
   transition: left 0.5s cubic-bezier(0.22, 1, 0.36, 1), top 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
 }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(3) { position: relative; width: 58%; margin: 0 auto; z-index: 3; --r: 0deg; }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(1) { position: absolute; width: 46%; left: 3%;  top: 9%; z-index: 1; --r: -7deg; opacity: 0.92; }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(5) { position: absolute; width: 46%; left: 51%; top: 9%; z-index: 2; --r: 7deg;  opacity: 0.92; }
-.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(1) { left: 0;   top: 7%; --r: -9deg; }
-.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { left: 54%; top: 7%; --r: 9deg; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(3) { position: relative; width: 32%; margin: 8% 0 3.5% 34%; z-index: 3; --r: 0deg; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(1) { position: absolute; width: 29%; left: 24%; top: 1.5%; z-index: 1; --r: -9deg; opacity: 0.9; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(5) { position: absolute; width: 30%; left: 45%; top: -0.5%; z-index: 2; --r: 7deg;  opacity: 0.9; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(1) { left: 22%; top: 0;    --r: -12deg; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { left: 47%; top: -2%; --r: 10deg; }
+/* Tray and badge live on the row's pseudo-elements so they can fade with the
+   state rather than pop. */
+.pc-vision-row::before,
+.pc-vision-row::after {
+  content: "";
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.pc-vision-row::before {
+  left: 29%;
+  right: 29%;
+  top: 46%;
+  bottom: 0;
+  border-radius: 20px;
+  /* Drawn as SVG so the dash gap can be set: CSS dashed borders give no
+     control over spacing. Stroke is light and theme-neutral. */
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' rx='20' fill='none' stroke='%23808a84' stroke-opacity='0.38' stroke-width='2.5' stroke-dasharray='5 10' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  z-index: 0;
+}
+html[data-theme="dark"] .pc-vision-row::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' rx='20' fill='none' stroke='%23ffffff' stroke-opacity='0.22' stroke-width='2.5' stroke-dasharray='5 10' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.pc-vision-row::after {
+  content: "3";
+  left: 62%;
+  bottom: 5%;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--text-body);
+  color: var(--bg);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 0 0 3px var(--bg);
+  z-index: 4;
+}
+.pc-vision.is-collapsed:not(.is-flipping) .pc-vision-row::before,
+.pc-vision.is-collapsed:not(.is-flipping) .pc-vision-row::after { opacity: 1; }
 /* Captions leave the flow while folded so they don't push the fan apart; they
    fade back in once the tiles have landed. */
 .pc-vision .pc-vision-caption { transition: opacity 0.4s ease 0.35s; }
