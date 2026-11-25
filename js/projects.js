@@ -101,8 +101,8 @@ window.PROJECTS = {
     previewAspect: '600 / 364',
     heroAspect: '1716 / 1044',
     paragraphs: [
-      'Research and product teams had years of customer conversation on file, sales calls, support logs, interviews, and no practical way to read it. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked it.',
-      'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call, you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
+      'Research and product teams had years of customer conversations on file: sales calls, support logs, interviews. There was no practical way to read them. Answering something as ordinary as “what are people saying about onboarding?” meant hours of searching and synthesising, so more often than not nobody asked.',
+      'Ask Insights puts that question to the whole archive in plain English and answers it in seconds, with citations. Trust was the hard part, so every claim links back to the exact moment in the original call and you can read the sentence it came from. We suggest prompts based on your role, so the empty chat box feels less daunting, and follow-ups let you drill from a broad question down to a specific detail. Because people could check the sources, they believed the answers, and it became the tool teams opened before sprint planning.',
     ],
     quote: 'It’s amazing how quickly we can surface customer feedback that before took such mental effort to gather.',
     quoteBy: 'Product manager at Miro',
