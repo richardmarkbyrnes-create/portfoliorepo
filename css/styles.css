@@ -14993,21 +14993,9 @@ html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack
 /* The divider runs edge to edge, breaking out of the shot column. */
 .pc-vision-head {
   display: flex;
-  align-items: center;
-  gap: 36px;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
+  justify-content: center;
   margin-bottom: 104px;
 }
-.pc-squig {
-  flex: 1;
-  height: 12px;
-  overflow: hidden;
-  color: var(--text-light);
-  opacity: 0.15;
-}
-html[data-theme="dark"] .pc-squig { opacity: 0.25; }
-.pc-squig svg { display: block; width: 100%; height: 100%; }
 .pc-vision-title {
   display: flex;
   flex-direction: column;
@@ -15078,7 +15066,6 @@ html[data-theme="dark"] body .pc-vision-shot::before { background-image: url('..
 html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.3); }
 @media (max-width: 640px) {
   .pc-vision { width: 100%; }
-  .pc-vision-head { gap: 16px; }
 }
 
 
@@ -15129,7 +15116,7 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
   width: calc(100% - 2.5px);
   height: calc(100% - 2.5px);
   rx: 20px;
-  fill: none;
+  fill: color-mix(in srgb, var(--text-light) 7%, transparent);
   stroke: color-mix(in srgb, var(--text-light) 28%, transparent);
   stroke-width: 2.5;
   stroke-dasharray: 5 10;
@@ -15240,5 +15227,4 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
 @keyframes scrib-draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) {
   .pc-vision-doodle .scrib-line, .pc-vision-doodle .scrib-loop { animation: none; stroke-dashoffset: 0; }
-}
 }
