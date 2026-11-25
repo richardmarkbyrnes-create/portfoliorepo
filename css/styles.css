@@ -15089,18 +15089,17 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
    both layouts and eases each tile between them. */
 .pc-vision-row { position: relative; }
 .pc-vision-shot { --r: 0deg; transform: rotate(var(--r)); transform-origin: center; }
-.pc-vision.is-collapsed .pc-vision-row { cursor: pointer; padding-bottom: 32px; }
-/* Folded: a vertical deck. The first concept sits in front at near-full
-   width; the other two peek out below it, each a step smaller and further
-   back, so the three read as one stack of cards. */
+.pc-vision.is-collapsed .pc-vision-row { cursor: pointer; }
+/* Folded: a fan. The listen-mode concept sits centre and in front; the other
+   two come out from behind it to the left and right, smaller and tilted. */
 .pc-vision.is-collapsed .pc-vision-shot {
-  transition: left 0.45s cubic-bezier(0.22, 1, 0.36, 1), bottom 0.45s cubic-bezier(0.22, 1, 0.36, 1), width 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.45s ease;
+  transition: left 0.5s cubic-bezier(0.22, 1, 0.36, 1), top 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.5s ease;
 }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(1) { position: relative; width: 86%; margin: 0 auto; z-index: 3; }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(3) { position: absolute; width: 78%; left: 11%; bottom: 16px; z-index: 2; opacity: 0.85; }
-.pc-vision.is-collapsed .pc-vision-shot:nth-child(5) { position: absolute; width: 70%; left: 15%; bottom: 0;  z-index: 1; opacity: 0.7; }
-.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(3) { bottom: 8px; }
-.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { bottom: -12px; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(3) { position: relative; width: 58%; margin: 0 auto; z-index: 3; --r: 0deg; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(1) { position: absolute; width: 46%; left: 3%;  top: 9%; z-index: 1; --r: -7deg; opacity: 0.92; }
+.pc-vision.is-collapsed .pc-vision-shot:nth-child(5) { position: absolute; width: 46%; left: 51%; top: 9%; z-index: 2; --r: 7deg;  opacity: 0.92; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(1) { left: 0;   top: 7%; --r: -9deg; }
+.pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { left: 54%; top: 7%; --r: 9deg; }
 /* Captions leave the flow while folded so they don't push the fan apart; they
    fade back in once the tiles have landed. */
 .pc-vision .pc-vision-caption { transition: opacity 0.4s ease 0.35s; }
@@ -15113,9 +15112,10 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
   overflow: hidden;
   transition: none;
 }
-.pc-vision.is-flipping .pc-vision-shot:nth-child(1) { z-index: 3; }
-.pc-vision.is-flipping .pc-vision-shot:nth-child(3) { z-index: 2; }
-.pc-vision.is-flipping .pc-vision-shot:nth-child(5) { z-index: 1; }
+.pc-vision.is-flipping .pc-vision-shot:nth-child(3) { z-index: 3; }
+.pc-vision.is-flipping .pc-vision-shot:nth-child(5) { z-index: 2; }
+.pc-vision.is-flipping .pc-vision-shot:nth-child(1) { z-index: 1; }
+.pc-vision.is-flipping .pc-vision-shot { will-change: transform; }
 .pc-vision.is-flipping .pc-vision-shot:hover { transform: none; }
 
 .pc-vision-toggle {

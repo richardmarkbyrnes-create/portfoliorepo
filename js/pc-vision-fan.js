@@ -1,5 +1,5 @@
-// Ask Insights "Vision work": the three concept shots start folded into an
-// overlapping fan. Clicking unfolds them into the vertical stack with their
+// Ask Insights "Vision work": the three concept shots start folded into a
+// fan (centre card in front, the other two tilted out either side). Clicking unfolds them into the vertical stack with their
 // captions. The move is a FLIP: measure both layouts, start each tile at its
 // old box via an inline transform, then let it ease to the new one.
 (() => {
@@ -28,6 +28,7 @@
     busy = true;
     const first = tiles.map(box);
     const rotFirst = tiles.map(rot);
+    const opFirst = tiles.map(t => getComputedStyle(t).opacity);
     const h0 = row.offsetHeight;
 
     sec.classList.toggle('is-collapsed', !expanding);
@@ -36,6 +37,7 @@
 
     const last = tiles.map(box);
     const rotLast = tiles.map(rot);
+    const opLast = tiles.map(t => getComputedStyle(t).opacity);
     const h1 = row.offsetHeight;
 
     // Hold the row at its old height so the page below slides, not jumps.
@@ -45,27 +47,37 @@
     tiles.forEach((t, i) => {
       const f = first[i], l = last[i];
       t.style.transition = 'none';
+      t.style.opacity = opFirst[i];
       t.style.transform = `translate(${f.cx - l.cx}px, ${f.cy - l.cy}px) scale(${f.w / l.w}) rotate(${rotFirst[i]})`;
     });
 
-    // Flush, then release everything to its new place.
+    // Flush, then release everything to its new place. The inline end values
+    // match the stylesheet exactly, so clearing them afterwards is invisible.
     row.getBoundingClientRect();
     requestAnimationFrame(() => {
       row.style.transition = `height ${DUR}ms ${EASE}`;
       row.style.height = h1 + 'px';
       tiles.forEach((t, i) => {
-        t.style.transition = `transform ${DUR}ms ${EASE}, box-shadow ${DUR}ms ease`;
+        t.style.transition = `transform ${DUR}ms ${EASE}, opacity ${DUR}ms ease`;
+        t.style.opacity = opLast[i];
         t.style.transform = `rotate(${rotLast[i]})`;
       });
     });
 
-    setTimeout(() => {
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      row.removeEventListener('transitionend', onEnd);
       row.style.transition = '';
       row.style.height = '';
-      tiles.forEach(t => { t.style.transition = ''; t.style.transform = ''; });
+      tiles.forEach(t => { t.style.transition = ''; t.style.transform = ''; t.style.opacity = ''; });
       sec.classList.remove('is-flipping');
       busy = false;
-    }, DUR + 40);
+    };
+    const onEnd = e => { if (e.target === row && e.propertyName === 'height') finish(); };
+    row.addEventListener('transitionend', onEnd);
+    setTimeout(finish, DUR + 120);
   }
 
   btn.addEventListener('click', toggle);
