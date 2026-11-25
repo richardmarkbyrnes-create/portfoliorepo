@@ -14987,10 +14987,8 @@ html[data-theme="dark"] .project-preview:not(.is-visible) .project-preview-stack
   width: 150%;
   max-width: calc(100vw - 64px);
   align-self: center;
-  /* Two full beats after the quote so the appendix doesn't crowd it, and
-     enough below that the fold toggle scrolls clear of the fixed frame and
-     bottom blur at the end of the page. */
-  margin: 200px 0 200px;
+  /* Two full beats after the quote so the appendix doesn't crowd it. */
+  margin: 200px 0 72px;
 }
 /* The divider runs edge to edge, breaking out of the shot column. */
 .pc-vision-head {
@@ -15105,27 +15103,37 @@ html[data-theme="dark"] body .pc-vision-shot { box-shadow: 0 1px 3px rgba(0, 0, 
 .pc-vision.is-collapsed .pc-vision-row:hover .pc-vision-shot:nth-child(5) { left: 47%; top: -2%; --r: 10deg; }
 /* Tray and badge live on the row's pseudo-elements so they can fade with the
    state rather than pop. */
-.pc-vision-row::before,
-.pc-vision-row::after {
-  content: "";
+.pc-vision-row::after,
+.pc-vision-tray {
   position: absolute;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
 }
-.pc-vision-row::before {
+/* The tray is an inline SVG so its stroke can sit fully inside the box: a
+   background image would clip half the line on every edge. The rect's
+   geometry is set here (SVG2 CSS geometry), inset by half the stroke. */
+.pc-vision-tray {
   left: 29%;
   right: 29%;
   top: 46%;
   bottom: 0;
-  border-radius: 20px;
-  /* Drawn as SVG so the dash gap can be set: CSS dashed borders give no
-     control over spacing. Stroke is light and theme-neutral. */
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' rx='20' fill='none' stroke='%23808a84' stroke-opacity='0.38' stroke-width='2.5' stroke-dasharray='5 10' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  width: 42%;
+  height: 54%;
+  overflow: visible;
   z-index: 0;
 }
-html[data-theme="dark"] .pc-vision-row::before {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' preserveAspectRatio='none'%3E%3Crect width='100%25' height='100%25' rx='20' fill='none' stroke='%23ffffff' stroke-opacity='0.22' stroke-width='2.5' stroke-dasharray='5 10' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+.pc-vision-tray rect {
+  x: 1.25px;
+  y: 1.25px;
+  width: calc(100% - 2.5px);
+  height: calc(100% - 2.5px);
+  rx: 20px;
+  fill: none;
+  stroke: color-mix(in srgb, var(--text-light) 28%, transparent);
+  stroke-width: 2.5;
+  stroke-dasharray: 5 10;
+  stroke-linecap: round;
 }
 .pc-vision-row::after {
   content: "3";
@@ -15144,7 +15152,7 @@ html[data-theme="dark"] .pc-vision-row::before {
   box-shadow: 0 0 0 3px var(--bg);
   z-index: 4;
 }
-.pc-vision.is-collapsed:not(.is-flipping) .pc-vision-row::before,
+.pc-vision.is-collapsed:not(.is-flipping) .pc-vision-tray,
 .pc-vision.is-collapsed:not(.is-flipping) .pc-vision-row::after { opacity: 1; }
 /* Captions leave the flow while folded so they don't push the fan apart; they
    fade back in once the tiles have landed. */
@@ -15189,28 +15197,48 @@ html[data-theme="dark"] .pc-vision-row::before {
 
 
 
-/* Hand-drawn scribble above the Vision work title: a loose pen line that
-   draws itself on, with a small handwritten aside beside it. */
-.pc-vision-scribble {
-  position: relative;
-  display: block;
-  width: 220px;
-  height: 70px;
-  margin: 0 auto 22px;
+/* Hand-drawn doodle poking out from behind the folded pile, top right: a
+   loose pen line that draws itself on. Folded state only; fades with the
+   tray and badge. */
+.pc-vision-doodle {
+  position: absolute;
+  top: -13%;
+  width: 30%;
+  height: auto;
+  aspect-ratio: 220 / 70;
+  overflow: visible;
   color: var(--text-light);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 0.3s ease;
 }
-.pc-vision-scribble svg { display: block; width: 100%; height: 100%; overflow: visible; opacity: 0.7; }
-.pc-vision-scribble .scrib-line {
+/* One each side, mirrored, so the pen line trails out from behind both back
+   cards. */
+.pc-vision-doodle--right { left: 55%; transform: rotate(-14deg); }
+/* Smaller marks: a scratched-out X below the left card and a crossed-out
+   circle low on the right, both half tucked behind the pile. */
+.pc-vision-doodle--x  { left: 19%; top: auto; bottom: 16%; width: 4.5%; aspect-ratio: 1; transform: rotate(8deg); }
+.pc-vision-doodle--no { left: 75%; top: auto; bottom: 30%; width: 5.5%; aspect-ratio: 1; transform: rotate(-6deg); }
+.pc-vision-doodle--x .scrib-line  { stroke-dasharray: 160; stroke-dashoffset: 160; animation-delay: 1.4s; animation-duration: 0.8s; }
+.pc-vision-doodle--no .scrib-line { stroke-dasharray: 200; stroke-dashoffset: 200; animation-delay: 1.7s; animation-duration: 1s; }
+.pc-vision-doodle--no .scrib-loop { stroke-dasharray: 70;  stroke-dashoffset: 70;  animation-delay: 2.8s; animation-duration: 0.4s; }
+.pc-vision-doodle--left  { left: 15%; top: -9%; transform: rotate(12deg); }
+.pc-vision.is-collapsed:not(.is-flipping) .pc-vision-doodle { opacity: 0.3; }
+.pc-vision-doodle .scrib-line {
   stroke-dasharray: 420;
   stroke-dashoffset: 420;
-  animation: scrib-draw 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+  animation: scrib-draw 1.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s forwards;
 }
-.pc-vision-scribble .scrib-loop {
+.pc-vision-doodle .scrib-loop {
   stroke-dasharray: 120;
   stroke-dashoffset: 120;
-  animation: scrib-draw 0.7s ease-out 2s forwards;
+  animation: scrib-draw 0.7s ease-out 2.1s forwards;
 }
+.pc-vision-doodle--left .scrib-line { animation-delay: 0.9s; }
+.pc-vision-doodle--left .scrib-loop { animation-delay: 2.4s; }
 @keyframes scrib-draw { to { stroke-dashoffset: 0; } }
 @media (prefers-reduced-motion: reduce) {
-  .pc-vision-scribble .scrib-line, .pc-vision-scribble .scrib-loop { animation: none; stroke-dashoffset: 0; }
+  .pc-vision-doodle .scrib-line, .pc-vision-doodle .scrib-loop { animation: none; stroke-dashoffset: 0; }
+}
 }
